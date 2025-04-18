@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using Juegazo;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -10,21 +13,11 @@ public class Game1 : Game
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
     private Viewport viewport;
-
-    private Texture2D sir;
-    private Vector2 position;
     private float scale = 0.3f;
-
-    private Vector2 objectLeft;
-    private Vector2 objectRight;
-    private Vector2 fourthObject;
-    private bool goLeft;
-    private bool goRight;
-
+    Player player;
+    List<Sprite> sprites = new List<Sprite>();
+    private KeyboardState prevState;
     private float t;
-    private bool coso;
-    private bool onGround;
-    private bool keypressed;
     public Game1()
     {
         _graphics = new GraphicsDeviceManager(this);
@@ -35,7 +28,10 @@ public class Game1 : Game
     protected override void Initialize()
     {
         // TODO: add new resolution
-
+        _graphics.IsFullScreen = false;
+        _graphics.PreferredBackBufferWidth = 1280;
+        _graphics.PreferredBackBufferHeight = 720;
+        _graphics.ApplyChanges();
         base.Initialize();
     }
 
@@ -45,21 +41,22 @@ public class Game1 : Game
         viewport = GraphicsDevice.Viewport;
 
         //TODO: create player class
-        sir = Content.Load<Texture2D>("player_body");
-        // viewport = pantalla visible; sir = el tamaño de la textura; si obtienes la mitad del alto y ancho del viewport tenes el centro de lapantalla, pero desde ese punto iniciara el dibujo del personaje, por lo que debes restarle el alto y ancho del personaje para que se dibuje en el lugar correcto
-        position = new Vector2((viewport.Width-sir.Width*(scale-0.1f))/2, (viewport.Height-sir.Height*(scale-0.1f))/2);
+        Texture2D texture = Content.Load<Texture2D>("player_body");
+        Vector2 position = new Vector2((viewport.Width-texture.Width*(scale-0.1f))/2, (viewport.Height-texture.Height*(scale-0.1f))/2);
 
-        float howFar = 0.1f; 
-        objectLeft = new Vector2(sir.Width*scale, (viewport.Height-sir.Height*scale)/2);
-        objectRight = new Vector2(viewport.Width-(sir.Width*scale)*2, (viewport.Height-sir.Height*scale)/2);
-        fourthObject = new Vector2(position.X, (viewport.Height+sir.Height*scale)/2);
-        goLeft = false;
-        goRight = !goLeft;
-        t=inverseLerp(objectLeft.X,objectRight.X, position.X);
-        Console.WriteLine(t);
+        player = new Player(texture, position, scale, Color.White);
 
-        keypressed = false;
-        coso = false; //TODO: add a better name for this, ffs
+        Vector2 objectLeft = new Vector2(texture.Width*scale, (viewport.Height-texture.Height*scale)/2);
+        Vector2 objectRight = new Vector2(viewport.Width-texture.Width*scale, (viewport.Height-texture.Height*scale)/2);
+        Vector2 fourthObject = new Vector2(position.X, viewport.Height/2+texture.Height*scale*2);
+        sprites =
+        [
+            new Sprite(texture, objectLeft, scale, new Color(new Vector3(0.9f,0.3f,0.3f))),
+            new Sprite(texture, objectRight, scale, new Color(new Vector3(0.3f,0.3f,0.9f))),
+            new Sprite(texture, fourthObject, scale, new Color(new Vector3(0.5f,0.5f,0.5f))),
+            new Sprite(texture, new Vector2(viewport.Width/2, viewport.Height-texture.Height/2), 1, new Color(new Vector3(0.5f,0.5f,0.5f))),
+        ];
+   
     }
 
     protected override void Update(GameTime gameTime)
@@ -67,48 +64,27 @@ public class Game1 : Game
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape)){
             Exit();
         }
-        //TODO: add logic to Player class
-        //TODO: fix player jump,
-            //no debe depender de cuando tiempo el jugador apreta la tecla
-            //deberia tener un sistema de fisicas implementado?
-        // if(position.Y >= viewport.Height-sir.Height) onGround=true;
-        // if((Keyboard.GetState().IsKeyDown(Keys.W) || Keyboard.GetState().IsKeyDown(Keys.Up)) && onGround && position.Y > 0) {
-        //     if (!keypressed) {
-        //         t = position.Y;
-        //         keypressed = true;
-        //     }
-        //     if (position.Y > t - 40) {
-        //     position.Y -= 5;
-        //     }
-        // } else {
-        //     keypressed = false;
-        //     if(!(position.Y >= viewport.Height-sir.Height)){
-        //         onGround=false;
-        //         position.Y +=2;
-        //     }
-        // }
-        // //Logic for moving the player
-        // if((Keyboard.GetState().IsKeyDown(Keys.A) || Keyboard.GetState().IsKeyDown(Keys.Left)) && position.X != 0){
-        //     position.X -= 10;
-        // }if((Keyboard.GetState().IsKeyDown(Keys.D) || Keyboard.GetState().IsKeyDown(Keys.Right)) && position.X != viewport.Width-sir.Width){
-        //     position.X += 10;
-        // }
-        if(t>=1){
-            goLeft=true;
-            goRight = !goLeft;
-        }if(t<=0){
-            goRight=true;
-            goLeft = !goRight;
-        }
-        if(goRight){
-            t +=0.01f;
-        }
-        if(goLeft){
-            t -=0.01f;
-        }
+        player.Update(gameTime, Keyboard.GetState(), prevState);
+        prevState = Keyboard.GetState();
+        //TODO: add collision detection
+        //Logic for moving the player
+        player.position += player.velocity;
 
-        position.X = lerp(objectRight.X, objectLeft.X, mixedFunctions(t));
-        fourthObject.X -= (fourthObject.X-position.X)*0.1f;
+        // if(t>=1){
+        //     goLeft=true;
+        //     goRight = !goLeft;
+        // }if(t<=0){
+        //     goRight=true;
+        //     goLeft = !goRight;
+        // }
+        // if(goRight){
+        //     t +=0.01f;
+        // }
+        // if(goLeft){
+        //     t -=0.01f;
+        // }
+
+        // position.X = lerp(objectRight.X, objectLeft.X, mixedFunctions(t));
 
         base.Update(gameTime);
     }
@@ -129,16 +105,12 @@ public class Game1 : Game
     {
         GraphicsDevice.Clear(new Color(new Vector3(0.1f,0.1f,0.1f)));
         _spriteBatch.Begin();
-    
 
-        _spriteBatch.Draw(sir, new Rectangle((int)objectLeft.X, (int)objectLeft.Y, (int)(sir.Width*scale), (int)(sir.Height*scale)), new Color(new Vector3(0.9f,0.3f,0.3f)));
-
-        _spriteBatch.Draw(sir, new Rectangle((int)objectRight.X, (int)objectRight.Y, (int)(sir.Width*scale), (int)(sir.Height*scale)), new Color(new Vector3(0.3f,0.3f,0.9f)));
-
-        _spriteBatch.Draw(sir, new Rectangle((int)position.X, (int)position.Y, (int)(sir.Width*(scale-0.1f)), (int)(sir.Height*(scale-0.1f))), Color.White);
-
-
-        _spriteBatch.Draw(sir, new Rectangle((int)fourthObject.X, (int)fourthObject.Y, (int)(sir.Width*scale), (int)(sir.Height*scale)), new Color(new Vector3(0.5f,0.5f,0.5f)));
+        foreach (Sprite sprite in sprites)
+        {
+            sprite.DrawSprite(_spriteBatch);
+        }
+        player.DrawSprite(_spriteBatch);
         _spriteBatch.End();
         base.Draw(gameTime);
     }
