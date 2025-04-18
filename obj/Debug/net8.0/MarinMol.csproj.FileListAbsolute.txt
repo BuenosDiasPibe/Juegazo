@@ -23,3 +23,6 @@
 /home/facundo/Documentos/proyecto-ayayay-ay/MarinMol/obj/Debug/net8.0/MarinMol.pdb
 /home/facundo/Documentos/proyecto-ayayay-ay/MarinMol/obj/Debug/net8.0/MarinMol.genruntimeconfig.cache
 /home/facundo/Documentos/proyecto-ayayay-ay/MarinMol/obj/Debug/net8.0/ref/MarinMol.dll
+/home/facundo/Documentos/proyecto-ayayay-ay/MarinMol/bin/Debug/net8.0/Content/player.xnb
+/home/facundo/Documentos/proyecto-ayayay-ay/MarinMol/obj/Debug/net8.0/MarinMol.sourcelink.json
+/home/facundo/Documentos/proyecto-ayayay-ay/MarinMol/bin/Debug/net8.0/Content/player_body.xnb

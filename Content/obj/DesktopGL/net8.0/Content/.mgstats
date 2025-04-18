@@ -1,1 +1,3 @@
 Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
+"/home/facundo/Documentos/proyecto-ayayay-ay/MarinMol/Content/player_body.png","/home/facundo/Documentos/proyecto-ayayay-ay/MarinMol/Content/bin/DesktopGL/Content/player_body.xnb","TextureProcessor","Texture2DContent",790,160085,0.3774125
+"/home/facundo/Documentos/proyecto-ayayay-ay/MarinMol/Content/player.png","/home/facundo/Documentos/proyecto-ayayay-ay/MarinMol/Content/bin/DesktopGL/Content/player.xnb","TextureProcessor","Texture2DContent",9049,160085,0.3989517
