@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MarinMol")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ea13ea78a2eb7b279e62ebfe2d93b9f49bf92618")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f3fdf18fdc6e6e24d3859751816147d524f0ff04")]
 [assembly: System.Reflection.AssemblyProductAttribute("MarinMol")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MarinMol")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
