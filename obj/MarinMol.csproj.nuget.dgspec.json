@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "E:\\juegazo\\Juegazo\\MarinMol.csproj": {}
+    "/home/facundo/Documentos/proyecto-ayayay-ay/MarinMol/MarinMol.csproj": {}
   },
   "projects": {
-    "E:\\juegazo\\Juegazo\\MarinMol.csproj": {
+    "/home/facundo/Documentos/proyecto-ayayay-ay/MarinMol/MarinMol.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\juegazo\\Juegazo\\MarinMol.csproj",
+        "projectUniqueName": "/home/facundo/Documentos/proyecto-ayayay-ay/MarinMol/MarinMol.csproj",
         "projectName": "MarinMol",
-        "projectPath": "E:\\juegazo\\Juegazo\\MarinMol.csproj",
-        "packagesPath": "C:\\Users\\facun\\.nuget\\packages\\",
-        "outputPath": "E:\\juegazo\\Juegazo\\obj\\",
+        "projectPath": "/home/facundo/Documentos/proyecto-ayayay-ay/MarinMol/MarinMol.csproj",
+        "packagesPath": "/home/facundo/.nuget/packages/",
+        "outputPath": "/home/facundo/Documentos/proyecto-ayayay-ay/MarinMol/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\facun\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "/home/facundo/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -32,13 +32,7 @@
           "warnAsError": [
             "NU1605"
           ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "true",
-          "auditLevel": "low",
-          "auditMode": "direct"
-        },
-        "SdkAnalysisLevel": "9.0.200"
+        }
       },
       "frameworks": {
         "net8.0": {
@@ -67,19 +61,7 @@
           "downloadDependencies": [
             {
               "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[8.0.13, 8.0.13]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Host.win-x64",
-              "version": "[8.0.13, 8.0.13]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Ref",
-              "version": "[8.0.13, 8.0.13]"
-            },
-            {
-              "name": "Microsoft.WindowsDesktop.App.Ref",
-              "version": "[8.0.13, 8.0.13]"
+              "version": "[8.0.14, 8.0.14]"
             }
           ],
           "frameworkReferences": {
@@ -87,7 +69,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.200/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.114/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

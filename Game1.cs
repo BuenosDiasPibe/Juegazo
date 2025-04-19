@@ -49,8 +49,7 @@ public class Game1 : Game
         Vector2 objectLeft = new Vector2(texture.Width*scale, (viewport.Height-texture.Height*scale)/2);
         Vector2 objectRight = new Vector2(viewport.Width-texture.Width*scale, (viewport.Height-texture.Height*scale)/2);
         Vector2 fourthObject = new Vector2(position.X, viewport.Height/2+texture.Height*scale*2);
-        sprites =
-        [
+        sprites = [
             new Sprite(texture, objectLeft, scale, new Color(new Vector3(0.9f,0.3f,0.3f))),
             new Sprite(texture, objectRight, scale, new Color(new Vector3(0.3f,0.3f,0.9f))),
             new Sprite(texture, fourthObject, scale, new Color(new Vector3(0.5f,0.5f,0.5f))),
@@ -64,28 +63,10 @@ public class Game1 : Game
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape)){
             Exit();
         }
-        player.Update(gameTime, Keyboard.GetState(), prevState);
+        player.Update(gameTime, Keyboard.GetState(), prevState, viewport, sprites);
         prevState = Keyboard.GetState();
         //TODO: add collision detection
         //Logic for moving the player
-        player.position += player.velocity;
-
-        // if(t>=1){
-        //     goLeft=true;
-        //     goRight = !goLeft;
-        // }if(t<=0){
-        //     goRight=true;
-        //     goLeft = !goRight;
-        // }
-        // if(goRight){
-        //     t +=0.01f;
-        // }
-        // if(goLeft){
-        //     t -=0.01f;
-        // }
-
-        // position.X = lerp(objectRight.X, objectLeft.X, mixedFunctions(t));
-
         base.Update(gameTime);
     }
 
@@ -95,7 +76,7 @@ public class Game1 : Game
     public float inverseLerp(float a, float b, float value){
         return (value-a)/(b-a);
     }
-    public float mixedFunctions(float fr){
+    public float mixedFunctions(float fr){ //smoothing thing (its really good i promise)
         float v1 = fr*fr;
         float v2 = 1-(1-fr)*(1-fr);
         return lerp(v1,v2,fr);

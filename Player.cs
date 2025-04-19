@@ -16,6 +16,7 @@ namespace Juegazo
         Color prevColor;
         Color nervioso = new Color(new Vector3(0.89f, 0.34f, 0.16f));
         float t;
+        public bool onGround {get; set;}
         public Player(Texture2D texture, Vector2 position, float scale, Color color) : base(texture, position, scale, color)
         {
             this.texture = texture;
@@ -24,32 +25,49 @@ namespace Juegazo
             this.color = color;
             prevColor = color;
             velocity = new();
+            onGround=true;
         }
-        public void Update(GameTime gameTime, KeyboardState keyboardState, KeyboardState prevState)
+        public void Update(GameTime gameTime, KeyboardState keyboardState, KeyboardState prevState, Viewport viewport, List<Sprite> sprites)
         {
             //TODO: add vertical velocity and gravity
             velocity.X = 0;
-            if(keyboardState.IsKeyDown(Keys.Left))
-            {
-                velocity.X = -5;
+            if(keyboardState.IsKeyDown(Keys.Left) && position.X >= texture.Width*scale/2) {
+                velocity.X -= 10;
             }
-            if (keyboardState.IsKeyDown(Keys.Right))
-            {
-                velocity.X = 5;
-            }if(keyboardState.IsKeyDown(Keys.Left) && keyboardState.IsKeyDown(Keys.Right))
-            {
+            if (keyboardState.IsKeyDown(Keys.Right) && position.X <= viewport.Width - texture.Width*scale/2) {
+                velocity.X += 10;
+            }
+            if(keyboardState.IsKeyDown(Keys.Left) && keyboardState.IsKeyDown(Keys.Right)) {
                 velocity.X = 0;
                 nervioso_la_nena = true;
             }
+            position.X += velocity.X;
+            foreach(Sprite sprite in sprites) {
+                if(sprite.rectangle.Intersects(rectangle)) {
+                    position.X -= velocity.X;
+                }
+            }
+            velocity.Y += 0.2f;
+            if(velocity.Y > 10){
+                velocity.Y = 10;
+            }
+
+            if(keyboardState.IsKeyDown(Keys.Up) && !prevState.IsKeyDown(Keys.Up) && onGround){ //WE BALL!!!!
+                velocity.Y = -5;
+            } //TODO: add onGround functionality on foreach loop
+
+            position.Y += velocity.Y;
+            foreach (Sprite sprite in sprites) {
+                if(sprite.rectangle.Intersects(rectangle)) {
+                    position.Y -= velocity.Y;
+                }
+            }
 
             //silly shit
-            if(nervioso_la_nena && t < 1)
-            {
+            if(nervioso_la_nena && t < 1) {
                 t += (float)gameTime.ElapsedGameTime.TotalSeconds;
                 color = Color.Lerp(nervioso, prevColor, t);
-
-                if (t >= 1)
-                {
+                if (t >= 1) {
                     nervioso_la_nena = false;
                     color = prevColor;
                     t = 0;

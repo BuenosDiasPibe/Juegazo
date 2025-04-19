@@ -4,8 +4,8 @@
   <Platform>DesktopGL</Platform>
   <Config />
   <SourceFiles>
-    <File>E:/juegazo/Juegazo/Content/player_body.png</File>
-    <File>E:/juegazo/Juegazo/Content/player.png</File>
+    <File>/home/facundo/Documentos/proyecto-ayayay-ay/MarinMol/Content/player_body.png</File>
+    <File>/home/facundo/Documentos/proyecto-ayayay-ay/MarinMol/Content/player.png</File>
   </SourceFiles>
   <DestFiles>
     <File xsi:nil="true" />
