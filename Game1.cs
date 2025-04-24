@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using Juegazo;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 namespace MarinMol;
-
 public class Game1 : Game
 {
     private GraphicsDeviceManager _graphics;
@@ -17,16 +17,44 @@ public class Game1 : Game
     Player player;
     List<Sprite> sprites = new List<Sprite>();
     private KeyboardState prevState;
-    private float t;
+
+    private Dictionary<Vector2, int> tilemap;
+    private List<Rectangle> textureStore;
+    private Dictionary<Vector2, int> LoadMap(string filePath){
+        Dictionary<Vector2, int> result = new();
+        StreamReader reader = new(filePath);
+        string line;
+        int y = 0;
+        while((line = reader.ReadLine()) != null)
+        {
+            string[] parts = line.Split(',');
+            for(int x = 0; x < parts.Length; x++){
+                if(int.TryParse(parts[x], out int value)){
+                    if(value > 0){
+                        result[new Vector2(x, y)] = value;
+                    }
+                }
+            }
+            y++;
+        }
+        return result;
+    }
+    private Texture2D worldTexture;
     public Game1()
     {
         _graphics = new GraphicsDeviceManager(this);
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
+
+        tilemap = LoadMap("Data/data.csv"); //for some reason this works, but idk why, if it doesnt work for you, change it to ../../../Data/data.csv
+        textureStore = new();
+        //TODO: add all texture positions
+        for(int x = 0; x<13;x++){
+            textureStore.Add(new(8*x,0,8,8)); //change if texture grows at y axis, or change it
+        }
     }
 
-    protected override void Initialize()
-    {
+    protected override void Initialize() {
         // TODO: add new resolution
         _graphics.IsFullScreen = false;
         _graphics.PreferredBackBufferWidth = 1280;
@@ -35,8 +63,7 @@ public class Game1 : Game
         base.Initialize();
     }
 
-    protected override void LoadContent()
-    {
+    protected override void LoadContent() {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
         viewport = GraphicsDevice.Viewport;
 
@@ -45,21 +72,10 @@ public class Game1 : Game
         Vector2 position = new Vector2((viewport.Width-texture.Width*(scale-0.1f))/2, (viewport.Height-texture.Height*(scale-0.1f))/2);
 
         player = new Player(texture, position, scale, Color.White);
-
-        Vector2 objectLeft = new Vector2(texture.Width*scale, (viewport.Height-texture.Height*scale)/2);
-        Vector2 objectRight = new Vector2(viewport.Width-texture.Width*scale, (viewport.Height-texture.Height*scale)/2);
-        Vector2 fourthObject = new Vector2(position.X, viewport.Height/2+texture.Height*scale*2);
-        sprites = [
-            new Sprite(texture, objectLeft, scale, new Color(new Vector3(0.9f,0.3f,0.3f))),
-            new Sprite(texture, objectRight, scale, new Color(new Vector3(0.3f,0.3f,0.9f))),
-            new Sprite(texture, fourthObject, scale, new Color(new Vector3(0.5f,0.5f,0.5f))),
-            new Sprite(texture, new Vector2(viewport.Width/2, viewport.Height-texture.Height/2), 1, new Color(new Vector3(0.5f,0.5f,0.5f))),
-        ];
-   
+        worldTexture = Content.Load<Texture2D>("worldTexture");
     }
 
-    protected override void Update(GameTime gameTime)
-    {
+    protected override void Update(GameTime gameTime) {
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape)){
             Exit();
         }
@@ -70,10 +86,10 @@ public class Game1 : Game
         base.Update(gameTime);
     }
 
-    public float lerp(float a, float b, float t){
+    public float lerp(float a, float b, float t) {
         return a+(b-a)*t; // linear interpolation function, not really needed
     }
-    public float inverseLerp(float a, float b, float value){
+    public float inverseLerp(float a, float b, float value) {
         return (value-a)/(b-a);
     }
     public float mixedFunctions(float fr){ //smoothing thing (its really good i promise)
@@ -85,11 +101,18 @@ public class Game1 : Game
     protected override void Draw(GameTime gameTime)
     {
         GraphicsDevice.Clear(new Color(new Vector3(0.1f,0.1f,0.1f)));
-        _spriteBatch.Begin();
+        _spriteBatch.Begin(samplerState:SamplerState.PointClamp);
 
-        foreach (Sprite sprite in sprites)
+        foreach(var tile in tilemap)
         {
-            sprite.DrawSprite(_spriteBatch);
+            Rectangle destination = new Rectangle(
+            (int)(tile.Key.X*64),
+            (int)(tile.Key.Y*64),
+            64,
+            64
+            );
+            Rectangle soruceRectangle = textureStore[tile.Value-1];
+            _spriteBatch.Draw(worldTexture, destination, soruceRectangle, Color.White);
         }
         player.DrawSprite(_spriteBatch);
         _spriteBatch.End();

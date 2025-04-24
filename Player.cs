@@ -51,17 +51,21 @@ namespace Juegazo
             if(velocity.Y > 10){
                 velocity.Y = 10;
             }
+            if(position.Y >= viewport.Height-texture.Width*scale/2){
+                velocity.Y=0;
+            }
 
-            if(keyboardState.IsKeyDown(Keys.Up) && !prevState.IsKeyDown(Keys.Up) && onGround){ //WE BALL!!!!
-                velocity.Y = -5;
+            if(keyboardState.IsKeyDown(Keys.Up) && !prevState.IsKeyDown(Keys.Up)){ //WE BALL!!!!
+                velocity.Y = -8;
             } //TODO: add onGround functionality on foreach loop
 
+            
             position.Y += velocity.Y;
             foreach (Sprite sprite in sprites) {
                 if(sprite.rectangle.Intersects(rectangle)) {
                     position.Y -= velocity.Y;
                 }
-            }
+            }        
 
             //silly shit
             if(nervioso_la_nena && t < 1) {
