@@ -55,3 +55,4 @@ e:/juegazo/Juegazo/obj/Debug/net8.0/MarinMol.pdb
 E:/juegazo/Juegazo/obj/Debug/net8.0/MarinMol.genruntimeconfig.cache
 E:/juegazo/Juegazo/obj/Debug/net8.0/ref/MarinMol.dll
 /home/facundo/Documentos/proyecto-ayayay-ay/MarinMol/bin/Debug/net8.0/Content/worldTexture.xnb
+/home/facundo/Documentos/proyecto-ayayay-ay/MarinMol/bin/Debug/net8.0/Content/jugador.xnb

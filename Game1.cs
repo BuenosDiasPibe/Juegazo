@@ -15,30 +15,11 @@ public class Game1 : Game
     private Viewport viewport;
     private float scale = 0.3f;
     Player player;
-    List<Sprite> sprites = new List<Sprite>();
     private KeyboardState prevState;
 
-    private Dictionary<Vector2, int> tilemap;
+    
     private List<Rectangle> textureStore;
-    private Dictionary<Vector2, int> LoadMap(string filePath){
-        Dictionary<Vector2, int> result = new();
-        StreamReader reader = new(filePath);
-        string line;
-        int y = 0;
-        while((line = reader.ReadLine()) != null)
-        {
-            string[] parts = line.Split(',');
-            for(int x = 0; x < parts.Length; x++){
-                if(int.TryParse(parts[x], out int value)){
-                    if(value > 0){
-                        result[new Vector2(x, y)] = value;
-                    }
-                }
-            }
-            y++;
-        }
-        return result;
-    }
+
     private Texture2D worldTexture;
     public Game1()
     {
@@ -46,7 +27,6 @@ public class Game1 : Game
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
 
-        tilemap = LoadMap("Data/data.csv"); //for some reason this works, but idk why, if it doesnt work for you, change it to ../../../Data/data.csv
         textureStore = new();
         //TODO: add all texture positions
         for(int x = 0; x<13;x++){
@@ -79,7 +59,7 @@ public class Game1 : Game
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape)){
             Exit();
         }
-        player.Update(gameTime, Keyboard.GetState(), prevState, viewport, sprites);
+        player.Update(gameTime, Keyboard.GetState(), prevState, viewport);
         prevState = Keyboard.GetState();
         //TODO: add collision detection
         //Logic for moving the player
@@ -103,17 +83,6 @@ public class Game1 : Game
         GraphicsDevice.Clear(new Color(new Vector3(0.1f,0.1f,0.1f)));
         _spriteBatch.Begin(samplerState:SamplerState.PointClamp);
 
-        foreach(var tile in tilemap)
-        {
-            Rectangle destination = new Rectangle(
-            (int)(tile.Key.X*64),
-            (int)(tile.Key.Y*64),
-            64,
-            64
-            );
-            Rectangle soruceRectangle = textureStore[tile.Value-1];
-            _spriteBatch.Draw(worldTexture, destination, soruceRectangle, Color.White);
-        }
         player.DrawSprite(_spriteBatch);
         _spriteBatch.End();
         base.Draw(gameTime);

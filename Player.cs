@@ -27,7 +27,7 @@ namespace Juegazo
             velocity = new();
             onGround=true;
         }
-        public void Update(GameTime gameTime, KeyboardState keyboardState, KeyboardState prevState, Viewport viewport, List<Sprite> sprites)
+        public void Update(GameTime gameTime, KeyboardState keyboardState, KeyboardState prevState, Viewport viewport)
         {
             //TODO: add vertical velocity and gravity
             velocity.X = 0;
@@ -42,11 +42,6 @@ namespace Juegazo
                 nervioso_la_nena = true;
             }
             position.X += velocity.X;
-            foreach(Sprite sprite in sprites) {
-                if(sprite.rectangle.Intersects(rectangle)) {
-                    position.X -= velocity.X;
-                }
-            }
             velocity.Y += 0.2f;
             if(velocity.Y > 10){
                 velocity.Y = 10;
@@ -60,12 +55,7 @@ namespace Juegazo
             } //TODO: add onGround functionality on foreach loop
 
             
-            position.Y += velocity.Y;
-            foreach (Sprite sprite in sprites) {
-                if(sprite.rectangle.Intersects(rectangle)) {
-                    position.Y -= velocity.Y;
-                }
-            }        
+            position.Y += velocity.Y;   
 
             //silly shit
             if(nervioso_la_nena && t < 1) {
