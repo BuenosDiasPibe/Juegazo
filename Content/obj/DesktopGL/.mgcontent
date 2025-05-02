@@ -4,11 +4,13 @@
   <Platform>DesktopGL</Platform>
   <Config />
   <SourceFiles>
+    <File>/home/facundo/Documentos/proyecto-ayayay-ay/MarinMol/Content/jugador.png</File>
     <File>/home/facundo/Documentos/proyecto-ayayay-ay/MarinMol/Content/player_body.png</File>
     <File>/home/facundo/Documentos/proyecto-ayayay-ay/MarinMol/Content/player.png</File>
     <File>/home/facundo/Documentos/proyecto-ayayay-ay/MarinMol/Content/worldTexture.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

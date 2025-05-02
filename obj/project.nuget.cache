@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "2YM+6f1i9YaeRkqH/ry5TR9uBU+4aXrkrxKarbvfhcMK71FSPVtXj/6kxL33ItfJSaW8s4rv+/1KrzcRcKPDCg==",
+  "dgSpecHash": "4WV107DrkbY=",
   "success": true,
   "projectFilePath": "/home/facundo/Documentos/proyecto-ayayay-ay/MarinMol/MarinMol.csproj",
   "expectedPackageFiles": [
@@ -9,8 +9,7 @@
     "/home/facundo/.nuget/packages/monogame.library.sdl/2.26.5.5/monogame.library.sdl.2.26.5.5.nupkg.sha512",
     "/home/facundo/.nuget/packages/nvorbis/0.10.4/nvorbis.0.10.4.nupkg.sha512",
     "/home/facundo/.nuget/packages/system.memory/4.5.3/system.memory.4.5.3.nupkg.sha512",
-    "/home/facundo/.nuget/packages/system.valuetuple/4.5.0/system.valuetuple.4.5.0.nupkg.sha512",
-    "/home/facundo/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.14/microsoft.aspnetcore.app.ref.8.0.14.nupkg.sha512"
+    "/home/facundo/.nuget/packages/system.valuetuple/4.5.0/system.valuetuple.4.5.0.nupkg.sha512"
   ],
   "logs": []
 }

@@ -16,22 +16,12 @@ public class Game1 : Game
     private float scale = 0.3f;
     Player player;
     private KeyboardState prevState;
-
-    
-    private List<Rectangle> textureStore;
-
-    private Texture2D worldTexture;
+    private TileMaps tilemaps;
     public Game1()
     {
         _graphics = new GraphicsDeviceManager(this);
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
-
-        textureStore = new();
-        //TODO: add all texture positions
-        for(int x = 0; x<13;x++){
-            textureStore.Add(new(8*x,0,8,8)); //change if texture grows at y axis, or change it
-        }
     }
 
     protected override void Initialize() {
@@ -50,9 +40,12 @@ public class Game1 : Game
         //TODO: create player class
         Texture2D texture = Content.Load<Texture2D>("player_body");
         Vector2 position = new Vector2((viewport.Width-texture.Width*(scale-0.1f))/2, (viewport.Height-texture.Height*(scale-0.1f))/2);
-
         player = new Player(texture, position, scale, Color.White);
-        worldTexture = Content.Load<Texture2D>("worldTexture");
+
+        Texture2D worldTexture = Content.Load<Texture2D>("worldTexture");
+        tilemaps = new TileMaps(worldTexture, 64, 8);
+        //tilemaps.tilemap = tilemaps.LoadMap("Data/datas_Collision.csv");
+        tilemaps.tilemap = tilemaps.LoadMap("Data/datas.csv");
     }
 
     protected override void Update(GameTime gameTime) {
@@ -83,7 +76,9 @@ public class Game1 : Game
         GraphicsDevice.Clear(new Color(new Vector3(0.1f,0.1f,0.1f)));
         _spriteBatch.Begin(samplerState:SamplerState.PointClamp);
 
+        tilemaps.Draw(_spriteBatch);
         player.DrawSprite(_spriteBatch);
+
         _spriteBatch.End();
         base.Draw(gameTime);
     }

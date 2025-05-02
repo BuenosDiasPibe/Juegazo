@@ -1,2 +1,5 @@
 Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
-"/home/facundo/Documentos/proyecto-ayayay-ay/MarinMol/Content/jugador.png","/home/facundo/Documentos/proyecto-ayayay-ay/MarinMol/Content/bin/DesktopGL/jugador.xnb","TextureProcessor","Texture2DContent",11962,65621,0,7172307
+"/home/facundo/Documentos/proyecto-ayayay-ay/MarinMol/Content/jugador.png","/home/facundo/Documentos/proyecto-ayayay-ay/MarinMol/Content/bin/DesktopGL/jugador.xnb","TextureProcessor","Texture2DContent",29737,65621,0,6720893
+"/home/facundo/Documentos/proyecto-ayayay-ay/MarinMol/Content/player_body.png","/home/facundo/Documentos/proyecto-ayayay-ay/MarinMol/Content/bin/DesktopGL/player_body.xnb","TextureProcessor","Texture2DContent",790,160085,0,150805
+"/home/facundo/Documentos/proyecto-ayayay-ay/MarinMol/Content/player.png","/home/facundo/Documentos/proyecto-ayayay-ay/MarinMol/Content/bin/DesktopGL/player.xnb","TextureProcessor","Texture2DContent",9049,160085,0,3940117
+"/home/facundo/Documentos/proyecto-ayayay-ay/MarinMol/Content/worldTexture.png","/home/facundo/Documentos/proyecto-ayayay-ay/MarinMol/Content/bin/DesktopGL/worldTexture.xnb","TextureProcessor","Texture2DContent",9182,32853,0,0554585

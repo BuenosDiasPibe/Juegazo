@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <SourceFile>/home/facundo/Documentos/proyecto-ayayay-ay/MarinMol/Content/jugador.png</SourceFile>
-  <SourceTime>2025-04-24T19:20:55.6439874-03:00</SourceTime>
+  <SourceTime>2025-04-24T19:48:06.6473688-03:00</SourceTime>
   <DestFile>/home/facundo/Documentos/proyecto-ayayay-ay/MarinMol/Content/bin/DesktopGL/jugador.xnb</DestFile>
-  <DestTime>2025-04-24T19:21:20.2706547-03:00</DestTime>
+  <DestTime>2025-05-02T19:45:12.2043838-03:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2024-08-16T14:05:56-03:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

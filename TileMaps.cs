@@ -10,15 +10,21 @@ namespace MarinMol
 {
     public class TileMaps
     {
-        private Dictionary<Vector2, int> tilemap;
-        private List<Rectangle> textureStore;
+        public Dictionary<Vector2, int> tilemap {get;set;} //TODO: add abstraction to make lots of layer tilemap
+        private List<Rectangle> sourceRectangles;
+        private List<Rectangle> destinationRectangles;
         private Texture2D texture;
-        TileMaps(Dictionary<Vector2, int> tilemap, List<Rectangle> textureStore, Texture2D texture) {
-            this.tilemap = tilemap;
-            this.textureStore = textureStore;
+        private int scaleTexture;
+        private int pixelSize;
+        public TileMaps(Texture2D texture, int scaleTexture, int pixelSize) {
             this.texture = texture;
+            this.scaleTexture = scaleTexture;
+            this.pixelSize = pixelSize;
+            tilemap = new();
+            sourceRectangles = new();
+            destinationRectangles = new();
         }
-        private Dictionary<Vector2, int> LoadMap(string filePath){
+        public Dictionary<Vector2, int> LoadMap(string filePath){
             Dictionary<Vector2, int> result = new();
             StreamReader reader = new(filePath);
             string line;
@@ -28,7 +34,7 @@ namespace MarinMol
                 string[] parts = line.Split(',');
                 for(int x = 0; x < parts.Length; x++){
                     if(int.TryParse(parts[x], out int value)){
-                        if(value > 0){
+                        if(value > -1){
                             result[new Vector2(x, y)] = value;
                         }
                     }
@@ -37,19 +43,33 @@ namespace MarinMol
             }
             return result;
         }
-
-        public void Draw(SpriteBatch spriteBatch, int scale) {
-            foreach(var tile in tilemap)
-            {
-                Rectangle destination = new Rectangle(
-                    (int)(tile.Key.X*scale),
-                    (int)(tile.Key.Y*scale),
-                    scale,
-                    scale
-                );
-                Rectangle soruceRectangle = textureStore[tile.Value-1];
-                spriteBatch.Draw(texture, destination, soruceRectangle, Color.White);
+        public void BuildRectangles(KeyValuePair<Vector2, int> item) {
+            
+            destinationRectangles.Add(new Rectangle(
+                (int)item.Key.X*scaleTexture,
+                (int)item.Key.Y*scaleTexture,
+                scaleTexture,
+                scaleTexture
+            ));
+            int x = item.Value % pixelSize;
+            int y = item.Value / pixelSize;
+            if(item.Value==19) {
+                Console.WriteLine(x*pixelSize + " " + y*pixelSize);
+            }
+            sourceRectangles.Add(new Rectangle(
+                x*pixelSize,
+                y*pixelSize,
+                pixelSize,
+                pixelSize
+            ));
         }
+        //TODO: add update collision method
+
+        public void Draw(SpriteBatch spriteBatch) {
+            for(int i = 0; i < tilemap.Count(); i++) {
+                BuildRectangles(tilemap.ElementAt(i));
+                spriteBatch.Draw(texture, destinationRectangles.ElementAt(i),sourceRectangles.ElementAt(i), Color.White);
+            }
         }
     }
 }
