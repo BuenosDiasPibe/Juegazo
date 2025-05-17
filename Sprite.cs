@@ -10,28 +10,15 @@ namespace Juegazo
     public class Sprite
     {
         public Texture2D texture;
-        public Vector2 position;
-        public float scale;
         public Color color;
-        public Rectangle rectangle
-        {
-            get
-            {
-                return new Rectangle(
-                    (int)(position.X - texture.Width * scale / 2),
-                    (int)(position.Y - texture.Height * scale / 2),
-                    (int)(texture.Width * scale),
-                    (int)(texture.Height * scale)
-                );
-            }
-            set{rectangle =value;}
-        }
-        public Sprite(Texture2D texture, Vector2 position, float scale, Color color)
+        public Rectangle Destrectangle;
+        public Rectangle sourceRectangle;
+        public Sprite(Texture2D texture,Rectangle sourceRectangle, Rectangle Destrectangle, Color color)
         {
             this.texture = texture;
             this.position = position;
-            this.scale = scale;
             this.color = color;
+            this.
         }
 
         public void Update(GameTime gameTime)
