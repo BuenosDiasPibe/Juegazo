@@ -4,12 +4,14 @@
   <Platform>DesktopGL</Platform>
   <Config />
   <SourceFiles>
-    <File>/home/facundo/Documentos/proyecto-ayayay-ay/MarinMol/Content/jugador.png</File>
-    <File>/home/facundo/Documentos/proyecto-ayayay-ay/MarinMol/Content/player_body.png</File>
-    <File>/home/facundo/Documentos/proyecto-ayayay-ay/MarinMol/Content/player.png</File>
-    <File>/home/facundo/Documentos/proyecto-ayayay-ay/MarinMol/Content/worldTexture.png</File>
+    <File>e:/juegazo/Juegazo/Content/jugador.png</File>
+    <File>e:/juegazo/Juegazo/Content/player_body.png</File>
+    <File>e:/juegazo/Juegazo/Content/player.png</File>
+    <File>e:/juegazo/Juegazo/Content/playerr.png</File>
+    <File>e:/juegazo/Juegazo/Content/worldTexture.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

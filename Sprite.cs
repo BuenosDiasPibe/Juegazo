@@ -16,9 +16,9 @@ namespace Juegazo
         public Sprite(Texture2D texture,Rectangle sourceRectangle, Rectangle Destrectangle, Color color)
         {
             this.texture = texture;
-            this.position = position;
+            this.sourceRectangle = sourceRectangle;
+            this.Destrectangle = Destrectangle;
             this.color = color;
-            this.
         }
 
         public void Update(GameTime gameTime)
@@ -28,7 +28,7 @@ namespace Juegazo
 
         public void DrawSprite(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, position, null, color, 0f, new Vector2(texture.Width / 2, texture.Height / 2), scale, SpriteEffects.None, 0f);
+            spriteBatch.Draw(texture, Destrectangle, sourceRectangle, color);
         }
     }
 }

@@ -1,1 +1,6 @@
 Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
+"e:/juegazo/Juegazo/Content/jugador.png","e:/juegazo/Juegazo/Content/bin/DesktopGL/Content/jugador.xnb","TextureProcessor","Texture2DContent",29737,65621,0.1866049
+"e:/juegazo/Juegazo/Content/player_body.png","e:/juegazo/Juegazo/Content/bin/DesktopGL/Content/player_body.xnb","TextureProcessor","Texture2DContent",790,160085,0.0337829
+"e:/juegazo/Juegazo/Content/player.png","e:/juegazo/Juegazo/Content/bin/DesktopGL/Content/player.xnb","TextureProcessor","Texture2DContent",9049,160085,0.0408121
+"e:/juegazo/Juegazo/Content/playerr.png","e:/juegazo/Juegazo/Content/bin/DesktopGL/Content/playerr.xnb","TextureProcessor","Texture2DContent",112,341,0.1475992
+"e:/juegazo/Juegazo/Content/worldTexture.png","e:/juegazo/Juegazo/Content/bin/DesktopGL/Content/worldTexture.xnb","TextureProcessor","Texture2DContent",9182,32853,0.010185
