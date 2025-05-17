@@ -1,6 +1,6 @@
 Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
-"e:/juegazo/Juegazo/Content/jugador.png","e:/juegazo/Juegazo/Content/bin/DesktopGL/jugador.xnb","TextureProcessor","Texture2DContent",29737,65621,0.1559989
-"e:/juegazo/Juegazo/Content/player_body.png","e:/juegazo/Juegazo/Content/bin/DesktopGL/player_body.xnb","TextureProcessor","Texture2DContent",790,160085,0.0154842
-"e:/juegazo/Juegazo/Content/player.png","e:/juegazo/Juegazo/Content/bin/DesktopGL/player.xnb","TextureProcessor","Texture2DContent",9049,160085,0.014793
-"e:/juegazo/Juegazo/Content/playerr.png","e:/juegazo/Juegazo/Content/bin/DesktopGL/playerr.xnb","TextureProcessor","Texture2DContent",112,341,0.0032505
-"e:/juegazo/Juegazo/Content/worldTexture.png","e:/juegazo/Juegazo/Content/bin/DesktopGL/worldTexture.xnb","TextureProcessor","Texture2DContent",9182,32853,0.0136619
+"/home/clumpl/Documentos/Programacion/Juegazo/Content/jugador.png","/home/clumpl/Documentos/Programacion/Juegazo/Content/bin/DesktopGL/jugador.xnb","TextureProcessor","Texture2DContent",29737,65621,0,5821384
+"/home/clumpl/Documentos/Programacion/Juegazo/Content/player_body.png","/home/clumpl/Documentos/Programacion/Juegazo/Content/bin/DesktopGL/player_body.xnb","TextureProcessor","Texture2DContent",790,160085,0,0749371
+"/home/clumpl/Documentos/Programacion/Juegazo/Content/player.png","/home/clumpl/Documentos/Programacion/Juegazo/Content/bin/DesktopGL/player.xnb","TextureProcessor","Texture2DContent",9049,160085,0,0577677
+"/home/clumpl/Documentos/Programacion/Juegazo/Content/playerr.png","/home/clumpl/Documentos/Programacion/Juegazo/Content/bin/DesktopGL/playerr.xnb","TextureProcessor","Texture2DContent",100,341,0,0053833
+"/home/clumpl/Documentos/Programacion/Juegazo/Content/worldTexture.png","/home/clumpl/Documentos/Programacion/Juegazo/Content/bin/DesktopGL/worldTexture.xnb","TextureProcessor","Texture2DContent",9182,32853,0,0104939
