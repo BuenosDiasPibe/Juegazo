@@ -9,7 +9,8 @@ using Microsoft.Xna.Framework.Input;
 
 namespace MarinMol;
 
-public class Game1 : Game {
+public class Game1 : Game
+{
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
     private Viewport viewport;
@@ -18,14 +19,17 @@ public class Game1 : Game {
     private KeyboardState prevState;
     private TileMaps tilemaps;
     private List<Rectangle> intersections;
-    public List<Rectangle> getIntersectingTilesHorizontal(Rectangle target) { //esto deberia estar en su propia clase, probablemente
+    public List<Rectangle> getIntersectingTilesHorizontal(Rectangle target)
+    { //esto deberia estar en su propia clase, probablemente
         List<Rectangle> intersections = new();
 
         int widthInTiles = (target.Width - (target.Width % TILESIZE)) / TILESIZE;
         int heightInTiles = (target.Height - (target.Height % TILESIZE)) / TILESIZE;
 
-        for (int x = 0; x <= widthInTiles; x++) {
-            for (int y = 0; y <= heightInTiles; y++) {
+        for (int x = 0; x <= widthInTiles; x++)
+        {
+            for (int y = 0; y <= heightInTiles; y++)
+            {
                 intersections.Add(new Rectangle(
                     (target.X + x * TILESIZE) / TILESIZE,
                     (target.Y + y * (TILESIZE - 1)) / TILESIZE,
@@ -36,14 +40,17 @@ public class Game1 : Game {
         }
         return intersections;
     }
-    public List<Rectangle> getIntersectingTilesVertical(Rectangle target) { //esto deberia estar en su propia clase, probablemente
+    public List<Rectangle> getIntersectingTilesVertical(Rectangle target)
+    { //esto deberia estar en su propia clase, probablemente
         List<Rectangle> intersections = new();
 
         int widthInTiles = (target.Width - (target.Width % TILESIZE)) / TILESIZE;
         int heightInTiles = (target.Height - (target.Height % TILESIZE)) / TILESIZE;
 
-        for (int x = 0; x <= widthInTiles; x++) {
-            for (int y = 0; y <= heightInTiles; y++) {
+        for (int x = 0; x <= widthInTiles; x++)
+        {
+            for (int y = 0; y <= heightInTiles; y++)
+            {
                 intersections.Add(new Rectangle(
                     (target.X + x * (TILESIZE - 1)) / TILESIZE,
                     (target.Y + y * TILESIZE) / TILESIZE,
@@ -54,13 +61,15 @@ public class Game1 : Game {
         }
         return intersections;
     }
-    public Game1() {
+    public Game1()
+    {
         _graphics = new GraphicsDeviceManager(this);
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
     }
 
-    protected override void Initialize() {
+    protected override void Initialize()
+    {
         // TODO: add new resolution
         _graphics.IsFullScreen = false;
         _graphics.PreferredBackBufferWidth = 1280;
@@ -69,7 +78,8 @@ public class Game1 : Game {
         base.Initialize();
     }
 
-    protected override void LoadContent() {
+    protected override void LoadContent()
+    {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
         viewport = GraphicsDevice.Viewport;
 
@@ -87,8 +97,9 @@ public class Game1 : Game {
         tilemaps.tilemap = tilemaps.LoadMap("Data/datas.csv"); // cambiar a ../../../Data/datas.csv si causa algun error
     }
 
-    protected override void Update(GameTime gameTime) {
-        if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape)){Exit();}
+    protected override void Update(GameTime gameTime)
+    {
+        if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape)) { Exit(); }
 
         //deberia pasar todo esto a una clase que maneje todas las colisiones, pero ni idea como manejar eso
         player.Update(gameTime, Keyboard.GetState(), prevState, viewport);
@@ -97,7 +108,8 @@ public class Game1 : Game {
         intersections = getIntersectingTilesHorizontal(player.Destrectangle);
         player.onGround = false;
 
-        foreach (var rect in intersections) {
+        foreach (var rect in intersections)
+        {
             if (tilemaps.tilemap.TryGetValue(new Vector2(rect.X, rect.Y), out int _val))
             {
                 Rectangle collision = new(
@@ -111,12 +123,13 @@ public class Game1 : Game {
                 {
                     player.Destrectangle.X = collision.Left - player.Destrectangle.Width;
                     player.onGround = true; //puede saltar por las paredes
+                    if (player.numJumps > 1) player.pushBack = -20;
                 }
                 else if (player.velocity.X < 0.0f)
                 {
                     player.Destrectangle.X = collision.Right;
                     player.onGround = true; //puede saltar por las paredes
-                    //añadir condicion para numJump, para enviar al jugador a la direccion opuesta a la que intenta saltar
+                    if (player.numJumps > 1) player.pushBack = 20;
                 }
             }
         }
@@ -154,7 +167,8 @@ public class Game1 : Game {
         base.Update(gameTime);
     }
 
-    protected override void Draw(GameTime gameTime) {
+    protected override void Draw(GameTime gameTime)
+    {
         GraphicsDevice.Clear(new Color(new Vector3(0.1176f, 0.1176f, 0.18039f)));
         _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
 

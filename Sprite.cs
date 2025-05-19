@@ -13,7 +13,7 @@ namespace Juegazo
         public Color color;
         public Rectangle Destrectangle;
         public Rectangle sourceRectangle;
-        public Sprite(Texture2D texture,Rectangle sourceRectangle, Rectangle Destrectangle, Color color)
+        public Sprite(Texture2D texture, Rectangle sourceRectangle, Rectangle Destrectangle, Color color)
         {
             this.texture = texture;
             this.sourceRectangle = sourceRectangle;
