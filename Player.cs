@@ -15,6 +15,8 @@ namespace Juegazo
         public bool onGround {get;set;}
         private Color colorChange;
         private Color prevColor;
+        public int sprint;
+        public int numJumps;
 
         public Player(Texture2D texture, Rectangle sourceRectangle, Rectangle Destrectangle, Color color) : base(texture, sourceRectangle, Destrectangle, color)
         {
@@ -22,6 +24,8 @@ namespace Juegazo
             onGround = true;
             colorChange = Color.Aqua;
             prevColor = color;
+            sprint = 0;
+            numJumps = 0;
         }
 
         public void Update(GameTime gameTime, KeyboardState keyboardState, KeyboardState prevState, Viewport viewport)
@@ -30,34 +34,35 @@ namespace Juegazo
             velocity.Y += 0.6f;
             velocity.Y = Math.Min(20, velocity.Y);
 
-            if (keyboardState.IsKeyDown(Keys.A) || keyboardState.IsKeyDown(Keys.Left))
-            {
-                velocity.X = -10;
-            }
-            if (keyboardState.IsKeyDown(Keys.D) || keyboardState.IsKeyDown(Keys.Right))
-            {
-                velocity.X = 10;
-            }
-            if (keyboardState.IsKeyDown(Keys.Up) && !prevState.IsKeyDown(Keys.Up))
+            if (keyboardState.IsKeyDown(Keys.A) | keyboardState.IsKeyDown(Keys.Left)) velocity.X = -10;
+            if (keyboardState.IsKeyDown(Keys.D) | keyboardState.IsKeyDown(Keys.Right)) velocity.X = 10;
+            if (onGround & keyboardState.IsKeyDown(Keys.Up) & !prevState.IsKeyDown(Keys.Up))
             {
                 velocity.Y = -10;
-                onGround = false;
+                numJumps += 1;
             }
-            if (keyboardState.IsKeyDown(Keys.W) && !prevState.IsKeyDown(Keys.W))
+            if (onGround & keyboardState.IsKeyDown(Keys.W) & !prevState.IsKeyDown(Keys.W))
             {
                 velocity.Y = -10;
-                onGround = false;
+                numJumps += 1;
             }
-            if (keyboardState.IsKeyDown(Keys.S) || keyboardState.IsKeyDown(Keys.Down))
+            if (keyboardState.IsKeyDown(Keys.S) | keyboardState.IsKeyDown(Keys.Down)) velocity.Y += 10;
+            // quizas cambiar el dash para hacer que solo funcione con un boton y determinar la direccion a la que debe enviar al jugador, depende de como me levante mañana
+            if (keyboardState.IsKeyDown(Keys.B) & !prevState.IsKeyDown(Keys.B)) sprint = -30;
+            if (keyboardState.IsKeyDown(Keys.M) & !prevState.IsKeyDown(Keys.M)) sprint = 30;
+            if (keyboardState.IsKeyDown(Keys.T) & !prevState.IsKeyDown(Keys.T)) velocity.Y = -10;
+
+            if (sprint != 0) //idk how to make it look better, but it works!
             {
-                velocity.Y += 10;
-            }
-            if (keyboardState.IsKeyDown(Keys.B) & !prevState.IsKeyDown(Keys.B))
-            {
-                velocity.X = -300;
-            }
-            if (keyboardState.IsKeyDown(Keys.M) & !prevState.IsKeyDown(Keys.M)) {
-                velocity.X = 300;
+                velocity.X += sprint;
+                if (sprint < 0)
+                {
+                    sprint++;
+                }
+                else if (sprint > 0)
+                {
+                    sprint--;
+                }
             }
         }
     }

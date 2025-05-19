@@ -13,11 +13,10 @@ public class Game1 : Game {
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
     private Viewport viewport;
-    private const int TILESIZE = 60;
+    private const int TILESIZE = 64;
     private Player player;
     private KeyboardState prevState;
     private TileMaps tilemaps;
-    private Texture2D rectangleTexture;
     private List<Rectangle> intersections;
     public List<Rectangle> getIntersectingTilesHorizontal(Rectangle target) { //esto deberia estar en su propia clase, probablemente
         List<Rectangle> intersections = new();
@@ -78,12 +77,10 @@ public class Game1 : Game {
 
         Texture2D worldTexture = Content.Load<Texture2D>("worldTexture");
         tilemaps = new TileMaps(worldTexture, TILESIZE, 8);
-        rectangleTexture = new Texture2D(GraphicsDevice, 1, 1);
-        rectangleTexture.SetData(new Color[] { new(255, 0, 0, 255) });
 
         player = new Player(
             Content.Load<Texture2D>("playerr"),
-            new Rectangle(TILESIZE, TILESIZE, TILESIZE, TILESIZE),
+            new Rectangle(TILESIZE, TILESIZE, TILESIZE, TILESIZE), //donde aparece el jugador
             new Rectangle(0, 0, TILESIZE, TILESIZE),
             Color.White
         );
@@ -98,10 +95,11 @@ public class Game1 : Game {
 
         player.Destrectangle.X += (int)player.velocity.X;
         intersections = getIntersectingTilesHorizontal(player.Destrectangle);
+        player.onGround = false;
 
         foreach (var rect in intersections) {
-            if (tilemaps.tilemap.TryGetValue(new Vector2(rect.X, rect.Y), out int _val)) {
-
+            if (tilemaps.tilemap.TryGetValue(new Vector2(rect.X, rect.Y), out int _val))
+            {
                 Rectangle collision = new(
                     rect.X * TILESIZE,
                     rect.Y * TILESIZE,
@@ -109,24 +107,28 @@ public class Game1 : Game {
                     TILESIZE
                 );
 
-                if (player.velocity.X > 0.0f) {
+                if (player.velocity.X > 0.0f)
+                {
                     player.Destrectangle.X = collision.Left - player.Destrectangle.Width;
+                    player.onGround = true; //puede saltar por las paredes
                 }
-                else if (player.velocity.X < 0.0f) {
+                else if (player.velocity.X < 0.0f)
+                {
                     player.Destrectangle.X = collision.Right;
+                    player.onGround = true; //puede saltar por las paredes
+                    //añadir condicion para numJump, para enviar al jugador a la direccion opuesta a la que intenta saltar
                 }
-
             }
-
         }
 
         player.Destrectangle.Y += (int)player.velocity.Y;
         intersections = getIntersectingTilesVertical(player.Destrectangle);
 
-        foreach (var rect in intersections) {
+        foreach (var rect in intersections)
+        {
 
-            if (tilemaps.tilemap.TryGetValue(new Vector2(rect.X, rect.Y), out int _val)) {
-
+            if (tilemaps.tilemap.TryGetValue(new Vector2(rect.X, rect.Y), out int _val))
+            {
                 Rectangle collision = new Rectangle(
                     rect.X * TILESIZE,
                     rect.Y * TILESIZE,
@@ -134,15 +136,18 @@ public class Game1 : Game {
                     TILESIZE
                 );
 
-                if (player.velocity.Y > 0.0f) {
+                if (player.velocity.Y > 0.0f)
+                {
                     player.Destrectangle.Y = collision.Top - player.Destrectangle.Height;
                     player.velocity.Y = 1f;
                     player.onGround = true;
                 }
-                else if (player.velocity.Y < 0.0f) {
+                else if (player.velocity.Y < 0.0f)
+                {
                     player.velocity.Y *= 0.1f;
                     player.Destrectangle.Y = collision.Bottom;
                 }
+                player.numJumps = 0;
             }
         }
         prevState = Keyboard.GetState();
@@ -156,63 +161,7 @@ public class Game1 : Game {
         tilemaps.Draw(_spriteBatch);
         player.DrawSprite(_spriteBatch);
 
-        // foreach (var rect in intersections) {
-        //     DrawRectHollow(
-        //         _spriteBatch,
-        //         new Rectangle(
-        //             rect.X * TILESIZE,
-        //             rect.Y * TILESIZE,
-        //             TILESIZE,
-        //             TILESIZE
-        //         ),
-        //         4
-        //     );
-        // }
-
         _spriteBatch.End();
         base.Draw(gameTime);
-    }
-
-    public void DrawRectHollow(SpriteBatch spriteBatch, Rectangle rect, int thickness) {
-        spriteBatch.Draw(
-            rectangleTexture,
-            new Rectangle(
-                rect.X,
-                rect.Y,
-                rect.Width,
-                thickness
-            ),
-            Color.White
-        );
-        spriteBatch.Draw(
-            rectangleTexture,
-            new Rectangle(
-                rect.X,
-                rect.Bottom - thickness,
-                rect.Width,
-                thickness
-            ),
-            Color.White
-        );
-        spriteBatch.Draw(
-            rectangleTexture,
-            new Rectangle(
-                rect.X,
-                rect.Y,
-                thickness,
-                rect.Height
-            ),
-            Color.White
-        );
-        spriteBatch.Draw(
-            rectangleTexture,
-            new Rectangle(
-                rect.Right - thickness,
-                rect.Y,
-                thickness,
-                rect.Height
-            ),
-            Color.White
-        );
     }
 }
