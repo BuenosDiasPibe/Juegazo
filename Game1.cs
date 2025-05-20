@@ -17,50 +17,7 @@ public class Game1 : Game
     private const int TILESIZE = 64;
     private Player player;
     private KeyboardState prevState;
-    private TileMaps tilemaps;
-    private List<Rectangle> intersections;
-    public List<Rectangle> getIntersectingTilesHorizontal(Rectangle target)
-    { //esto deberia estar en su propia clase, probablemente
-        List<Rectangle> intersections = new();
-
-        int widthInTiles = (target.Width - (target.Width % TILESIZE)) / TILESIZE;
-        int heightInTiles = (target.Height - (target.Height % TILESIZE)) / TILESIZE;
-
-        for (int x = 0; x <= widthInTiles; x++)
-        {
-            for (int y = 0; y <= heightInTiles; y++)
-            {
-                intersections.Add(new Rectangle(
-                    (target.X + x * TILESIZE) / TILESIZE,
-                    (target.Y + y * (TILESIZE - 1)) / TILESIZE,
-                    TILESIZE,
-                    TILESIZE
-                ));
-            }
-        }
-        return intersections;
-    }
-    public List<Rectangle> getIntersectingTilesVertical(Rectangle target)
-    { //esto deberia estar en su propia clase, probablemente
-        List<Rectangle> intersections = new();
-
-        int widthInTiles = (target.Width - (target.Width % TILESIZE)) / TILESIZE;
-        int heightInTiles = (target.Height - (target.Height % TILESIZE)) / TILESIZE;
-
-        for (int x = 0; x <= widthInTiles; x++)
-        {
-            for (int y = 0; y <= heightInTiles; y++)
-            {
-                intersections.Add(new Rectangle(
-                    (target.X + x * (TILESIZE - 1)) / TILESIZE,
-                    (target.Y + y * TILESIZE) / TILESIZE,
-                    TILESIZE,
-                    TILESIZE
-                ));
-            }
-        }
-        return intersections;
-    }
+    private HitboxTilemaps tilemaps;
     public Game1()
     {
         _graphics = new GraphicsDeviceManager(this);
@@ -83,14 +40,12 @@ public class Game1 : Game
         _spriteBatch = new SpriteBatch(GraphicsDevice);
         viewport = GraphicsDevice.Viewport;
 
-        //TODO: create player class
-
         Texture2D worldTexture = Content.Load<Texture2D>("worldTexture");
-        tilemaps = new TileMaps(worldTexture, TILESIZE, 8);
+        tilemaps = new HitboxTilemaps(worldTexture, TILESIZE, 8);
 
         player = new Player(
             Content.Load<Texture2D>("playerr"),
-            new Rectangle(TILESIZE, TILESIZE, TILESIZE, TILESIZE), //donde aparece el jugador
+            new Rectangle(TILESIZE, TILESIZE * 10, TILESIZE, TILESIZE), //donde aparece el jugador
             new Rectangle(0, 0, TILESIZE, TILESIZE),
             Color.White
         );
@@ -101,75 +56,17 @@ public class Game1 : Game
     {
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape)) { Exit(); }
 
-        //deberia pasar todo esto a una clase que maneje todas las colisiones, pero ni idea como manejar eso
         player.Update(gameTime, Keyboard.GetState(), prevState, viewport);
+        tilemaps.Update(player, TILESIZE);
 
-        player.Destrectangle.X += (int)player.velocity.X;
-        intersections = getIntersectingTilesHorizontal(player.Destrectangle);
-        player.onGround = false;
-
-        foreach (var rect in intersections)
-        {
-            if (tilemaps.tilemap.TryGetValue(new Vector2(rect.X, rect.Y), out int _val))
-            {
-                Rectangle collision = new(
-                    rect.X * TILESIZE,
-                    rect.Y * TILESIZE,
-                    TILESIZE,
-                    TILESIZE
-                );
-
-                if (player.velocity.X > 0.0f)
-                {
-                    player.Destrectangle.X = collision.Left - player.Destrectangle.Width;
-                    player.onGround = true; //puede saltar por las paredes
-                    if (player.numJumps > 1) player.pushBack = -20;
-                }
-                else if (player.velocity.X < 0.0f)
-                {
-                    player.Destrectangle.X = collision.Right;
-                    player.onGround = true; //puede saltar por las paredes
-                    if (player.numJumps > 1) player.pushBack = 20;
-                }
-            }
-        }
-
-        player.Destrectangle.Y += (int)player.velocity.Y;
-        intersections = getIntersectingTilesVertical(player.Destrectangle);
-
-        foreach (var rect in intersections)
-        {
-
-            if (tilemaps.tilemap.TryGetValue(new Vector2(rect.X, rect.Y), out int _val))
-            {
-                Rectangle collision = new Rectangle(
-                    rect.X * TILESIZE,
-                    rect.Y * TILESIZE,
-                    TILESIZE,
-                    TILESIZE
-                );
-
-                if (player.velocity.Y > 0.0f)
-                {
-                    player.Destrectangle.Y = collision.Top - player.Destrectangle.Height;
-                    player.velocity.Y = 1f;
-                    player.onGround = true;
-                }
-                else if (player.velocity.Y < 0.0f)
-                {
-                    player.velocity.Y *= 0.1f;
-                    player.Destrectangle.Y = collision.Bottom;
-                }
-                player.numJumps = 0;
-            }
-        }
         prevState = Keyboard.GetState();
+
         base.Update(gameTime);
     }
 
     protected override void Draw(GameTime gameTime)
     {
-        GraphicsDevice.Clear(new Color(new Vector3(0.1176f, 0.1176f, 0.18039f)));
+        GraphicsDevice.Clear(Color.Black);
         _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
 
         tilemaps.Draw(_spriteBatch);

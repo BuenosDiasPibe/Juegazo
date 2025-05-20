@@ -18,6 +18,7 @@ namespace Juegazo
         public int sprint;
         public int numJumps { get; set; }
         public int pushBack;
+        public bool jumpPressed;
 
         public Player(Texture2D texture, Rectangle sourceRectangle, Rectangle Destrectangle, Color color) : base(texture, sourceRectangle, Destrectangle, color)
         {
@@ -44,18 +45,20 @@ namespace Juegazo
                 velocity.X = 10;
 
             // Jumping
-            bool jumpPressed = (keyboardState.IsKeyDown(Keys.Up) && !prevState.IsKeyDown(Keys.Up)) ||
-                               (keyboardState.IsKeyDown(Keys.W) && !prevState.IsKeyDown(Keys.W)) ||
-                               (keyboardState.IsKeyDown(Keys.T) && !prevState.IsKeyDown(Keys.T));
+            jumpPressed = (keyboardState.IsKeyDown(Keys.Up) && !prevState.IsKeyDown(Keys.Up)) ||
+                               (keyboardState.IsKeyDown(Keys.W) && !prevState.IsKeyDown(Keys.W));
             if (onGround && jumpPressed)
             {
-                velocity.Y = -10;
+                velocity.Y = -15;
                 numJumps++;
+            }
+            if (keyboardState.IsKeyDown(Keys.T) && !prevState.IsKeyDown(Keys.T))
+            {
+                velocity.Y = -15;
             }
 
             // Fast fall
-            if (keyboardState.IsKeyDown(Keys.S) || keyboardState.IsKeyDown(Keys.Down))
-                velocity.Y += 10;
+                if (keyboardState.IsKeyDown(Keys.S) || keyboardState.IsKeyDown(Keys.Down)) velocity.Y += 10;
 
             // Dash (sprint)
             if (keyboardState.IsKeyDown(Keys.B) && !prevState.IsKeyDown(Keys.B))

@@ -10,13 +10,13 @@ namespace MarinMol
 {
     public class TileMaps
     {
-        public string nombreTile { get; }
+        public string nombreTile { get; set; }
         public Dictionary<Vector2, int> tilemap { get; set; }
-        private List<Rectangle> sourceRectangles;
-        private List<Rectangle> destinationRectangles;
-        private Texture2D texture;
-        private int scaleTexture;
-        private int pixelSize;
+        protected List<Rectangle> sourceRectangles;
+        protected List<Rectangle> destinationRectangles;
+        protected Texture2D texture;
+        public int scaleTexture;
+        protected int pixelSize;
         public TileMaps(Texture2D texture, int scaleTexture, int pixelSize)
         {
             this.texture = texture;
