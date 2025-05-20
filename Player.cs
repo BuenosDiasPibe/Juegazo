@@ -13,58 +13,57 @@ namespace Juegazo
     {
         public Vector2 velocity;
         public bool onGround { get; set; }
-        private Color colorChange;
-        private Color prevColor;
         public int sprint;
-        public int numJumps { get; set; }
         public int pushBack;
         public bool jumpPressed;
+        public bool directionLeft;
 
         public Player(Texture2D texture, Rectangle sourceRectangle, Rectangle Destrectangle, Color color) : base(texture, sourceRectangle, Destrectangle, color)
         {
             velocity = new();
             onGround = true;
-            colorChange = Color.Aqua;
-            prevColor = color;
             sprint = 0;
-            numJumps = 0;
             pushBack = 0;
+            directionLeft = true;
+            jumpPressed = false;
         }
 
         public void Update(GameTime gameTime, KeyboardState keyboardState, KeyboardState prevState, Viewport viewport)
         {
             // Apply gravity
             velocity.Y += 0.6f;
-            velocity.Y = Math.Min(30, velocity.Y);
+            velocity.Y = Math.Min(20, velocity.Y);
 
             // Horizontal movement
             velocity.X = 0;
             if (keyboardState.IsKeyDown(Keys.A) || keyboardState.IsKeyDown(Keys.Left))
+            {
                 velocity.X = -10;
+                directionLeft = true;
+            }
             if (keyboardState.IsKeyDown(Keys.D) || keyboardState.IsKeyDown(Keys.Right))
+            {
                 velocity.X = 10;
-
+                directionLeft = false;
+            }
             // Jumping
             jumpPressed = (keyboardState.IsKeyDown(Keys.Up) && !prevState.IsKeyDown(Keys.Up)) ||
                                (keyboardState.IsKeyDown(Keys.W) && !prevState.IsKeyDown(Keys.W));
             if (onGround && jumpPressed)
             {
-                velocity.Y = -15;
-                numJumps++;
+                velocity.Y = -10;
             }
             if (keyboardState.IsKeyDown(Keys.T) && !prevState.IsKeyDown(Keys.T))
             {
-                velocity.Y = -15;
+                velocity.Y = -10;
             }
 
             // Fast fall
-                if (keyboardState.IsKeyDown(Keys.S) || keyboardState.IsKeyDown(Keys.Down)) velocity.Y += 10;
+            if (keyboardState.IsKeyDown(Keys.S) || keyboardState.IsKeyDown(Keys.Down)) velocity.Y += 10;
 
             // Dash (sprint)
             if (keyboardState.IsKeyDown(Keys.B) && !prevState.IsKeyDown(Keys.B))
-                sprint = -30;
-            if (keyboardState.IsKeyDown(Keys.M) && !prevState.IsKeyDown(Keys.M))
-                sprint = 30;
+                sprint = directionLeft ? -30 : 30;
 
             // Apply sprint
             if (sprint != 0)

@@ -45,8 +45,8 @@ public class Game1 : Game
 
         player = new Player(
             Content.Load<Texture2D>("playerr"),
-            new Rectangle(TILESIZE, TILESIZE * 10, TILESIZE, TILESIZE), //donde aparece el jugador
-            new Rectangle(0, 0, TILESIZE, TILESIZE),
+            new Rectangle(TILESIZE, TILESIZE, TILESIZE, TILESIZE), //donde aparece el jugador
+            new Rectangle(TILESIZE, TILESIZE * 2, TILESIZE, TILESIZE),
             Color.White
         );
         tilemaps.tilemap = tilemaps.LoadMap("Data/datas.csv"); // cambiar a ../../../Data/datas.csv si causa algun error
@@ -60,7 +60,6 @@ public class Game1 : Game
         tilemaps.Update(player, TILESIZE);
 
         prevState = Keyboard.GetState();
-
         base.Update(gameTime);
     }
 

@@ -15,7 +15,7 @@ namespace MarinMol
         protected List<Rectangle> sourceRectangles;
         protected List<Rectangle> destinationRectangles;
         protected Texture2D texture;
-        public int scaleTexture;
+        protected int scaleTexture;
         protected int pixelSize;
         public TileMaps(Texture2D texture, int scaleTexture, int pixelSize)
         {

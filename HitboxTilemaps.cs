@@ -11,13 +11,18 @@ namespace Juegazo
     public class HitboxTilemaps : TileMaps
     {
         private List<Rectangle> intersections;
+        protected int tileValue;
+        public List<BlockType> blocks;
         public HitboxTilemaps(Texture2D texture, int scaleTexture, int pixelSize) : base(texture, scaleTexture, pixelSize)
         {
+            tileValue = 11;
             nombreTile = "hitbox";
             tilemap = new();
             sourceRectangles = new();
             destinationRectangles = new();
             intersections = new();
+            blocks = new();
+            blocks.Add(new CollisionBlock());
         }
 
         public List<Rectangle> getIntersectingTilesVertical(Rectangle target)
@@ -82,20 +87,9 @@ namespace Juegazo
 
                     if (!player.Destrectangle.Intersects(collision)) continue;
 
-                    if (player.velocity.X > 0.0f)
+                    foreach (var block in blocks)
                     {
-                        player.Destrectangle.X = collision.Left - player.Destrectangle.Width;
-                        // todo el resto son cosas que deberian ser manejadas por otra clase
-                        player.velocity.Y *= 0.7f;
-                        player.onGround = true; //puede saltar por las paredes
-                        if (player.jumpPressed) player.pushBack = -20; //TODO: fixear esto haciendo que solo afecte cuando el jugador apreta el botn de saltar (osea lo que deberia pasar pero soy idiota :3)
-                    }
-                    else if (player.velocity.X < 0.0f)
-                    {
-                        player.Destrectangle.X = collision.Right;
-                        player.onGround = true; //puede saltar por las paredes
-                        player.velocity.Y *= 0.7f;
-                        if (player.jumpPressed) player.pushBack = 20;
+                        block.horizontalActions(player, collision, _val);
                     }
                 }
             }
@@ -116,21 +110,12 @@ namespace Juegazo
                         TILESIZE
                     );
 
-
                     if (!player.Destrectangle.Intersects(collision)) continue;
-
-                    if (player.velocity.Y > 0.0f)
+                    
+                    foreach (var block in blocks)
                     {
-                        player.Destrectangle.Y = collision.Top - player.Destrectangle.Height;
-                        player.velocity.Y = 1f;
-                        player.onGround = true;
+                        block.verticalActions(player, collision, _val);
                     }
-                    else if (player.velocity.Y < 0.0f)
-                    {
-                        player.velocity.Y *= 0.1f;
-                        player.Destrectangle.Y = collision.Bottom;
-                    }
-                    player.numJumps = 0;
                 }
             }
         }
