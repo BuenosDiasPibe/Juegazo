@@ -9,13 +9,8 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Juegazo
 {
-    public class Player : Sprite
+    public class Player : Entity
     {
-        public Vector2 velocity;
-        public bool onGround { get; set; }
-        public int sprint;
-        public int pushBack;
-        public bool jumpPressed;
         public bool directionLeft;
 
         public Player(Texture2D texture, Rectangle sourceRectangle, Rectangle Destrectangle, Color color) : base(texture, sourceRectangle, Destrectangle, color)
@@ -28,7 +23,7 @@ namespace Juegazo
             jumpPressed = false;
         }
 
-        public void Update(GameTime gameTime, KeyboardState keyboardState, KeyboardState prevState, Viewport viewport)
+        public override void Update(GameTime gameTime, KeyboardState keyboardState, KeyboardState prevState)
         {
             // Apply gravity
             velocity.Y += 0.6f;

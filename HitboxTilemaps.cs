@@ -68,11 +68,11 @@ namespace Juegazo
             return intersection;
         }
 
-        public void Update(Player player, int TILESIZE)
+        public void Update(Entity entity, int TILESIZE)
         {
-            player.Destrectangle.X += (int)player.velocity.X;
-            intersections = getIntersectingTilesHorizontal(player.Destrectangle);
-            player.onGround = false;
+            entity.Destrectangle.X += (int)entity.velocity.X;
+            intersections = getIntersectingTilesHorizontal(entity.Destrectangle);
+            entity.onGround = false;
 
             foreach (var rect in intersections)
             {
@@ -85,18 +85,18 @@ namespace Juegazo
                         TILESIZE
                     );
 
-                    if (!player.Destrectangle.Intersects(collision)) continue;
+                    if (!entity.Destrectangle.Intersects(collision)) continue;
 
                     foreach (var block in blocks)
                     {
-                        block.horizontalActions(player, collision, _val);
+                        block.horizontalActions(entity, collision, _val);
                     }
                 }
             }
 
-            player.Destrectangle.Y += (int)player.velocity.Y;
+            entity.Destrectangle.Y += (int)entity.velocity.Y;
 
-            intersections = getIntersectingTilesVertical(player.Destrectangle);
+            intersections = getIntersectingTilesVertical(entity.Destrectangle);
 
             foreach (var rect in intersections)
             {
@@ -110,11 +110,11 @@ namespace Juegazo
                         TILESIZE
                     );
 
-                    if (!player.Destrectangle.Intersects(collision)) continue;
+                    if (!entity.Destrectangle.Intersects(collision)) continue;
                     
                     foreach (var block in blocks)
                     {
-                        block.verticalActions(player, collision, _val);
+                        block.verticalActions(entity, collision, _val);
                     }
                 }
             }

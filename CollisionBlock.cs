@@ -12,7 +12,7 @@ namespace Juegazo
         {
             value = 11;
         }
-        public override void horizontalActions(Player player, Rectangle collision, int _val)
+        public override void horizontalActions(Entity player, Rectangle collision, int _val)
         {
             if (player.velocity.X > 0.0f && _val == value)
             {
@@ -28,7 +28,7 @@ namespace Juegazo
             }
         }
 
-        public override void verticalActions(Player player, Rectangle collision, int _val)
+        public override void verticalActions(Entity player, Rectangle collision, int _val)
         {
             if (player.velocity.Y > 0.0f && _val == value)
             {

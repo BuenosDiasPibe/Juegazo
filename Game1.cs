@@ -15,7 +15,7 @@ public class Game1 : Game
     private SpriteBatch _spriteBatch;
     private Viewport viewport;
     private const int TILESIZE = 64;
-    private Player player;
+    private List<Entity> entities;
     private KeyboardState prevState;
     private HitboxTilemaps tilemaps;
     public Game1()
@@ -42,23 +42,24 @@ public class Game1 : Game
 
         Texture2D worldTexture = Content.Load<Texture2D>("worldTexture");
         tilemaps = new HitboxTilemaps(worldTexture, TILESIZE, 8);
-
-        player = new Player(
+        entities =new();
+        entities.Add(new Player(
             Content.Load<Texture2D>("playerr"),
             new Rectangle(TILESIZE, TILESIZE, TILESIZE, TILESIZE), //donde aparece el jugador
             new Rectangle(TILESIZE, TILESIZE * 2, TILESIZE, TILESIZE),
             Color.White
-        );
+        ));
         tilemaps.tilemap = tilemaps.LoadMap("Data/datas.csv"); // cambiar a ../../../Data/datas.csv si causa algun error
     }
 
     protected override void Update(GameTime gameTime)
     {
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape)) { Exit(); }
-
-        player.Update(gameTime, Keyboard.GetState(), prevState, viewport);
-        tilemaps.Update(player, TILESIZE);
-
+        foreach (var entity in entities)
+        {
+            entity.Update(gameTime, Keyboard.GetState(), prevState);
+            tilemaps.Update(entity, TILESIZE);
+        }
         prevState = Keyboard.GetState();
         base.Update(gameTime);
     }
@@ -69,8 +70,10 @@ public class Game1 : Game
         _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
 
         tilemaps.Draw(_spriteBatch);
-        player.DrawSprite(_spriteBatch);
-
+        foreach (var entity in entities)
+        {
+            entity.DrawSprite(_spriteBatch);
+        }
         _spriteBatch.End();
         base.Draw(gameTime);
     }
