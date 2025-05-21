@@ -17,33 +17,33 @@ namespace Juegazo
             rectangleTexture = new Texture2D(graphicsDevice, 1, 1);
             rectangleTexture.SetData(new Color[] { new(255, 0, 0, 255) });
         }
-    public void drawhitboxEntities(SpriteBatch _spriteBatch, List<Entity> entities, HitboxTilemaps collisionMap, int TILESIZE)
-    {
-        foreach (var entity in entities)
+        public void drawhitboxEntities(SpriteBatch _spriteBatch, List<Entity> entities, HitboxTilemaps collisionMap, int TILESIZE)
         {
-            foreach (var hitbox in collisionMap.getIntersectingTilesHorizontal(entity.Destrectangle))
+            foreach (var entity in entities)
             {
-                new Debugger(graphicsDevice).DrawRectHollow(_spriteBatch,
-                    new Rectangle(
-                    hitbox.X * TILESIZE,
-                    hitbox.Y * TILESIZE,
-                    TILESIZE,
-                    TILESIZE
-                ), 4);
-            }
-            foreach (var hitbox in collisionMap.getIntersectingTilesVertical(entity.Destrectangle))
-            {
-                new Debugger(graphicsDevice).DrawRectHollow(
-                    _spriteBatch,
-                    new Rectangle(
+                foreach (var hitbox in collisionMap.getIntersectingTilesHorizontal(entity.Destrectangle))
+                {
+                    new Debugger(graphicsDevice).DrawRectHollow(_spriteBatch,
+                        new Rectangle(
                         hitbox.X * TILESIZE,
                         hitbox.Y * TILESIZE,
                         TILESIZE,
-                        TILESIZE),
-                    4);
+                        TILESIZE
+                    ), 4);
+                }
+                foreach (var hitbox in collisionMap.getIntersectingTilesVertical(entity.Destrectangle))
+                {
+                    new Debugger(graphicsDevice).DrawRectHollow(
+                        _spriteBatch,
+                        new Rectangle(
+                            hitbox.X * TILESIZE,
+                            hitbox.Y * TILESIZE,
+                            TILESIZE,
+                            TILESIZE),
+                        4);
+                }
             }
         }
-    }
         public void DrawRectHollow(SpriteBatch spriteBatch, Rectangle rect, int thickness)
         { //shows hitbox
             spriteBatch.Draw(

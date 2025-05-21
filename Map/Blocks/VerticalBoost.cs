@@ -15,7 +15,7 @@ namespace Juegazo
             vertBoost = -1;
         }
         public override void horizontalActions(Entity entity, Rectangle collision, int _val)
-        { 
+        {
             verticalActions(entity, collision, _val);
         }
 

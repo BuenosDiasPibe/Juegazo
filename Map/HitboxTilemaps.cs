@@ -122,7 +122,7 @@ namespace Juegazo
                     );
 
                     if (!entity.Destrectangle.Intersects(collision)) continue;
-                    
+
                     foreach (var block in blocks)
                     {
                         block.verticalActions(entity, collision, _val);

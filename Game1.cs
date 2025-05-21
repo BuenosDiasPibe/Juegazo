@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.IO;
 using Juegazo;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -13,16 +14,13 @@ public class Game1 : Game
 {
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
-    private Viewport viewport;
-    private const int TILESIZE = 58;
-    private List<Entity> entities;
-    private KeyboardState prevState;
-    private HitboxTilemaps collisionMap;
+    private SceneManager sceneManager;
     public Game1()
     {
         _graphics = new GraphicsDeviceManager(this);
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
+        sceneManager = new();
     }
 
     protected override void Initialize()
@@ -38,41 +36,25 @@ public class Game1 : Game
     protected override void LoadContent()
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
-        viewport = GraphicsDevice.Viewport;
-        collisionMap = new HitboxTilemaps(Content.Load<Texture2D>("worldTexture"), TILESIZE, 8);
-        entities = new();
-        entities.Add(new Player(Content.Load<Texture2D>("playerr"),
-                                new Rectangle(TILESIZE, TILESIZE, TILESIZE, TILESIZE), 
-                                new Rectangle(TILESIZE, TILESIZE * 2, TILESIZE, TILESIZE), //donde aparece el jugador
-                                Color.White
-        ));
-        collisionMap.tilemap = collisionMap.LoadMap("Data/testLevel.csv"); // cambiar a ../../../Data/datas.csv si causa algun error
+
+        sceneManager.AddScene(new TestScene(Content));
     }
 
     protected override void Update(GameTime gameTime)
     {
-        if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape)) { Exit(); }
-        foreach (var entity in entities)
-        {
-            entity.Update(gameTime, Keyboard.GetState(), prevState);
-            collisionMap.Update(entity, TILESIZE);
-        }
-        
-        prevState = Keyboard.GetState();
+        if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape)) Exit();
+        sceneManager.getScene().Update(gameTime);
+
         base.Update(gameTime);
     }
 
     protected override void Draw(GameTime gameTime)
     {
+
         GraphicsDevice.Clear(Color.Black);
         _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
+        sceneManager.getScene().Draw(gameTime, _spriteBatch);
 
-        collisionMap.Draw(_spriteBatch);
-        foreach (var entity in entities)
-        {
-            entity.DrawSprite(_spriteBatch);
-        }
-        //new Debugger(GraphicsDevice).drawhitboxEntities(_spriteBatch, entities, collisionMap, TILESIZE); // debugging for uuuh idk
         _spriteBatch.End();
         base.Draw(gameTime);
     }
