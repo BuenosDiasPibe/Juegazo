@@ -1,0 +1,27 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "worldTexture.tsx",
+    "expandedProjectPaths": [
+        "."
+    ],
+    "fileStates": {
+        "worldTexture.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        }
+    },
+    "last.imagePath": "/home/clumpl/Documentos/Programacion/Juegazo/Content",
+    "map.height": 24,
+    "map.width": 40,
+    "openFiles": [
+        "worldTexture.tsx"
+    ],
+    "project": "tilemaps.tiled-project",
+    "recentFiles": [
+        "worldTexture.tsx"
+    ],
+    "tileset.lastUsedFormat": "tsx"
+}

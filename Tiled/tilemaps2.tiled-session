@@ -1,0 +1,46 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "sin test1.tmx",
+    "expandedProjectPaths": [
+        "."
+    ],
+    "fileStates": {
+        "sin test1.tmx": {
+            "scale": 3.20625,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 79.8440545808967,
+                "y": 47.56335282651073
+            }
+        },
+        "worldTexture.tsx": {
+            "scaleInDock": 4,
+            "scaleInEditor": 1
+        }
+    },
+    "last.exportedFilePath": "/home/clumpl/Documentos/Programacion/Juegazo/Data",
+    "last.imagePath": "/home/clumpl/Documentos/Programacion/Juegazo/Content",
+    "map.height": 12,
+    "map.lastUsedExportFilter": "Archivos CSV (*.csv)",
+    "map.lastUsedFormat": "tmx",
+    "map.tileHeight": 8,
+    "map.tileWidth": 8,
+    "map.width": 20,
+    "openFiles": [
+        "sin test1.tmx",
+        "worldTexture.tsx"
+    ],
+    "project": "tilemaps2.tiled-project",
+    "recentFiles": [
+        "worldTexture.tsx",
+        "sin test1.tmx"
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 8,
+        "width": 8
+    }
+}

@@ -12,9 +12,10 @@ namespace Juegazo
     {
         public Vector2 velocity;
         public bool onGround;
-        public int sprint;
+        public float sprint;
         public bool jumpPressed;
-        public int pushBack;
+        public float pushBack;
+        public float verticalBoost;
 
         public Entity(Texture2D texture, Rectangle sourceRectangle, Rectangle Destrectangle, Color color) : base(texture, sourceRectangle, Destrectangle, color)
         {

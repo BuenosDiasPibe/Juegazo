@@ -1,26 +1,30 @@
 using System;
 using System.Collections.Generic;
-using Microsoft.Xna.Framework;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
 
 namespace Juegazo
 {
-    public class CollisionBlock : BlockType
+    public class JumpWall : BlockType
     {
-        public CollisionBlock()
+        public JumpWall()
         {
-            value = 11;
+            value = 1;
         }
         public override void horizontalActions(Entity entity, Rectangle collision, int _val)
         {
-            if (entity.velocity.X > 0.0f && _val == value)
+            if (entity.velocity.X > 0 && _val == value)
             {
                 entity.Destrectangle.X = collision.Left - entity.Destrectangle.Width;
+                entity.onGround = true;
+                if(entity.jumpPressed) entity.pushBack = -20;
             }
-            else if (entity.velocity.X < 0.0f && _val == value)
+            else if (entity.velocity.X < 0 && _val == value)
             {
                 entity.Destrectangle.X = collision.Right;
+                entity.onGround = true;
+                if(entity.jumpPressed) entity.pushBack = 20;
             }
         }
 

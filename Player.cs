@@ -27,7 +27,7 @@ namespace Juegazo
         {
             // Apply gravity
             velocity.Y += 0.6f;
-            velocity.Y = Math.Min(20, velocity.Y);
+            velocity.Y = Math.Min(13, velocity.Y);
 
             // Horizontal movement
             velocity.X = 0;
@@ -46,19 +46,18 @@ namespace Juegazo
                                (keyboardState.IsKeyDown(Keys.W) && !prevState.IsKeyDown(Keys.W));
             if (onGround && jumpPressed)
             {
-                velocity.Y = -10;
+                velocity.Y = -12;
             }
             if (keyboardState.IsKeyDown(Keys.T) && !prevState.IsKeyDown(Keys.T))
             {
-                velocity.Y = -10;
+                velocity.Y = -12;
             }
 
             // Fast fall
             if (keyboardState.IsKeyDown(Keys.S) || keyboardState.IsKeyDown(Keys.Down)) velocity.Y += 10;
 
             // Dash (sprint)
-            if (keyboardState.IsKeyDown(Keys.B) && !prevState.IsKeyDown(Keys.B))
-                sprint = directionLeft ? -30 : 30;
+            if (keyboardState.IsKeyDown(Keys.B) && !prevState.IsKeyDown(Keys.B)) sprint = directionLeft ? -30 : 30;
 
             // Apply sprint
             if (sprint != 0)
@@ -72,6 +71,16 @@ namespace Juegazo
             {
                 velocity.X += pushBack;
                 pushBack += pushBack > 0 ? -1 : 1;
+            }
+
+            if (verticalBoost != 0)
+            {
+                velocity.Y += verticalBoost;
+                if (velocity.Y < -12)
+                {
+                    verticalBoost = 0;
+                }
+                verticalBoost += verticalBoost > 0 ? -1 : 1;
             }
         }
     }

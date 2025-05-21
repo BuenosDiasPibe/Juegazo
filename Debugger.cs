@@ -10,10 +10,40 @@ namespace Juegazo
     public class Debugger
     {
         private Texture2D rectangleTexture;
-        public Debugger(GraphicsDevice graphicsDevice) {
-            rectangleTexture = new Texture2D(graphicsDevice,1,1);
+        private GraphicsDevice graphicsDevice;
+        public Debugger(GraphicsDevice graphicsDevice)
+        {
+            this.graphicsDevice = graphicsDevice;
+            rectangleTexture = new Texture2D(graphicsDevice, 1, 1);
             rectangleTexture.SetData(new Color[] { new(255, 0, 0, 255) });
         }
+    public void drawhitboxEntities(SpriteBatch _spriteBatch, List<Entity> entities, HitboxTilemaps collisionMap, int TILESIZE)
+    {
+        foreach (var entity in entities)
+        {
+            foreach (var hitbox in collisionMap.getIntersectingTilesHorizontal(entity.Destrectangle))
+            {
+                new Debugger(graphicsDevice).DrawRectHollow(_spriteBatch,
+                    new Rectangle(
+                    hitbox.X * TILESIZE,
+                    hitbox.Y * TILESIZE,
+                    TILESIZE,
+                    TILESIZE
+                ), 4);
+            }
+            foreach (var hitbox in collisionMap.getIntersectingTilesVertical(entity.Destrectangle))
+            {
+                new Debugger(graphicsDevice).DrawRectHollow(
+                    _spriteBatch,
+                    new Rectangle(
+                        hitbox.X * TILESIZE,
+                        hitbox.Y * TILESIZE,
+                        TILESIZE,
+                        TILESIZE),
+                    4);
+            }
+        }
+    }
         public void DrawRectHollow(SpriteBatch spriteBatch, Rectangle rect, int thickness)
         { //shows hitbox
             spriteBatch.Draw(

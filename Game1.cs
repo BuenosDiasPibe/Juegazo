@@ -14,10 +14,10 @@ public class Game1 : Game
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
     private Viewport viewport;
-    private const int TILESIZE = 64;
+    private const int TILESIZE = 58;
     private List<Entity> entities;
     private KeyboardState prevState;
-    private HitboxTilemaps tilemaps;
+    private HitboxTilemaps collisionMap;
     public Game1()
     {
         _graphics = new GraphicsDeviceManager(this);
@@ -39,17 +39,14 @@ public class Game1 : Game
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
         viewport = GraphicsDevice.Viewport;
-
-        Texture2D worldTexture = Content.Load<Texture2D>("worldTexture");
-        tilemaps = new HitboxTilemaps(worldTexture, TILESIZE, 8);
-        entities =new();
-        entities.Add(new Player(
-            Content.Load<Texture2D>("playerr"),
-            new Rectangle(TILESIZE, TILESIZE, TILESIZE, TILESIZE), //donde aparece el jugador
-            new Rectangle(TILESIZE, TILESIZE * 2, TILESIZE, TILESIZE),
-            Color.White
+        collisionMap = new HitboxTilemaps(Content.Load<Texture2D>("worldTexture"), TILESIZE, 8);
+        entities = new();
+        entities.Add(new Player(Content.Load<Texture2D>("playerr"),
+                                new Rectangle(TILESIZE, TILESIZE, TILESIZE, TILESIZE), 
+                                new Rectangle(TILESIZE, TILESIZE * 2, TILESIZE, TILESIZE), //donde aparece el jugador
+                                Color.White
         ));
-        tilemaps.tilemap = tilemaps.LoadMap("Data/datas.csv"); // cambiar a ../../../Data/datas.csv si causa algun error
+        collisionMap.tilemap = collisionMap.LoadMap("Data/testLevel.csv"); // cambiar a ../../../Data/datas.csv si causa algun error
     }
 
     protected override void Update(GameTime gameTime)
@@ -58,8 +55,9 @@ public class Game1 : Game
         foreach (var entity in entities)
         {
             entity.Update(gameTime, Keyboard.GetState(), prevState);
-            tilemaps.Update(entity, TILESIZE);
+            collisionMap.Update(entity, TILESIZE);
         }
+        
         prevState = Keyboard.GetState();
         base.Update(gameTime);
     }
@@ -69,11 +67,12 @@ public class Game1 : Game
         GraphicsDevice.Clear(Color.Black);
         _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
 
-        tilemaps.Draw(_spriteBatch);
+        collisionMap.Draw(_spriteBatch);
         foreach (var entity in entities)
         {
             entity.DrawSprite(_spriteBatch);
         }
+        //new Debugger(GraphicsDevice).drawhitboxEntities(_spriteBatch, entities, collisionMap, TILESIZE); // debugging for uuuh idk
         _spriteBatch.End();
         base.Draw(gameTime);
     }

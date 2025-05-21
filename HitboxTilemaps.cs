@@ -11,18 +11,29 @@ namespace Juegazo
     public class HitboxTilemaps : TileMaps
     {
         private List<Rectangle> intersections;
-        protected int tileValue;
         public List<BlockType> blocks;
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HitboxTilemaps"/> class.
+        /// </summary>
+        /// <param name="texture">The texture to be used for the tilemap.</param>
+        /// <param name="scaleTexture">The scale factor to apply to the texture.</param>
+        /// <param name="pixelSize">The size of each pixel in the tilemap.</param>
+        /// <remarks>
+        /// Sets up the hitbox tilemap, initializes collections, and dynamically discovers all non-abstract subclasses of <see cref="BlockType"/>.
+        /// </remarks>
         public HitboxTilemaps(Texture2D texture, int scaleTexture, int pixelSize) : base(texture, scaleTexture, pixelSize)
         {
-            tileValue = 11;
             nombreTile = "hitbox";
             tilemap = new();
             sourceRectangles = new();
             destinationRectangles = new();
             intersections = new();
-            blocks = new();
-            blocks.Add(new CollisionBlock());
+            //pequeño hack para obtener todas las clases que hereden de BlockType
+            blocks = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(a => a.GetTypes())
+                .Where(t => t.IsSubclassOf(typeof(BlockType)) && !t.IsAbstract)
+                .Select(t => (BlockType)Activator.CreateInstance(t))
+                .ToList();
         }
 
         public List<Rectangle> getIntersectingTilesVertical(Rectangle target)
