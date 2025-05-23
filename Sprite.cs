@@ -11,13 +11,13 @@ namespace Juegazo
     {
         public Texture2D texture;
         public Color color;
-        public Rectangle Destrectangle;
+        public Rectangle Destinationrectangle;
         public Rectangle sourceRectangle;
         public Sprite(Texture2D texture, Rectangle sourceRectangle, Rectangle Destrectangle, Color color)
         {
             this.texture = texture;
             this.sourceRectangle = sourceRectangle;
-            this.Destrectangle = Destrectangle;
+            this.Destinationrectangle = Destrectangle;
             this.color = color;
         }
 
@@ -28,7 +28,7 @@ namespace Juegazo
 
         public void DrawSprite(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, Destrectangle, sourceRectangle, color);
+            spriteBatch.Draw(texture, Destinationrectangle, sourceRectangle, color);
         }
     }
 }

@@ -16,13 +16,13 @@ namespace Juegazo
         {
             if (entity.velocity.X > 0 && _val == value)
             {
-                entity.Destrectangle.X = collision.Left - entity.Destrectangle.Width;
+                entity.Destinationrectangle.X = collision.Left - entity.Destinationrectangle.Width;
                 entity.onGround = true;
                 if(entity.jumpPressed) entity.pushBack = -20;
             }
             else if (entity.velocity.X < 0 && _val == value)
             {
-                entity.Destrectangle.X = collision.Right;
+                entity.Destinationrectangle.X = collision.Right;
                 entity.onGround = true;
                 if(entity.jumpPressed) entity.pushBack = 20;
             }
@@ -32,14 +32,14 @@ namespace Juegazo
         {
             if (entity.velocity.Y > 0.0f && _val == value)
             {
-                entity.Destrectangle.Y = collision.Top - entity.Destrectangle.Height;
+                entity.Destinationrectangle.Y = collision.Top - entity.Destinationrectangle.Height;
                 entity.velocity.Y = 1f;
                 entity.onGround = true;
             }
             else if (entity.velocity.Y < 0.0f && _val == value)
             {
                 entity.velocity.Y *= 0.1f;
-                entity.Destrectangle.Y = collision.Bottom;
+                entity.Destinationrectangle.Y = collision.Bottom;
             }
         }
     }

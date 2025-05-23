@@ -18,15 +18,14 @@ namespace Juegazo
         /// <param name="texture">The texture to be used for the tilemap.</param>
         /// <param name="scaleTexture">The scale factor to apply to the texture.</param>
         /// <param name="pixelSize">The size of each pixel in the tilemap.</param>
+        /// <param name="numberOfTilesPerRow"> The number of tiles per row in texture </param>
         /// <remarks>
         /// Sets up the hitbox tilemap, initializes collections, and dynamically discovers all non-abstract subclasses of <see cref="BlockType"/>.
         /// </remarks>
-        public HitboxTilemaps(Texture2D texture, int scaleTexture, int pixelSize) : base(texture, scaleTexture, pixelSize)
+        public HitboxTilemaps(Texture2D texture, int scaleTexture, int pixelSize, int numberOfTilesPerRow) : base(texture, scaleTexture, pixelSize, numberOfTilesPerRow)
         {
             nombreTile = "hitbox";
             tilemap = new();
-            sourceRectangles = new();
-            destinationRectangles = new();
             intersections = new();
             //pequeño hack para obtener todas las clases que hereden de BlockType
             blocks = AppDomain.CurrentDomain.GetAssemblies()
@@ -81,8 +80,8 @@ namespace Juegazo
 
         public void Update(Entity entity, int TILESIZE)
         {
-            entity.Destrectangle.X += (int)entity.velocity.X;
-            intersections = getIntersectingTilesHorizontal(entity.Destrectangle);
+            entity.Destinationrectangle.X += (int)entity.velocity.X;
+            intersections = getIntersectingTilesHorizontal(entity.Destinationrectangle);
             entity.onGround = false;
 
             foreach (var rect in intersections)
@@ -96,7 +95,7 @@ namespace Juegazo
                         TILESIZE
                     );
 
-                    if (!entity.Destrectangle.Intersects(collision)) continue;
+                    if (!entity.Destinationrectangle.Intersects(collision)) continue;
 
                     foreach (var block in blocks)
                     {
@@ -105,9 +104,9 @@ namespace Juegazo
                 }
             }
 
-            entity.Destrectangle.Y += (int)entity.velocity.Y;
+            entity.Destinationrectangle.Y += (int)entity.velocity.Y;
 
-            intersections = getIntersectingTilesVertical(entity.Destrectangle);
+            intersections = getIntersectingTilesVertical(entity.Destinationrectangle);
 
             foreach (var rect in intersections)
             {
@@ -121,7 +120,7 @@ namespace Juegazo
                         TILESIZE
                     );
 
-                    if (!entity.Destrectangle.Intersects(collision)) continue;
+                    if (!entity.Destinationrectangle.Intersects(collision)) continue;
 
                     foreach (var block in blocks)
                     {

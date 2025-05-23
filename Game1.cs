@@ -37,7 +37,7 @@ public class Game1 : Game
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-        sceneManager.AddScene(new TestScene(Content));
+        sceneManager.AddScene(new TestScene(Content, GraphicsDevice));
     }
 
     protected override void Update(GameTime gameTime)

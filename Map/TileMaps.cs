@@ -12,21 +12,27 @@ namespace MarinMol
     {
         public string nombreTile { get; set; }
         public Dictionary<Vector2, int> tilemap { get; set; }
-        protected List<Rectangle> sourceRectangles;
-        protected List<Rectangle> destinationRectangles;
         protected Texture2D texture;
         protected int scaleTexture;
         protected int pixelSize;
+        protected int numberOfTilesPerRow;
+        public TileMaps(Texture2D texture, int scaleTexture, int pixelSize, int numberOfTilesPerRow)
+        {
+            this.texture = texture;
+            this.scaleTexture = scaleTexture;
+            this.pixelSize = pixelSize;
+            this.numberOfTilesPerRow = numberOfTilesPerRow;
+            tilemap = new();
+        }
+
         public TileMaps(Texture2D texture, int scaleTexture, int pixelSize)
         {
             this.texture = texture;
             this.scaleTexture = scaleTexture;
             this.pixelSize = pixelSize;
-            tilemap = new();
-            sourceRectangles = new();
-            destinationRectangles = new();
         }
-        public Dictionary<Vector2, int> LoadMap(string filePath)
+
+        public virtual Dictionary<Vector2, int> LoadMap(string filePath)
         {
             Dictionary<Vector2, int> result = new();
             StreamReader reader = new(filePath);
@@ -39,9 +45,10 @@ namespace MarinMol
                 {
                     if (int.TryParse(parts[x], out int value))
                     {
-                        if (value > -1)
+                        if (value > -1 && value != 13 && value != 14)
                         {
-                            result[new Vector2(x, y)] = value;
+                            Vector2 vector = new Vector2(x, y);
+                            result[vector] = value;
                         }
                     }
                 }
@@ -51,33 +58,41 @@ namespace MarinMol
         }
         public void BuildRectangles(KeyValuePair<Vector2, int> item)
         {
-            destinationRectangles.Add(new Rectangle(
-                (int)item.Key.X * scaleTexture,
-                (int)item.Key.Y * scaleTexture,
-                scaleTexture,
-                scaleTexture
-            ));
-            int x = item.Value % pixelSize;
-            int y = item.Value / pixelSize;
+            BuildDestinationRectangle(item);
+            BuildSourceRectangle(item);
+        }
+
+        public Rectangle BuildSourceRectangle(KeyValuePair<Vector2, int> item)
+        {
+            int x = item.Value % numberOfTilesPerRow;
+            int y = item.Value / numberOfTilesPerRow;
             if (item.Value == 19)
             {
                 Console.WriteLine(x * pixelSize + " " + y * pixelSize);
             }
-            sourceRectangles.Add(new Rectangle(
+            return new Rectangle(
                 x * pixelSize,
                 y * pixelSize,
                 pixelSize,
                 pixelSize
-            ));
+            );
+        }
+
+        public virtual Rectangle BuildDestinationRectangle(KeyValuePair<Vector2, int> item)
+        {
+            return new Rectangle(
+                            (int)item.Key.X * scaleTexture,
+                            (int)item.Key.Y * scaleTexture,
+                            scaleTexture,
+                            scaleTexture
+                        );
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            for (int i = 0; i < tilemap.Count(); i++)
+            foreach (var tile in tilemap)
             {
-                BuildRectangles(tilemap.ElementAt(i));
-
-                spriteBatch.Draw(texture, destinationRectangles.ElementAt(i), sourceRectangles.ElementAt(i), Color.White);
+                spriteBatch.Draw(texture, BuildDestinationRectangle(tile), BuildSourceRectangle(tile), Color.White);
             }
         }
     }

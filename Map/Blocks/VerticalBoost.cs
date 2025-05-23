@@ -29,7 +29,7 @@ namespace Juegazo
             else if (entity.velocity.Y < 0.0f && _val == value)
             {
                 entity.velocity.Y *= 0.1f;
-                entity.Destrectangle.Y = collision.Bottom;
+                entity.Destinationrectangle.Y = collision.Bottom;
             }
         }
     }

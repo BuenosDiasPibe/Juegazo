@@ -30,7 +30,7 @@ namespace Juegazo
             if (entity.GetType() == typeof(Player) && _val == value)
             {
                 Player player = (Player)entity;
-                entity.sprint += player.directionLeft ? -velocitySpeed : velocitySpeed;
+                entity.velocity.Y += player.directionLeft ? -velocitySpeed : velocitySpeed;
             }
         }
     }

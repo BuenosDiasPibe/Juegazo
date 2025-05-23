@@ -11,7 +11,7 @@ namespace Juegazo
     {
         public CompleteBlock()
         {
-            value = 13;
+            value = 15;
         }
         public override void horizontalActions(Entity entity, Rectangle collision, int _val)
         {

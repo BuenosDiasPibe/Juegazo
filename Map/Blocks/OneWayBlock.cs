@@ -17,10 +17,10 @@ namespace Juegazo
 
         public override void verticalActions(Entity entity, Rectangle collision, int _val)
         {
-            bool collidesWithTop = entity.Destrectangle.Bottom > collision.Top && entity.Destrectangle.Top < collision.Top;
+            bool collidesWithTop = entity.Destinationrectangle.Bottom > collision.Top && entity.Destinationrectangle.Top < collision.Top;
             if (entity.velocity.Y > 0.0f && collidesWithTop && _val == value)
             {
-                entity.Destrectangle.Y = collision.Top - entity.Destrectangle.Height;
+                entity.Destinationrectangle.Y = collision.Top - entity.Destinationrectangle.Height;
                 entity.velocity.Y = 1f;
                 entity.onGround = true;
             }

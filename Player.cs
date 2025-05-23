@@ -12,6 +12,7 @@ namespace Juegazo
     public class Player : Entity
     {
         public bool directionLeft;
+        public List<Collectable> deleteCollectables;
 
         public Player(Texture2D texture, Rectangle sourceRectangle, Rectangle Destrectangle, Color color) : base(texture, sourceRectangle, Destrectangle, color)
         {
@@ -23,8 +24,18 @@ namespace Juegazo
             jumpPressed = false;
         }
 
-        public override void Update(GameTime gameTime, KeyboardState keyboardState, KeyboardState prevState)
+        public override void Update(GameTime gameTime, KeyboardState keyboardState, KeyboardState prevState, List<Collectable> collectables)
         {
+            this.collectables = collectables;
+            deleteCollectables = new();
+            foreach (Collectable col in collectables)
+            {
+                if (col.Destinationrectangle.Intersects(Destinationrectangle))
+                {
+                    col.changeThings();
+                    deleteCollectables.Add(col);
+                }
+            }
             // Apply gravity
             velocity.Y += 0.6f;
             velocity.Y = Math.Min(13, velocity.Y);
@@ -81,6 +92,11 @@ namespace Juegazo
                     verticalBoost = 0;
                 }
                 verticalBoost += verticalBoost > 0 ? -1 : 1;
+            }
+
+            foreach (Collectable col in deleteCollectables)
+            {
+                collectables.Remove(col);
             }
         }
     }

@@ -21,7 +21,7 @@ namespace Juegazo
         {
             foreach (var entity in entities)
             {
-                foreach (var hitbox in collisionMap.getIntersectingTilesHorizontal(entity.Destrectangle))
+                foreach (var hitbox in collisionMap.getIntersectingTilesHorizontal(entity.Destinationrectangle))
                 {
                     new Debugger(graphicsDevice).DrawRectHollow(_spriteBatch,
                         new Rectangle(
@@ -31,7 +31,7 @@ namespace Juegazo
                         TILESIZE
                     ), 4);
                 }
-                foreach (var hitbox in collisionMap.getIntersectingTilesVertical(entity.Destrectangle))
+                foreach (var hitbox in collisionMap.getIntersectingTilesVertical(entity.Destinationrectangle))
                 {
                     new Debugger(graphicsDevice).DrawRectHollow(
                         _spriteBatch,
