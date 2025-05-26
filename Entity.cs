@@ -13,20 +13,13 @@ namespace Juegazo
         //TODO: rewrite Entity class, or remake it to later use a class for enemies and player
         public Vector2 velocity;
         public bool onGround;
-        public float sprint;
-        public bool jumpPressed;
-        public float pushBack;
-        public float verticalBoost;
-        public List<Collectable> collectables;
 
         public Entity(Texture2D texture, Rectangle sourceRectangle, Rectangle Destrectangle, Color color) : base(texture, sourceRectangle, Destrectangle, color)
         {
             velocity = new();
-            onGround = true;
-            sprint = 0;
-            jumpPressed = false;
-            pushBack = 0;
+            onGround = false;
         }
-        public abstract void Update(GameTime gameTime, KeyboardState keyboardState, KeyboardState prevState, List<Collectable> collectables);
+        public abstract void Update(GameTime gameTime,
+        List<Entity> entities, List<WorldBlock> worldBlocks,List<InteractiveBlock> interactiveBlocks);
     }
 }

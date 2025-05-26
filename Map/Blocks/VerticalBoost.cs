@@ -14,19 +14,24 @@ namespace Juegazo
             value = 8;
             vertBoost = -1;
         }
-        public override void horizontalActions(Entity entity, Rectangle collision, int _val)
+        public override void horizontalActions(Entity entity, Rectangle collision)
         {
-            verticalActions(entity, collision, _val);
+            verticalActions(entity, collision);
         }
 
-        public override void verticalActions(Entity entity, Rectangle collision, int _val)
+        public override void Update()
         {
-            if (_val == value)
+        }
+
+        public override void verticalActions(Entity entity, Rectangle collision)
+        {
+            if (entity.GetType() == typeof(Player))
             {
+                Player player = (Player)entity;
                 entity.onGround = true;
-                entity.verticalBoost += vertBoost;
+                player.verticalBoost += vertBoost;
             }
-            else if (entity.velocity.Y < 0.0f && _val == value)
+            else if (entity.velocity.Y < 0.0f)
             {
                 entity.velocity.Y *= 0.1f;
                 entity.Destinationrectangle.Y = collision.Bottom;

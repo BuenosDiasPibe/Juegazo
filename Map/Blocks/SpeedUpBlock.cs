@@ -15,23 +15,22 @@ namespace Juegazo
             value = 5;
             velocitySpeed = 2;
         }
-        public override void horizontalActions(Entity entity, Rectangle collision, int _val)
+        public override void horizontalActions(Entity entity, Rectangle collision)
         {
-            if (entity.GetType() == typeof(Player) && _val == value)
+            if (entity.GetType() == typeof(Player))
             {
                 //en parte escrito por copilot, gracias!!
                 Player player = (Player)entity;
-                entity.sprint += player.directionLeft ? -velocitySpeed : velocitySpeed;
+                player.sprint += player.directionLeft ? -velocitySpeed : velocitySpeed;
             }
         }
 
-        public override void verticalActions(Entity entity, Rectangle collision, int _val)
+        public override void Update()
+        {;
+        }
+
+        public override void verticalActions(Entity entity, Rectangle collision)
         {
-            if (entity.GetType() == typeof(Player) && _val == value)
-            {
-                Player player = (Player)entity;
-                entity.velocity.Y += player.directionLeft ? -velocitySpeed : velocitySpeed;
-            }
         }
     }
 }

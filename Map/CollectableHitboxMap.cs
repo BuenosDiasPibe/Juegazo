@@ -50,11 +50,22 @@ namespace Juegazo
         public override Rectangle BuildDestinationRectangle(KeyValuePair<Vector2, int> item)
         {
             return new Rectangle(
-                            (int)((item.Key.X * scaleTexture)),
-                            (int)((item.Key.Y * scaleTexture)),
-                            scaleTexture,
-                            scaleTexture
+                            (int)((item.Key.X * scaleTexture) + scaleTexture*(collectableSize*collectableSize)),
+                            (int)((item.Key.Y * scaleTexture) + scaleTexture*(collectableSize*collectableSize)),
+                            (int)(scaleTexture * collectableSize),
+                            (int)(scaleTexture * collectableSize)
             );
+        }
+        public override Rectangle BuildSourceRectangle(KeyValuePair<Vector2, int> item)
+        {
+            int x = item.Value % numberOfTilesPerRow;
+            int y = item.Value / numberOfTilesPerRow;
+            return new Rectangle(
+                            (int)(x * pixelSize + pixelSize*collectableSize*collectableSize),
+                            (int)(y * pixelSize + pixelSize*collectableSize*collectableSize),
+                            (int)(pixelSize*collectableSize),
+                            (int)(pixelSize*collectableSize)
+                        );
         }
     }
 }

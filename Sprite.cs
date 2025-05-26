@@ -21,10 +21,6 @@ namespace Juegazo
             this.color = color;
         }
 
-        public void Update(GameTime gameTime)
-        {
-            // Update logic for the sprite can be added here
-        }
 
         public void DrawSprite(SpriteBatch spriteBatch)
         {

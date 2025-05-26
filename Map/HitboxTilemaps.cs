@@ -10,23 +10,10 @@ namespace Juegazo
 {
     public class HitboxTilemaps : TileMaps
     {
-        private List<Rectangle> intersections;
         public List<BlockType> blocks;
-        /// <summary>
-        /// Initializes a new instance of the <see cref="HitboxTilemaps"/> class.
-        /// </summary>
-        /// <param name="texture">The texture to be used for the tilemap.</param>
-        /// <param name="scaleTexture">The scale factor to apply to the texture.</param>
-        /// <param name="pixelSize">The size of each pixel in the tilemap.</param>
-        /// <param name="numberOfTilesPerRow"> The number of tiles per row in texture </param>
-        /// <remarks>
-        /// Sets up the hitbox tilemap, initializes collections, and dynamically discovers all non-abstract subclasses of <see cref="BlockType"/>.
-        /// </remarks>
         public HitboxTilemaps(Texture2D texture, int scaleTexture, int pixelSize, int numberOfTilesPerRow) : base(texture, scaleTexture, pixelSize, numberOfTilesPerRow)
         {
-            nombreTile = "hitbox";
             tilemap = new();
-            intersections = new();
             //pequeño hack para obtener todas las clases que hereden de BlockType
             blocks = AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(a => a.GetTypes())
@@ -34,7 +21,15 @@ namespace Juegazo
                 .Select(t => (BlockType)Activator.CreateInstance(t))
                 .ToList();
         }
+        public WorldBlock createWorld(KeyValuePair<Vector2, int> item)
+        {
+            // Select the appropriate BlockType from the blocks list based on the item's value //GRACIAS COPILOT!!!
+            BlockType block = blocks.FirstOrDefault(b => b.value == item.Value) ?? blocks.First();
 
+            return new WorldBlock(texture, BuildSourceRectangle(item), BuildDestinationRectangle(item), Color.White, block);
+        }
+
+        //make a list of rectangles that the player is interacting with. The rectangles are created in WORLD coordinates (if player is between 2 blocks, create the rectangles of those blocks)
         public List<Rectangle> getIntersectingTilesVertical(Rectangle target)
         {
             List<Rectangle> intersection = new();
@@ -78,56 +73,5 @@ namespace Juegazo
             return intersection;
         }
 
-        public void Update(Entity entity, int TILESIZE)
-        {
-            entity.Destinationrectangle.X += (int)entity.velocity.X;
-            intersections = getIntersectingTilesHorizontal(entity.Destinationrectangle);
-            entity.onGround = false;
-
-            foreach (var rect in intersections)
-            {
-                if (tilemap.TryGetValue(new Vector2(rect.X, rect.Y), out int _val))
-                {
-                    Rectangle collision = new(
-                        rect.X * TILESIZE,
-                        rect.Y * TILESIZE,
-                        TILESIZE,
-                        TILESIZE
-                    );
-
-                    if (!entity.Destinationrectangle.Intersects(collision)) continue;
-
-                    foreach (var block in blocks)
-                    {
-                        block.horizontalActions(entity, collision, _val);
-                    }
-                }
-            }
-
-            entity.Destinationrectangle.Y += (int)entity.velocity.Y;
-
-            intersections = getIntersectingTilesVertical(entity.Destinationrectangle);
-
-            foreach (var rect in intersections)
-            {
-
-                if (tilemap.TryGetValue(new Vector2(rect.X, rect.Y), out int _val))
-                {
-                    Rectangle collision = new Rectangle(
-                        rect.X * TILESIZE,
-                        rect.Y * TILESIZE,
-                        TILESIZE,
-                        TILESIZE
-                    );
-
-                    if (!entity.Destinationrectangle.Intersects(collision)) continue;
-
-                    foreach (var block in blocks)
-                    {
-                        block.verticalActions(entity, collision, _val);
-                    }
-                }
-            }
-        }
     }
 }

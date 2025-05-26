@@ -14,20 +14,24 @@ namespace Juegazo
             value = 10;
             slowingSpeed = 2;
         }
-        public override void horizontalActions(Entity entity, Rectangle collision, int _val)
+        public override void horizontalActions(Entity entity, Rectangle collision)
         {
-            if (entity.GetType() == typeof(Player) && _val == value && entity.velocity.X != 0)
+            if (entity.GetType() == typeof(Player) && entity.velocity.X != 0)
             {
                 Player player = (Player)entity;
-                entity.sprint += player.directionLeft ? slowingSpeed : -slowingSpeed;
+                player.sprint += player.directionLeft ? slowingSpeed : -slowingSpeed;
                 //si la velocidad de sprint es mayor que el opuesto de la velocidad (-velocidad es el opuesto)
-                if (Math.Abs(entity.sprint) > Math.Abs(-entity.velocity.X)) entity.sprint = -entity.velocity.X * 0.5f;
+                if (Math.Abs(player.sprint) > Math.Abs(-entity.velocity.X)) player.sprint = -entity.velocity.X * 0.5f;
             }
         }
 
-        public override void verticalActions(Entity entity, Rectangle collision, int _val)
+        public override void Update()
         {
-            horizontalActions(entity, collision, _val);
+        }
+
+        public override void verticalActions(Entity entity, Rectangle collision)
+        {
+            horizontalActions(entity, collision);
         }
     }
 }

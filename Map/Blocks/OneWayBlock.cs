@@ -12,13 +12,17 @@ namespace Juegazo
         {
             value = 12;
         }
-        public override void horizontalActions(Entity entity, Rectangle collision, int _val)
+        public override void horizontalActions(Entity entity, Rectangle collision)
         { }
 
-        public override void verticalActions(Entity entity, Rectangle collision, int _val)
+        public override void Update()
+        {
+        }
+
+        public override void verticalActions(Entity entity, Rectangle collision)
         {
             bool collidesWithTop = entity.Destinationrectangle.Bottom > collision.Top && entity.Destinationrectangle.Top < collision.Top;
-            if (entity.velocity.Y > 0.0f && collidesWithTop && _val == value)
+            if (entity.velocity.Y > 0.0f && collidesWithTop)
             {
                 entity.Destinationrectangle.Y = collision.Top - entity.Destinationrectangle.Height;
                 entity.velocity.Y = 1f;

@@ -13,20 +13,18 @@ namespace Juegazo
         {
             value = 15;
         }
-        public override void horizontalActions(Entity entity, Rectangle collision, int _val)
+        public override void horizontalActions(Entity entity, Rectangle collision)
         {
-            if (_val == value)
-            {
-                Console.WriteLine("Completaste el nivel!");
-            }
+            Console.WriteLine("fuck");
         }
 
-        public override void verticalActions(Entity entity, Rectangle collision, int _val)
+        public override void Update()
         {
-            if (_val == value)
-            {
-                Console.WriteLine("Completaste el nivel!");
-            }
+        }
+
+        public override void verticalActions(Entity entity, Rectangle collision)
+        {
+            Console.WriteLine("fuck");
         }
     }
 }

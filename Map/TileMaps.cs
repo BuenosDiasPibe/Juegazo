@@ -10,7 +10,6 @@ namespace MarinMol
 {
     public class TileMaps
     {
-        public string nombreTile { get; set; }
         public Dictionary<Vector2, int> tilemap { get; set; }
         protected Texture2D texture;
         protected int scaleTexture;
@@ -23,13 +22,6 @@ namespace MarinMol
             this.pixelSize = pixelSize;
             this.numberOfTilesPerRow = numberOfTilesPerRow;
             tilemap = new();
-        }
-
-        public TileMaps(Texture2D texture, int scaleTexture, int pixelSize)
-        {
-            this.texture = texture;
-            this.scaleTexture = scaleTexture;
-            this.pixelSize = pixelSize;
         }
 
         public virtual Dictionary<Vector2, int> LoadMap(string filePath)
@@ -56,20 +48,13 @@ namespace MarinMol
             }
             return result;
         }
-        public void BuildRectangles(KeyValuePair<Vector2, int> item)
-        {
-            BuildDestinationRectangle(item);
-            BuildSourceRectangle(item);
-        }
 
-        public Rectangle BuildSourceRectangle(KeyValuePair<Vector2, int> item)
+        public virtual Rectangle BuildSourceRectangle(KeyValuePair<Vector2, int> item)
         {
             int x = item.Value % numberOfTilesPerRow;
             int y = item.Value / numberOfTilesPerRow;
-            if (item.Value == 19)
-            {
-                Console.WriteLine(x * pixelSize + " " + y * pixelSize);
-            }
+
+            //Console.WriteLine("fff " + (int)x * pixelSize);
             return new Rectangle(
                 x * pixelSize,
                 y * pixelSize,
@@ -77,11 +62,11 @@ namespace MarinMol
                 pixelSize
             );
         }
-
         public virtual Rectangle BuildDestinationRectangle(KeyValuePair<Vector2, int> item)
         {
             return new Rectangle(
                             (int)item.Key.X * scaleTexture,
+                   
                             (int)item.Key.Y * scaleTexture,
                             scaleTexture,
                             scaleTexture

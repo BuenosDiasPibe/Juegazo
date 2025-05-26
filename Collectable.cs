@@ -10,20 +10,16 @@ namespace Juegazo
 {
     public class Collectable : Entity
     {
-        public bool isDestroyed;
         public Collectable(Texture2D texture, Rectangle sourceRectangle, Rectangle Destrectangle, Color color) : base(texture, sourceRectangle, Destrectangle, color)
         {
-            this.isDestroyed = true;
         }
 
         public void changeThings()
         {
             Console.WriteLine("obtuvo coleccionable");
-            isDestroyed = false;
         }
-        public override void Update(GameTime gameTime, KeyboardState keyboardState, KeyboardState prevState, List<Collectable> collectables)
-        {
-            throw new NotImplementedException();
-        }
+
+        public override void Update(GameTime gameTime, List<Entity> entities, List<WorldBlock> worldBlocks, List<InteractiveBlock> interactiveBlocks)
+        {}
     }
 }

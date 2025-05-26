@@ -12,31 +12,51 @@ namespace Juegazo
         {
             value = 1;
         }
-        public override void horizontalActions(Entity entity, Rectangle collision, int _val)
+        public override void horizontalActions(Entity entity, Rectangle collision)
         {
-            if (entity.velocity.X > 0 && _val == value)
+            //change to only allow for enemies or player to use this block, not Guns nor Collectables will ever use them
+            if (entity.GetType() == typeof(Player))
             {
-                entity.Destinationrectangle.X = collision.Left - entity.Destinationrectangle.Width;
-                entity.onGround = true;
-                if(entity.jumpPressed) entity.pushBack = -20;
+                Player player = (Player)entity;
+                if (player.velocity.X > 0)
+                {
+                    entity.Destinationrectangle.X = collision.Left - entity.Destinationrectangle.Width;
+                    player.onGround = true;
+                    if (player.jumpPressed) player.pushBack = -20;
+                }
+                else if (player.velocity.X < 0)
+                {
+                    entity.Destinationrectangle.X = collision.Right;
+                    player.onGround = true;
+                    if (player.jumpPressed) player.pushBack = 20;
+                }
             }
-            else if (entity.velocity.X < 0 && _val == value)
+            else //yo cuando code repetition (es importante te lo juro)
             {
-                entity.Destinationrectangle.X = collision.Right;
-                entity.onGround = true;
-                if(entity.jumpPressed) entity.pushBack = 20;
+                if (entity.velocity.X > 0)
+                {
+                    entity.Destinationrectangle.X = collision.Left - entity.Destinationrectangle.Width;
+                }
+                else if (entity.velocity.X < 0)
+                {
+                    entity.Destinationrectangle.X = collision.Right;
+                }
             }
         }
 
-        public override void verticalActions(Entity entity, Rectangle collision, int _val)
+        public override void Update()
         {
-            if (entity.velocity.Y > 0.0f && _val == value)
+        }
+
+        public override void verticalActions(Entity entity, Rectangle collision)
+        {
+            if (entity.velocity.Y > 0.0f)
             {
                 entity.Destinationrectangle.Y = collision.Top - entity.Destinationrectangle.Height;
                 entity.velocity.Y = 1f;
                 entity.onGround = true;
             }
-            else if (entity.velocity.Y < 0.0f && _val == value)
+            else if (entity.velocity.Y < 0.0f)
             {
                 entity.velocity.Y *= 0.1f;
                 entity.Destinationrectangle.Y = collision.Bottom;
