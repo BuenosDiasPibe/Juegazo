@@ -12,16 +12,16 @@ namespace Juegazo
         public SlowDownBlock()
         {
             value = 10;
-            slowingSpeed = 2;
+            slowingSpeed = 1;
         }
         public override void horizontalActions(Entity entity, Rectangle collision)
         {
-            if (entity.GetType() == typeof(Player) && entity.velocity.X != 0)
+            if (entity is Player player && entity.velocity.X != 0)
             {
-                Player player = (Player)entity;
-                player.sprint += player.directionLeft ? slowingSpeed : -slowingSpeed;
-                //si la velocidad de sprint es mayor que el opuesto de la velocidad (-velocidad es el opuesto)
-                if (Math.Abs(player.sprint) > Math.Abs(-entity.velocity.X)) player.sprint = -entity.velocity.X * 0.5f;
+                if (player.velocity.X != 0)
+                {
+                player.velocity.X += player.directionLeft? slowingSpeed : -slowingSpeed;
+                }
             }
         }
 

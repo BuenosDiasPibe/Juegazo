@@ -8,40 +8,63 @@ namespace Juegazo
 {
     public class JumpWall : BlockType
     {
+        private float jumpStrength;
         public JumpWall()
         {
             value = 1;
+            jumpStrength = 0;
         }
         public override void horizontalActions(Entity entity, Rectangle collision)
         {
             //change to only allow for enemies or player to use this block, not Guns nor Collectables will ever use them
-            if (entity.GetType() == typeof(Player))
+            if (entity is Player player)
             {
-                Player player = (Player)entity;
                 if (player.velocity.X > 0)
                 {
                     entity.Destinationrectangle.X = collision.Left - entity.Destinationrectangle.Width;
                     player.onGround = true;
-                    if (player.jumpPressed) player.pushBack = -20;
+                    if (player.jumpPressed)
+                    {
+                        jumpMechanic(player);
+                        player.velocity.X = -20;
+                    }
                 }
+
+
                 else if (player.velocity.X < 0)
                 {
                     entity.Destinationrectangle.X = collision.Right;
                     player.onGround = true;
-                    if (player.jumpPressed) player.pushBack = 20;
+                    if (player.jumpPressed)
+                    {
+                        jumpMechanic(player);
+                        player.velocity.X = 20;
+                    }
+
+                }
+
+                else //yo cuando code repetition (es importante te lo juro)
+                {
+                    if (entity.velocity.X > 0)
+                    {
+                        entity.Destinationrectangle.X = collision.Left - entity.Destinationrectangle.Width;
+                    }
+                    else if (entity.velocity.X < 0)
+                    {
+                        entity.Destinationrectangle.X = collision.Right;
+                    }
                 }
             }
-            else //yo cuando code repetition (es importante te lo juro)
+        }
+
+        private void jumpMechanic(Player player)
+        {
+            if (player.velocity.Y > 1f)
             {
-                if (entity.velocity.X > 0)
-                {
-                    entity.Destinationrectangle.X = collision.Left - entity.Destinationrectangle.Width;
-                }
-                else if (entity.velocity.X < 0)
-                {
-                    entity.Destinationrectangle.X = collision.Right;
-                }
+                jumpStrength = 13 + player.velocity.Y ;
             }
+
+            player.jumping(jumpStrength);
         }
 
         public override void Update()

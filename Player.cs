@@ -16,9 +16,7 @@ namespace Juegazo
         private KeyboardState prevState;
 
         public bool isDestroyed;
-        public float sprint;
         public bool jumpPressed;
-        public float pushBack;
         public float verticalBoost;
 
         public Player(Texture2D texture, Rectangle sourceRectangle, Rectangle Destrectangle, Color color) : base(texture, sourceRectangle, Destrectangle, color)
@@ -26,8 +24,6 @@ namespace Juegazo
             velocity = new();
 
             onGround = true;
-            sprint = 0;
-            pushBack = 0;
             directionLeft = true;
             jumpPressed = false;
             prevState = new();
@@ -35,47 +31,17 @@ namespace Juegazo
 
         public override void Update(GameTime gameTime, List<Entity> entities, List<WorldBlock> worldBlocks, List<InteractiveBlock> interactiveBlocks)
         {
-            deleteCollectables = new();
-            foreach (Collectable collectable in entities)
-            {
-                if (collectable.Destinationrectangle.Intersects(Destinationrectangle))
-                {
-                    collectable.changeThings();
-                    deleteCollectables.Add(collectable);
-                }
-            }
-            // Apply gravity
-            velocity.Y += 0.6f;
-            velocity.Y = Math.Min(13, velocity.Y);
+            CheckCollectables(entities);
+            applyGravity();
+            ManageVerticalMovement();
+            HandleHorizontalMovement();
+            ManageCollisions(worldBlocks);
 
-            // Horizontal movement
-            velocity.X = 0;
-            if (Keyboard.GetState().IsKeyDown(Keys.A) || Keyboard.GetState().IsKeyDown(Keys.Left))
-            {
-                velocity.X = -10;
-                directionLeft = true;
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.D) || Keyboard.GetState().IsKeyDown(Keys.Right))
-            {
-                velocity.X = 10;
-                directionLeft = false;
-            }
-            // Dash (sprint)
-            if (Keyboard.GetState().IsKeyDown(Keys.B) && !prevState.IsKeyDown(Keys.B)) sprint = directionLeft ? -30 : 30;
+            prevState = Keyboard.GetState();
+        }
 
-            // Apply sprint
-            if (sprint != 0)
-            {
-                velocity.X += sprint;
-                sprint += sprint > 0 ? -1 : 1;
-            }
-
-            // Apply 'pushBack'
-            if (pushBack != 0)
-            {
-                velocity.X += pushBack;
-                pushBack += pushBack > 0 ? -1 : 1;
-            }
+        private void ManageCollisions(List<WorldBlock> worldBlocks)
+        {
             Destinationrectangle.X += (int)velocity.X;
             foreach (WorldBlock w in worldBlocks)
             {
@@ -84,13 +50,23 @@ namespace Juegazo
                     w.blockType.horizontalActions(this, w.Destinationrectangle);
                 }
             }
+            Destinationrectangle.Y += (int)velocity.Y;
+            onGround = false;
+            foreach (WorldBlock w in worldBlocks)
+            {
+                if (Destinationrectangle.Intersects(w.Destinationrectangle))
+                {
+                    w.blockType.verticalActions(this, w.Destinationrectangle);
+                }
+            }
+        }
+
+        private void ManageVerticalMovement()
+        {
             // Jumping
             jumpPressed = (Keyboard.GetState().IsKeyDown(Keys.Up) && !prevState.IsKeyDown(Keys.Up)) ||
                                (Keyboard.GetState().IsKeyDown(Keys.W) && !prevState.IsKeyDown(Keys.W));
-            if (onGround && jumpPressed)
-            {
-                velocity.Y = -12;
-            }
+            jumping(15);
             if (Keyboard.GetState().IsKeyDown(Keys.T) && !prevState.IsKeyDown(Keys.T))
             {
                 velocity.Y = -12;
@@ -108,16 +84,78 @@ namespace Juegazo
                 }
                 verticalBoost += verticalBoost > 0 ? -1 : 1;
             }
-            Destinationrectangle.Y += (int)velocity.Y;
-            onGround = false;
-            foreach (WorldBlock w in worldBlocks)
+        }
+
+        public void jumping(float jumpAmmount)
+        {
+            if (onGround && jumpPressed)
             {
-                if (Destinationrectangle.Intersects(w.Destinationrectangle))
+                velocity.Y -= jumpAmmount;
+            }
+        }
+
+        private void HandleHorizontalMovement()
+        {
+            const float MOVEMENT_SPEED = 3f;
+            const float MAX_SPEED = 60f;
+
+            //inputs
+            bool movingLeft = Keyboard.GetState().IsKeyDown(Keys.A) || Keyboard.GetState().IsKeyDown(Keys.Left);
+            bool movingRight = Keyboard.GetState().IsKeyDown(Keys.D) || Keyboard.GetState().IsKeyDown(Keys.Right);
+            // Horizontal movement
+            if (movingLeft)
+            {
+                if(!(velocity.X <= -10f))
                 {
-                    w.blockType.verticalActions(this, w.Destinationrectangle);
+                    velocity.X += -MOVEMENT_SPEED;
+                }
+                directionLeft = true;
+            }
+            if (movingRight)
+            {
+                if (!(velocity.X >= 10f))
+                {   
+                    velocity.X += MOVEMENT_SPEED;
+                }
+                directionLeft = false;
+            }
+            // Dash (sprint)
+            if (Keyboard.GetState().IsKeyDown(Keys.B) && !prevState.IsKeyDown(Keys.B)) velocity.X = directionLeft ? -20 : 20;
+
+            //max speed limit
+            velocity.X = Math.Min(Math.Max(velocity.X, -MAX_SPEED), MAX_SPEED);
+
+            if (!movingLeft && !movingRight)
+            {
+                if (Math.Abs(velocity.X) > 1)
+                {
+                    velocity.X += velocity.X > 0 ? -1 : 1;
+                }
+                else
+                {
+                    velocity.X = 0;
                 }
             }
-            prevState = Keyboard.GetState();
+        }
+
+        private void applyGravity()
+        {
+            // Apply gravity
+            velocity.Y += 0.6f;
+            velocity.Y = Math.Min(13, velocity.Y);
+        }
+
+        private void CheckCollectables(List<Entity> entities)
+        {
+            deleteCollectables = new();
+            foreach (Collectable collectable in entities)
+            {
+                if (collectable.Destinationrectangle.Intersects(Destinationrectangle))
+                {
+                    collectable.changeThings();
+                    deleteCollectables.Add(collectable);
+                }
+            }
         }
     }
 }

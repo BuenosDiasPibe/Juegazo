@@ -8,6 +8,9 @@ namespace Juegazo.Map.Blocks
 {
     public class MovementBlock : BlockType
     {
+        private bool moveRight;
+        private Rectangle rightBound;
+        private Rectangle leftBound;
         public MovementBlock()
         {
             value = 16;
@@ -23,19 +26,24 @@ namespace Juegazo.Map.Blocks
                 entity.Destinationrectangle.X = collision.Right;
             }
         }
-        public override void Update(){}
+        public override void Update() { }
 
         public void Update(WorldBlock worldBlock)
         {
-            Console.WriteLine(worldBlock.Destinationrectangle.X);
-            if (1000 > worldBlock.Destinationrectangle.X)
+            rightBound = new Rectangle(worldBlock.Destinationrectangle.Width * 18, worldBlock.Destinationrectangle.Y, worldBlock.Destinationrectangle.Width, worldBlock.Destinationrectangle.Height);
+
+            leftBound = new Rectangle(worldBlock.Destinationrectangle.Width, worldBlock.Destinationrectangle.Y, worldBlock.Destinationrectangle.Width, worldBlock.Destinationrectangle.Height);
+            if (worldBlock.Destinationrectangle.Intersects(rightBound))
             {
-                worldBlock.Destinationrectangle.X += 10;
+                moveRight = false;
             }
-            else if (100 < worldBlock.Destinationrectangle.X)
+            else if (worldBlock.Destinationrectangle.Intersects(leftBound))
             {
-                worldBlock.Destinationrectangle.X -= 200;
+                moveRight = true;
             }
+
+            int direction = moveRight ? 1 : -1;
+            worldBlock.Destinationrectangle.X += 5 * direction;
         }
 
         public override void verticalActions(Entity entity, Rectangle collision)
@@ -43,6 +51,7 @@ namespace Juegazo.Map.Blocks
             if (entity.velocity.Y > 0.0f)
             {
                 entity.Destinationrectangle.Y = collision.Top - entity.Destinationrectangle.Height;
+                entity.Destinationrectangle.X += moveRight ? 5 : -5; //little cheat, maybe change it with velocity rather than interacting with rectangle, but it works!
                 entity.velocity.Y = 1f;
                 entity.onGround = true;
             }

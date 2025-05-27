@@ -13,20 +13,18 @@ namespace Juegazo
         public SpeedUpBlock()
         {
             value = 5;
-            velocitySpeed = 2;
+            velocitySpeed = 5;
         }
         public override void horizontalActions(Entity entity, Rectangle collision)
         {
-            if (entity.GetType() == typeof(Player))
+            if (entity is Player player)
             {
-                //en parte escrito por copilot, gracias!!
-                Player player = (Player)entity;
-                player.sprint += player.directionLeft ? -velocitySpeed : velocitySpeed;
+                player.velocity.X += player.directionLeft ?  -velocitySpeed : velocitySpeed;
             }
         }
 
         public override void Update()
-        {;
+        {
         }
 
         public override void verticalActions(Entity entity, Rectangle collision)
