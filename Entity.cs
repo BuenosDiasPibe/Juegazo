@@ -15,13 +15,15 @@ namespace Juegazo
         public bool onGround;
         public bool horizontalBlockMovementAction;
         public int health;
+        public int maxHealth;
 
         public Entity(Texture2D texture, Rectangle sourceRectangle, Rectangle Destrectangle, Color color) : base(texture, sourceRectangle, Destrectangle, color)
         {
             velocity = new();
             onGround = false;
             horizontalBlockMovementAction = false;
-            health = 100;
+            maxHealth = 100;
+            health = maxHealth;
         }
         public abstract void Update(GameTime gameTime,
         List<Entity> entities, List<WorldBlock> worldBlocks,List<InteractiveBlock> interactiveBlocks);

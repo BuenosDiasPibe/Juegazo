@@ -6,6 +6,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoGameGum;
+using MonoGameGum.Forms.Controls;
 
 namespace Juegazo
 {
@@ -13,6 +15,7 @@ namespace Juegazo
     {
         private readonly ContentManager contentManager;
         private readonly GraphicsDevice graphicsDevice;
+        private SceneManager sceneManager;
 
         private const int TILESIZE = 58;
         private List<Entity> entities = new();
@@ -22,10 +25,12 @@ namespace Juegazo
         private CollectableHitboxMap collectableHitboxMap;
         private Rectangle startPlayerposition;
 
-        public TestScene(ContentManager contentManager, GraphicsDevice graphicsDevice)
+
+        public TestScene(ContentManager contentManager, GraphicsDevice graphicsDevice, GumService gum, SceneManager sceneManager)
         {
             this.contentManager = contentManager ?? throw new ArgumentNullException(nameof(contentManager));
             this.graphicsDevice = graphicsDevice ?? throw new ArgumentNullException(nameof(graphicsDevice));
+            this.sceneManager = sceneManager ?? throw new ArgumentNullException(nameof(sceneManager));
         }
 
         public void LoadContent()
@@ -122,5 +127,10 @@ namespace Juegazo
                 new Debugger(graphicsDevice).drawhitboxEntities(spriteBatch, entities, collisionMap, TILESIZE);
             }
         }
+
+        public void Initialize(Game game)
+        {
+        }
+        public void drawUI(){}
     }
 }

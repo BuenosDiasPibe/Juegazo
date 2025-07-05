@@ -7,6 +7,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoGameGum;
+using MonoGameGum.Forms.Controls;
 
 namespace MarinMol;
 
@@ -15,6 +17,8 @@ public class Game1 : Game
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
     private SceneManager sceneManager;
+    GumService gum => GumService.Default;
+
     public Game1()
     {
         _graphics = new GraphicsDeviceManager(this);
@@ -30,14 +34,15 @@ public class Game1 : Game
         _graphics.PreferredBackBufferWidth = 1280;
         _graphics.PreferredBackBufferHeight = 720;
         _graphics.ApplyChanges();
+        sceneManager.AddScene(new TitleScene(sceneManager, Content, GraphicsDevice, gum));
+        sceneManager.getScene().Initialize(this);
         base.Initialize();
     }
 
     protected override void LoadContent()
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
-
-        sceneManager.AddScene(new TestScene(Content, GraphicsDevice));
+        sceneManager.getScene().LoadContent();
     }
 
     protected override void Update(GameTime gameTime)
@@ -52,9 +57,9 @@ public class Game1 : Game
     {
 
         GraphicsDevice.Clear(Color.Black);
+        sceneManager.getScene().drawUI();
         _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
         sceneManager.getScene().Draw(gameTime, _spriteBatch);
-
         _spriteBatch.End();
         base.Draw(gameTime);
     }

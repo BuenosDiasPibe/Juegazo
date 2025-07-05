@@ -58,7 +58,7 @@ namespace Juegazo
             velocity = new Vector2();
             Destinationrectangle.X = (int)initialPosition.X;
             Destinationrectangle.Y = (int)initialPosition.Y;
-            health = 100;
+            health = maxHealth;
         }
 
         private void ManageCollisions(List<WorldBlock> worldBlocks)
