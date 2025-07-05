@@ -10,8 +10,6 @@ namespace Juegazo
     public abstract class BlockType
     {
         public int value { get; protected set; }
-        private Vector2 velocity;
-        public abstract void Update(); 
         
 
         public abstract void horizontalActions(Entity entity, Rectangle collision);

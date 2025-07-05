@@ -14,28 +14,42 @@ namespace Juegazo
         }
         public override void horizontalActions(Entity entity, Rectangle collision)
         {
-            if (entity.velocity.X > 0.0f)
+            if (entity.horizontalBlockMovementAction)
             {
-                entity.Destinationrectangle.X = collision.Left - entity.Destinationrectangle.Width;
+                if (entity.Destinationrectangle.Right >= collision.Right)
+                {
+                    entity.Destinationrectangle.X = collision.Right;
+                    entity.horizontalBlockMovementAction = false;
+                }
+                else
+                {
+                    entity.Destinationrectangle.X = collision.Left - entity.Destinationrectangle.Width;
+                    entity.horizontalBlockMovementAction = false;
+                }
             }
-            else if (entity.velocity.X < 0.0f)
+            else
             {
-                entity.Destinationrectangle.X = collision.Right;
+                if (entity.velocity.X > 0.0f)
+                {
+                    entity.Destinationrectangle.X = collision.Left - entity.Destinationrectangle.Width;
+                }
+                else if (entity.velocity.X < 0.0f)
+                {
+                    entity.Destinationrectangle.X = collision.Right;
+                }
             }
         }
 
-        public override void Update()
-        {}
 
         public override void verticalActions(Entity entity, Rectangle collision)
         {
-            if (entity.velocity.Y > 0.0f )
+            if (entity.velocity.Y > 0.0f)
             {
                 entity.Destinationrectangle.Y = collision.Top - entity.Destinationrectangle.Height;
                 entity.velocity.Y = 1f;
                 entity.onGround = true;
             }
-            else if (entity.velocity.Y < 0.0f )
+            else if (entity.velocity.Y < 0.0f)
             {
                 entity.velocity.Y *= 0.1f;
                 entity.Destinationrectangle.Y = collision.Bottom;

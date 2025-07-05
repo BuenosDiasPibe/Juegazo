@@ -18,10 +18,6 @@ namespace Juegazo
             Console.WriteLine("fuck");
         }
 
-        public override void Update()
-        {
-        }
-
         public override void verticalActions(Entity entity, Rectangle collision)
         {
             Console.WriteLine("fuck");

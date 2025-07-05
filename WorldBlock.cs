@@ -26,7 +26,6 @@ namespace Juegazo
                 // MovementBlock movementBlock = (MovementBlock)blockType; // only need this if you use the other method
                 movementBlock.Update(this);
             }
-            blockType.Update();
         }
     }
 }

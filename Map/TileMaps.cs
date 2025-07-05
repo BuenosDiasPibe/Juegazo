@@ -53,8 +53,6 @@ namespace MarinMol
         {
             int x = item.Value % numberOfTilesPerRow;
             int y = item.Value / numberOfTilesPerRow;
-
-            //Console.WriteLine("fff " + (int)x * pixelSize);
             return new Rectangle(
                 x * pixelSize,
                 y * pixelSize,
@@ -66,7 +64,6 @@ namespace MarinMol
         {
             return new Rectangle(
                             (int)item.Key.X * scaleTexture,
-                   
                             (int)item.Key.Y * scaleTexture,
                             scaleTexture,
                             scaleTexture

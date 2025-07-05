@@ -19,10 +19,6 @@ namespace Juegazo
             verticalActions(entity, collision);
         }
 
-        public override void Update()
-        {
-        }
-
         public override void verticalActions(Entity entity, Rectangle collision)
         {
             if (entity.GetType() == typeof(Player))

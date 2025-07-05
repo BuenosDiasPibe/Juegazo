@@ -15,9 +15,6 @@ namespace Juegazo
         public override void horizontalActions(Entity entity, Rectangle collision)
         { }
 
-        public override void Update()
-        {
-        }
 
         public override void verticalActions(Entity entity, Rectangle collision)
         {

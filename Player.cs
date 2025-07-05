@@ -105,7 +105,7 @@ namespace Juegazo
             // Horizontal movement
             if (movingLeft)
             {
-                if(!(velocity.X <= -10f))
+                if (!(velocity.X <= -10f))
                 {
                     velocity.X += -MOVEMENT_SPEED;
                 }
@@ -114,16 +114,13 @@ namespace Juegazo
             if (movingRight)
             {
                 if (!(velocity.X >= 10f))
-                {   
+                {
                     velocity.X += MOVEMENT_SPEED;
                 }
                 directionLeft = false;
             }
             // Dash (sprint)
             if (Keyboard.GetState().IsKeyDown(Keys.B) && !prevState.IsKeyDown(Keys.B)) velocity.X = directionLeft ? -20 : 20;
-
-            //max speed limit
-            velocity.X = Math.Min(Math.Max(velocity.X, -MAX_SPEED), MAX_SPEED);
 
             if (!movingLeft && !movingRight)
             {
@@ -136,6 +133,8 @@ namespace Juegazo
                     velocity.X = 0;
                 }
             }
+            //max speed limit
+            velocity.X = Math.Min(Math.Max(velocity.X, -MAX_SPEED), MAX_SPEED);
         }
 
         private void applyGravity()
