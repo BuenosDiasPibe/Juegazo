@@ -48,6 +48,10 @@ namespace Juegazo
                 entity.Destinationrectangle.Y = collision.Top - entity.Destinationrectangle.Height;
                 entity.velocity.Y = 1f;
                 entity.onGround = true;
+                if (entity is Player player)
+                {
+                    player.jumpCounter = 0;
+                }
             }
             else if (entity.velocity.Y < 0.0f)
             {

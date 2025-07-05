@@ -20,6 +20,7 @@ namespace Juegazo
         private readonly List<WorldBlock> worldBlocks = new();
         private HitboxTilemaps collisionMap;
         private CollectableHitboxMap collectableHitboxMap;
+        private Rectangle startPlayerposition;
 
         public TestScene(ContentManager contentManager, GraphicsDevice graphicsDevice)
         {
@@ -36,29 +37,32 @@ namespace Juegazo
             entities.Clear();
             worldBlocks.Clear();
 
+            collisionMap.tilemap = collisionMap.LoadMap("Data/testLevel.csv");
+            foreach (var worldBlock in collisionMap.tilemap)
+            {
+                if (worldBlock.Value == 60)
+                {
+                    startPlayerposition = collisionMap.BuildDestinationRectangle(worldBlock);
+                }
+                else
+                {
+                    worldBlocks.Add(collisionMap.createWorld(worldBlock));
+                }
+            }
             var player = new Player(
                 contentManager.Load<Texture2D>("playerr"),
                 new Rectangle(TILESIZE, TILESIZE, TILESIZE, TILESIZE),
-                new Rectangle(TILESIZE, TILESIZE * 2, TILESIZE, TILESIZE),
+                startPlayerposition,
                 Color.White
             );
             entities.Add(player);
 
-            collisionMap.tilemap = collisionMap.LoadMap("Data/testLevel.csv");
-            foreach (var worldBlock in collisionMap.tilemap)
-            {
-                worldBlocks.Add(collisionMap.createWorld(worldBlock));
-            }
 
             collectableHitboxMap.tilemap = collectableHitboxMap.LoadMap("Data/testLevel.csv");
             foreach (var item in collectableHitboxMap.tilemap)
             {
-                entities.Add(new Collectable(
-                    worldTexture,
-                    collectableHitboxMap.BuildSourceRectangle(item),
-                    collectableHitboxMap.BuildDestinationRectangle(item),
-                    Color.White
-                ));
+                entities.Add(collectableHitboxMap.ReturnCollectable(item, worldTexture));
+                Console.WriteLine("yeoieee");
             }
 
             entitiesDeleted.Clear();
@@ -71,7 +75,7 @@ namespace Juegazo
 
         public void Update(GameTime gameTime)
         {
-            
+
 
             foreach (var entity in entities.ToList())
             {

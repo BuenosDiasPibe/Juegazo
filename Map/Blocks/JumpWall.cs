@@ -17,32 +17,33 @@ namespace Juegazo
         public override void horizontalActions(Entity entity, Rectangle collision)
         {
             //change to only allow for enemies or player to use this block, not Guns nor Collectables will ever use them
+            //TODO: interpolar CollisionBlock a el checking de este bloque
             if (entity is Player player)
             {
                 if (player.velocity.X > 0)
                 {
                     entity.Destinationrectangle.X = collision.Left - entity.Destinationrectangle.Width;
                     player.onGround = true;
+                    player.jumpCounter = 0;
                     if (player.jumpPressed)
                     {
+                        player.incrementJumps++;
                         jumpMechanic(player);
                         player.velocity.X = -20;
                     }
                 }
-
-
                 else if (player.velocity.X < 0)
                 {
                     entity.Destinationrectangle.X = collision.Right;
                     player.onGround = true;
+                    player.jumpCounter = 0;
                     if (player.jumpPressed)
                     {
+                        player.incrementJumps++;
                         jumpMechanic(player);
                         player.velocity.X = 20;
                     }
-
                 }
-
                 else //yo cuando code repetition (es importante te lo juro)
                 {
                     if (entity.velocity.X > 0)

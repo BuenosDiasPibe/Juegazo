@@ -8,18 +8,13 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Juegazo
 {
-    public class Collectable : Entity
+    public abstract class Collectable : Entity
     {
         public Collectable(Texture2D texture, Rectangle sourceRectangle, Rectangle Destrectangle, Color color) : base(texture, sourceRectangle, Destrectangle, color)
-        {
-        }
+        { }
 
-        public void changeThings()
-        {
-            Console.WriteLine("obtuvo coleccionable");
-        }
+        public abstract void changeThings(Player player);
 
-        public override void Update(GameTime gameTime, List<Entity> entities, List<WorldBlock> worldBlocks, List<InteractiveBlock> interactiveBlocks)
-        {}
+        public override void Update(GameTime gameTime, List<Entity> entities, List<WorldBlock> worldBlocks, List<InteractiveBlock> interactiveBlocks) { }
     }
 }

@@ -18,6 +18,11 @@ namespace Juegazo
         public bool isDestroyed;
         public bool jumpPressed;
         public float verticalBoost;
+        private int numJumps;
+        public int jumpCounter;
+        public int incrementJumps;
+        public int numDash;
+        public Vector2 initialPosition;
 
         public Player(Texture2D texture, Rectangle sourceRectangle, Rectangle Destrectangle, Color color) : base(texture, sourceRectangle, Destrectangle, color)
         {
@@ -27,6 +32,11 @@ namespace Juegazo
             directionLeft = true;
             jumpPressed = false;
             prevState = new();
+            numJumps = 1;
+            jumpCounter = 0;
+            numDash = 0;
+            incrementJumps = 0;
+            initialPosition = new Vector2(Destrectangle.X, Destrectangle.Y);
         }
 
         public override void Update(GameTime gameTime, List<Entity> entities, List<WorldBlock> worldBlocks, List<InteractiveBlock> interactiveBlocks)
@@ -36,8 +46,19 @@ namespace Juegazo
             ManageVerticalMovement();
             HandleHorizontalMovement();
             ManageCollisions(worldBlocks);
+            if (health < 0)
+            {
+                handleDeath();
+            }
 
             prevState = Keyboard.GetState();
+        }
+        public void handleDeath()
+        {
+            velocity = new Vector2();
+            Destinationrectangle.X = (int)initialPosition.X;
+            Destinationrectangle.Y = (int)initialPosition.Y;
+            health = 100;
         }
 
         private void ManageCollisions(List<WorldBlock> worldBlocks)
@@ -59,18 +80,21 @@ namespace Juegazo
                     w.blockType.verticalActions(this, w.Destinationrectangle);
                 }
             }
+
+            if (!onGround && jumpCounter == 0)
+            {
+                jumpCounter++;
+            }
         }
 
         private void ManageVerticalMovement()
         {
             // Jumping
-            jumpPressed = (Keyboard.GetState().IsKeyDown(Keys.Up) && !prevState.IsKeyDown(Keys.Up)) ||
-                               (Keyboard.GetState().IsKeyDown(Keys.W) && !prevState.IsKeyDown(Keys.W));
+            jumpPressed = ( Keyboard.GetState().IsKeyDown(Keys.Up) && !prevState.IsKeyDown(Keys.Up)) || (Keyboard.GetState().IsKeyDown(Keys.W) && !prevState.IsKeyDown(Keys.W));
+
             jumping(15);
-            if (Keyboard.GetState().IsKeyDown(Keys.T) && !prevState.IsKeyDown(Keys.T))
-            {
-                velocity.Y = -12;
-            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.T) && !prevState.IsKeyDown(Keys.T)) velocity.Y = -12;
 
             // Fast fall
             if (Keyboard.GetState().IsKeyDown(Keys.S) || Keyboard.GetState().IsKeyDown(Keys.Down)) velocity.Y += 10;
@@ -88,9 +112,15 @@ namespace Juegazo
 
         public void jumping(float jumpAmmount)
         {
-            if (onGround && jumpPressed)
+            if (incrementJumps > 0 && jumpPressed)
             {
                 velocity.Y -= jumpAmmount;
+                incrementJumps--;   
+            }
+            else if (onGround && jumpPressed && jumpCounter < numJumps)
+            {
+                velocity.Y -= jumpAmmount;
+                jumpCounter++;
             }
         }
 
@@ -147,11 +177,11 @@ namespace Juegazo
         private void CheckCollectables(List<Entity> entities)
         {
             deleteCollectables = new();
-            foreach (Collectable collectable in entities)
+            foreach (Entity entity in entities)
             {
-                if (collectable.Destinationrectangle.Intersects(Destinationrectangle))
+                if (entity is Collectable collectable && collectable.Destinationrectangle.Intersects(Destinationrectangle))
                 {
-                    collectable.changeThings();
+                    collectable.changeThings(this);
                     deleteCollectables.Add(collectable);
                 }
             }

@@ -22,6 +22,7 @@ namespace Juegazo.Map.Blocks
         public override void horizontalActions(Entity entity, Rectangle collision)
         {
             entity.horizontalBlockMovementAction = true;
+            int direction = moveRight ? -1 : 1; 
             if (entity.velocity.X > 0.0f)
             {
                 entity.Destinationrectangle.X = collision.Left - entity.Destinationrectangle.Width;
@@ -37,11 +38,11 @@ namespace Juegazo.Map.Blocks
             }
             else if (entity.Destinationrectangle.Right > collision.Right)
             {
-                entity.velocity.X += velocityToEntity;
+                entity.velocity.X += velocityToEntity * direction;
             }
             else if (entity.Destinationrectangle.Left < collision.Left)
             {
-                entity.velocity.X -= velocityToEntity;
+                entity.velocity.X -= velocityToEntity * direction;
             }
         }
 
@@ -78,6 +79,10 @@ namespace Juegazo.Map.Blocks
                 }
                 entity.velocity.Y = 1f;
                 entity.onGround = true;
+                if (entity is Player player)
+                {
+                    player.jumpCounter = 0;
+                }
                 entity.horizontalBlockMovementAction = false;
             }
             else if (entity.velocity.Y < 0.0f)
