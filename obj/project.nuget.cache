@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "R67Zw7rK/Xs=",
+  "dgSpecHash": "Sf8g7yidQqAodTk1gOB1ITjr5ZYwEHRo91YZ0YaLFqBrSS0gAymUKnuGPxl0i9DyLmBQwDpAnAd32VoAb8Ky8w==",
   "success": true,
-  "projectFilePath": "/home/clumpl/Documentos/Programacion/Juegazo/MarinMol.csproj",
+  "projectFilePath": "/home/clumpl/Documentos/Juegazo/MarinMol.csproj",
   "expectedPackageFiles": [
     "/home/clumpl/.nuget/packages/flatredball.gumcommon/2025.5.1.1/flatredball.gumcommon.2025.5.1.1.nupkg.sha512",
     "/home/clumpl/.nuget/packages/flatredball.gumdatatypes/2025.5.1.1/flatredball.gumdatatypes.2025.5.1.1.nupkg.sha512",
@@ -19,7 +19,8 @@
     "/home/clumpl/.nuget/packages/system.memory/4.5.3/system.memory.4.5.3.nupkg.sha512",
     "/home/clumpl/.nuget/packages/system.numerics.vectors/4.5.0/system.numerics.vectors.4.5.0.nupkg.sha512",
     "/home/clumpl/.nuget/packages/system.valuetuple/4.5.0/system.valuetuple.4.5.0.nupkg.sha512",
-    "/home/clumpl/.nuget/packages/textcopy/6.2.1/textcopy.6.2.1.nupkg.sha512"
+    "/home/clumpl/.nuget/packages/textcopy/6.2.1/textcopy.6.2.1.nupkg.sha512",
+    "/home/clumpl/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.15/microsoft.aspnetcore.app.ref.8.0.15.nupkg.sha512"
   ],
   "logs": []
 }

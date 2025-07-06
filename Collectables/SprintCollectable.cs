@@ -15,7 +15,7 @@ namespace Juegazo.Collectables
 
         public override void changeThings(Player player)
         {
-            Console.WriteLine("ayyyy");
+            player.dashCounter += 3;
         }
     }
 }

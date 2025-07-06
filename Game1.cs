@@ -35,20 +35,21 @@ public class Game1 : Game
         _graphics.PreferredBackBufferHeight = 720;
         _graphics.ApplyChanges();
         sceneManager.AddScene(new TitleScene(sceneManager, Content, GraphicsDevice, gum));
-        sceneManager.getScene().Initialize(this);
+        sceneManager.GetScene().Initialize(this);
         base.Initialize();
     }
 
     protected override void LoadContent()
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
-        sceneManager.getScene().LoadContent();
+        sceneManager.GetScene().LoadContent();
+        Console.WriteLine(sceneManager.GetScene()); 
     }
 
     protected override void Update(GameTime gameTime)
     {
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape)) Exit();
-        sceneManager.getScene().Update(gameTime);
+        sceneManager.GetScene().Update(gameTime);
 
         base.Update(gameTime);
     }
@@ -57,9 +58,8 @@ public class Game1 : Game
     {
 
         GraphicsDevice.Clear(Color.Black);
-        sceneManager.getScene().drawUI();
         _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
-        sceneManager.getScene().Draw(gameTime, _spriteBatch);
+        sceneManager.GetScene().Draw(gameTime, _spriteBatch);
         _spriteBatch.End();
         base.Draw(gameTime);
     }

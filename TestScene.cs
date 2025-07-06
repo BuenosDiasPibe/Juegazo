@@ -2,12 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Gum.Wireframe;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGameGum;
 using MonoGameGum.Forms.Controls;
+using RenderingLibrary.Graphics;
 
 namespace Juegazo
 {
@@ -24,13 +26,18 @@ namespace Juegazo
         private HitboxTilemaps collisionMap;
         private CollectableHitboxMap collectableHitboxMap;
         private Rectangle startPlayerposition;
+        GumService gum;
 
 
-        public TestScene(ContentManager contentManager, GraphicsDevice graphicsDevice, GumService gum, SceneManager sceneManager)
+        public TestScene(ContentManager contentManager, 
+        GraphicsDevice graphicsDevice, 
+        GumService gum, 
+        SceneManager sceneManager)
         {
             this.contentManager = contentManager ?? throw new ArgumentNullException(nameof(contentManager));
             this.graphicsDevice = graphicsDevice ?? throw new ArgumentNullException(nameof(graphicsDevice));
             this.sceneManager = sceneManager ?? throw new ArgumentNullException(nameof(sceneManager));
+            this.gum = gum;
         }
 
         public void LoadContent()
@@ -67,7 +74,6 @@ namespace Juegazo
             foreach (var item in collectableHitboxMap.tilemap)
             {
                 entities.Add(collectableHitboxMap.ReturnCollectable(item, worldTexture));
-                Console.WriteLine("yeoieee");
             }
 
             entitiesDeleted.Clear();
@@ -103,6 +109,9 @@ namespace Juegazo
             foreach (var worldBlock in worldBlocks)
             {
                 worldBlock.Update();
+                if(worldBlock.blockType is CompleteBlock completeBlock){
+                    if(completeBlock.changeScene) sceneManager.AddScene(new EndEndScene(sceneManager, contentManager, graphicsDevice, gum));
+                }
             }
 
             foreach (var entity in entitiesDeleted.Distinct())
@@ -114,6 +123,7 @@ namespace Juegazo
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
+            
             foreach (var worldBlock in worldBlocks)
             {
                 worldBlock.DrawSprite(spriteBatch);
@@ -131,6 +141,5 @@ namespace Juegazo
         public void Initialize(Game game)
         {
         }
-        public void drawUI(){}
     }
 }

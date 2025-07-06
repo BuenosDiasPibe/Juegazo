@@ -9,18 +9,20 @@ namespace Juegazo
 {
     public class CompleteBlock : BlockType
     {
+        public bool changeScene;
         public CompleteBlock()
         {
             value = 15;
+            changeScene = false;
         }
         public override void horizontalActions(Entity entity, Rectangle collision)
         {
-            Console.WriteLine("fuck");
+            changeScene = true;
         }
 
         public override void verticalActions(Entity entity, Rectangle collision)
         {
-            Console.WriteLine("fuck");
+            changeScene = true;
         }
     }
 }

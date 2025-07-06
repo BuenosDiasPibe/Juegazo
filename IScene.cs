@@ -15,6 +15,5 @@ namespace Juegazo
         public void UnloadContent();
         public void Update(GameTime gameTime);
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch);
-        public void drawUI();
     }
 }

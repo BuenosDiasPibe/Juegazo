@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
 
 namespace Juegazo
 {
@@ -21,9 +22,15 @@ namespace Juegazo
         {
             sceneManager.Pop();
         }
-        public IScene getScene()
+        public IScene GetScene()
         {
             return sceneManager.Peek();
+        }
+        public void RemoveAllScenes(){
+            sceneManager.Clear();
+        }
+        public bool hasScenes(){
+            return sceneManager.Count > 2;
         }
     }
 }

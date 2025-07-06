@@ -65,7 +65,7 @@ namespace Juegazo
                 jumpStrength = 13 + player.velocity.Y ;
             }
 
-            player.jumping(jumpStrength);
+            player.Jumping(jumpStrength);
         }
 
 
