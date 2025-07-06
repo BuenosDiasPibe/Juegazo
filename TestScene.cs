@@ -27,11 +27,12 @@ namespace Juegazo
         private CollectableHitboxMap collectableHitboxMap;
         private Rectangle startPlayerposition;
         GumService gum;
+        private SpriteFont font;
 
 
-        public TestScene(ContentManager contentManager, 
-        GraphicsDevice graphicsDevice, 
-        GumService gum, 
+        public TestScene(ContentManager contentManager,
+        GraphicsDevice graphicsDevice,
+        GumService gum,
         SceneManager sceneManager)
         {
             this.contentManager = contentManager ?? throw new ArgumentNullException(nameof(contentManager));
@@ -77,6 +78,7 @@ namespace Juegazo
             }
 
             entitiesDeleted.Clear();
+            font = contentManager.Load<SpriteFont>("sheesh");
         }
 
         public void UnloadContent()
@@ -122,8 +124,7 @@ namespace Juegazo
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
-        {
-            
+        {         
             foreach (var worldBlock in worldBlocks)
             {
                 worldBlock.DrawSprite(spriteBatch);
@@ -131,6 +132,10 @@ namespace Juegazo
             foreach (var entity in entities)
             {
                 entity.DrawSprite(spriteBatch);
+                if (entity is Player player)
+                {
+                    spriteBatch.DrawString(font, $"Health {player.health}/{player.maxHealth}\nSprints: {player.dashCounter}", new Vector2(0, 40), Color.White);
+                }
             }
             if (Keyboard.GetState().IsKeyDown(Keys.F3))
             {

@@ -44,8 +44,7 @@ namespace Juegazo
         }
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            gum.Draw();
-            
+            gum.Draw();            
         }
 
         public void Initialize(Game game)

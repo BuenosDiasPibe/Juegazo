@@ -1,6 +1,1 @@
 Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
-"/home/clumpl/Documentos/Juegazo/Content/jugador.png","/home/clumpl/Documentos/Juegazo/Content/bin/DesktopGL/Content/jugador.xnb","TextureProcessor","Texture2DContent",29737,65621,0.2153629
-"/home/clumpl/Documentos/Juegazo/Content/player_body.png","/home/clumpl/Documentos/Juegazo/Content/bin/DesktopGL/Content/player_body.xnb","TextureProcessor","Texture2DContent",790,160085,0.0341394
-"/home/clumpl/Documentos/Juegazo/Content/player.png","/home/clumpl/Documentos/Juegazo/Content/bin/DesktopGL/Content/player.xnb","TextureProcessor","Texture2DContent",9049,160085,0.01417
-"/home/clumpl/Documentos/Juegazo/Content/playerr.png","/home/clumpl/Documentos/Juegazo/Content/bin/DesktopGL/Content/playerr.xnb","TextureProcessor","Texture2DContent",100,341,0.0016523
-"/home/clumpl/Documentos/Juegazo/Content/worldTexture.png","/home/clumpl/Documentos/Juegazo/Content/bin/DesktopGL/Content/worldTexture.xnb","TextureProcessor","Texture2DContent",917,32853,0.0028571

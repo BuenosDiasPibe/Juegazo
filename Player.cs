@@ -155,9 +155,9 @@ namespace Juegazo
                 directionLeft = false;
             }
             // Dash (sprint)
-            if (numDash < dashCounter && Keyboard.GetState().IsKeyDown(Keys.B) && !prevState.IsKeyDown(Keys.B)) {
+            if (dashCounter > 0 && Keyboard.GetState().IsKeyDown(Keys.B) && !prevState.IsKeyDown(Keys.B)) {
                 velocity.X += directionLeft ? -20 : 20;
-                numDash++;
+                dashCounter--;
             }
 
             if (!movingLeft && !movingRight)
