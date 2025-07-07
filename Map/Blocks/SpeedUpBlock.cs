@@ -13,7 +13,7 @@ namespace Juegazo
         public SpeedUpBlock()
         {
             value = 5;
-            velocitySpeed = 5;
+            velocitySpeed = 3;
         }
         public override void horizontalActions(Entity entity, Rectangle collision)
         {

@@ -29,7 +29,7 @@ namespace Juegazo
                     {
                         player.incrementJumps++;
                         jumpMechanic(player);
-                        player.velocity.X = -20;
+                        player.velocity.X = -11;
                     }
                 }
                 else if (player.velocity.X < 0)
@@ -41,7 +41,7 @@ namespace Juegazo
                     {
                         player.incrementJumps++;
                         jumpMechanic(player);
-                        player.velocity.X = 20;
+                        player.velocity.X = 11;
                     }
                 }
                 else //yo cuando code repetition (es importante te lo juro)
@@ -62,7 +62,8 @@ namespace Juegazo
         {
             if (player.velocity.Y > 1f)
             {
-                jumpStrength = 13 + player.velocity.Y ;
+                jumpStrength = 11 + player.velocity.Y;
+                Math.Min(Math.Max(jumpStrength, -16), 16);
             }
 
             player.Jumping(jumpStrength);

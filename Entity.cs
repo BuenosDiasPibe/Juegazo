@@ -22,7 +22,7 @@ namespace Juegazo
             velocity = new();
             onGround = false;
             horizontalBlockMovementAction = false;
-            maxHealth = 100;
+            maxHealth = 1;
             health = maxHealth;
         }
         public abstract void Update(GameTime gameTime,

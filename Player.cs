@@ -40,7 +40,7 @@ namespace Juegazo
 
             numDash = 0;
             dashCounter = 0;
-            
+
             initialPosition = new Vector2(Destrectangle.X, Destrectangle.Y);
         }
 
@@ -97,9 +97,9 @@ namespace Juegazo
             // Jumping
             jumpPressed = ( Keyboard.GetState().IsKeyDown(Keys.Up) && !prevState.IsKeyDown(Keys.Up)) || (Keyboard.GetState().IsKeyDown(Keys.W) && !prevState.IsKeyDown(Keys.W));
 
-            Jumping(15);
+            Jumping(11);
 
-            if (Keyboard.GetState().IsKeyDown(Keys.T) && !prevState.IsKeyDown(Keys.T)) velocity.Y = -12;
+            if (Keyboard.GetState().IsKeyDown(Keys.T) && !prevState.IsKeyDown(Keys.T)) velocity.Y = -7;
 
             // Fast fall
             if (Keyboard.GetState().IsKeyDown(Keys.S) || Keyboard.GetState().IsKeyDown(Keys.Down)) velocity.Y += 10;
@@ -107,7 +107,7 @@ namespace Juegazo
             if (verticalBoost != 0)
             {
                 velocity.Y += verticalBoost;
-                if (velocity.Y < -12)
+                if (velocity.Y < -10)
                 {
                     verticalBoost = 0;
                 }
@@ -119,7 +119,7 @@ namespace Juegazo
         {
             if (incrementJumps > 0 && jumpPressed)
             {
-                velocity.Y -= jumpAmmount;
+                velocity.Y -= Math.Min(Math.Max(jumpAmmount, -11), 11);
                 incrementJumps--;   
             }
             else if (onGround && jumpPressed && jumpCounter < numJumps)
@@ -132,7 +132,7 @@ namespace Juegazo
         private void HandleHorizontalMovement()
         {
             const float MOVEMENT_SPEED = 3f;
-            const float MAX_SPEED = 60f;
+            const float MAX_SPEED = 30f;
 
             //inputs
             bool movingLeft = Keyboard.GetState().IsKeyDown(Keys.A) || Keyboard.GetState().IsKeyDown(Keys.Left);
@@ -140,7 +140,7 @@ namespace Juegazo
             // Horizontal movement
             if (movingLeft)
             {
-                if (!(velocity.X <= -10f))
+                if (!(velocity.X <= -5f))
                 {
                     velocity.X += -MOVEMENT_SPEED;
                 }
@@ -148,7 +148,7 @@ namespace Juegazo
             }
             if (movingRight)
             {
-                if (!(velocity.X >= 10f))
+                if (!(velocity.X >= 5f))
                 {
                     velocity.X += MOVEMENT_SPEED;
                 }
@@ -156,7 +156,7 @@ namespace Juegazo
             }
             // Dash (sprint)
             if (dashCounter > 0 && Keyboard.GetState().IsKeyDown(Keys.B) && !prevState.IsKeyDown(Keys.B)) {
-                velocity.X += directionLeft ? -20 : 20;
+                velocity.X += directionLeft ? -7 : 7;
                 dashCounter--;
             }
 
@@ -179,7 +179,7 @@ namespace Juegazo
         {
             // Apply gravity
             velocity.Y += 0.6f;
-            velocity.Y = Math.Min(13, velocity.Y);
+            velocity.Y = Math.Min(10, velocity.Y);
         }
 
         private void CheckCollectables(List<Entity> entities)

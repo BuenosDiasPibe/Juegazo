@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameGum;
 using MonoGameGum.Forms.Controls;
+using MonoGameGum.GueDeriving;
 
 namespace Juegazo
 {
@@ -28,13 +29,24 @@ namespace Juegazo
             };
             panel.Anchor(Anchor.Center);
             panel.AddToRoot();
-
+            TextRuntime name = new();
+            name.Text = "MARIN MOL";
+            name.FontScale = 2;
+            name.Red = 243;
+            name.Green = 139;
+            name.Blue = 168;
+            name.Anchor(Anchor.Top);
+            TextRuntime description = new();
+            description.Text = "we ballin so hawd!!!";
+            description.Height = 20;
             Button playButton = new()
             {
                 Text = "Play"
             };
             playButton.Click += StartGame();
-
+            playButton.Anchor(Anchor.Center);
+            panel.AddChild(name);
+            panel.AddChild(description);
             panel.AddChild(playButton);
         }
 
@@ -44,7 +56,7 @@ namespace Juegazo
         }
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            gum.Draw();            
+            gum.Draw();
         }
 
         public void Initialize(Game game)
@@ -56,7 +68,8 @@ namespace Juegazo
         public void LoadContent()
         {
             Console.WriteLine("First screen");
-            if(manager.hasScenes()){
+            if (manager.hasScenes())
+            {
                 CreateShit();
             }
         }

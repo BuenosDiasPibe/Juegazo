@@ -8,12 +8,16 @@
         "."
     ],
     "fileStates": {
+        "polno.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
         "sin test1.tmx": {
-            "scale": 3.20625,
+            "scale": 3,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 79.8440545808967,
-                "y": 47.56335282651073
+                "x": 97.33333333333333,
+                "y": 47.499999999999986
             }
         },
         "worldTexture.tsx": {
@@ -23,12 +27,12 @@
     },
     "last.exportedFilePath": "/home/clumpl/Documentos/Programacion/Juegazo/Data",
     "last.imagePath": "/home/clumpl/Documentos/Programacion/Juegazo/Content",
-    "map.height": 12,
+    "map.height": 22,
     "map.lastUsedExportFilter": "Archivos CSV (*.csv)",
     "map.lastUsedFormat": "tmx",
     "map.tileHeight": 8,
     "map.tileWidth": 8,
-    "map.width": 20,
+    "map.width": 40,
     "openFiles": [
         "sin test1.tmx",
         "worldTexture.tsx"
@@ -36,6 +40,7 @@
     "project": "tilemaps2.tiled-project",
     "recentFiles": [
         "worldTexture.tsx",
+        "polno.tsx",
         "sin test1.tmx"
     ],
     "tileset.lastUsedFormat": "tsx",

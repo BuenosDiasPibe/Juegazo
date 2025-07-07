@@ -19,7 +19,7 @@ namespace Juegazo
         private readonly GraphicsDevice graphicsDevice;
         private SceneManager sceneManager;
 
-        private const int TILESIZE = 58;
+        private const int TILESIZE = 32;
         private List<Entity> entities = new();
         private readonly List<Entity> entitiesDeleted = new();
         private readonly List<WorldBlock> worldBlocks = new();
@@ -43,6 +43,7 @@ namespace Juegazo
 
         public void LoadContent()
         {
+            string CSVPath = "Data/sesFinal2.csv";
             var worldTexture = contentManager.Load<Texture2D>("worldTexture");
             collisionMap = new HitboxTilemaps(worldTexture, TILESIZE, 8, 8);
             collectableHitboxMap = new CollectableHitboxMap(worldTexture, TILESIZE, 8, 8, 0.5f);
@@ -50,28 +51,24 @@ namespace Juegazo
             entities.Clear();
             worldBlocks.Clear();
 
-            collisionMap.tilemap = collisionMap.LoadMap("Data/testLevel.csv");
+            collisionMap.tilemap = collisionMap.LoadMap(CSVPath);
             foreach (var worldBlock in collisionMap.tilemap)
             {
                 if (worldBlock.Value == 60)
                 {
                     startPlayerposition = collisionMap.BuildDestinationRectangle(worldBlock);
+                    entities.Add(new Player(contentManager.Load<Texture2D>("playerr"),
+                    new Rectangle(TILESIZE, TILESIZE, TILESIZE, TILESIZE),
+                    startPlayerposition,
+                    Color.White));
                 }
                 else
                 {
                     worldBlocks.Add(collisionMap.createWorld(worldBlock));
                 }
             }
-            var player = new Player(
-                contentManager.Load<Texture2D>("playerr"),
-                new Rectangle(TILESIZE, TILESIZE, TILESIZE, TILESIZE),
-                startPlayerposition,
-                Color.White
-            );
-            entities.Add(player);
 
-
-            collectableHitboxMap.tilemap = collectableHitboxMap.LoadMap("Data/testLevel.csv");
+            collectableHitboxMap.tilemap = collectableHitboxMap.LoadMap(CSVPath);
             foreach (var item in collectableHitboxMap.tilemap)
             {
                 entities.Add(collectableHitboxMap.ReturnCollectable(item, worldTexture));
@@ -111,8 +108,9 @@ namespace Juegazo
             foreach (var worldBlock in worldBlocks)
             {
                 worldBlock.Update();
-                if(worldBlock.blockType is CompleteBlock completeBlock){
-                    if(completeBlock.changeScene) sceneManager.AddScene(new EndEndScene(sceneManager, contentManager, graphicsDevice, gum));
+                if (worldBlock.blockType is CompleteBlock completeBlock)
+                {
+                    if (completeBlock.changeScene) sceneManager.AddScene(new EndEndScene(sceneManager, contentManager, graphicsDevice, gum));
                 }
             }
 
@@ -124,7 +122,7 @@ namespace Juegazo
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
-        {         
+        {
             foreach (var worldBlock in worldBlocks)
             {
                 worldBlock.DrawSprite(spriteBatch);

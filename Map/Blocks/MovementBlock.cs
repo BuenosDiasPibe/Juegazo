@@ -16,7 +16,7 @@ namespace Juegazo.Map.Blocks
         public MovementBlock()
         {
             value = 16;
-            velocity = 5;
+            velocity = 2;
             velocityToEntity = velocity * 1.2f;
         }
         public override void horizontalActions(Entity entity, Rectangle collision)
@@ -26,11 +26,11 @@ namespace Juegazo.Map.Blocks
             if (entity.velocity.X > 0.0f)
             {
                 entity.Destinationrectangle.X = collision.Left - entity.Destinationrectangle.Width;
-                if (entity.velocity.X > 20) entity.velocity.X *= 0.1f;
+                if (entity.velocity.X > 10) entity.velocity.X *= 0.1f;
             }
             else if (entity.velocity.X < 0.0f)
             {
-                if (entity.velocity.X < -20)
+                if (entity.velocity.X < -10)
                 {
                     entity.velocity.X *= 0.1f;
                 }
@@ -48,7 +48,7 @@ namespace Juegazo.Map.Blocks
 
         public void Update(WorldBlock worldBlock)
         {
-            rightBound = new Rectangle(worldBlock.Destinationrectangle.Width * 18, worldBlock.Destinationrectangle.Y, worldBlock.Destinationrectangle.Width, worldBlock.Destinationrectangle.Height);
+            rightBound = new Rectangle(worldBlock.Destinationrectangle.Width * 32, worldBlock.Destinationrectangle.Y, worldBlock.Destinationrectangle.Width, worldBlock.Destinationrectangle.Height);
 
             leftBound = new Rectangle(worldBlock.Destinationrectangle.Width, worldBlock.Destinationrectangle.Y, worldBlock.Destinationrectangle.Width, worldBlock.Destinationrectangle.Height);
             if (worldBlock.Destinationrectangle.Intersects(rightBound))
