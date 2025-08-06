@@ -24,8 +24,9 @@ namespace Juegazo
         public int numDash;
         public Vector2 initialPosition;
         public int dashCounter;
+        public Camera camera;
 
-        public Player(Texture2D texture, Rectangle sourceRectangle, Rectangle Destrectangle, Color color) : base(texture, sourceRectangle, Destrectangle, color)
+        public Player(Texture2D texture, Rectangle sourceRectangle, Rectangle Destrectangle, Color color, Camera camera) : base(texture, sourceRectangle, Destrectangle, color)
         {
             velocity = new();
 
@@ -42,6 +43,7 @@ namespace Juegazo
             dashCounter = 0;
 
             initialPosition = new Vector2(Destrectangle.X, Destrectangle.Y);
+            this.camera = camera;
         }
 
         public override void Update(GameTime gameTime, List<Entity> entities, List<WorldBlock> worldBlocks, List<InteractiveBlock> interactiveBlocks)
@@ -57,6 +59,7 @@ namespace Juegazo
             }
 
             prevState = Keyboard.GetState();
+            camera.Position = new Vector2(Destinationrectangle.X, Destinationrectangle.Y);
         }
         public void HandleDeath()
         {
@@ -155,7 +158,7 @@ namespace Juegazo
                 directionLeft = false;
             }
             // Dash (sprint)
-            if (dashCounter > 0 && Keyboard.GetState().IsKeyDown(Keys.B) && !prevState.IsKeyDown(Keys.B)) {
+            if (dashCounter > 0 && Keyboard.GetState().IsKeyDown(Keys.LeftShift) && !prevState.IsKeyDown(Keys.LeftShift)) {
                 velocity.X += directionLeft ? -7 : 7;
                 dashCounter--;
             }

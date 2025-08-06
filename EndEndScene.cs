@@ -8,17 +8,18 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameGum;
 using MonoGameGum.Forms.Controls;
+using MonoGameGum.GueDeriving;
 
 namespace Juegazo
 {
-    public class EndEndScene : IScene
+    public class EndScene : IScene
     {
         GumService gum;
         ContentManager cmanager;
         GraphicsDevice cdevice;
         SceneManager manager;
 
-        public EndEndScene(SceneManager manager, ContentManager contentManager, GraphicsDevice graphicsDevice, GumService gum)
+        public EndScene(SceneManager manager, ContentManager contentManager, GraphicsDevice graphicsDevice, GumService gum)
         {
             this.manager = manager;
             this.cmanager = contentManager;
@@ -34,7 +35,8 @@ namespace Juegazo
             panel.AddToRoot();
             panel.Spacing = 3;
             panel.Anchor(Anchor.Center);
-
+            TextRuntime end = new();
+            end.Text = "game finished!";
             Button playButton = new()
             {
                 Text = "Retry"
@@ -45,6 +47,7 @@ namespace Juegazo
                 Text = "Main Menu"
             };
             MainMenu.Click += MenuMain();
+            panel.AddChild(end);
             panel.AddChild(playButton);
             panel.AddChild(MainMenu);
         }
@@ -63,6 +66,7 @@ namespace Juegazo
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             gum.Draw();
+            spriteBatch.End();
         }
 
         public void Initialize(Game game)

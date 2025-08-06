@@ -59,7 +59,7 @@ public class Game1 : Game
         GraphicsDevice.Clear(new Color(30,30,46));
         _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
         sceneManager.GetScene().Draw(gameTime, _spriteBatch);
-        _spriteBatch.End();
+        //_spriteBatch.End();
         base.Draw(gameTime);
     }
 }
