@@ -28,20 +28,19 @@ namespace Juegazo
         private Rectangle startPlayerposition;
         GumService gum;
         private SpriteFont font;
-        private Camera testCamera;
+        Camera camera;
 
         public TestScene(ContentManager contentManager,
         GraphicsDevice graphicsDevice,
         GumService gum,
-        SceneManager sceneManager)
+        SceneManager sceneManager,
+        Camera camera)
         {
             this.contentManager = contentManager ?? throw new ArgumentNullException(nameof(contentManager));
             this.graphicsDevice = graphicsDevice ?? throw new ArgumentNullException(nameof(graphicsDevice));
             this.sceneManager = sceneManager ?? throw new ArgumentNullException(nameof(sceneManager));
             this.gum = gum;
-            testCamera = new Camera(1280, 720); //TODO: buscar una mejor forma de poner las dimensiones de la pantalla
-            testCamera.Origin = new Vector2(1280 / 2, 720 / 2);
-            testCamera.Zoom = 2;
+            this.camera = camera;
         }
 
         public void LoadContent()
@@ -61,9 +60,9 @@ namespace Juegazo
                 {
                     startPlayerposition = collisionMap.BuildDestinationRectangle(worldBlock);
                     entities.Add(new Player(contentManager.Load<Texture2D>("playerr"),
-                    new Rectangle(TILESIZE, TILESIZE, TILESIZE, TILESIZE),
-                    startPlayerposition,
-                    Color.White, testCamera));
+                                 new Rectangle(TILESIZE, TILESIZE, TILESIZE, TILESIZE),
+                                 startPlayerposition,
+                                 Color.White));
                 }
                 else
                 {
@@ -79,7 +78,8 @@ namespace Juegazo
 
             entitiesDeleted.Clear();
             font = contentManager.Load<SpriteFont>("sheesh");
-            
+            camera.Origin = new Vector2(camera.Viewport.Width / 2, camera.Viewport.Height / 2);
+            camera.Zoom = 2;
         }
 
         public void UnloadContent()
@@ -89,15 +89,13 @@ namespace Juegazo
 
         public void Update(GameTime gameTime)
         {
-
-
             foreach (var entity in entities.ToList())
             {
                 switch (entity)
                 {
                     case Player player:
                         var nonPlayers = entities.Where(e => e is not Player).ToList();
-                        player.Update(gameTime, nonPlayers, worldBlocks, new());
+                        player.Update(gameTime, nonPlayers, worldBlocks, new(), camera);
                         entitiesDeleted.AddRange(player.deleteCollectables);
                         break;
                     case Collectable collectable:
@@ -114,7 +112,7 @@ namespace Juegazo
                 worldBlock.Update();
                 if (worldBlock.blockType is CompleteBlock completeBlock)
                 {
-                    if (completeBlock.changeScene) sceneManager.AddScene(new EndScene(sceneManager, contentManager, graphicsDevice, gum));
+                    if (completeBlock.changeScene) sceneManager.AddScene(new EndScene(sceneManager, contentManager, graphicsDevice, gum, camera));
                 }
             }
 
@@ -123,15 +121,10 @@ namespace Juegazo
                 entities.Remove(entity);
             }
             entitiesDeleted.Clear();
-            if (Keyboard.GetState().IsKeyDown(Keys.O)) testCamera.Zoom += 0.2f;
-            if (Keyboard.GetState().IsKeyDown(Keys.P)) testCamera.Zoom -= 0.2f;
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            //TODO: cambiar la camara para que sea algo de Game1, y que cuando inicie se cambie a la camara del jugador (testScene).
-            spriteBatch.End();
-            spriteBatch.Begin(transformMatrix: testCamera.Matrix, samplerState: SamplerState.PointClamp);
             foreach (var worldBlock in worldBlocks)
             {
                 worldBlock.DrawSprite(spriteBatch);
@@ -139,20 +132,26 @@ namespace Juegazo
             foreach (var entity in entities)
             {
                 entity.DrawSprite(spriteBatch);
-                if (entity is Player player)
-                {
-                    spriteBatch.DrawString(font, $"Health {player.health}/{player.maxHealth}\nSprints: {player.dashCounter}\nJumpBoosts: {player.incrementJumps}", new Vector2(TILESIZE, TILESIZE), Color.White);
-                }
             }
             if (Keyboard.GetState().IsKeyDown(Keys.F3))
             {
                 new Debugger(graphicsDevice).drawhitboxEntities(spriteBatch, entities, collisionMap, TILESIZE);
             }
-            spriteBatch.End();
         }
 
         public void Initialize(Game game)
         {
+        }
+        public void DrawUI(GameTime gameTime, SpriteBatch spriteBatch)
+        {
+            foreach (var entity in entities)
+            {
+                if (entity is Player player)
+                {
+                    spriteBatch.DrawString(font, $"Health {player.health}/{player.maxHealth}\nSprints: {player.dashCounter}\nJumpBoosts: {player.incrementJumps}", new Vector2(TILESIZE, TILESIZE), Color.White);
+                    break;
+                }
+            }
         }
     }
 }

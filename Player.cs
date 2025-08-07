@@ -24,9 +24,16 @@ namespace Juegazo
         public int numDash;
         public Vector2 initialPosition;
         public int dashCounter;
-        public Camera camera;
 
-        public Player(Texture2D texture, Rectangle sourceRectangle, Rectangle Destrectangle, Color color, Camera camera) : base(texture, sourceRectangle, Destrectangle, color)
+        private int lookAhead;
+        int cameraHorizontal = 0;
+        public int cameraVertical = 0;
+        public Camera camera;
+        public bool zoomInCamera;
+        public bool zoomOutCamera;
+        public GameTime gameTime;
+
+        public Player(Texture2D texture, Rectangle sourceRectangle, Rectangle Destrectangle, Color color) : base(texture, sourceRectangle, Destrectangle, color)
         {
             velocity = new();
 
@@ -41,13 +48,14 @@ namespace Juegazo
 
             numDash = 0;
             dashCounter = 0;
+            lookAhead = 0;
 
             initialPosition = new Vector2(Destrectangle.X, Destrectangle.Y);
-            this.camera = camera;
         }
 
         public override void Update(GameTime gameTime, List<Entity> entities, List<WorldBlock> worldBlocks, List<InteractiveBlock> interactiveBlocks)
         {
+            this.gameTime = gameTime;
             CheckCollectables(entities);
             ApplyGravity();
             ManageVerticalMovement();
@@ -59,8 +67,62 @@ namespace Juegazo
             }
 
             prevState = Keyboard.GetState();
-            camera.Position = new Vector2(Destinationrectangle.X, Destinationrectangle.Y);
         }
+        public void Update(GameTime gameTime, List<Entity> entities, List<WorldBlock> worldBlocks, List<InteractiveBlock> interactiveBlocks, Camera camera)
+        {
+            this.camera = camera;
+            this.gameTime = gameTime;
+            CheckCollectables(entities);
+            ApplyGravity();
+            ManageVerticalMovement();
+            HandleHorizontalMovement();
+            ManageCollisions(worldBlocks);
+            cameraManager(gameTime, camera);
+            if (health < 0)
+            {
+                HandleDeath();
+            }
+
+            prevState = Keyboard.GetState();
+        }
+
+        private void cameraManager(GameTime gameTime, Camera camera)
+        {
+            cameraHorizontal = (int)MathHelper.Lerp(cameraHorizontal, Destinationrectangle.X + lookAhead + Destinationrectangle.Width / 2, 0.1f * (float)gameTime.ElapsedGameTime.TotalSeconds * 60);
+            if (onGround || jumpCounter > 0)
+            {
+                cameraVertical = Destinationrectangle.Y + Destinationrectangle.Height / 2;
+            }
+            if (zoomInCamera)
+            {
+                ZoomInCamera();
+            }
+            if (zoomOutCamera)
+            {
+                ZoomOutCamera();
+            }
+
+            Vector2 targetPosition = new Vector2(cameraHorizontal, cameraVertical);
+            camera.Position = Vector2.Lerp(camera.Position, targetPosition, 0.1f * (float)gameTime.ElapsedGameTime.TotalSeconds * 60);
+        }
+
+        private void ZoomInCamera()
+        {
+            camera.Zoom = MathHelper.Lerp(camera.Zoom, 3f, 0.1f * (float)gameTime.ElapsedGameTime.TotalSeconds * 60);
+            if (Math.Abs(camera.Zoom - 3f) < 0.01f)
+            {
+                zoomInCamera = false;
+            }
+        }
+        private void ZoomOutCamera()
+        {
+            camera.Zoom = MathHelper.Lerp(camera.Zoom, 1f, 0.1f * (float)gameTime.ElapsedGameTime.TotalSeconds * 60);
+            if (Math.Abs(camera.Zoom - 1f) < 0.01f)
+            {
+                zoomOutCamera = false;
+            }
+        }
+
         public void HandleDeath()
         {
             velocity = new Vector2();
@@ -98,7 +160,7 @@ namespace Juegazo
         private void ManageVerticalMovement()
         {
             // Jumping
-            jumpPressed = ( Keyboard.GetState().IsKeyDown(Keys.Up) && !prevState.IsKeyDown(Keys.Up)) || (Keyboard.GetState().IsKeyDown(Keys.W) && !prevState.IsKeyDown(Keys.W));
+            jumpPressed = (Keyboard.GetState().IsKeyDown(Keys.Up) && !prevState.IsKeyDown(Keys.Up)) || (Keyboard.GetState().IsKeyDown(Keys.W) && !prevState.IsKeyDown(Keys.W));
 
             Jumping(11);
 
@@ -123,7 +185,7 @@ namespace Juegazo
             if (incrementJumps > 0 && jumpPressed)
             {
                 velocity.Y -= Math.Min(Math.Max(jumpAmmount, -11), 11);
-                incrementJumps--;   
+                incrementJumps--;
             }
             else if (onGround && jumpPressed && jumpCounter < numJumps)
             {
@@ -146,6 +208,7 @@ namespace Juegazo
                 if (!(velocity.X <= -5f))
                 {
                     velocity.X += -MOVEMENT_SPEED;
+                    lookAhead = -200;
                 }
                 directionLeft = true;
             }
@@ -154,13 +217,17 @@ namespace Juegazo
                 if (!(velocity.X >= 5f))
                 {
                     velocity.X += MOVEMENT_SPEED;
+                    lookAhead = 200;
                 }
                 directionLeft = false;
             }
             // Dash (sprint)
-            if (dashCounter > 0 && Keyboard.GetState().IsKeyDown(Keys.LeftShift) && !prevState.IsKeyDown(Keys.LeftShift)) {
-                velocity.X += directionLeft ? -7 : 7;
+            if (dashCounter > 0 && Keyboard.GetState().IsKeyDown(Keys.LeftShift) && !prevState.IsKeyDown(Keys.LeftShift))
+            {
+                int basedOnDirection = directionLeft ? -7 : 7;
+                velocity.X += basedOnDirection;
                 dashCounter--;
+                lookAhead += 60 * basedOnDirection;
             }
 
             if (!movingLeft && !movingRight)

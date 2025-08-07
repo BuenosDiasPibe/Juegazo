@@ -9,12 +9,10 @@ namespace Juegazo
 {
     public class JumpCollectable : Collectable
     {
-        private int jumpQuantity;
+        private int jumpQuantity = 3;
 
         public JumpCollectable(Texture2D texture, Rectangle sourceRectangle, Rectangle Destrectangle, Color color) : base(texture, sourceRectangle, Destrectangle, color)
-        {
-            jumpQuantity = 3;
-        }
+        { }
 
         public override void changeThings(Player player)
         {

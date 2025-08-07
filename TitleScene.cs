@@ -6,18 +6,20 @@ using Gum.Wireframe;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using MonoGameGum;
 using MonoGameGum.Forms.Controls;
 using MonoGameGum.GueDeriving;
 
 namespace Juegazo
 {
-    public class TitleScene(SceneManager manager, ContentManager contentManager, GraphicsDevice graphicsDevice, GumService gum) : IScene
+    public class TitleScene(SceneManager manager, ContentManager contentManager, GraphicsDevice graphicsDevice, GumService gum, Camera camera) : IScene
     {
         GumService gum = gum;
         ContentManager cmanager = contentManager;
         GraphicsDevice cdevice = graphicsDevice;
         SceneManager manager = manager;
+        Camera camera = camera;
 
         public void CreateShit()
         {
@@ -51,14 +53,9 @@ namespace Juegazo
         }
 
         private EventHandler StartGame()
-        {
-            return (sender, e) => manager.AddScene(new TestScene(cmanager, cdevice, gum, manager));
-        }
+        { return (sender, e) => manager.AddScene(new TestScene(cmanager, cdevice, gum, manager, camera)); }
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
-        {
-            gum.Draw();
-            spriteBatch.End();
-        }
+        { }
 
         public void Initialize(Game game)
         {
@@ -70,19 +67,19 @@ namespace Juegazo
         {
             Console.WriteLine("First screen");
             if (manager.hasScenes())
-            {
                 CreateShit();
-            }
         }
 
         public void UnloadContent()
-        {
-
-        }
+        {}
 
         public void Update(GameTime gameTime)
         {
             gum.Update(gameTime);
+            if (Keyboard.GetState().IsKeyDown(Keys.Enter))
+                manager.AddScene(new TestScene(cmanager, cdevice, gum, manager, camera));
         }
+        public void DrawUI(GameTime gameTime, SpriteBatch spriteBatch)
+        { gum.Draw(); }
     }
 }

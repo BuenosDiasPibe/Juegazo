@@ -18,6 +18,8 @@ public class Game1 : Game
     private SpriteBatch _spriteBatch;
     private SceneManager sceneManager;
     GumService gum => GumService.Default;
+    private Camera principalCamera;
+    Viewport viewport;
 
     public Game1()
     {
@@ -34,7 +36,11 @@ public class Game1 : Game
         _graphics.PreferredBackBufferWidth = 1280;
         _graphics.PreferredBackBufferHeight = 720;
         _graphics.ApplyChanges();
-        sceneManager.AddScene(new TitleScene(sceneManager, Content, GraphicsDevice, gum));
+
+        viewport = GraphicsDevice.Viewport;
+        principalCamera = new(viewport.Width, viewport.Height);        
+
+        sceneManager.AddScene(new TitleScene(sceneManager, Content, GraphicsDevice, gum, principalCamera));
         sceneManager.GetScene().Initialize(this);
         base.Initialize();
     }
@@ -57,9 +63,26 @@ public class Game1 : Game
     protected override void Draw(GameTime gameTime)
     {
         GraphicsDevice.Clear(new Color(30,30,46));
-        _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
+        _spriteBatch.Begin(transformMatrix: principalCamera.Matrix, samplerState: SamplerState.PointClamp);
         sceneManager.GetScene().Draw(gameTime, _spriteBatch);
-        //_spriteBatch.End();
+        _spriteBatch.End();
+        _spriteBatch.Begin();
+        sceneManager.GetScene().DrawUI(gameTime, _spriteBatch);
+        _spriteBatch.End();
+        /*_spriteBatch.Begin();
+        Texture2D pixel = new Texture2D(GraphicsDevice, 1, 1);
+        pixel.SetData(new[] { Color.White });
+        
+        // Draw a 50x50 square at screen center
+        int squareSize = 50;
+        Rectangle squareRect = new Rectangle(
+            viewport.Width / 2 - squareSize / 2,
+            viewport.Height / 2 - squareSize / 2,
+            squareSize,
+            squareSize
+        );
+        _spriteBatch.Draw(pixel, squareRect, Color.White);
+        _spriteBatch.End(); */
         base.Draw(gameTime);
     }
 }

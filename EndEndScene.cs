@@ -12,20 +12,13 @@ using MonoGameGum.GueDeriving;
 
 namespace Juegazo
 {
-    public class EndScene : IScene
+    public class EndScene(SceneManager manager, ContentManager contentManager, GraphicsDevice graphicsDevice, GumService gum, Camera camera) : IScene
     {
-        GumService gum;
-        ContentManager cmanager;
-        GraphicsDevice cdevice;
-        SceneManager manager;
-
-        public EndScene(SceneManager manager, ContentManager contentManager, GraphicsDevice graphicsDevice, GumService gum)
-        {
-            this.manager = manager;
-            this.cmanager = contentManager;
-            this.cdevice = graphicsDevice;
-            this.gum = gum;
-        }
+        GumService gum = gum;
+        ContentManager cmanager = contentManager;
+        GraphicsDevice cdevice = graphicsDevice;
+        SceneManager manager = manager;
+        Camera camera = camera;
 
         public void donmt()
         {
@@ -53,39 +46,23 @@ namespace Juegazo
         }
 
         private EventHandler StartGame()
-        {
-            return (sender, e) => manager.AddScene(new TestScene(cmanager, cdevice, gum, manager));
-        }
+        { return (sender, e) => manager.AddScene(new TestScene(cmanager, cdevice, gum, manager, camera)); }
         private EventHandler MenuMain()
-        {
-            return (sender, e) => {manager.AddScene(new TitleScene(manager, cmanager, cdevice, gum));};
-        }
-        public void drawUI()
-        {
-        }
+        { return (sender, e) => { manager.AddScene(new TitleScene(manager, cmanager, cdevice, gum, camera)); }; }
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
-        {
-            gum.Draw();
-            spriteBatch.End();
-        }
+        { }
 
         public void Initialize(Game game)
-        {
-            gum.Initialize(game);
-        }
+        { gum.Initialize(game); }
 
         public void LoadContent()
-        {
-            donmt();
-        }
+        { donmt(); }
         public void UnloadContent()
-        {
-
-        }
+        { }
 
         public void Update(GameTime gameTime)
-        {
-            gum.Update(gameTime);
-        }
+        { gum.Update(gameTime); }
+        public void DrawUI(GameTime gameTime, SpriteBatch spriteBatch)
+        { gum.Draw(); }
     }
 }

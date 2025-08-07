@@ -30,7 +30,7 @@ namespace Juegazo
             sceneManager.Clear();
         }
         public bool hasScenes(){
-            return sceneManager.Count > 2;
+            return sceneManager.Count > 1;
         }
     }
 }
