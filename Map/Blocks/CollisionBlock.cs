@@ -14,6 +14,8 @@ namespace Juegazo
         }
         public override void horizontalActions(Entity entity, Rectangle collision)
         {
+            if (entity is Player player)
+                player.hasJumpedWall = false;
             if (entity.horizontalBlockMovementAction)
             {
                 if (entity.Destinationrectangle.Right >= collision.Right)

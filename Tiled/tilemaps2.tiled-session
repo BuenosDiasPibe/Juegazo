@@ -3,17 +3,49 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "papapapapa.tmx",
+    "activeFile": "/home/clumpl/Documentos/other-projects/NuTiled/Content/tiled/map.tmx",
     "expandedProjectPaths": [
         "."
     ],
+    "file.lastUsedOpenFilter": "Todos los archivos (*)",
     "fileStates": {
-        "papapapapa.tmx": {
-            "scale": 5.5,
+        "/home/clumpl/Documentos/other-projects/NuTiled/Content/tiled/Castlevania.tsx": {
+            "scaleInDock": 1
+        },
+        "/home/clumpl/Documentos/other-projects/NuTiled/Content/tiled/Chips.tsx": {
+            "scaleInDock": 1
+        },
+        "/home/clumpl/Documentos/other-projects/NuTiled/Content/tiled/Rando.tsx": {
+            "scaleInDock": 1
+        },
+        "/home/clumpl/Documentos/other-projects/NuTiled/Content/tiled/map.tmx": {
+            "expandedGroupLayers": [
+                21
+            ],
+            "scale": 0.26223958333333336,
+            "selectedLayer": 4,
+            "viewCenter": {
+                "x": 282.18470705064544,
+                "y": 329.8510427010923
+            }
+        },
+        "/home/clumpl/Documentos/other-projects/NuTiled/Content/tiled/tilemap.tsx": {
+            "scaleInDock": 1
+        },
+        "goodOne.tmx": {
+            "scale": 2,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 153.63636363636363,
-                "y": 121.54545454545455
+                "x": 160,
+                "y": 87.75
+            }
+        },
+        "papapapapa.tmx": {
+            "scale": 3,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 170.66666666666666,
+                "y": 84.83333333333333
             }
         },
         "polno.tsx": {
@@ -44,18 +76,17 @@
     "map.tileWidth": 8,
     "map.width": 40,
     "openFiles": [
-        "sin test1.tmx",
-        "worldTexture.tsx",
-        "polno.tsx",
-        "papapapapa.tmx"
+        "/home/clumpl/Documentos/other-projects/NuTiled/Content/tiled/map.tmx"
     ],
     "project": "tilemaps2.tiled-project",
     "property.type": "object",
     "recentFiles": [
-        "sin test1.tmx",
-        "worldTexture.tsx",
+        "/home/clumpl/Documentos/other-projects/NuTiled/Content/tiled/map.tmx",
+        "goodOne.tmx",
+        "papapapapa.tmx",
         "polno.tsx",
-        "papapapapa.tmx"
+        "worldTexture.tsx",
+        "sin test1.tmx"
     ],
     "tileset.lastUsedFormat": "tsx",
     "tileset.tileSize": {

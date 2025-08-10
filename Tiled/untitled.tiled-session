@@ -3,22 +3,36 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "",
+    "activeFile": "goodOne.tmx",
     "expandedProjectPaths": [
+        "."
     ],
     "fileStates": {
+        "goodOne.tmx": {
+            "scale": 2,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 366.75,
+                "y": 161.75
+            }
+        },
+        "worldTexture.tsx": {
+            "scaleInDock": 4
+        }
     },
-    "last.exportedFilePath": "/home/facundo/Documentos/proyecto-ayayay-ay/MarinMol/Data",
+    "last.exportedFilePath": "/home/clumpl/Documentos/Programacion/Juegazo/Data",
     "last.imagePath": "/home/facundo/Documentos/proyecto-ayayay-ay/MarinMol/Content",
     "map.height": 12,
-    "map.lastUsedExportFilter": "CSV files (*.csv)",
+    "map.lastUsedExportFilter": "Todos los archivos (*)",
     "map.tileHeight": 8,
     "map.tileWidth": 8,
     "map.width": 20,
     "openFiles": [
+        "goodOne.tmx"
     ],
     "project": "untitled.tiled-project",
     "recentFiles": [
+        "goodOne.tmx"
     ],
     "tileset.lastUsedFormat": "tsx",
     "tileset.tileSize": {

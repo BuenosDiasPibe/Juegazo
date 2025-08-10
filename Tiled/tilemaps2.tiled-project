@@ -16,5 +16,168 @@
         }
     ],
     "propertyTypes": [
+        {
+            "id": 7,
+            "name": "BlockTypes",
+            "storageType": "string",
+            "type": "enum",
+            "values": [
+                "CheckPoint",
+                "CompleteLevel",
+                "JumpWall",
+                "Damage",
+                "OneWay",
+                "SpeedUp",
+                "SlowDown",
+                "VerticalBoost"
+            ],
+            "valuesAsFlags": false
+        },
+        {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 3,
+            "members": [
+                {
+                    "name": "endPositionX",
+                    "type": "int",
+                    "value": 0
+                },
+                {
+                    "name": "startPositionX",
+                    "type": "int",
+                    "value": 100
+                },
+                {
+                    "name": "velocityMovement",
+                    "type": "float",
+                    "value": 1
+                }
+            ],
+            "name": "horizontalPlatform",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset",
+                "project"
+            ]
+        },
+        {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 4,
+            "members": [
+                {
+                    "name": "endPositionY",
+                    "type": "int",
+                    "value": 0
+                },
+                {
+                    "name": "startPositionY",
+                    "type": "int",
+                    "value": 100
+                },
+                {
+                    "name": "velocityMovement",
+                    "type": "float",
+                    "value": 1
+                }
+            ],
+            "name": "verticalPlatform",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset",
+                "project"
+            ]
+        },
+        {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 5,
+            "members": [
+                {
+                    "name": "collectableType",
+                    "propertyType": "CollectableType",
+                    "type": "string",
+                    "value": "NullCollectable"
+                }
+            ],
+            "name": "Collectable",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset",
+                "project"
+            ]
+        },
+        {
+            "id": 6,
+            "name": "CollectableType",
+            "storageType": "string",
+            "type": "enum",
+            "values": [
+                "JumpCollectable",
+                "SprintCollectable",
+                "NullCollectable"
+            ],
+            "valuesAsFlags": false
+        },
+        {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 10,
+            "members": [
+                {
+                    "name": "isActivated",
+                    "type": "bool",
+                    "value": false
+                }
+            ],
+            "name": "InteractiveBlocks",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset",
+                "project"
+            ]
+        },
+        {
+            "id": 8,
+            "name": "TriggerTypes",
+            "storageType": "string",
+            "type": "enum",
+            "values": [
+                "zoomIn",
+                "zoomOut",
+                "CenterCameraToPoint",
+                "ShakeScreen"
+            ],
+            "valuesAsFlags": false
+        }
     ]
 }

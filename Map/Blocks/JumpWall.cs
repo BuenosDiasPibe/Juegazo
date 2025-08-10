@@ -20,11 +20,12 @@ namespace Juegazo
             //TODO: interpolar CollisionBlock a el checking de este bloque
             if (entity is Player player)
             {
+                player.onGround = true;
+                player.jumpCounter = 0;
+                player.hasJumpedWall = true;
                 if (player.velocity.X > 0)
                 {
                     entity.Destinationrectangle.X = collision.Left - entity.Destinationrectangle.Width;
-                    player.onGround = true;
-                    player.jumpCounter = 0;
                     if (player.jumpPressed)
                     {
                         player.incrementJumps++;
@@ -35,8 +36,6 @@ namespace Juegazo
                 else if (player.velocity.X < 0)
                 {
                     entity.Destinationrectangle.X = collision.Right;
-                    player.onGround = true;
-                    player.jumpCounter = 0;
                     if (player.jumpPressed)
                     {
                         player.incrementJumps++;
@@ -60,18 +59,15 @@ namespace Juegazo
 
         private void jumpMechanic(Player player)
         {
-            if (player.velocity.Y > 1f)
-            {
-                jumpStrength = 11 + player.velocity.Y;
-                Math.Min(Math.Max(jumpStrength, -16), 16);
-            }
-
+            jumpStrength = 11 + player.velocity.Y;
             player.Jumping(jumpStrength);
         }
 
 
         public override void verticalActions(Entity entity, Rectangle collision)
         {
+            if(entity is Player player)
+                player.hasJumpedWall = false;
             if (entity.velocity.Y > 0.0f)
             {
                 entity.Destinationrectangle.Y = collision.Top - entity.Destinationrectangle.Height;

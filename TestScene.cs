@@ -45,7 +45,7 @@ namespace Juegazo
 
         public void LoadContent()
         {
-            string CSVPath = "Data/sesFinal2.csv";
+            string CSVPath = "Data/goodOne.csv";
             var worldTexture = contentManager.Load<Texture2D>("worldTexture");
             collisionMap = new HitboxTilemaps(worldTexture, TILESIZE, 8, 8);
             collectableHitboxMap = new CollectableHitboxMap(worldTexture, TILESIZE, 8, 8, 0.5f);

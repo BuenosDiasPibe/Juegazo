@@ -32,6 +32,7 @@ namespace Juegazo
         public bool zoomInCamera;
         public bool zoomOutCamera;
         public GameTime gameTime;
+        public bool hasJumpedWall = false;
 
         public Player(Texture2D texture, Rectangle sourceRectangle, Rectangle Destrectangle, Color color) : base(texture, sourceRectangle, Destrectangle, color)
         {
@@ -88,8 +89,9 @@ namespace Juegazo
 
         private void cameraManager(GameTime gameTime, Camera camera)
         {
-            cameraHorizontal = (int)MathHelper.Lerp(cameraHorizontal, Destinationrectangle.X + lookAhead + Destinationrectangle.Width / 2, 0.1f * (float)gameTime.ElapsedGameTime.TotalSeconds * 60);
-            if (onGround || jumpCounter > 0)
+            cameraHorizontal = (int)MathHelper.Lerp(cameraHorizontal, Destinationrectangle.X + lookAhead + Destinationrectangle.Width / 2, 0.05f * (float)gameTime.ElapsedGameTime.TotalSeconds * 60);
+
+            if (onGround || incrementJumps > 0 || hasJumpedWall)
             {
                 cameraVertical = Destinationrectangle.Y + Destinationrectangle.Height / 2;
             }
@@ -103,7 +105,7 @@ namespace Juegazo
             }
 
             Vector2 targetPosition = new Vector2(cameraHorizontal, cameraVertical);
-            camera.Position = Vector2.Lerp(camera.Position, targetPosition, 0.1f * (float)gameTime.ElapsedGameTime.TotalSeconds * 60);
+            camera.Position = Vector2.Lerp(camera.Position, targetPosition, 0.05f * (float)gameTime.ElapsedGameTime.TotalSeconds * 60);
         }
 
         private void ZoomInCamera()
@@ -184,7 +186,7 @@ namespace Juegazo
         {
             if (incrementJumps > 0 && jumpPressed)
             {
-                velocity.Y -= Math.Min(Math.Max(jumpAmmount, -11), 11);
+                velocity.Y -= jumpAmmount;
                 incrementJumps--;
             }
             else if (onGround && jumpPressed && jumpCounter < numJumps)
