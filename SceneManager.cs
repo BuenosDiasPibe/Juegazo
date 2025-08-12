@@ -8,7 +8,7 @@ namespace Juegazo
 {
     public class SceneManager
     {
-        private Stack<IScene> sceneManager;
+        private List<IScene> sceneManager;
         public SceneManager()
         {
             sceneManager = new();
@@ -16,15 +16,18 @@ namespace Juegazo
         public void AddScene(IScene scene)
         {
             scene.LoadContent();
-            sceneManager.Push(scene);
+            sceneManager.Add(scene);
         }
         public void RemoveScene()
         {
-            sceneManager.Pop();
+            //Maybe unnesesary, but it works so fuck it we ball
+            GetScene().UnloadContent();
+            sceneManager.RemoveAt(sceneManager.Count - 1);
+            sceneManager.Last().LoadContent();
         }
         public IScene GetScene()
         {
-            return sceneManager.Peek();
+            return sceneManager.Last();
         }
         public void RemoveAllScenes(){
             sceneManager.Clear();

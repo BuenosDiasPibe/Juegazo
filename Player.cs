@@ -34,7 +34,7 @@ namespace Juegazo
         public GameTime gameTime;
         public bool hasJumpedWall = false;
 
-        public Player(Texture2D texture, Rectangle sourceRectangle, Rectangle Destrectangle, Color color) : base(texture, sourceRectangle, Destrectangle, color)
+        public Player(Texture2D texture, Rectangle sourceRectangle, Rectangle Destrectangle, Camera camra, Color color) : base(texture, sourceRectangle, Destrectangle, color)
         {
             velocity = new();
 
@@ -50,10 +50,11 @@ namespace Juegazo
             numDash = 0;
             dashCounter = 0;
             lookAhead = 0;
+            this.camera = camra;
 
             initialPosition = new Vector2(Destrectangle.X, Destrectangle.Y);
         }
-
+ 
         public override void Update(GameTime gameTime, List<Entity> entities, List<WorldBlock> worldBlocks, List<InteractiveBlock> interactiveBlocks)
         {
             this.gameTime = gameTime;
@@ -62,23 +63,7 @@ namespace Juegazo
             ManageVerticalMovement();
             HandleHorizontalMovement();
             ManageCollisions(worldBlocks);
-            if (health < 0)
-            {
-                HandleDeath();
-            }
-
-            prevState = Keyboard.GetState();
-        }
-        public void Update(GameTime gameTime, List<Entity> entities, List<WorldBlock> worldBlocks, List<InteractiveBlock> interactiveBlocks, Camera camera)
-        {
-            this.camera = camera;
-            this.gameTime = gameTime;
-            CheckCollectables(entities);
-            ApplyGravity();
-            ManageVerticalMovement();
-            HandleHorizontalMovement();
-            ManageCollisions(worldBlocks);
-            cameraManager(gameTime, camera);
+            cameraManager(gameTime);
             if (health < 0)
             {
                 HandleDeath();
@@ -87,7 +72,7 @@ namespace Juegazo
             prevState = Keyboard.GetState();
         }
 
-        private void cameraManager(GameTime gameTime, Camera camera)
+        private void cameraManager(GameTime gameTime)
         {
             cameraHorizontal = (int)MathHelper.Lerp(cameraHorizontal, Destinationrectangle.X + lookAhead + Destinationrectangle.Width / 2, 0.05f * (float)gameTime.ElapsedGameTime.TotalSeconds * 60);
 
@@ -131,6 +116,7 @@ namespace Juegazo
             Destinationrectangle.X = (int)initialPosition.X;
             Destinationrectangle.Y = (int)initialPosition.Y;
             health = maxHealth;
+            camera.Position = new Vector2(Destinationrectangle.X + lookAhead - Destinationrectangle.Width / 2, Destinationrectangle.Y + Destinationrectangle.Height / 2);
         }
 
         private void ManageCollisions(List<WorldBlock> worldBlocks)
@@ -184,15 +170,15 @@ namespace Juegazo
 
         public void Jumping(float jumpAmmount)
         {
-            if (incrementJumps > 0 && jumpPressed)
-            {
-                velocity.Y -= jumpAmmount;
-                incrementJumps--;
-            }
-            else if (onGround && jumpPressed && jumpCounter < numJumps)
+            if (onGround && jumpPressed && jumpCounter < numJumps)
             {
                 velocity.Y -= jumpAmmount;
                 jumpCounter++;
+            }
+            else if (incrementJumps > 0 && jumpPressed)
+            {
+                velocity.Y -= jumpAmmount;
+                incrementJumps--;
             }
         }
 

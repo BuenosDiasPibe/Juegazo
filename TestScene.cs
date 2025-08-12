@@ -29,6 +29,8 @@ namespace Juegazo
         GumService gum;
         private SpriteFont font;
         Camera camera;
+        Texture2D worldTexture;
+        Texture2D playerTexture;
 
         public TestScene(ContentManager contentManager,
         GraphicsDevice graphicsDevice,
@@ -45,8 +47,10 @@ namespace Juegazo
 
         public void LoadContent()
         {
+            Console.WriteLine("damn");
             string CSVPath = "Data/goodOne.csv";
-            var worldTexture = contentManager.Load<Texture2D>("worldTexture");
+            worldTexture = contentManager.Load<Texture2D>("worldTexture");
+            playerTexture = contentManager.Load<Texture2D>("playerr");
             collisionMap = new HitboxTilemaps(worldTexture, TILESIZE, 8, 8);
             collectableHitboxMap = new CollectableHitboxMap(worldTexture, TILESIZE, 8, 8, 0.5f);
 
@@ -59,9 +63,9 @@ namespace Juegazo
                 if (worldBlock.Value == 60)
                 {
                     startPlayerposition = collisionMap.BuildDestinationRectangle(worldBlock);
-                    entities.Add(new Player(contentManager.Load<Texture2D>("playerr"),
+                    entities.Add(new Player(playerTexture,
                                  new Rectangle(TILESIZE, TILESIZE, TILESIZE, TILESIZE),
-                                 startPlayerposition,
+                                 startPlayerposition, camera,
                                  Color.White));
                 }
                 else
@@ -84,7 +88,11 @@ namespace Juegazo
 
         public void UnloadContent()
         {
-            // Implement resource cleanup if needed
+            collisionMap = null;
+            collectableHitboxMap = null;
+            font = null;
+            worldTexture.Dispose();
+            playerTexture.Dispose();
         }
 
         public void Update(GameTime gameTime)
@@ -95,7 +103,7 @@ namespace Juegazo
                 {
                     case Player player:
                         var nonPlayers = entities.Where(e => e is not Player).ToList();
-                        player.Update(gameTime, nonPlayers, worldBlocks, new(), camera);
+                        player.Update(gameTime, nonPlayers, worldBlocks, new());
                         entitiesDeleted.AddRange(player.deleteCollectables);
                         break;
                     case Collectable collectable:
@@ -112,7 +120,10 @@ namespace Juegazo
                 worldBlock.Update();
                 if (worldBlock.blockType is CompleteBlock completeBlock)
                 {
-                    if (completeBlock.changeScene) sceneManager.AddScene(new EndScene(sceneManager, contentManager, graphicsDevice, gum, camera));
+                    if (completeBlock.changeScene)
+                    {
+                        sceneManager.AddScene(new EndScene(sceneManager, contentManager, graphicsDevice, gum, camera));
+                    }
                 }
             }
 
@@ -148,7 +159,10 @@ namespace Juegazo
             {
                 if (entity is Player player)
                 {
-                    spriteBatch.DrawString(font, $"Health {player.health}/{player.maxHealth}\nSprints: {player.dashCounter}\nJumpBoosts: {player.incrementJumps}", new Vector2(TILESIZE, TILESIZE), Color.White);
+                    spriteBatch.DrawString( font,
+                                            $"Health {player.health}/{player.maxHealth}\nSprints: {player.dashCounter}\nJumpBoosts: {player.incrementJumps}",
+                                            new Vector2(camera.Left, camera.Top), //OMFG IT WAS THAT EASLY IM GOING TO KMS
+                                            Color.White);
                     break;
                 }
             }

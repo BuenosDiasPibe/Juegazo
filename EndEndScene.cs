@@ -30,23 +30,28 @@ namespace Juegazo
             panel.Anchor(Anchor.Center);
             TextRuntime end = new();
             end.Text = "game finished!";
-            Button playButton = new()
+            Button retryButton = new()
             {
                 Text = "Retry"
             };
-            playButton.Click += StartGame();
+            retryButton.Click += RetryGame();
             Button MainMenu = new()
             {
                 Text = "Main Menu"
             };
             MainMenu.Click += MenuMain();
             panel.AddChild(end);
-            panel.AddChild(playButton);
+            panel.AddChild(retryButton);
             panel.AddChild(MainMenu);
         }
-
-        private EventHandler StartGame()
-        { return (sender, e) => manager.AddScene(new TestScene(cmanager, cdevice, gum, manager, camera)); }
+        public void UnloadContent()
+        {
+            GumService.Default.Root.Children.Clear();
+        }
+        private EventHandler RetryGame()
+        {
+            return (sender, e) => manager.RemoveScene(); 
+        }
         private EventHandler MenuMain()
         { return (sender, e) => { manager.AddScene(new TitleScene(manager, cmanager, cdevice, gum, camera)); }; }
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -57,8 +62,6 @@ namespace Juegazo
 
         public void LoadContent()
         { donmt(); }
-        public void UnloadContent()
-        { }
 
         public void Update(GameTime gameTime)
         { gum.Update(gameTime); }

@@ -65,8 +65,6 @@ public class Game1 : Game
         GraphicsDevice.Clear(new Color(30,30,46));
         _spriteBatch.Begin(transformMatrix: principalCamera.Matrix, samplerState: SamplerState.PointClamp);
         sceneManager.GetScene().Draw(gameTime, _spriteBatch);
-        _spriteBatch.End();
-        _spriteBatch.Begin();
         sceneManager.GetScene().DrawUI(gameTime, _spriteBatch);
         _spriteBatch.End();
         /*_spriteBatch.Begin();
