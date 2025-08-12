@@ -31,6 +31,7 @@ namespace Juegazo
         Camera camera;
         Texture2D worldTexture;
         Texture2D playerTexture;
+        bool sceneChangeTriggered = false;
 
         public TestScene(ContentManager contentManager,
         GraphicsDevice graphicsDevice,
@@ -67,6 +68,7 @@ namespace Juegazo
                                  new Rectangle(TILESIZE, TILESIZE, TILESIZE, TILESIZE),
                                  startPlayerposition, camera,
                                  Color.White));
+                    camera.Position = new Vector2(startPlayerposition.X, startPlayerposition.Y);
                 }
                 else
                 {
@@ -84,6 +86,7 @@ namespace Juegazo
             font = contentManager.Load<SpriteFont>("sheesh");
             camera.Origin = new Vector2(camera.Viewport.Width / 2, camera.Viewport.Height / 2);
             camera.Zoom = 2;
+            sceneChangeTriggered = false;
         }
 
         public void UnloadContent()
@@ -115,13 +118,15 @@ namespace Juegazo
                         break;
                 }
             }
+            
             foreach (var worldBlock in worldBlocks)
             {
                 worldBlock.Update();
-                if (worldBlock.blockType is CompleteBlock completeBlock)
+                if (!sceneChangeTriggered && worldBlock.blockType is CompleteBlock completeBlock)
                 {
                     if (completeBlock.changeScene)
                     {
+                        sceneChangeTriggered = true;
                         sceneManager.AddScene(new EndScene(sceneManager, contentManager, graphicsDevice, gum, camera));
                     }
                 }
