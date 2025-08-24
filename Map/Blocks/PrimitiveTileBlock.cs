@@ -2,24 +2,20 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MarinMol;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Juegazo
+namespace Juegazo.Map.Blocks
 {
-    public class CompleteBlock : Block
+    public class PrimitiveTileBlock : Block
     {
-        public bool changeScene;
-
-        public CompleteBlock(Texture2D texture, Rectangle sourceRectangle, Rectangle Destrectangle, Rectangle collider, Color color) : base(texture, sourceRectangle, Destrectangle, collider, color)
+        public PrimitiveTileBlock(Texture2D texture, Rectangle sourceRectangle, Rectangle Destrectangle, Rectangle collider, Color color) : base(texture, sourceRectangle, Destrectangle, collider, color)
         {
-            value = 15;
-            changeScene = false;
+            EnableCollisions = false;
         }
+
         public override void horizontalActions(Entity entity, Rectangle collision)
         {
-            changeScene = true;
         }
 
         public override void Update(GameTime gameTime)
@@ -29,7 +25,7 @@ namespace Juegazo
 
         public override void verticalActions(Entity entity, Rectangle collision)
         {
-            changeScene = true;
+            throw new NotImplementedException();
         }
     }
 }

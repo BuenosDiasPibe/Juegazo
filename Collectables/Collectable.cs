@@ -10,11 +10,12 @@ namespace Juegazo
 {
     public abstract class Collectable : Entity
     {
-        public Collectable(Texture2D texture, Rectangle sourceRectangle, Rectangle Destrectangle, Color color) : base(texture, sourceRectangle, Destrectangle, color)
+        public Collectable(Texture2D texture,
+                            Rectangle sourceRectangle,
+                            Rectangle Destrectangle,
+                            Rectangle collider,
+                            Color color) : base(texture, sourceRectangle, Destrectangle, collider,color)
         { }
-
         public abstract void changeThings(Player player);
-
-        public override void Update(GameTime gameTime, List<Entity> entities, List<WorldBlock> worldBlocks, List<InteractiveBlock> interactiveBlocks) { }
     }
 }

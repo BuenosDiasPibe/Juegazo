@@ -10,5 +10,292 @@
     "properties": [
     ],
     "propertyTypes": [
+        {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 3,
+            "members": [
+            ],
+            "name": "CheckPointBlock",
+            "type": "class",
+            "useAs": [
+                "property",
+                "object",
+                "project"
+            ]
+        },
+        {
+            "color": "#fff6f5f4",
+            "drawFill": true,
+            "id": 12,
+            "members": [
+                {
+                    "name": "isEnabled",
+                    "type": "bool",
+                    "value": true
+                }
+            ],
+            "name": "CompleteLevelBlock",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset",
+                "project"
+            ]
+        },
+        {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 10,
+            "members": [
+                {
+                    "name": "canDamage",
+                    "type": "bool",
+                    "value": true
+                },
+                {
+                    "name": "collisionHitbox",
+                    "type": "object",
+                    "value": 0
+                },
+                {
+                    "name": "damageAmount",
+                    "type": "int",
+                    "value": 1
+                }
+            ],
+            "name": "DamageBlock",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset",
+                "project"
+            ]
+        },
+        {
+            "id": 5,
+            "name": "faces",
+            "storageType": "int",
+            "type": "enum",
+            "values": [
+                "TOP",
+                "BOTTOM",
+                "LEFT",
+                "RIGHT"
+            ],
+            "valuesAsFlags": false
+        },
+        {
+            "color": "#fff8e45c",
+            "drawFill": true,
+            "id": 13,
+            "members": [
+                {
+                    "name": "canJump",
+                    "type": "bool",
+                    "value": true
+                },
+                {
+                    "name": "recoilIntensity",
+                    "type": "int",
+                    "value": 11
+                }
+            ],
+            "name": "JumpWallBlock",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset",
+                "project"
+            ]
+        },
+        {
+            "color": "#ff3584e4",
+            "drawFill": true,
+            "id": 11,
+            "members": [
+                {
+                    "name": "EndBlockPosition",
+                    "type": "object",
+                    "value": 0
+                },
+                {
+                    "name": "canMove",
+                    "type": "bool",
+                    "value": false
+                },
+                {
+                    "name": "initialBlockPosition",
+                    "type": "object",
+                    "value": 0
+                },
+                {
+                    "name": "movementSpeed",
+                    "type": "int",
+                    "value": 2
+                }
+            ],
+            "name": "MovementBlock",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset",
+                "project"
+            ]
+        },
+        {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 4,
+            "members": [
+                {
+                    "name": "face",
+                    "propertyType": "faces",
+                    "type": "int",
+                    "value": 0
+                }
+            ],
+            "name": "OneWayBlock",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset",
+                "project"
+            ]
+        },
+        {
+            "color": "#ffe01b24",
+            "drawFill": true,
+            "id": 1,
+            "members": [
+                {
+                    "name": "isVisible",
+                    "type": "bool",
+                    "value": false
+                }
+            ],
+            "name": "PlayerSpawner",
+            "type": "class",
+            "useAs": [
+                "property",
+                "object",
+                "project"
+            ]
+        },
+        {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 6,
+            "members": [
+                {
+                    "name": "speedAmount",
+                    "type": "int",
+                    "value": 5
+                }
+            ],
+            "name": "speedUp",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset",
+                "project"
+            ]
+        },
+        {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 8,
+            "members": [
+                {
+                    "name": "slowAmount",
+                    "type": "int",
+                    "value": 5
+                }
+            ],
+            "name": "SlowDownBlock",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset",
+                "project"
+            ]
+        },
+        {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 9,
+            "members": [
+                {
+                    "name": "Amount",
+                    "type": "int",
+                    "value": 5
+                },
+                {
+                    "name": "isCompleteBlock",
+                    "type": "bool",
+                    "value": false
+                },
+                {
+                    "name": "toUp",
+                    "type": "bool",
+                    "value": true
+                }
+            ],
+            "name": "VerticalBoostBlock",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset",
+                "project"
+            ]
+        }
     ]
 }

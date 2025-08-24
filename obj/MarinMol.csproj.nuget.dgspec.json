@@ -44,6 +44,10 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "DotTiled": {
+              "target": "Package",
+              "version": "[0.3.0, )"
+            },
             "Gum.MonoGame": {
               "target": "Package",
               "version": "[2025.5.1.1, )"

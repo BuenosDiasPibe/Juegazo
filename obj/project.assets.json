@@ -2,6 +2,19 @@
   "version": 3,
   "targets": {
     "net8.0": {
+      "DotTiled/0.3.0": {
+        "type": "package",
+        "compile": {
+          "lib/net8.0/DotTiled.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/DotTiled.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "FlatRedBall.GumCommon/2025.5.1.1": {
         "type": "package",
         "dependencies": {
@@ -254,6 +267,21 @@
     }
   },
   "libraries": {
+    "DotTiled/0.3.0": {
+      "sha512": "nY3EJ54f5aj7++no6yIZscTWEAXsQnA2jbxXlwrhm27NSYA3PFvloMkmdB0s3m0QsYgW8/7/GaTBkznYF0NIOw==",
+      "type": "package",
+      "path": "dottiled/0.3.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE",
+        "README.md",
+        "dottiled.0.3.0.nupkg.sha512",
+        "dottiled.nuspec",
+        "lib/net8.0/DotTiled.dll",
+        "lib/net8.0/DotTiled.xml"
+      ]
+    },
     "FlatRedBall.GumCommon/2025.5.1.1": {
       "sha512": "FL+hxn3VCgpHj9f3EdQQ0qTya2ubz9mR5xLEnTmA8Z0tR9INUHdO1Y0z3p1fIbaLUvKKFRs87yCBF30hfUDSdg==",
       "type": "package",
@@ -644,6 +672,7 @@
   },
   "projectFileDependencyGroups": {
     "net8.0": [
+      "DotTiled >= 0.3.0",
       "Gum.MonoGame >= 2025.5.1.1",
       "MonoGame.Content.Builder.Task >= 3.8.2.1105",
       "MonoGame.Framework.DesktopGL >= 3.8.2.1105"
@@ -692,6 +721,10 @@
       "net8.0": {
         "targetAlias": "net8.0",
         "dependencies": {
+          "DotTiled": {
+            "target": "Package",
+            "version": "[0.3.0, )"
+          },
           "Gum.MonoGame": {
             "target": "Package",
             "version": "[2025.5.1.1, )"

@@ -3,21 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Juegazo
 {
-    public class JumpWall : BlockType
+    public class JumpWall : Block
     {
         private float jumpStrength;
-        public JumpWall()
+        public JumpWall(Texture2D texture, Rectangle sourceRectangle, Rectangle DestinationRectangle, Rectangle collisionRectangle, Color color)
+            : base(texture, sourceRectangle, DestinationRectangle, collisionRectangle, color)
         {
             value = 1;
             jumpStrength = 0;
         }
         public override void horizontalActions(Entity entity, Rectangle collision)
         {
-            //change to only allow for enemies or player to use this block, not Guns nor Collectables will ever use them
-            //TODO: interpolar CollisionBlock a el checking de este bloque
+            //change this to use the new ECS model
             if (entity is Player player)
             {
                 player.onGround = true;
@@ -25,20 +26,18 @@ namespace Juegazo
                 player.hasJumpedWall = true;
                 if (player.velocity.X > 0)
                 {
-                    entity.Destinationrectangle.X = collision.Left - entity.Destinationrectangle.Width;
+                    entity.collider.X = collision.Left - entity.collider.Width;
                     if (player.jumpPressed)
                     {
-                        player.incrementJumps++;
                         jumpMechanic(player);
                         player.velocity.X = -11;
                     }
                 }
                 else if (player.velocity.X < 0)
                 {
-                    entity.Destinationrectangle.X = collision.Right;
+                    entity.collider.X = collision.Right;
                     if (player.jumpPressed)
                     {
-                        player.incrementJumps++;
                         jumpMechanic(player);
                         player.velocity.X = 11;
                     }
@@ -47,11 +46,11 @@ namespace Juegazo
                 {
                     if (entity.velocity.X > 0)
                     {
-                        entity.Destinationrectangle.X = collision.Left - entity.Destinationrectangle.Width;
+                        entity.collider.X = collision.Left - entity.collider.Width;
                     }
                     else if (entity.velocity.X < 0)
                     {
-                        entity.Destinationrectangle.X = collision.Right;
+                        entity.collider.X = collision.Right;
                     }
                 }
             }
@@ -70,15 +69,20 @@ namespace Juegazo
                 player.hasJumpedWall = false;
             if (entity.velocity.Y > 0.0f)
             {
-                entity.Destinationrectangle.Y = collision.Top - entity.Destinationrectangle.Height;
+                entity.collider.Y = collision.Top - entity.collider.Height;
                 entity.velocity.Y = 1f;
                 entity.onGround = true;
             }
             else if (entity.velocity.Y < 0.0f)
             {
                 entity.velocity.Y *= 0.1f;
-                entity.Destinationrectangle.Y = collision.Bottom;
+                entity.collider.Y = collision.Bottom;
             }
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            throw new NotImplementedException();
         }
     }
 }

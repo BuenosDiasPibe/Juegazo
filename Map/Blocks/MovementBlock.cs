@@ -2,27 +2,32 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Juegazo.Components;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Juegazo.Map.Blocks
 {
-    public class MovementBlock : BlockType
+    public class MovementBlock : Block
     {
-        private bool moveRight;
-        private Rectangle rightBound;
-        private Rectangle leftBound;
-        private int velocity;
+        private bool toEndPosition;
+        private Rectangle initialBlockPosition;
+        private Rectangle endBlockPosition;
+        private Vector2 velocity;
         private float velocityToEntity;
-        public MovementBlock()
+        public MovementBlock(Texture2D texture, Rectangle sourceRectangle, Rectangle destinationRectangle, Rectangle collisionRectangle, Rectangle initialBlockPosition, Rectangle endBlockPosition, Color color)
+            : base(texture, sourceRectangle, destinationRectangle, collisionRectangle, color)
         {
             value = 16;
-            velocity = 2;
-            velocityToEntity = velocity * 1.2f;
+            velocity = checkMovementVector();
+            velocityToEntity = velocity.Length() * 1.2f;
+            EnableUpdate = true;
+            this.initialBlockPosition = initialBlockPosition;
+            this.endBlockPosition = endBlockPosition;
         }
         public override void horizontalActions(Entity entity, Rectangle collision)
         {
-            entity.horizontalBlockMovementAction = true;
-            int direction = moveRight ? -1 : 1; 
+            int direction = toEndPosition ? -1 : 1; 
             if (entity.velocity.X > 0.0f)
             {
                 entity.Destinationrectangle.X = collision.Left - entity.Destinationrectangle.Width;
@@ -30,38 +35,42 @@ namespace Juegazo.Map.Blocks
             }
             else if (entity.velocity.X < 0.0f)
             {
-                if (entity.velocity.X < -10)
-                {
-                    entity.velocity.X *= 0.1f;
-                }
+                if (entity.velocity.X < -10) entity.velocity.X *= 0.1f;
                 entity.Destinationrectangle.X = collision.Right;
             }
-            else if (entity.Destinationrectangle.Right > collision.Right)
-            {
-                entity.velocity.X += velocityToEntity * direction;
-            }
-            else if (entity.Destinationrectangle.Left < collision.Left)
-            {
-                entity.velocity.X -= velocityToEntity * direction;
-            }
+            else if (entity.Destinationrectangle.Right > collision.Right) entity.velocity.X += velocityToEntity * direction;
+            else if (entity.Destinationrectangle.Left < collision.Left) entity.velocity.X -= velocityToEntity * direction;
+        }
+        private Vector2 checkMovementVector()
+        {
+            Vector2 direction = new Vector2(
+                endBlockPosition.X - initialBlockPosition.X,
+                endBlockPosition.Y - initialBlockPosition.Y
+            );
+            direction.Normalize();
+            return direction;
         }
 
-        public void Update(WorldBlock worldBlock)
+        public override void Update(GameTime gameTime)
         {
-            rightBound = new Rectangle(worldBlock.Destinationrectangle.Width * 32, worldBlock.Destinationrectangle.Y, worldBlock.Destinationrectangle.Width, worldBlock.Destinationrectangle.Height);
-
-            leftBound = new Rectangle(worldBlock.Destinationrectangle.Width, worldBlock.Destinationrectangle.Y, worldBlock.Destinationrectangle.Width, worldBlock.Destinationrectangle.Height);
-            if (worldBlock.Destinationrectangle.Intersects(rightBound))
+            if (Destinationrectangle.Intersects(initialBlockPosition))
             {
-                moveRight = false;
+                toEndPosition = false;
             }
-            else if (worldBlock.Destinationrectangle.Intersects(leftBound))
+            else if (Destinationrectangle.Intersects(endBlockPosition))
             {
-                moveRight = true;
+                toEndPosition = true;
             }
 
-            int direction = moveRight ? 1 : -1;
-            worldBlock.Destinationrectangle.X += velocity * direction; //FIXME: velocity and velocityToEntity if same they dont add the same velocity to the other, so enity is slightly slower than the movementBlock
+            Vector2 target = toEndPosition ? new Vector2(initialBlockPosition.X, initialBlockPosition.Y) : new Vector2(endBlockPosition.X, endBlockPosition.Y);
+
+            Vector2 current = new Vector2(Destinationrectangle.X, Destinationrectangle.Y);
+
+            Vector2 newPosition = Vector2.Lerp(current, target, 0.02f);
+
+            Destinationrectangle = new Rectangle((int)newPosition.X, (int)newPosition.Y, Destinationrectangle.Width, Destinationrectangle.Height);
+
+            collider = new Rectangle((int)newPosition.X, (int)newPosition.Y, collider.Width, collider.Height);
         }
 
         public override void verticalActions(Entity entity, Rectangle collision)
@@ -69,7 +78,7 @@ namespace Juegazo.Map.Blocks
             if (entity.velocity.Y > 0.0f)
             {
                 entity.Destinationrectangle.Y = collision.Top - entity.Destinationrectangle.Height;
-                if (moveRight)
+                if (toEndPosition)
                 {
                     entity.velocity.X += velocityToEntity - entity.velocity.X;
                 }
@@ -79,17 +88,15 @@ namespace Juegazo.Map.Blocks
                 }
                 entity.velocity.Y = 1f;
                 entity.onGround = true;
-                if (entity is Player player)
+                if (entity.hasComponent(typeof(MoveVerticalComponent)))
                 {
-                    player.jumpCounter = 0;
+                    ((MoveVerticalComponent)entity.getComponent(typeof(MoveVerticalComponent))).jumpCounter = 0;
                 }
-                entity.horizontalBlockMovementAction = false;
             }
             else if (entity.velocity.Y < 0.0f)
             {
                 entity.velocity.Y *= 0.1f;
                 entity.Destinationrectangle.Y = collision.Bottom;
-                entity.horizontalBlockMovementAction = false;
             }
         }
     }

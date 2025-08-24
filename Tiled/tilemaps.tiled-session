@@ -3,25 +3,48 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "worldTexture.tsx",
+    "activeFile": "betterTest.tmx",
     "expandedProjectPaths": [
         "."
     ],
+    "file.lastUsedOpenFilter": "Todos los archivos (*)",
     "fileStates": {
+        "betterTest.tmx": {
+            "scale": 2.0702083333333334,
+            "selectedLayer": 5,
+            "viewCenter": {
+                "x": 35.986716312770454,
+                "y": 148.05273221294152
+            }
+        },
+        "goodOne.tmx": {
+            "scale": 0.8872321428571428,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 279.5209821877831,
+                "y": 159.48475394988427
+            }
+        },
         "worldTexture.tsx": {
-            "scaleInDock": 1,
+            "scaleInDock": 3,
             "scaleInEditor": 1
         }
     },
     "last.imagePath": "/home/clumpl/Documentos/Programacion/Juegazo/Content",
+    "last.objectTypesPath": "/home/clumpl/Documentos/Programacion/Juegazo/Tiled/PropietyFiles.json",
     "map.height": 24,
     "map.width": 40,
     "openFiles": [
-        "worldTexture.tsx"
+        "worldTexture.tsx",
+        "betterTest.tmx",
+        "goodOne.tmx"
     ],
     "project": "tilemaps.tiled-project",
+    "property.type": "bool",
     "recentFiles": [
-        "worldTexture.tsx"
+        "worldTexture.tsx",
+        "goodOne.tmx",
+        "betterTest.tmx"
     ],
     "tileset.lastUsedFormat": "tsx"
 }

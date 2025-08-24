@@ -2,29 +2,35 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Juegazo.Components;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Juegazo
 {
-    public class SlowDownBlock : BlockType
+    public class SlowDownBlock : Block
     {
         public int slowingSpeed;
-        public SlowDownBlock()
+        public SlowDownBlock(Texture2D texture, Rectangle sourceRectangle, Rectangle destinationRectangle, Rectangle collisionRectangle, Color color)
+            : base(texture, sourceRectangle, destinationRectangle, collisionRectangle, color)
         {
             value = 10;
             slowingSpeed = 1;
         }
         public override void horizontalActions(Entity entity, Rectangle collision)
         {
-            if (entity is Player player && entity.velocity.X != 0)
+            if (entity.hasComponent<MoveHorizontalComponent>())
             {
-                if (player.velocity.X != 0)
+                var moveComponent = entity.getComponent<MoveHorizontalComponent>();
+                if (entity.velocity.X != 0)
                 {
-                player.velocity.X += player.directionLeft? slowingSpeed : -slowingSpeed;
+                    entity.velocity.X += moveComponent.directionLeft ? slowingSpeed : -slowingSpeed;
                 }
             }
         }
 
+        public override void Update(GameTime gameTime)
+        { }
 
         public override void verticalActions(Entity entity, Rectangle collision)
         {

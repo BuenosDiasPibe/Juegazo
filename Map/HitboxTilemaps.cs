@@ -10,25 +10,17 @@ namespace Juegazo
 {
     public class HitboxTilemaps : TileMaps
     {
-        public List<BlockType> blocks;
+        public List<Block> blocks;
         public HitboxTilemaps(Texture2D texture, int scaleTexture, int pixelSize, int numberOfTilesPerRow) : base(texture, scaleTexture, pixelSize, numberOfTilesPerRow)
         {
             tilemap = new();
             //pequeño hack para obtener todas las clases que hereden de BlockType
             blocks = AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(a => a.GetTypes())
-                .Where(t => t.IsSubclassOf(typeof(BlockType)) && !t.IsAbstract)
-                .Select(t => (BlockType)Activator.CreateInstance(t))
+                .Where(t => t.IsSubclassOf(typeof(Block)) && !t.IsAbstract)
+                .Select(t => (Block)Activator.CreateInstance(t))
                 .ToList();
         }
-        public WorldBlock createWorld(KeyValuePair<Vector2, int> item)
-        {
-            // Select the appropriate BlockType from the blocks list based on the item's value //GRACIAS COPILOT!!!
-            BlockType block = blocks.FirstOrDefault(b => b.value == item.Value) ?? blocks.First();
-
-            return new WorldBlock(texture, BuildSourceRectangle(item), BuildDestinationRectangle(item), Color.White, block);
-        }
-
         //make a list of rectangles that the player is interacting with. The rectangles are created in WORLD coordinates (if player is between 2 blocks, create the rectangles of those blocks)
         public List<Rectangle> getIntersectingTilesVertical(Rectangle target)
         {

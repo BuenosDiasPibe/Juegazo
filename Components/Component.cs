@@ -1,0 +1,19 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+
+namespace Juegazo
+{
+    public abstract class Component
+    {
+        public Entity Owner { get; internal set; }
+        public bool Enable = true; //defaults to true, can do stuff in Update Methods
+        public bool Visible = false; //default to false, draw its not visible
+        public abstract void Update(GameTime gameTime);
+        public abstract void Draw(GameTime gameTime, SpriteBatch spriteBatch);
+        public abstract void Destroy();
+    }
+}

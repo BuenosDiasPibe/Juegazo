@@ -9,7 +9,12 @@ namespace Juegazo.Collectables
 {
     public class ZoomOutCollectable : Collectable
     {
-        public ZoomOutCollectable(Texture2D texture, Rectangle sourceRectangle, Rectangle Destrectangle, Color color) : base(texture, sourceRectangle, Destrectangle, color)
+        private Texture2D t;
+        private Rectangle s;
+        private Rectangle d;
+        private Color c;
+
+        public ZoomOutCollectable(Texture2D texture, Rectangle sourceRectangle, Rectangle Destrectangle, Rectangle collider, Color color) : base(texture, sourceRectangle, Destrectangle, collider, color)
         {
         }
 

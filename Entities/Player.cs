@@ -12,7 +12,7 @@ namespace Juegazo
     public class Player : Entity
     {
         public bool directionLeft;
-        public List<Entity> deleteCollectables;
+        public List<Entity> deleteCollectables = [];
         private KeyboardState prevState;
 
         public bool isDestroyed;
@@ -34,7 +34,7 @@ namespace Juegazo
         public GameTime gameTime;
         public bool hasJumpedWall = false;
 
-        public Player(Texture2D texture, Rectangle sourceRectangle, Rectangle Destrectangle, Camera camra, Color color) : base(texture, sourceRectangle, Destrectangle, color)
+        public Player(Texture2D texture, Rectangle sourceRectangle, Rectangle Destrectangle, Camera camra, Rectangle collider, Color color) : base(texture, sourceRectangle, Destrectangle, collider, color)
         {
             velocity = new();
 
@@ -50,21 +50,20 @@ namespace Juegazo
             numDash = 0;
             dashCounter = 0;
             lookAhead = 0;
-            this.camera = camra;
+            camera = camra;
 
             initialPosition = new Vector2(Destrectangle.X, Destrectangle.Y);
         }
  
-        public override void Update(GameTime gameTime, List<Entity> entities, List<WorldBlock> worldBlocks, List<InteractiveBlock> interactiveBlocks)
+        public void Update(GameTime gameTime, List<Entity> entities,  List<InteractiveBlock> interactiveBlocks)
         {
             this.gameTime = gameTime;
             CheckCollectables(entities);
             ApplyGravity();
             ManageVerticalMovement();
             HandleHorizontalMovement();
-            ManageCollisions(worldBlocks);
             cameraManager(gameTime);
-            if (health < 0)
+            if (health <= 0)
             {
                 HandleDeath();
             }
@@ -79,14 +78,6 @@ namespace Juegazo
             if (onGround || incrementJumps > 0 || hasJumpedWall)
             {
                 cameraVertical = Destinationrectangle.Y + Destinationrectangle.Height / 2;
-            }
-            if (zoomInCamera)
-            {
-                ZoomInCamera();
-            }
-            if (zoomOutCamera)
-            {
-                ZoomOutCamera();
             }
 
             Vector2 targetPosition = new Vector2(cameraHorizontal, cameraVertical);
@@ -119,31 +110,6 @@ namespace Juegazo
             camera.Position = new Vector2(Destinationrectangle.X + lookAhead - Destinationrectangle.Width / 2, Destinationrectangle.Y + Destinationrectangle.Height / 2);
         }
 
-        private void ManageCollisions(List<WorldBlock> worldBlocks)
-        {
-            Destinationrectangle.X += (int)velocity.X;
-            foreach (WorldBlock w in worldBlocks)
-            {
-                if (Destinationrectangle.Intersects(w.Destinationrectangle))
-                {
-                    w.blockType.horizontalActions(this, w.Destinationrectangle);
-                }
-            }
-            Destinationrectangle.Y += (int)velocity.Y;
-            onGround = false;
-            foreach (WorldBlock w in worldBlocks)
-            {
-                if (Destinationrectangle.Intersects(w.Destinationrectangle))
-                {
-                    w.blockType.verticalActions(this, w.Destinationrectangle);
-                }
-            }
-
-            if (!onGround && jumpCounter == 0)
-            {
-                jumpCounter++;
-            }
-        }
 
         private void ManageVerticalMovement()
         {
@@ -185,7 +151,7 @@ namespace Juegazo
         private void HandleHorizontalMovement()
         {
             const float MOVEMENT_SPEED = 3f;
-            const float MAX_SPEED = 30f;
+            const float MAX_SPEED = 20f;
 
             //inputs
             bool movingLeft = Keyboard.GetState().IsKeyDown(Keys.A) || Keyboard.GetState().IsKeyDown(Keys.Left);
@@ -242,7 +208,6 @@ namespace Juegazo
 
         private void CheckCollectables(List<Entity> entities)
         {
-            deleteCollectables = [];
             foreach (Entity entity in entities)
             {
                 if (entity is Collectable collectable && collectable.Destinationrectangle.Intersects(Destinationrectangle))

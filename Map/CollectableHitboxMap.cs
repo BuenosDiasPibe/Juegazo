@@ -25,13 +25,6 @@ namespace Juegazo
             this.collectableSize = collectableSize;
             this.scaleTexture = scaleTexture;
             // Dictionary that maps collectable IDs to factory functions for creating different types of collectables
-            collectableFactory = new Dictionary<int, Func<Texture2D, Rectangle, Rectangle, Color, Collectable>>
-            {
-                { 13, (t, s, d, c) => new JumpCollectable(t, s, d, c) },
-                { 14, (t, s, d, c) => new SprintCollectable(t, s, d, c) },
-                { 20, (t, s, d, c) => new ZoomInCollectable(t, s, d, c) },
-                { 21, (t, s, d, c) => new ZoomOutCollectable(t, s, d, c) }
-            };
         }
         public override Dictionary<Vector2, int> LoadMap(string filePath)
         {
@@ -79,17 +72,10 @@ namespace Juegazo
                             (int)(pixelSize * collectableSize),
                             (int)(pixelSize * collectableSize)
                         );
-        }    
-        public Collectable ReturnCollectable(KeyValuePair<Vector2, int> item, Texture2D worldTexture)
+        }
+        public void ReturnCollectable(KeyValuePair<Vector2, int> item, Texture2D worldTexture)
         {
-            if (collectableFactory.TryGetValue(item.Value, out var factory))
-            {
-                return factory(worldTexture,
-                    BuildSourceRectangle(item),
-                    BuildDestinationRectangle(item),
-                    Color.White);
-            }
-            return new NullCollectable(worldTexture, BuildSourceRectangle(item), BuildDestinationRectangle(item), Color.White);
+
         }
     }
 }

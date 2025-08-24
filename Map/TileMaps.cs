@@ -38,7 +38,7 @@ namespace MarinMol
                     if (int.TryParse(parts[x], out int value))
                     {
                         //TODO: change the tile system to not use this magic values, they are for the collectable system but its just garbage
-                        if (value > -1 && value != 13 && value != 14 && value != 20 && value != 21)
+                        if (value > -1)
                         {
                             Vector2 vector = new Vector2(x, y);
                             result[vector] = value;

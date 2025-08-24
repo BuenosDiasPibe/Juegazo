@@ -9,7 +9,7 @@ namespace Juegazo.Collectables
 {
     public class ZoomInCollectable : Collectable
     {
-        public ZoomInCollectable(Texture2D texture, Rectangle sourceRectangle, Rectangle Destrectangle, Color color) : base(texture, sourceRectangle, Destrectangle, color)
+        public ZoomInCollectable(Texture2D texture, Rectangle sourceRectangle, Rectangle Destrectangle, Rectangle collider, Color color) : base(texture, sourceRectangle, Destrectangle, collider, color)
         {
         }
 
