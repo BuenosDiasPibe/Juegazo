@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Gum.Wireframe;
 using Juegazo.Components;
+using Juegazo.Map;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -22,17 +23,11 @@ namespace Juegazo
 
         private const int TILESIZE = 32;
         private List<Entity> entities = new();
-        private readonly List<Entity> entitiesDeleted = new();
-        private HitboxTilemaps collisionMap;
-        private CollectableHitboxMap collectableHitboxMap;
-        private Rectangle startPlayerposition;
         GumService gum;
         private SpriteFont font;
         Camera camera;
-        Texture2D worldTexture;
         Texture2D playerTexture;
-        bool sceneChangeTriggered = false;
-
+        private TiledMap tilemap;
         public TestScene(ContentManager contentManager,
         GraphicsDevice graphicsDevice,
         GumService gum,
@@ -48,30 +43,31 @@ namespace Juegazo
 
         public void LoadContent()
         {
-            Console.WriteLine("damn");
-            worldTexture = contentManager.Load<Texture2D>("worldTexture");
             playerTexture = contentManager.Load<Texture2D>("playerr");
-
-            entities.Clear();
-
+            tilemap = new("Tiled/betterTest.tmx");
+            var componentsOnEntity = new List<Component> {
+                new CameraToEntityComponent(camera),
+                new MoveHorizontalComponent(),
+                new GodMovementVerticalComponent()
+            };
+            entities.Add(new Entity(playerTexture, new Rectangle(TILESIZE, TILESIZE, TILESIZE, TILESIZE), new Rectangle(0,0, 50, 50), new Rectangle((int)(TILESIZE*0.3), (int)(TILESIZE*0.3), (int)(TILESIZE/0.3), (int)(TILESIZE/0.3)), componentsOnEntity,Color.White));
             font = contentManager.Load<SpriteFont>("sheesh");
             camera.Origin = new Vector2(camera.Viewport.Width / 2, camera.Viewport.Height / 2);
-            camera.Zoom = 2;
-            sceneChangeTriggered = false;
+            camera.Zoom = 1;
         }
 
         public void UnloadContent()
         {
-            collisionMap = null;
-            collectableHitboxMap = null;
             font = null;
-            worldTexture.Dispose();
             playerTexture.Dispose();
         }
 
         public void Update(GameTime gameTime)
         {
-            
+            foreach (var entity in entities)
+            {
+                entity.Update(gameTime);
+            }
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -79,10 +75,6 @@ namespace Juegazo
             foreach (var entity in entities)
             {
                 entity.DrawSprite(spriteBatch);
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.F3))
-            {
-                new Debugger(graphicsDevice).drawhitboxEntities(spriteBatch, entities, collisionMap, TILESIZE);
             }
         }
 

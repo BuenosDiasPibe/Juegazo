@@ -65,7 +65,6 @@ namespace Juegazo
 
         public void LoadContent()
         {
-            Console.WriteLine("First screen");
             if (manager.hasScenes())
                 CreateShit();
         }

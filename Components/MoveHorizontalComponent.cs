@@ -13,7 +13,6 @@ namespace Juegazo.Components
         private const float MOVEMENT_SPEED = 3f;
         private const float MAX_SPEED = 20f;
         private float dashCounter;
-        public bool directionLeft;
         public override void Destroy()
         { }
 
@@ -32,7 +31,7 @@ namespace Juegazo.Components
                 {
                     Owner.velocity.X += -MOVEMENT_SPEED;
                 }
-                directionLeft = true;
+                Owner.directionLeft = true;
             }
             if (movingRight)
             {
@@ -40,12 +39,12 @@ namespace Juegazo.Components
                 {
                     Owner.velocity.X += MOVEMENT_SPEED;
                 }
-                directionLeft = false;
+                Owner.directionLeft = false;
             }
             // Dash (sprint)
             if (dashCounter > 0 && Keyboard.GetState().IsKeyDown(Keys.LeftShift))
             {
-                int basedOnDirection = directionLeft ? -7 : 7;
+                int basedOnDirection = Owner.directionLeft ? -7 : 7;
                 Owner.velocity.X += basedOnDirection;
                 dashCounter--;
             }

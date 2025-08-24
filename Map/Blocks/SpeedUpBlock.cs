@@ -20,13 +20,10 @@ namespace Juegazo
         }
         public override void horizontalActions(Entity entity, Rectangle collision)
         {
-            if (entity.hasComponent<MoveHorizontalComponent>())
+            var moveComponent = entity.getComponent<MoveHorizontalComponent>();
+            if (entity.velocity.X != 0)
             {
-                var moveComponent = entity.getComponent<MoveHorizontalComponent>();
-                if (entity.velocity.X != 0)
-                {
-                    entity.velocity.X += moveComponent.directionLeft ? -velocitySpeed : velocitySpeed;
-                }
+                entity.velocity.X += entity.directionLeft ? -velocitySpeed : velocitySpeed;
             }
         }
 

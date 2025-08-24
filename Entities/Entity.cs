@@ -13,13 +13,14 @@ namespace Juegazo
         public bool Destroyed { get; private set; }
         public bool Enable = true;
         public bool Visible = true;
-        private List<Component> componentList;
-        private Dictionary<Type, Component> componentDictionary;
+        private List<Component> componentList = new();
+        private Dictionary<Type, Component> componentDictionary = new();
         public Vector2 velocity; //only variable that makes sense right now, and that's debatable.
         public Rectangle collider;
         public bool onGround;
         public int health;
         public int maxHealth;
+        public bool directionLeft = false;
 
         public Entity(Texture2D texture, Rectangle sourceRectangle, Rectangle Destrectangle, Rectangle collider, Color color) : base(texture, sourceRectangle, Destrectangle, color)
         {
@@ -83,6 +84,7 @@ namespace Juegazo
             }
             componentList.Add(component);
             componentDictionary.Add(type, component);
+            component.Owner = this; //I FUCKING FORFOT TO ADD THIS COMPONENT IM GOING TO KMS
             return component; //why? because fuck it why not
         }
         public Component getComponent(Type type) => componentDictionary[type];
