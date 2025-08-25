@@ -10,6 +10,7 @@ namespace Juegazo.Components
 {
     public class GodMovementVerticalComponent : Component
     {
+        private readonly float VERTICALMOVEMENT = 1f;
         public override void Destroy()
         {
         }
@@ -21,9 +22,11 @@ namespace Juegazo.Components
         public override void Update(GameTime gameTime)
         {
             if (Keyboard.GetState().IsKeyDown(Keys.W) || Keyboard.GetState().IsKeyDown(Keys.Up))
-                Owner.velocity.Y = -10;
-            if (Keyboard.GetState().IsKeyDown(Keys.Down) || Keyboard.GetState().IsKeyDown(Keys.S))
-                Owner.velocity.Y = 10;
+                Owner.velocity.Y = -VERTICALMOVEMENT;
+            else if (Keyboard.GetState().IsKeyDown(Keys.Down) || Keyboard.GetState().IsKeyDown(Keys.S))
+                Owner.velocity.Y = VERTICALMOVEMENT;
+            else
+                Owner.velocity.Y = 0;
         }
     }
 }

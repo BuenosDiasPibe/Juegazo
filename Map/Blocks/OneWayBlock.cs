@@ -10,8 +10,8 @@ namespace Juegazo
 {
     public class OneWayBlock : Block
     {
-        public OneWayBlock(Texture2D texture, Rectangle sourceRectangle, Rectangle destinationRectangle, Rectangle collisionRectangle, Color color)
-            : base(texture, sourceRectangle, destinationRectangle, collisionRectangle, color)
+        public OneWayBlock(Rectangle collider)
+            : base(collider)
         {
             value = 12;
         }

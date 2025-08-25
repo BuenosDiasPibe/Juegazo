@@ -11,8 +11,8 @@ namespace Juegazo
     public class VerticalBoost : Block
     {
         public float vertBoost;
-        public VerticalBoost(Texture2D texture, Rectangle sourceRectangle, Rectangle destinationRectangle, Rectangle collisionRectangle, Color color)
-            : base(texture, sourceRectangle, destinationRectangle, collisionRectangle, color)
+        public VerticalBoost(Rectangle collider)
+            : base(collider)
         {
             value = 8;
             vertBoost = -1;

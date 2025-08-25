@@ -15,13 +15,14 @@ namespace Juegazo.Map.Blocks
         private Rectangle endBlockPosition;
         private Vector2 velocity;
         private float velocityToEntity;
-        public MovementBlock(Texture2D texture, Rectangle sourceRectangle, Rectangle destinationRectangle, Rectangle collisionRectangle, Rectangle initialBlockPosition, Rectangle endBlockPosition, Color color)
-            : base(texture, sourceRectangle, destinationRectangle, collisionRectangle, color)
+        public Rectangle DestRectangle { get; protected set; }
+        public MovementBlock(Rectangle DestinationRectangle, Rectangle collider, Rectangle initialBlockPosition, Rectangle endBlockPosition) : base(collider)
         {
             value = 16;
             velocity = checkMovementVector();
             velocityToEntity = velocity.Length() * 1.2f;
             EnableUpdate = true;
+            this.DestRectangle = DestinationRectangle;
             this.initialBlockPosition = initialBlockPosition;
             this.endBlockPosition = endBlockPosition;
         }
@@ -53,22 +54,22 @@ namespace Juegazo.Map.Blocks
 
         public override void Update(GameTime gameTime)
         {
-            if (Destinationrectangle.Intersects(initialBlockPosition))
+            if (DestRectangle.Intersects(initialBlockPosition))
             {
                 toEndPosition = false;
             }
-            else if (Destinationrectangle.Intersects(endBlockPosition))
+            else if (DestRectangle.Intersects(endBlockPosition))
             {
                 toEndPosition = true;
             }
 
             Vector2 target = toEndPosition ? new Vector2(initialBlockPosition.X, initialBlockPosition.Y) : new Vector2(endBlockPosition.X, endBlockPosition.Y);
 
-            Vector2 current = new Vector2(Destinationrectangle.X, Destinationrectangle.Y);
+            Vector2 current = new Vector2(DestRectangle.X, DestRectangle.Y);
 
             Vector2 newPosition = Vector2.Lerp(current, target, 0.02f);
 
-            Destinationrectangle = new Rectangle((int)newPosition.X, (int)newPosition.Y, Destinationrectangle.Width, Destinationrectangle.Height);
+            DestRectangle = new Rectangle((int)newPosition.X, (int)newPosition.Y, DestRectangle.Width,DestRectangle.Height);
 
             collider = new Rectangle((int)newPosition.X, (int)newPosition.Y, collider.Width, collider.Height);
         }

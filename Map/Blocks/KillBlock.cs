@@ -9,8 +9,8 @@ namespace Juegazo.Map.Blocks
 {
     public class KillBlock : Block
     {
-        public KillBlock(Texture2D texture, Rectangle sourceRectangle, Rectangle destinationRectangle, Rectangle collisionRectangle, Color color)
-            : base(texture, sourceRectangle, destinationRectangle, collisionRectangle, color)
+        public KillBlock(Rectangle collider)
+            : base(collider)
         {
             value = 18;
         }

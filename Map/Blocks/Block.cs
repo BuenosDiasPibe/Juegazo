@@ -7,13 +7,13 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Juegazo
 {
-    public abstract class Block : Sprite
+    public abstract class Block
     {
         public int value { get; protected set; }
         public Rectangle collider;
         public bool EnableUpdate { get; protected set; } = false; //by default no object needs an update method
         public bool EnableCollisions { get; protected set; } = true;
-        protected Block(Texture2D texture, Rectangle sourceRectangle, Rectangle Destrectangle, Rectangle collider, Color color) : base(texture, sourceRectangle, Destrectangle, color)
+        protected Block(Rectangle collider)
         {
             this.collider = collider;
         }

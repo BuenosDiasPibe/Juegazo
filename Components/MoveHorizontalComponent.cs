@@ -10,7 +10,7 @@ namespace Juegazo.Components
 {
     public class MoveHorizontalComponent : Component
     {
-        private const float MOVEMENT_SPEED = 3f;
+        private const float MOVEMENT_SPEED = 1f;
         private const float MAX_SPEED = 20f;
         private float dashCounter;
         public override void Destroy()

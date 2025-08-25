@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Gum.Wireframe;
@@ -28,6 +29,14 @@ namespace Juegazo
         Camera camera;
         Texture2D playerTexture;
         private TiledMap tilemap;
+        private string projectDirectory = GetExecutingDir("../../../Tiled");
+
+        private static string GetExecutingDir(string v)
+        {
+            string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            return Path.Combine(baseDirectory, v);
+        }
+
         public TestScene(ContentManager contentManager,
         GraphicsDevice graphicsDevice,
         GumService gum,
@@ -44,16 +53,16 @@ namespace Juegazo
         public void LoadContent()
         {
             playerTexture = contentManager.Load<Texture2D>("playerr");
-            tilemap = new("Tiled/betterTest.tmx");
+            tilemap = new(graphicsDevice, projectDirectory, "betterTest.tmx", TILESIZE);
             var componentsOnEntity = new List<Component> {
                 new CameraToEntityComponent(camera),
                 new MoveHorizontalComponent(),
                 new GodMovementVerticalComponent()
             };
-            entities.Add(new Entity(playerTexture, new Rectangle(TILESIZE, TILESIZE, TILESIZE, TILESIZE), new Rectangle(0,0, 50, 50), new Rectangle((int)(TILESIZE*0.3), (int)(TILESIZE*0.3), (int)(TILESIZE/0.3), (int)(TILESIZE/0.3)), componentsOnEntity,Color.White));
+            entities.Add(new Entity(playerTexture, new Rectangle(TILESIZE, TILESIZE, TILESIZE, TILESIZE), new Rectangle(0,0, TILESIZE, TILESIZE), new Rectangle((int)(TILESIZE*0.3), (int)(TILESIZE*0.3), (int)(TILESIZE/0.3), (int)(TILESIZE/0.3)), componentsOnEntity,Color.White));
             font = contentManager.Load<SpriteFont>("sheesh");
             camera.Origin = new Vector2(camera.Viewport.Width / 2, camera.Viewport.Height / 2);
-            camera.Zoom = 1;
+            camera.Zoom = 3;
         }
 
         public void UnloadContent()
@@ -67,11 +76,14 @@ namespace Juegazo
             foreach (var entity in entities)
             {
                 entity.Update(gameTime);
+                entity.collider.X += (int)entity.velocity.X;
+                entity.collider.Y += (int)entity.velocity.Y;
             }
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
+            tilemap.Draw(spriteBatch);
             foreach (var entity in entities)
             {
                 entity.DrawSprite(spriteBatch);
@@ -83,17 +95,6 @@ namespace Juegazo
         }
         public void DrawUI(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            foreach (var entity in entities)
-            {
-                if (entity is Player player)
-                {
-                    spriteBatch.DrawString(font,
-                                            $"Health {player.health}/{player.maxHealth}\nSprints: {player.dashCounter}\nJumpBoosts: {player.incrementJumps}",
-                                            new Vector2(camera.Left, camera.Top), //OMFG IT WAS THAT EASLY IM GOING TO KMS
-                                            Color.White);
-                    break;
-                }
-            }
             spriteBatch.DrawString(font, 
                 $"FPS: {Math.Round(1 / gameTime.ElapsedGameTime.TotalSeconds)}", 
                 new Vector2(camera.Left, camera.Top + 60), 

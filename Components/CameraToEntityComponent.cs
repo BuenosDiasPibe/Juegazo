@@ -31,10 +31,6 @@ namespace Juegazo.Components
             
             cameraHorizontal = (int)MathHelper.Lerp(cameraHorizontal, Owner.Destinationrectangle.X + lookAhead + Owner.Destinationrectangle.Width / 2, 0.05f * (float)gameTime.ElapsedGameTime.TotalSeconds * 60);
 
-            // if (Owner.onGround || Owner.incrementJumps > 0 || hasJumpedWall)
-            // {
-            //     cameraVertical = Destinationrectangle.Y + Destinationrectangle.Height / 2;
-            // }
             cameraVertical = Owner.Destinationrectangle.Y + Owner.Destinationrectangle.Height / 2;
 
             Vector2 targetPosition = new Vector2(cameraHorizontal, cameraVertical);

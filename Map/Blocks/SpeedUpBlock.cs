@@ -12,8 +12,8 @@ namespace Juegazo
     public class SpeedUpBlock : Block
     {
         private int velocitySpeed;
-        public SpeedUpBlock(Texture2D texture, Rectangle sourceRectangle, Rectangle destinationRectangle, Rectangle collisionRectangle, Color color)
-            : base(texture, sourceRectangle, destinationRectangle, collisionRectangle, color)
+        public SpeedUpBlock(Rectangle collider)
+            : base(collider)
         {
             value = 5;
             velocitySpeed = 3;

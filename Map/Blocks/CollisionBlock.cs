@@ -9,8 +9,7 @@ namespace Juegazo
 {
     public class CollisionBlock : Block
     {
-        public CollisionBlock(Texture2D texture, Rectangle sourceRectangle, Rectangle destinationRectangle, Rectangle hitbox, Color color)
-            : base(texture, sourceRectangle, destinationRectangle, hitbox, color)
+        public CollisionBlock(Rectangle collisionRectangle) : base(collisionRectangle)
         {
             value = 11;
         }

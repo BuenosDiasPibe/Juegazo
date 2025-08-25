@@ -10,8 +10,8 @@ namespace Juegazo.Map.Blocks
 {
     public class ZoomInBlock : Block
     {
-        public ZoomInBlock(Texture2D texture, Rectangle sourceRectangle, Rectangle destinationRectangle, Rectangle collisionRectangle, Color color)
-            : base(texture, sourceRectangle, destinationRectangle, collisionRectangle, color)
+        public ZoomInBlock( Rectangle collider)
+            : base(collider)
         { }
         public bool canChange = false;
         public override void horizontalActions(Entity entity, Rectangle collision)

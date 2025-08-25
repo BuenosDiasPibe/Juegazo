@@ -10,8 +10,7 @@ namespace Juegazo.Map.Blocks
 {
     public class CheckpointBlock : Block
     {
-        public CheckpointBlock(Texture2D texture, Rectangle sourceRectangle, Rectangle destinationRectangle, Rectangle collisionRectangle, Color color)
-            : base(texture, sourceRectangle, destinationRectangle, collisionRectangle, color)
+        public CheckpointBlock(Rectangle collisionRectangle) : base(collisionRectangle)
         {
             value = 17;
         }

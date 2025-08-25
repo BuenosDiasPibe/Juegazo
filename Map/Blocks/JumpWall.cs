@@ -10,8 +10,8 @@ namespace Juegazo
     public class JumpWall : Block
     {
         private float jumpStrength;
-        public JumpWall(Texture2D texture, Rectangle sourceRectangle, Rectangle DestinationRectangle, Rectangle collisionRectangle, Color color)
-            : base(texture, sourceRectangle, DestinationRectangle, collisionRectangle, color)
+        public JumpWall(Rectangle collider)
+            : base(collider)
         {
             value = 1;
             jumpStrength = 0;

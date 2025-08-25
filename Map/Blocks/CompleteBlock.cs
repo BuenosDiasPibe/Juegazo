@@ -12,7 +12,7 @@ namespace Juegazo
     {
         public bool changeScene;
 
-        public CompleteBlock(Texture2D texture, Rectangle sourceRectangle, Rectangle Destrectangle, Rectangle collider, Color color) : base(texture, sourceRectangle, Destrectangle, collider, color)
+        public CompleteBlock(Rectangle collider) : base(collider)
         {
             value = 15;
             changeScene = false;

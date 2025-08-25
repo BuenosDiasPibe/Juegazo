@@ -11,8 +11,8 @@ namespace Juegazo
     public class SlowDownBlock : Block
     {
         public int slowingSpeed;
-        public SlowDownBlock(Texture2D texture, Rectangle sourceRectangle, Rectangle destinationRectangle, Rectangle collisionRectangle, Color color)
-            : base(texture, sourceRectangle, destinationRectangle, collisionRectangle, color)
+        public SlowDownBlock(Rectangle collider)
+            : base(collider)
         {
             value = 10;
             slowingSpeed = 1;
