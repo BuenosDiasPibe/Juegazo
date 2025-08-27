@@ -8,15 +8,16 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Juegazo
 {
-    public class VerticalBoost : Block
+    public class VerticalBoostBlock : Block
     {
         public float vertBoost;
-        public VerticalBoost(Rectangle collider)
+        public VerticalBoostBlock(Rectangle collider)
             : base(collider)
         {
             value = 8;
             vertBoost = -1;
         }
+        public VerticalBoostBlock() { value = 8; }
         public override void horizontalActions(Entity entity, Rectangle collision)
         {
             verticalActions(entity, collision);

@@ -16,6 +16,11 @@ namespace Juegazo
             value = 1;
             jumpStrength = 0;
         }
+        public JumpWall()
+        {
+            value = 1;
+            jumpStrength = 0;
+        }
         public override void horizontalActions(Entity entity, Rectangle collision)
         {
             //change this to use the new ECS model
@@ -44,14 +49,7 @@ namespace Juegazo
                 }
                 else //yo cuando code repetition (es importante te lo juro)
                 {
-                    if (entity.velocity.X > 0)
-                    {
-                        entity.collider.X = collision.Left - entity.collider.Width;
-                    }
-                    else if (entity.velocity.X < 0)
-                    {
-                        entity.collider.X = collision.Right;
-                    }
+                    new CollisionBlock().horizontalActions(entity, collision); //TODO: fix jumpwall collisions
                 }
             }
         }
@@ -65,24 +63,25 @@ namespace Juegazo
 
         public override void verticalActions(Entity entity, Rectangle collision)
         {
-            if(entity is Player player)
-                player.hasJumpedWall = false;
-            if (entity.velocity.Y > 0.0f)
-            {
-                entity.collider.Y = collision.Top - entity.collider.Height;
-                entity.velocity.Y = 1f;
-                entity.onGround = true;
-            }
-            else if (entity.velocity.Y < 0.0f)
-            {
-                entity.velocity.Y *= 0.1f;
-                entity.collider.Y = collision.Bottom;
-            }
+
+            new CollisionBlock().horizontalActions(entity, collision);
+            // if (entity is Player player)
+            //     player.hasJumpedWall = false;
+            // if (entity.velocity.Y > 0.0f)
+            // {
+            //     entity.Destinationrectangle.Y = collision.Top - entity.Destinationrectangle.Height;
+            //     entity.velocity.Y = 1f;
+            //     entity.onGround = true;
+            // }
+            // else if (entity.velocity.Y < 0.0f)
+            // {
+            //     entity.velocity.Y *= 0.1f;
+            //     entity.Destinationrectangle.Y = collision.Bottom;
+            // }
         }
 
         public override void Update(GameTime gameTime)
         {
-            throw new NotImplementedException();
         }
     }
 }

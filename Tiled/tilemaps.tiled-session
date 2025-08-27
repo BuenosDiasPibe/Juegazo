@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "betterTest.tmx",
+    "activeFile": "goodOne.tmx",
     "expandedProjectPaths": [
         "."
     ],
@@ -18,11 +18,11 @@
             }
         },
         "goodOne.tmx": {
-            "scale": 0.8872321428571428,
+            "scale": 3,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 279.5209821877831,
-                "y": 159.48475394988427
+                "x": 127.83333333333333,
+                "y": 159.5
             }
         },
         "worldTexture.tsx": {
@@ -43,8 +43,8 @@
     "property.type": "bool",
     "recentFiles": [
         "worldTexture.tsx",
-        "goodOne.tmx",
-        "betterTest.tmx"
+        "betterTest.tmx",
+        "goodOne.tmx"
     ],
     "tileset.lastUsedFormat": "tsx"
 }

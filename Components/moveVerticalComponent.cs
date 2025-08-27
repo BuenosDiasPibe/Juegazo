@@ -10,12 +10,11 @@ namespace Juegazo.Components
 {
     public class MoveVerticalComponent : Component
     {
-        public bool JumpPressed { get; private set; }
-        public int jumpCounter;
-        public int numJumps;
+        public bool JumpPressed { get; private set; } = false;
+        public int jumpCounter = 0;
+        public int numJumps = 5;
         private KeyboardState prevState = new KeyboardState();
-        
-        public void MoveHorizontalComponent()
+        public MoveVerticalComponent()
         {
             jumpCounter = 0;
             JumpPressed = false;
@@ -24,8 +23,8 @@ namespace Juegazo.Components
         {
             if (Owner.onGround && JumpPressed && jumpCounter < numJumps)
             {
-                Owner.velocity.Y -= jumpAmmount;
-                jumpCounter++;
+                Owner.velocity.Y = -jumpAmmount;
+                Owner.onGround = false;
             }
         }
 
@@ -41,10 +40,11 @@ namespace Juegazo.Components
             JumpPressed = (Keyboard.GetState().IsKeyDown(Keys.Up) && !prevState.IsKeyDown(Keys.Up)) || (Keyboard.GetState().IsKeyDown(Keys.W) && !prevState.IsKeyDown(Keys.W));
 
             //jumpCheat
-            if (Keyboard.GetState().IsKeyDown(Keys.T) && !prevState.IsKeyDown(Keys.T)) Owner.velocity.Y = -7;
+            if (Keyboard.GetState().IsKeyDown(Keys.T) && !prevState.IsKeyDown(Keys.T)) Owner.velocity.Y = -20;
 
             //Fast fall
-            if (Keyboard.GetState().IsKeyDown(Keys.S) || Keyboard.GetState().IsKeyDown(Keys.Down)) Owner.velocity.Y += 10;
+            if (Keyboard.GetState().IsKeyDown(Keys.S) || Keyboard.GetState().IsKeyDown(Keys.Down)) Owner.velocity.Y = 10;
+            JumpingVertical(10);
             prevState = Keyboard.GetState();
         }
     }

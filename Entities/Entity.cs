@@ -22,48 +22,33 @@ namespace Juegazo
         public int maxHealth;
         public bool directionLeft = false;
 
-        public Entity(Texture2D texture, Rectangle sourceRectangle, Rectangle Destrectangle, Rectangle collider, Color color) : base(texture, sourceRectangle, Destrectangle, color)
+        public Entity(Texture2D texture, Rectangle sourceRectangle, Rectangle Destrectangle, Color color) : base(texture, sourceRectangle, Destrectangle, color)
         {
             velocity = new();
             onGround = false;
             maxHealth = 1;
             health = maxHealth;
-            this.collider = collider;
+            collider = new(Destinationrectangle.X, Destinationrectangle.Y, (int)(Destinationrectangle.Width * 0.3), (int)(Destinationrectangle.Height * 0.3));
         }
-        public Entity(Texture2D texture, Rectangle sourceRectangle, Rectangle Destrectangle, Rectangle collider, List<Component> componentList, Color color) : base(texture, sourceRectangle, Destrectangle, color)
+        public Entity(Texture2D texture, Rectangle sourceRectangle, Rectangle Destrectangle, List<Component> componentList, Color color) : base(texture, sourceRectangle, Destrectangle, color)
         {
             velocity = new();
             onGround = false;
             maxHealth = 1;
             health = maxHealth;
-            this.collider = collider;
+            collider = new(Destinationrectangle.X, Destinationrectangle.Y, (int)(Destinationrectangle.Width * 0.3), (int)(Destinationrectangle.Height * 0.3));
             foreach (Component component in componentList)
             {
                 AddComponent(component.GetType(), component);
             }
 
         }
-        private void UpdateColliderPosition()
+        public void UpdateColliderFromDest()
         {
-            collider.X = Destinationrectangle.X + Destinationrectangle.Width / 2;
-            collider.Y = Destinationrectangle.Y + Destinationrectangle.Height / 2;
-        }
-        public void UpdateDestinationFromCollider()
-        {
-            Destinationrectangle.X = collider.X - Destinationrectangle.Width / 2;
-            Destinationrectangle.Y = collider.Y - Destinationrectangle.Height / 2;
+            collider.Location = Destinationrectangle.Location;
         }
         public virtual void Update(GameTime gameTime)
         {
-            if (Destinationrectangle.X != collider.X - Destinationrectangle.Width / 2 ||
-                Destinationrectangle.Y != collider.Y - Destinationrectangle.Height / 2)
-            {
-                UpdateDestinationFromCollider();
-            }
-            else
-            {
-                UpdateColliderPosition();
-            }
             foreach (var component in componentList)
             {
                 if (component.Enable) component.Update(gameTime);
@@ -76,6 +61,7 @@ namespace Juegazo
                 if (component.Visible) component.Draw(gameTime, spriteBatch);
             }
         }
+        
         public Component AddComponent(Type type, Component component)
         {
             if (component.Owner != null)

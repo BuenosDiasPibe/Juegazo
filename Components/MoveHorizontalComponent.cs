@@ -10,7 +10,7 @@ namespace Juegazo.Components
 {
     public class MoveHorizontalComponent : Component
     {
-        private const float MOVEMENT_SPEED = 1f;
+        private const float MOVEMENT_SPEED = 5f;
         private const float MAX_SPEED = 20f;
         private float dashCounter;
         public override void Destroy()
@@ -27,19 +27,17 @@ namespace Juegazo.Components
             // Horizontal movement
             if (movingLeft)
             {
-                if (!(Owner.velocity.X <= -5f))
-                {
-                    Owner.velocity.X += -MOVEMENT_SPEED;
-                }
+                Owner.velocity.X = -MOVEMENT_SPEED;
                 Owner.directionLeft = true;
             }
             if (movingRight)
             {
-                if (!(Owner.velocity.X >= 5f))
-                {
-                    Owner.velocity.X += MOVEMENT_SPEED;
-                }
+                Owner.velocity.X = MOVEMENT_SPEED;
                 Owner.directionLeft = false;
+            }
+            if (movingLeft && movingRight)
+            {
+                Owner.velocity.X = 0;
             }
             // Dash (sprint)
             if (dashCounter > 0 && Keyboard.GetState().IsKeyDown(Keys.LeftShift))

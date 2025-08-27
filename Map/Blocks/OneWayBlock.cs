@@ -10,8 +10,13 @@ namespace Juegazo
 {
     public class OneWayBlock : Block
     {
+        //TODO: add enum with orientation
         public OneWayBlock(Rectangle collider)
             : base(collider)
+        {
+            value = 12;
+        }
+        public OneWayBlock()
         {
             value = 12;
         }

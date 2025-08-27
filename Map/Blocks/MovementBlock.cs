@@ -10,12 +10,12 @@ namespace Juegazo.Map.Blocks
 {
     public class MovementBlock : Block
     {
-        private bool toEndPosition;
-        private Rectangle initialBlockPosition;
-        private Rectangle endBlockPosition;
-        private Vector2 velocity;
-        private float velocityToEntity;
-        public Rectangle DestRectangle { get; protected set; }
+        private bool toEndPosition = false;
+        private Rectangle initialBlockPosition = new();
+        private Rectangle endBlockPosition = new();
+        private Vector2 velocity = new();
+        private float velocityToEntity { set; get; } = new();
+        public Rectangle DestRectangle { get; protected set; } = new();
         public MovementBlock(Rectangle DestinationRectangle, Rectangle collider, Rectangle initialBlockPosition, Rectangle endBlockPosition) : base(collider)
         {
             value = 16;
@@ -26,9 +26,21 @@ namespace Juegazo.Map.Blocks
             this.initialBlockPosition = initialBlockPosition;
             this.endBlockPosition = endBlockPosition;
         }
+        public MovementBlock()
+        {
+            value = 16;
+            EnableUpdate = true;
+        }
+        
+
         public override void horizontalActions(Entity entity, Rectangle collision)
         {
-            int direction = toEndPosition ? -1 : 1; 
+            if (velocity == new Vector2(0, 0))
+            {
+                velocity = checkMovementVector();
+                velocityToEntity = velocity.Length() * 1.2f;
+            }
+            int direction = toEndPosition ? -1 : 1;
             if (entity.velocity.X > 0.0f)
             {
                 entity.Destinationrectangle.X = collision.Left - entity.Destinationrectangle.Width;

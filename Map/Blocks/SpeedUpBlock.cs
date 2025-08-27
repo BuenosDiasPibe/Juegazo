@@ -18,6 +18,12 @@ namespace Juegazo
             value = 5;
             velocitySpeed = 3;
         }
+
+        public SpeedUpBlock()
+        {
+            value = 5;
+            velocitySpeed = 3;
+        }
         public override void horizontalActions(Entity entity, Rectangle collision)
         {
             var moveComponent = entity.getComponent<MoveHorizontalComponent>();

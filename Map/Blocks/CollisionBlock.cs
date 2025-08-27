@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
+using Juegazo.Components;
 
 namespace Juegazo
 {
@@ -13,6 +14,7 @@ namespace Juegazo
         {
             value = 11;
         }
+        public CollisionBlock() { value = 11; }
         public override void horizontalActions(Entity entity, Rectangle collision)
         {
             if (entity is Player player) player.hasJumpedWall = false;
@@ -51,8 +53,6 @@ namespace Juegazo
 
         public override void verticalActions(Entity entity, Rectangle collision)
         {
-            if (entity is Player player) player.hasJumpedWall = false;
-
             int entityBottom = entity.Destinationrectangle.Bottom;
             int entityTop = entity.Destinationrectangle.Top;
             int blockBottom = collision.Bottom;
@@ -61,7 +61,7 @@ namespace Juegazo
             if (entity.velocity.Y > 0.0f || entityBottom >= blockTop && entityTop < blockTop)
             {
                 entity.Destinationrectangle.Y = blockTop - entity.Destinationrectangle.Height;
-                entity.velocity.Y = 1f;
+                entity.velocity.Y = 0;
                 entity.onGround = true;
                 if (entity is Player player1) player1.jumpCounter = 0;
             }

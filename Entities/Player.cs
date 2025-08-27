@@ -11,7 +11,6 @@ namespace Juegazo
 {
     public class Player : Entity
     {
-        public bool directionLeft;
         public List<Entity> deleteCollectables = [];
         private KeyboardState prevState;
 
@@ -34,7 +33,7 @@ namespace Juegazo
         public GameTime gameTime;
         public bool hasJumpedWall = false;
 
-        public Player(Texture2D texture, Rectangle sourceRectangle, Rectangle Destrectangle, Camera camra, Rectangle collider, Color color) : base(texture, sourceRectangle, Destrectangle, collider, color)
+        public Player(Texture2D texture, Rectangle sourceRectangle, Rectangle Destrectangle, Camera camra, Color color) : base(texture, sourceRectangle, Destrectangle, color)
         {
             velocity = new();
 
@@ -54,11 +53,34 @@ namespace Juegazo
 
             initialPosition = new Vector2(Destrectangle.X, Destrectangle.Y);
         }
- 
-        public void Update(GameTime gameTime, List<Entity> entities,  List<InteractiveBlock> interactiveBlocks)
+
+        public Player(Texture2D texture, Rectangle sourceRectangle, Rectangle Destrectangle, Camera camra, Color color, List<Component> components) : base(texture, sourceRectangle, Destrectangle, color)
+        {
+            velocity = new();
+
+            onGround = true;
+            directionLeft = true;
+            jumpPressed = false;
+
+            prevState = new();
+            numJumps = 1;
+            jumpCounter = 0;
+            incrementJumps = 0;
+
+            numDash = 0;
+            dashCounter = 0;
+            lookAhead = 0;
+            camera = camra;
+
+            initialPosition = new Vector2(Destrectangle.X, Destrectangle.Y);
+            foreach (var component in components)
+            {
+                this.AddComponent(component.GetType(), component);
+            }
+        }
+        public override void Update(GameTime gameTime)
         {
             this.gameTime = gameTime;
-            CheckCollectables(entities);
             ApplyGravity();
             ManageVerticalMovement();
             HandleHorizontalMovement();

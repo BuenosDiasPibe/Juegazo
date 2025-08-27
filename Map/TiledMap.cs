@@ -1,3 +1,5 @@
+// TODO: rewrite TileLayer draw system, its always calling for drawings and it makes performance worst overtime
+// For better usage, just call it once and make a dictionary with its values, then just put those dictionaries on a list or another dictionary and then draw that. Its that shrimple
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -28,6 +30,11 @@ namespace Juegazo.Map
         public int TILESIZE { get; }
 
         public Dictionary<Vector2, Block> collisionLayer { get; } = new();
+        List<Block> blocks = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(a => a.GetTypes())
+                .Where(t => t.IsSubclassOf(typeof(Block)) && !t.IsAbstract)
+                .Select(t => (Block)Activator.CreateInstance(t))
+                .ToList();
         public Dictionary<string, BaseLayer> AllLayersByName { get; } = new();
         public List<MovementBlock> dynamicBlocks;
 
@@ -48,7 +55,6 @@ namespace Juegazo.Map
         public (Tileset tileset, uint tileID) GetTileID(TileLayer tileLayer, Point coord)
         {
             var gid = GetTileGID(tileLayer, coord);
-            //var tileset = GetTilesetFromGID(gid).tileset;
             var tileset = TilesetsByGID[gid];
             return (tileset, gid - tileset.FirstGID);
         }
@@ -62,8 +68,9 @@ namespace Juegazo.Map
             Data data = layer.Data;
             return data.GlobalTileIDs;
         }
-        //testing
-        private List<BaseLayer> layers = new();
+
+        //temporal
+        public List<Block> blocksTemp { get; } = new();
 
         public TiledMap(GraphicsDevice graphicsDevice, string projectDirectory, string mapFilePath, List<ICustomTypeDefinition> typeDefinitions)
         {
@@ -72,8 +79,6 @@ namespace Juegazo.Map
                 CustomTypeDefinitions.Add(t);
             }
             var loader = Loader.DefaultWith(customTypeDefinitions: typeDefinitions);
-            Map = loader.LoadMap(mapFilePath);
-            layers = Map.Layers;
         }
         public TiledMap(GraphicsDevice graphicsDevice, string projectDirectory, string mapFilePath, int TILESIZE)
         {
@@ -83,28 +88,23 @@ namespace Juegazo.Map
 
             var loader = Loader.Default();
             Map = loader.LoadMap(Path.Combine(TiledProjectDirectory, MapFilePath));
-            layers = Map.Layers;
             this.TILESIZE = TILESIZE;
-            TestingStuff();
             InitTilesets(Map.Tilesets, TiledProjectDirectory);
+            InitCollisionLayers(Map.Layers);
         }
-        public void TestingStuff()
+
+        private void InitCollisionLayers(List<BaseLayer> layers)
         {
             foreach (var layer in layers)
             {
-                Console.WriteLine($"layername {layer.Name}");
-                switch (layer)
+                if (layer.Class == "Collision Tile Layer")
                 {
-                    case TileLayer tilelayer:
-                        Console.WriteLine("layerData: ");
-                        Console.WriteLine(tilelayer.Data.Value.GlobalTileIDs);
-                        break;
-                    case ObjectLayer objectLayer:
-                        Console.WriteLine("objectLayer: ");
-                        break;
+                    TileLayer tileLayer = (TileLayer)layer;
+                    CreateCollisionLayer(tileLayer);
                 }
             }
         }
+
         public void drawTileLayer(SpriteBatch spriteBatch, TileLayer tileLayer)
         {
             uint[] data = tileLayer.Data.Value.GlobalTileIDs; //get the csv
@@ -112,6 +112,7 @@ namespace Juegazo.Map
             {
                 uint value = data[i];
                 if (value == 0) continue; //air data
+                value--;
                 int x = (int)(i % tileLayer.Width);
                 int y = (int)(i / tileLayer.Width);
                 Vector2 position = new(x, y);
@@ -123,20 +124,57 @@ namespace Juegazo.Map
             }
         }
 
+        private void CreateCollisionLayer(TileLayer tileLayer)
+        {
+            uint[] data = tileLayer.Data.Value.GlobalTileIDs;
+            for (int i = 0; i < data.Length; i++)
+            {
+                uint value = data[i];
+                if (value == 0) continue;
+                value--;
+                int x = (int)(i % tileLayer.Width);
+                int y = (int)(i / tileLayer.Width);
+                Vector2 position = new(x, y);
+
+                foreach (Block block in blocks)
+                {
+                    if (value == block.value)
+                    {
+                        Block blockk = (Block)Activator.CreateInstance(block.GetType());
+                        blockk.collider = new((int)position.X * TILESIZE,
+                                              (int)position.Y * TILESIZE,
+                                              TILESIZE,
+                                              TILESIZE);
+
+                        collisionLayer[position] = blockk;
+                        blocksTemp.Add(blockk);
+                    }
+                }
+            }
+        }
+
         private void DrawTile(SpriteBatch spriteBatch, uint value, Vector2 position, Tileset atlasImage)
         {
             Texture2D texture = TilemapTextures[atlasImage];
-            //Console.WriteLine($"value={value-1}, x={value%8}, y={value/8}");
-            int x = (int)((value-1) % 8); //TODO: change to tiles per row in the atlas image (its not saved in tiled by default fuck you)
-            int y = (int)((value-1) / 8);
-            Rectangle srcRectangle = new(
-                (int)(x * atlasImage.TileWidth),
-                (int)(y * atlasImage.TileHeight),
-                (int)atlasImage.TileWidth,
-                (int)atlasImage.TileHeight
-            );
-            Rectangle desRectangle = new((int)position.X * TILESIZE, (int)position.Y * TILESIZE, TILESIZE, TILESIZE);
+            Rectangle srcRectangle = GetSourceRect(value, atlasImage);
+            Rectangle desRectangle = getDestinationRectangle(position);
             spriteBatch.Draw(texture, desRectangle, srcRectangle, Color.White);
+        }
+
+        private Rectangle getDestinationRectangle(Vector2 position)
+        {
+            return new((int)position.X * TILESIZE, (int)position.Y * TILESIZE, TILESIZE, TILESIZE);
+        }
+
+        public static Rectangle GetSourceRect(uint id, Tileset tileset)
+        {
+            uint col = id % tileset.Columns;
+            uint row = id / tileset.Columns;
+
+            uint x = tileset.Margin + (col * (tileset.TileWidth + tileset.Spacing));
+            uint y = tileset.Margin + (row * (tileset.TileHeight + tileset.Spacing));
+
+            return new Rectangle((int)x, (int)y, (int)tileset.TileWidth, (int)tileset.TileHeight);
         }
 
         private void InitTilesets(List<Tileset> tilesets, string path)
@@ -146,13 +184,10 @@ namespace Juegazo.Map
                 TilesetsByName.Add(tileset.Name, tileset);
                 if (tileset.Image.HasValue)
                 {
-                    Image image = tileset.Image;
-                    string tileset_path = tileset.Source;
                     TilemapTextures.Add(tileset, LoadImage(graphicsDevice, path, tileset.Image));
                 }
             }
 
-            //hit every number to add nulls to dictionaries
             for (uint gid = 1; gid < GID_Count; gid++)
             {
                 var (tileset, tile) = GetTilesetFromGID(gid, true);
@@ -209,6 +244,8 @@ namespace Juegazo.Map
                     case TileLayer tileLayer:
                         drawTileLayer(spriteBatch, tileLayer);
                         break;
+                    case ObjectLayer objectLayer:
+                        break;
                 }
             }
         }
@@ -219,7 +256,7 @@ namespace Juegazo.Map
             string folder = Path.GetDirectoryName(relative_path);
             string path = Path.Combine(caller_directory, folder, file);
 
-            //TODO: prevent redundant texture reloading. Slowest step of reload by far.
+            //TODO: fuck off
             return LoadImage(graphicsDevice, path, caller_directory);
         }
         public static Texture2D LoadImage(GraphicsDevice graphicsDevice, string path, string projectDirectory)
@@ -229,7 +266,7 @@ namespace Juegazo.Map
         }
         public void Draw(SpriteBatch spriteBatch)
         {
-            DrawLayerGroup(spriteBatch, layers);
+            DrawLayerGroup(spriteBatch, Map.Layers);
         }
     }
 }

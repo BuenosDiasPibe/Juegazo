@@ -13,6 +13,7 @@ namespace Juegazo.Map.Blocks
         public ZoomInBlock( Rectangle collider)
             : base(collider)
         { }
+        public ZoomInBlock() {}
         public bool canChange = false;
         public override void horizontalActions(Entity entity, Rectangle collision)
         {

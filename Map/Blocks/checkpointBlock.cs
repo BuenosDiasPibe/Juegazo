@@ -14,6 +14,7 @@ namespace Juegazo.Map.Blocks
         {
             value = 17;
         }
+        public CheckpointBlock() { value = 17; }
         public override void horizontalActions(Entity entity, Rectangle collision)
         {
             if (entity.hasComponent<CanDieComponent>())

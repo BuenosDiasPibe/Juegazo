@@ -17,12 +17,18 @@ namespace Juegazo
             value = 10;
             slowingSpeed = 1;
         }
+        public SlowDownBlock(Rectangle collider, int slowingSpeed) : base(collider)
+        {
+            value = 10;
+            this.slowingSpeed = slowingSpeed;
+        }
+        public SlowDownBlock() { value = 10; }
         public override void horizontalActions(Entity entity, Rectangle collision)
         {
-                if (entity.velocity.X != 0)
-                {
-                    entity.velocity.X += entity.directionLeft ? slowingSpeed : -slowingSpeed;
-                }
+            if (entity.velocity.X != 0)
+            {
+                entity.velocity.X += entity.directionLeft ? slowingSpeed : -slowingSpeed;
+            }
         }
 
         public override void Update(GameTime gameTime)

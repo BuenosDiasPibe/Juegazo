@@ -14,6 +14,7 @@ namespace Juegazo.Map.Blocks
         {
             value = 18;
         }
+        public KillBlock() { value = 18; }
         public override void horizontalActions(Entity entity, Rectangle collision)
         {
             entity.health--;

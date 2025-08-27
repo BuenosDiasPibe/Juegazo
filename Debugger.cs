@@ -17,6 +17,12 @@ namespace Juegazo
             rectangleTexture = new Texture2D(graphicsDevice, 1, 1);
             rectangleTexture.SetData(new Color[] { new(255, 0, 0, 255) });
         }
+        public Debugger(GraphicsDevice graphicsDevice, Color color)
+        {
+            this.graphicsDevice = graphicsDevice;
+            rectangleTexture = new Texture2D(graphicsDevice, 1, 1);
+            rectangleTexture.SetData(new Color[] { color });
+        }
         public void drawhitboxEntities(SpriteBatch _spriteBatch, List<Entity> entities, HitboxTilemaps collisionMap, int TILESIZE)
         {
             foreach (var entity in entities)

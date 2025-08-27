@@ -10,9 +10,10 @@ namespace Juegazo
     public abstract class Block
     {
         public int value { get; protected set; }
-        public Rectangle collider;
+        public Rectangle collider = new();
         public bool EnableUpdate { get; protected set; } = false; //by default no object needs an update method
         public bool EnableCollisions { get; protected set; } = true;
+        protected Block(){ }
         protected Block(Rectangle collider)
         {
             this.collider = collider;

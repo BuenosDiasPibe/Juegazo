@@ -10,7 +10,7 @@ namespace Juegazo.Components
 {
     public class GodMovementVerticalComponent : Component
     {
-        private readonly float VERTICALMOVEMENT = 1f;
+        private readonly float VERTICALMOVEMENT = 5f;
         public override void Destroy()
         {
         }

@@ -17,6 +17,7 @@ namespace Juegazo
             value = 15;
             changeScene = false;
         }
+        public CompleteBlock() { value = 15; }
         public override void horizontalActions(Entity entity, Rectangle collision)
         {
             changeScene = true;
