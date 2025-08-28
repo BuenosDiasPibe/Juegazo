@@ -1,5 +1,3 @@
-// TODO: rewrite TileLayer draw system, its always calling for drawings and it makes performance worst overtime
-// For better usage, just call it once and make a dictionary with its values, then just put those dictionaries on a list or another dictionary and then draw that. Its that shrimple
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -30,6 +28,7 @@ namespace Juegazo.Map
         public int TILESIZE { get; }
 
         public Dictionary<Vector2, Block> collisionLayer { get; } = new();
+        public Dictionary<string, Vector2> EntityPositionerByName { get; } = new();
         List<Block> blocks = AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(a => a.GetTypes())
                 .Where(t => t.IsSubclassOf(typeof(Block)) && !t.IsAbstract)
@@ -90,18 +89,66 @@ namespace Juegazo.Map
             Map = loader.LoadMap(Path.Combine(TiledProjectDirectory, MapFilePath));
             this.TILESIZE = TILESIZE;
             InitTilesets(Map.Tilesets, TiledProjectDirectory);
-            InitCollisionLayers(Map.Layers);
+            InitImportantLayers(Map.Layers);
         }
 
-        private void InitCollisionLayers(List<BaseLayer> layers)
+        private void InitImportantLayers(List<BaseLayer> layers)
         {
+
             foreach (var layer in layers)
             {
+                switch (layer.Class)
+                {
+                    case "Collision Tile Layer":
+                        TileLayer tileLayer = (TileLayer)layer;
+                        CreateCollisionLayer(tileLayer);
+                        break;
+                    case "Entity Spawner":
+                        ObjectLayer objectLayer = (ObjectLayer)layer;
+                        AddImportantPositions(objectLayer);
+                        break;
+                    case "Collision Blocks Object Layer":
+                        ObjectLayer objectLayer1 = (ObjectLayer)layer;
+                        ModifyCollisionLayer(objectLayer1);
+                        break;
+                    default:
+                        Console.WriteLine("still not implemented");
+                        break;
+                }
                 if (layer.Class == "Collision Tile Layer")
                 {
                     TileLayer tileLayer = (TileLayer)layer;
                     CreateCollisionLayer(tileLayer);
                 }
+                if (layer.Class == "Entity Spawner")
+                {
+                    ObjectLayer objectLayer = (ObjectLayer)layer;
+                    AddImportantPositions(objectLayer);
+                }
+            }
+        }
+        //Make this a initObjectLayer, add all the propieties and the objects in a dictionary, then search again to get other propieties (like the rectangle of an object that needs it) and save it in the instance. With that you now can modify the collisionLayer with whatever source you need.
+        private void ModifyCollisionLayer(ObjectLayer objectLayer1)
+        {
+            if (collisionLayer.Count == 0)
+            {
+                Console.WriteLine("fuck!!!");
+                return;
+            }
+            Console.WriteLine($"look at this name: {objectLayer1.Name}");
+            foreach (var obj in objectLayer1.Objects)
+            {
+                Console.WriteLine("\t"+obj.Type);
+            }
+        }
+
+        private void AddImportantPositions(ObjectLayer objectLayer)
+        {
+            foreach (var objectObject in objectLayer.Objects)
+            {
+                float x = objectObject.X / Map.TileWidth * TILESIZE;
+                float y = objectObject.Y / Map.TileHeight * TILESIZE;
+                EntityPositionerByName[objectObject.Type] = new Vector2(x, y);
             }
         }
 
@@ -235,7 +282,7 @@ namespace Juegazo.Map
         {
             foreach (BaseLayer layer in layers)
             {
-                Vector2 parallax = new Vector2(layer.ParallaxX, layer.ParallaxY);
+                // Vector2 parallax = new Vector2(layer.ParallaxX, layer.ParallaxY); //TODO: add parallax effect
                 switch (layer)
                 {
                     case Group group:
@@ -245,10 +292,51 @@ namespace Juegazo.Map
                         drawTileLayer(spriteBatch, tileLayer);
                         break;
                     case ObjectLayer objectLayer:
+                        DrawObjectLayer(spriteBatch, objectLayer);
                         break;
                 }
             }
         }
+
+        private void DrawObjectLayer(SpriteBatch spriteBatch, ObjectLayer objectLayer)
+        {
+            if (!objectLayer.Visible) return;
+            foreach(var obj in objectLayer.Objects)
+            {
+                switch (obj)
+                {
+                    case TileObject tileObject:
+                        DrawTileObject(spriteBatch, tileObject, objectLayer);
+                        break;
+                    default:
+                        // Console.WriteLine("My fault gang"); //TODO: create object Draw for debugging
+                        break;
+                }
+            }
+        }
+
+        private void DrawTileObject(SpriteBatch spriteBatch, TileObject tileObject, ObjectLayer objectLayer)
+        {
+            if (!tileObject.Visible) return;
+            Tileset tileset = TilesetsByGID[tileObject.GID];
+            uint id = tileObject.GID - tileset.FirstGID;
+            if (tileset.Image.HasValue)
+            {
+                Texture2D texture = TilemapTextures[tileset];
+                Rectangle srcRect = GetSourceRect(id, tileset);
+                Rectangle destRect = GetTileObjectDestinationRectangle(tileObject);
+                spriteBatch.Draw(texture, destRect, srcRect, Color.White);
+            }
+        }
+
+        private Rectangle GetTileObjectDestinationRectangle(TileObject tileObject)
+        {
+            int x = (int)(tileObject.X / TileWidth * TILESIZE);
+            int y = (int)(((tileObject.Y / TileHeight) - 1) * TILESIZE);
+            Rectangle destRect = new(x, y, TILESIZE, TILESIZE);
+            return destRect;
+        }
+
         public static Texture2D LoadImage(GraphicsDevice graphicsDevice, string caller_directory, Image image)
         {
             string relative_path = image.Source;

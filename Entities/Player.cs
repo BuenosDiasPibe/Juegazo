@@ -33,7 +33,7 @@ namespace Juegazo
         public GameTime gameTime;
         public bool hasJumpedWall = false;
 
-        public Player(Texture2D texture, Rectangle sourceRectangle, Rectangle Destrectangle, Camera camra, Color color) : base(texture, sourceRectangle, Destrectangle, color)
+        public Player(Texture2D texture, Rectangle sourceRectangle, Rectangle Destrectangle, Camera camra, Color color, float collider) : base(texture, sourceRectangle, Destrectangle, collider, color)
         {
             velocity = new();
 
@@ -54,7 +54,7 @@ namespace Juegazo
             initialPosition = new Vector2(Destrectangle.X, Destrectangle.Y);
         }
 
-        public Player(Texture2D texture, Rectangle sourceRectangle, Rectangle Destrectangle, Camera camra, Color color, List<Component> components) : base(texture, sourceRectangle, Destrectangle, color)
+        public Player(Texture2D texture, Rectangle sourceRectangle, Rectangle Destrectangle, Camera camra, Color color, List<Component> components, float collider) : base(texture, sourceRectangle, Destrectangle, collider, color)
         {
             velocity = new();
 

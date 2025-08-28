@@ -61,7 +61,12 @@ namespace Juegazo
                 new MoveHorizontalComponent(),
                 new ComplexGravityComponent(),
             };
-            entities.Add(new Entity(playerTexture, new Rectangle(TILESIZE, TILESIZE, TILESIZE, TILESIZE), new Rectangle(TILESIZE*2,TILESIZE*2, TILESIZE, TILESIZE), componentsOnEntity,Color.White));
+            Rectangle playerPosition = new(TILESIZE*12, TILESIZE*2, TILESIZE, TILESIZE); // random position in the map, if it spawns there, something went wrong
+            if (tilemap.EntityPositionerByName.TryGetValue("PlayerSpawner", out Vector2 position))
+            {
+                playerPosition = new((int)position.X, (int)position.Y, TILESIZE, TILESIZE);
+            }
+            entities.Add(new Entity(playerTexture, new Rectangle(TILESIZE, TILESIZE, TILESIZE, TILESIZE), playerPosition,componentsOnEntity, collider: 0.7f,Color.White));
             //entities.Add(new Player(playerTexture, new Rectangle(TILESIZE,TILESIZE,TILESIZE,TILESIZE), new Rectangle(TILESIZE*2, TILESIZE*2, TILESIZE, TILESIZE), camera, Color.White, componentsOnEntity));
             font = contentManager.Load<SpriteFont>("sheesh");
             camera.Origin = new Vector2(camera.Viewport.Width / 2, camera.Viewport.Height / 2);
@@ -97,6 +102,7 @@ namespace Juegazo
                         block.verticalActions(entity, block.collider);
                     }
                 }
+                entity.UpdateColliderFromDest();    
             }
         }
 

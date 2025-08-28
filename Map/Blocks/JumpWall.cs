@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Juegazo.Components;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -9,51 +10,42 @@ namespace Juegazo
 {
     public class JumpWall : Block
     {
-        private float jumpStrength;
+        private float jumpStrength = 7;
+        private float recoilVelocity = 20;
         public JumpWall(Rectangle collider)
             : base(collider)
         {
             value = 1;
-            jumpStrength = 0;
         }
         public JumpWall()
         {
             value = 1;
-            jumpStrength = 0;
         }
         public override void horizontalActions(Entity entity, Rectangle collision)
         {
             //change this to use the new ECS model
-            if (entity is Player player)
+            entity.onGround = true;
+            MoveVerticalComponent verticalMovement = (MoveVerticalComponent)entity.getComponent(typeof(MoveVerticalComponent));
+            if (entity.velocity.X > 0)
             {
-                player.onGround = true;
-                player.jumpCounter = 0;
-                player.hasJumpedWall = true;
-                if (player.velocity.X > 0)
+                entity.Destinationrectangle.X = collision.Left - entity.Destinationrectangle.Width;
+                if (verticalMovement.JumpPressed)
                 {
-                    entity.collider.X = collision.Left - entity.collider.Width;
-                    if (player.jumpPressed)
-                    {
-                        jumpMechanic(player);
-                        player.velocity.X = -11;
-                    }
+                    verticalMovement.JumpingVertical(jumpStrength);
+                    entity.velocity.X = -recoilVelocity;
                 }
-                else if (player.velocity.X < 0)
+            }
+            else if (entity.velocity.X < 0)
+            {
+                entity.Destinationrectangle.X = collision.Right;
+                if (verticalMovement.JumpPressed)
                 {
-                    entity.collider.X = collision.Right;
-                    if (player.jumpPressed)
-                    {
-                        jumpMechanic(player);
-                        player.velocity.X = 11;
-                    }
-                }
-                else //yo cuando code repetition (es importante te lo juro)
-                {
-                    new CollisionBlock().horizontalActions(entity, collision); //TODO: fix jumpwall collisions
+                    verticalMovement.JumpingVertical(jumpStrength);
+                    entity.velocity.X = recoilVelocity;
+                    Console.WriteLine($"added {11} to entity velocity, now velocity is {entity.velocity.X}");
                 }
             }
         }
-
         private void jumpMechanic(Player player)
         {
             jumpStrength = 11 + player.velocity.Y;
@@ -64,20 +56,7 @@ namespace Juegazo
         public override void verticalActions(Entity entity, Rectangle collision)
         {
 
-            new CollisionBlock().horizontalActions(entity, collision);
-            // if (entity is Player player)
-            //     player.hasJumpedWall = false;
-            // if (entity.velocity.Y > 0.0f)
-            // {
-            //     entity.Destinationrectangle.Y = collision.Top - entity.Destinationrectangle.Height;
-            //     entity.velocity.Y = 1f;
-            //     entity.onGround = true;
-            // }
-            // else if (entity.velocity.Y < 0.0f)
-            // {
-            //     entity.velocity.Y *= 0.1f;
-            //     entity.Destinationrectangle.Y = collision.Bottom;
-            // }
+            new CollisionBlock().verticalActions(entity, collision);
         }
 
         public override void Update(GameTime gameTime)

@@ -3,26 +3,26 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "goodOne.tmx",
+    "activeFile": "betterTest.tmx",
     "expandedProjectPaths": [
         "."
     ],
     "file.lastUsedOpenFilter": "Todos los archivos (*)",
     "fileStates": {
         "betterTest.tmx": {
-            "scale": 2.0702083333333334,
-            "selectedLayer": 5,
+            "scale": 5.5,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 96.60863439669922,
-                "y": 87.18929254302103
+                "x": 127.81818181818183,
+                "y": 80.0909090909091
             }
         },
         "goodOne.tmx": {
             "scale": 3,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 127.83333333333333,
-                "y": 159.5
+                "x": 280,
+                "y": 160.16666666666669
             }
         },
         "worldTexture.tsx": {
@@ -43,8 +43,8 @@
     "property.type": "bool",
     "recentFiles": [
         "worldTexture.tsx",
-        "betterTest.tmx",
-        "goodOne.tmx"
+        "goodOne.tmx",
+        "betterTest.tmx"
     ],
     "tileset.lastUsedFormat": "tsx"
 }

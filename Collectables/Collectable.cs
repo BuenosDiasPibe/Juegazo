@@ -14,7 +14,7 @@ namespace Juegazo
                             Rectangle sourceRectangle,
                             Rectangle Destrectangle,
                             Rectangle collider,
-                            Color color) : base(texture, sourceRectangle, Destrectangle, color)
+                            Color color) : base(texture, sourceRectangle, Destrectangle, collider, color)
         { }
         public abstract void changeThings(Player player);
     }

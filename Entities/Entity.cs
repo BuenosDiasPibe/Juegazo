@@ -22,13 +22,21 @@ namespace Juegazo
         public int maxHealth;
         public bool directionLeft = false;
 
-        public Entity(Texture2D texture, Rectangle sourceRectangle, Rectangle Destrectangle, Color color) : base(texture, sourceRectangle, Destrectangle, color)
+        public Entity(Texture2D texture, Rectangle sourceRectangle, Rectangle Destrectangle, Rectangle collider, Color color) : base(texture, sourceRectangle, Destrectangle, color)
         {
             velocity = new();
             onGround = false;
             maxHealth = 1;
             health = maxHealth;
-            collider = new(Destinationrectangle.X, Destinationrectangle.Y, (int)(Destinationrectangle.Width * 0.3), (int)(Destinationrectangle.Height * 0.3));
+            this.collider = collider;
+        }
+        public Entity(Texture2D texture, Rectangle sourceRectangle, Rectangle Destrectangle, float collider, Color color) : base(texture, sourceRectangle, Destrectangle, color)
+        {
+            velocity = new();
+            onGround = false;
+            maxHealth = 1;
+            health = maxHealth;
+            this.collider = new(Destinationrectangle.X, Destinationrectangle.Y, (int)(Destinationrectangle.Width * collider), (int)(Destinationrectangle.Height * collider));
         }
         public Entity(Texture2D texture, Rectangle sourceRectangle, Rectangle Destrectangle, List<Component> componentList, Color color) : base(texture, sourceRectangle, Destrectangle, color)
         {
@@ -36,7 +44,22 @@ namespace Juegazo
             onGround = false;
             maxHealth = 1;
             health = maxHealth;
-            collider = new(Destinationrectangle.X, Destinationrectangle.Y, (int)(Destinationrectangle.Width * 0.3), (int)(Destinationrectangle.Height * 0.3));
+            collider = new(Destinationrectangle.X, Destinationrectangle.Y, (int)(Destinationrectangle.Width * 0.8), (int)(Destinationrectangle.Height * 0.8));
+            foreach (Component component in componentList)
+            {
+                AddComponent(component.GetType(), component);
+            }
+
+        }
+        public Entity(Texture2D texture, Rectangle sourceRectangle, Rectangle Destrectangle, List<Component> componentList, float collider, Color color) : base(texture, sourceRectangle, Destrectangle, color)
+        {
+            velocity = new();
+            onGround = false;
+            maxHealth = 1;
+            health = maxHealth;
+            int WidthCollider = (int)(Destinationrectangle.Width * collider);
+            int HeightCollider = (int)(Destinationrectangle.Height * collider);
+            this.collider = new((int)(Destinationrectangle.X + WidthCollider*0.5), (int)(Destinationrectangle.Y * WidthCollider*0.5), WidthCollider, HeightCollider);
             foreach (Component component in componentList)
             {
                 AddComponent(component.GetType(), component);
@@ -45,7 +68,9 @@ namespace Juegazo
         }
         public void UpdateColliderFromDest()
         {
-            collider.Location = Destinationrectangle.Location;
+            //Put the collider in the center of the DestinationRectangle (sprite)
+            collider.X = Destinationrectangle.Center.X - collider.Width/2;
+            collider.Y = Destinationrectangle.Center.Y - collider.Height/2;
         }
         public virtual void Update(GameTime gameTime)
         {

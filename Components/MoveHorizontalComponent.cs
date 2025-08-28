@@ -27,12 +27,18 @@ namespace Juegazo.Components
             // Horizontal movement
             if (movingLeft)
             {
-                Owner.velocity.X = -MOVEMENT_SPEED;
+                if (!(Owner.velocity.X <= -5))
+                {
+                    Owner.velocity.X += -MOVEMENT_SPEED; //TODO: velocity is not always checked, you can exceed the max velocity if you press the same key multiple times (fuck)
+                }
                 Owner.directionLeft = true;
             }
             if (movingRight)
             {
-                Owner.velocity.X = MOVEMENT_SPEED;
+                if (!(Owner.velocity.X >= 5))
+                {
+                    Owner.velocity.X += MOVEMENT_SPEED;
+                }
                 Owner.directionLeft = false;
             }
             if (movingLeft && movingRight)
@@ -60,7 +66,7 @@ namespace Juegazo.Components
             }
             //max speed limit
             Owner.velocity.X = Math.Min(Math.Max(Owner.velocity.X, -MAX_SPEED), MAX_SPEED);
- 
+
         }
     }
 }
