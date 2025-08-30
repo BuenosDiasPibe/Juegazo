@@ -6,16 +6,20 @@ using Juegazo.Components;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Juegazo
+namespace Juegazo.Map.Blocks
 {
     public class VerticalBoostBlock : Block
     {
-        public float vertBoost;
+        public float vertBoost = 14;
         public VerticalBoostBlock(Rectangle collider)
             : base(collider)
         {
             value = 8;
-            vertBoost = -1;
+        }
+        //TODO: añadir metodos que utilicen isCompleteBlock y toUP
+        public VerticalBoostBlock(Rectangle collider, int vertBoost, bool isCompleteBlock, bool toUp) : base(collider)
+        {
+            this.vertBoost = vertBoost;
         }
         public VerticalBoostBlock() { value = 8; }
         public override void horizontalActions(Entity entity, Rectangle collision)

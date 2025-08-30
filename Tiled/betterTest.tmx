@@ -109,7 +109,7 @@
   </object>
   <object id="60" type="DamageBlock" gid="19" x="24" y="112" width="8" height="8">
    <properties>
-    <property name="collisionHitbox" type="object" value="60"/>
+    <property name="collisionHitbox" type="object" value="0"/>
    </properties>
   </object>
   <object id="56" type="DamageBlock" gid="19" x="200" y="112" width="8" height="8">
@@ -145,7 +145,7 @@
  </objectgroup>
  <objectgroup id="10" name="dynamic blocks" class="Collision Blocks Object Layer">
   <properties>
-   <property name="can override collision layer" type="bool" value="false"/>
+   <property name="canOverrideCollisionLayer" type="bool" value="false"/>
   </properties>
   <object id="70" type="MovementBlock" gid="17" x="32" y="144" width="8" height="8">
    <properties>

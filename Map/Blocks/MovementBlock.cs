@@ -11,26 +11,31 @@ namespace Juegazo.Map.Blocks
     public class MovementBlock : Block
     {
         private bool toEndPosition = false;
-        private Rectangle initialBlockPosition = new();
-        private Rectangle endBlockPosition = new();
+        public Rectangle initialBlockPosition = new();
+        public Rectangle endBlockPosition = new();
         private Vector2 velocity = new();
         private float velocityToEntity { set; get; } = new();
-        public Rectangle DestRectangle { get; protected set; } = new();
-        public MovementBlock(Rectangle DestinationRectangle, Rectangle collider, Rectangle initialBlockPosition, Rectangle endBlockPosition) : base(collider)
+        public MovementBlock(Rectangle collider, Rectangle initialBlockPosition, Rectangle endBlockPosition) : base(collider)
         {
             value = 16;
             velocity = checkMovementVector();
             velocityToEntity = velocity.Length() * 1.2f;
             EnableUpdate = true;
-            this.DestRectangle = DestinationRectangle;
-            this.initialBlockPosition = initialBlockPosition;
-            this.endBlockPosition = endBlockPosition;
+            this.initialBlockPosition = new(initialBlockPosition.X/initialBlockPosition.Width*32,
+                                            (initialBlockPosition.Y/initialBlockPosition.Height*32)-1,
+                                            32,
+                                            32);
+            this.endBlockPosition = new(endBlockPosition.X/endBlockPosition.Width*32,
+                                        (endBlockPosition.Y/endBlockPosition.Height*32)-1,
+                                        32,
+                                        32);
         }
         public MovementBlock()
         {
             value = 16;
             EnableUpdate = true;
         }
+        public MovementBlock(Rectangle collider) : base(collider){ value = 16; }
         
 
         public override void horizontalActions(Entity entity, Rectangle collision)
@@ -66,22 +71,21 @@ namespace Juegazo.Map.Blocks
 
         public override void Update(GameTime gameTime)
         {
-            if (DestRectangle.Intersects(initialBlockPosition))
-            {
+            if (collider.Intersects(initialBlockPosition))
                 toEndPosition = false;
-            }
-            else if (DestRectangle.Intersects(endBlockPosition))
-            {
+            else if (collider.Intersects(endBlockPosition))
                 toEndPosition = true;
-            }
 
             Vector2 target = toEndPosition ? new Vector2(initialBlockPosition.X, initialBlockPosition.Y) : new Vector2(endBlockPosition.X, endBlockPosition.Y);
 
-            Vector2 current = new Vector2(DestRectangle.X, DestRectangle.Y);
+            Vector2 current = toEndPosition ? new Vector2(endBlockPosition.X, endBlockPosition.Y) : new Vector2(initialBlockPosition.X, initialBlockPosition.Y);
+            float lerpAmount = (float)(Math.Sin(gameTime.TotalGameTime.TotalSeconds) * 0.5 + 0.5) * 1f;
+            Vector2 newPosition = new();
 
-            Vector2 newPosition = Vector2.Lerp(current, target, 0.02f);
-
-            DestRectangle = new Rectangle((int)newPosition.X, (int)newPosition.Y, DestRectangle.Width,DestRectangle.Height);
+            if (toEndPosition)
+                newPosition = Vector2.Lerp(current, target, lerpAmount);
+            else
+                newPosition = Vector2.Lerp(target, current, lerpAmount);
 
             collider = new Rectangle((int)newPosition.X, (int)newPosition.Y, collider.Width, collider.Height);
         }

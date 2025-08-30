@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using DotTiled;
 using Gum.Wireframe;
 using Juegazo.Components;
 using Juegazo.Map;
@@ -13,6 +14,7 @@ using Microsoft.Xna.Framework.Input;
 using MonoGameGum;
 using MonoGameGum.Forms.Controls;
 using RenderingLibrary.Graphics;
+using Color = Microsoft.Xna.Framework.Color;
 
 namespace Juegazo
 {
@@ -29,7 +31,6 @@ namespace Juegazo
         Camera camera;
         Texture2D playerTexture;
         private TiledMap tilemap;
-        private Block block; //testing
         private string projectDirectory = GetExecutingDir("../../../Tiled");
 
         private static string GetExecutingDir(string v)
@@ -53,8 +54,9 @@ namespace Juegazo
 
         public void LoadContent()
         {
+            List<ICustomTypeDefinition> typeDefinitions = new();
             playerTexture = contentManager.Load<Texture2D>("playerr");
-            tilemap = new(graphicsDevice, projectDirectory, "betterTest.tmx", TILESIZE);
+            tilemap = new(graphicsDevice, projectDirectory, "betterTest.tmx", TILESIZE, typeDefinitions);
             var componentsOnEntity = new List<Component> {
                 new CameraToEntityComponent(camera),
                 new MoveVerticalComponent(),
@@ -70,7 +72,7 @@ namespace Juegazo
             //entities.Add(new Player(playerTexture, new Rectangle(TILESIZE,TILESIZE,TILESIZE,TILESIZE), new Rectangle(TILESIZE*2, TILESIZE*2, TILESIZE, TILESIZE), camera, Color.White, componentsOnEntity));
             font = contentManager.Load<SpriteFont>("sheesh");
             camera.Origin = new Vector2(camera.Viewport.Width / 2, camera.Viewport.Height / 2);
-            camera.Zoom = 1.5f;
+            camera.Zoom = 0.7f;
         }
 
         public void UnloadContent()
@@ -81,6 +83,10 @@ namespace Juegazo
 
         public void Update(GameTime gameTime)
         {
+            foreach (var block in tilemap.dynamicBlocks.Values)
+            {
+                block.Update(gameTime);
+            }
             foreach (var entity in entities)
             {
                 entity.Update(gameTime);
@@ -89,20 +95,19 @@ namespace Juegazo
                 {
                     if (block.collider.Intersects(entity.Destinationrectangle))
                     {
-                        this.block = block;
                         block.horizontalActions(entity, block.collider);
                     }
                 }
 
                 entity.Destinationrectangle.Y += (int)entity.velocity.Y;
-                foreach(Block block in tilemap.collisionLayer.Values)
+                foreach (Block block in tilemap.collisionLayer.Values)
                 {
                     if (block.collider.Intersects(entity.Destinationrectangle))
                     {
                         block.verticalActions(entity, block.collider);
                     }
                 }
-                entity.UpdateColliderFromDest();    
+                entity.UpdateColliderFromDest();
             }
         }
 
@@ -112,8 +117,6 @@ namespace Juegazo
             foreach (var entity in entities)
             {
                 entity.DrawSprite(spriteBatch);
-                new Debugger(graphicsDevice).DrawRectHollow(spriteBatch, entity.collider, 2);
-                new Debugger(graphicsDevice).DrawRectHollow(spriteBatch, entity.Destinationrectangle, 2);
             }
         }
 
@@ -123,7 +126,7 @@ namespace Juegazo
         {
             foreach (var entity in entities) {
             spriteBatch.DrawString(font, 
-                $"FPS: {Math.Round(1 / gameTime.ElapsedGameTime.TotalSeconds)}\nvelocity: {entity.velocity}\nColliding With block: {block}", 
+                $"FPS: {Math.Round(1 / gameTime.ElapsedGameTime.TotalSeconds)}\nvelocity: {entity.velocity}", 
                 new Vector2(camera.Left, camera.Top + 60),
                     Color.White);        }
         }

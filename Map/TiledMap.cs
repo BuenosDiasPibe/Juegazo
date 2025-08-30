@@ -5,6 +5,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using DotTiled;
 using DotTiled.Serialization;
+using Juegazo.CustomTiledTypes;
+using Juegazo.CustomTiledTypesImplementation;
 using Juegazo.Map.Blocks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -29,13 +31,15 @@ namespace Juegazo.Map
 
         public Dictionary<Vector2, Block> collisionLayer { get; } = new();
         public Dictionary<string, Vector2> EntityPositionerByName { get; } = new();
+        public Dictionary<DotTiled.Object, TiledTypesUsed> MapObjectToType { get; } = new();
+        public Dictionary<DotTiled.ObjectLayer, CollisionBlockObjectLayer> MapObjectLayerToClass { get; } = new();
         List<Block> blocks = AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(a => a.GetTypes())
                 .Where(t => t.IsSubclassOf(typeof(Block)) && !t.IsAbstract)
                 .Select(t => (Block)Activator.CreateInstance(t))
                 .ToList();
         public Dictionary<string, BaseLayer> AllLayersByName { get; } = new();
-        public List<MovementBlock> dynamicBlocks;
+        public Dictionary<DotTiled.Object, Block> dynamicBlocks = new();
 
         public readonly List<ICustomTypeDefinition> CustomTypeDefinitions = new();
 
@@ -71,25 +75,49 @@ namespace Juegazo.Map
         //temporal
         public List<Block> blocksTemp { get; } = new();
 
-        public TiledMap(GraphicsDevice graphicsDevice, string projectDirectory, string mapFilePath, List<ICustomTypeDefinition> typeDefinitions)
+        public TiledMap(GraphicsDevice graphicsDevice, string projectDirectory, string mapFilePath, int TILESIZE, List<ICustomTypeDefinition> typeDefinitions)
         {
+            this.graphicsDevice = graphicsDevice;
             foreach (var t in typeDefinitions)
             {
                 CustomTypeDefinitions.Add(t);
             }
-            var loader = Loader.DefaultWith(customTypeDefinitions: typeDefinitions);
-        }
-        public TiledMap(GraphicsDevice graphicsDevice, string projectDirectory, string mapFilePath, int TILESIZE)
-        {
             this.graphicsDevice = graphicsDevice;
             TiledProjectDirectory = projectDirectory;
             MapFilePath = mapFilePath;
 
-            var loader = Loader.Default();
+            var loader = Loader.DefaultWith(customTypeDefinitions: typeDefinitions);
             Map = loader.LoadMap(Path.Combine(TiledProjectDirectory, MapFilePath));
             this.TILESIZE = TILESIZE;
             InitTilesets(Map.Tilesets, TiledProjectDirectory);
             InitImportantLayers(Map.Layers);
+            InitInteractiveObjectLayers(Map.Layers);
+        }
+
+        private void InitInteractiveObjectLayers(List<BaseLayer> layers)
+        {
+            foreach (var layer in layers)
+            {
+                if (!(layer is ObjectLayer)) continue;
+                var objLayer = (ObjectLayer)layer;
+                if (MapObjectLayerToClass.TryGetValue(objLayer, out var val) && !val.canOverrideCollisionLayer)
+                {
+                    foreach (var obj in objLayer.Objects)
+                    {
+                        if (MapObjectToType.TryGetValue(obj, out var value))
+                        {
+                            if (!(value is CustomTiledTypesImplementation.MovementBlock))
+                            {
+                                Console.WriteLine("fufufufck");
+                            }
+                            Blocks.MovementBlock block = new Blocks.MovementBlock(GetObjectDestinationRectangle(obj));
+                            Blocks.MovementBlock b = (Blocks.MovementBlock)value.changeBlock(block);
+                            Blocks.MovementBlock a = new(b.collider, b.initialBlockPosition, b.endBlockPosition);
+                            dynamicBlocks[obj] = a;
+                        }
+                    }
+                }
+            }
         }
 
         private void InitImportantLayers(List<BaseLayer> layers)
@@ -108,37 +136,82 @@ namespace Juegazo.Map
                         AddImportantPositions(objectLayer);
                         break;
                     case "Collision Blocks Object Layer":
+                        MapObjectLayerToClass[(ObjectLayer)layer] = layer.MapPropertiesTo<CollisionBlockObjectLayer>();
                         ObjectLayer objectLayer1 = (ObjectLayer)layer;
-                        ModifyCollisionLayer(objectLayer1);
+                        InitObjectLayer(objectLayer1);
                         break;
                     default:
                         Console.WriteLine("still not implemented");
                         break;
                 }
-                if (layer.Class == "Collision Tile Layer")
-                {
-                    TileLayer tileLayer = (TileLayer)layer;
-                    CreateCollisionLayer(tileLayer);
-                }
-                if (layer.Class == "Entity Spawner")
-                {
-                    ObjectLayer objectLayer = (ObjectLayer)layer;
-                    AddImportantPositions(objectLayer);
-                }
             }
         }
         //Make this a initObjectLayer, add all the propieties and the objects in a dictionary, then search again to get other propieties (like the rectangle of an object that needs it) and save it in the instance. With that you now can modify the collisionLayer with whatever source you need.
-        private void ModifyCollisionLayer(ObjectLayer objectLayer1)
+        private void InitObjectLayer(ObjectLayer objectLayer)
         {
-            if (collisionLayer.Count == 0)
+            List<uint> unimplementedThings = new();
+            IEnumerable<uint> objectProperties;
+            foreach (var obj in objectLayer.Objects)
             {
-                Console.WriteLine("fuck!!!");
-                return;
+                switch (obj.Type)
+                {
+                    case "MovementBlock":
+                        Console.WriteLine("MovementBock");
+                        var papu = obj.MapPropertiesTo<CustomTiledTypes.MovementBlock>();
+
+                        objectProperties = obj.Properties
+                            .Where(p => p.Type == PropertyType.Object)
+                            .Cast<ObjectProperty>()
+                            .Select(op => op.Value);
+                        unimplementedThings.AddRange(objectProperties);
+
+                        MapObjectToType[obj] = new CustomTiledTypesImplementation.MovementBlock(papu);
+                        break;
+                    case "DamageBlock":
+                        var damage = obj.MapPropertiesTo<CustomTiledTypes.DamageBlock>();
+
+                        objectProperties = obj.Properties
+                            .Where(p => p.Type == PropertyType.Object)
+                            .Cast<ObjectProperty>()
+                            .Select(op => op.Value);
+                        unimplementedThings.AddRange(objectProperties);
+
+                        MapObjectToType[obj] = new CustomTiledTypesImplementation.DamageBlock(damage);
+                        break;
+                    case "CheckPointBlock":
+                        Console.WriteLine("fuck i forgot this one");
+                        break;
+                    case "CompleteLevelBlock":
+                        // var complete = obj.MapPropertiesTo<CustomTiledTypes.CompleteLevelBlock>();
+                        // unimplementedThings.Add(obj);
+                        // MapObjectToType[obj] = new CustomTiledTypesImplementation.CompleteLevelBlock(complete);
+                        Console.WriteLine("fuck i forgot completeblock");
+                        break;
+                    case "VerticalBoostBlock":
+                        var boost = obj.MapPropertiesTo<CustomTiledTypes.VerticalBoostBlock>();
+
+                        objectProperties = obj.Properties
+                            .Where(p => p.Type == PropertyType.Object)
+                            .Cast<ObjectProperty>()
+                            .Select(op => op.Value);
+                        unimplementedThings.AddRange(objectProperties);
+
+                        MapObjectToType[obj] = new CustomTiledTypesImplementation.VerticalBoostBlock(boost);
+                        break;
+                }
             }
-            Console.WriteLine($"look at this name: {objectLayer1.Name}");
-            foreach (var obj in objectLayer1.Objects)
+            foreach (var obj in objectLayer.Objects)
             {
-                Console.WriteLine("\t"+obj.Type);
+                foreach (uint idNeeded in unimplementedThings)
+                {
+                    if (obj.ID == idNeeded)
+                    {
+                        foreach (var o in MapObjectToType.Values)
+                        {
+                            o.getNeededObjectPropeties(obj);
+                        }
+                    }
+                }
             }
         }
 
@@ -301,7 +374,7 @@ namespace Juegazo.Map
         private void DrawObjectLayer(SpriteBatch spriteBatch, ObjectLayer objectLayer)
         {
             if (!objectLayer.Visible) return;
-            foreach(var obj in objectLayer.Objects)
+            foreach (var obj in objectLayer.Objects)
             {
                 switch (obj)
                 {
@@ -324,12 +397,16 @@ namespace Juegazo.Map
             {
                 Texture2D texture = TilemapTextures[tileset];
                 Rectangle srcRect = GetSourceRect(id, tileset);
-                Rectangle destRect = GetTileObjectDestinationRectangle(tileObject);
+                if (dynamicBlocks.TryGetValue(tileObject, out var _val))
+                {
+                    spriteBatch.Draw(texture, _val.collider, srcRect, Color.White);
+                }
+                Rectangle destRect = GetObjectDestinationRectangle(tileObject);
                 spriteBatch.Draw(texture, destRect, srcRect, Color.White);
             }
         }
 
-        private Rectangle GetTileObjectDestinationRectangle(TileObject tileObject)
+        private Rectangle GetObjectDestinationRectangle(DotTiled.Object tileObject)
         {
             int x = (int)(tileObject.X / TileWidth * TILESIZE);
             int y = (int)(((tileObject.Y / TileHeight) - 1) * TILESIZE);

@@ -6,16 +6,23 @@ using Juegazo.Components;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Juegazo
+namespace Juegazo.Map.Blocks
 {
     public class JumpWall : Block
     {
         private float jumpStrength = 7;
+        public bool canJump;
         private float recoilVelocity = 20;
         public JumpWall(Rectangle collider)
             : base(collider)
         {
             value = 1;
+        }
+        public JumpWall(Rectangle collider, int jumpSptrength, bool canJump, float recoilVelocity) : base(collider)
+        {
+            this.jumpStrength = jumpSptrength;
+            this.recoilVelocity = recoilVelocity;
+            this.canJump = canJump;
         }
         public JumpWall()
         {
@@ -23,6 +30,11 @@ namespace Juegazo
         }
         public override void horizontalActions(Entity entity, Rectangle collision)
         {
+            if (!canJump)
+            {
+                new CollisionBlock().horizontalActions(entity, collision);
+                return;
+            }
             //change this to use the new ECS model
             entity.onGround = true;
             MoveVerticalComponent verticalMovement = (MoveVerticalComponent)entity.getComponent(typeof(MoveVerticalComponent));
@@ -55,7 +67,6 @@ namespace Juegazo
 
         public override void verticalActions(Entity entity, Rectangle collision)
         {
-
             new CollisionBlock().verticalActions(entity, collision);
         }
 

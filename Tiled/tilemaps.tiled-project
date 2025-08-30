@@ -30,7 +30,7 @@
             "id": 13,
             "members": [
                 {
-                    "name": "can override collision layer",
+                    "name": "canOverrideCollisionLayer",
                     "type": "bool",
                     "value": true
                 }
@@ -129,7 +129,7 @@
             "id": 12,
             "members": [
                 {
-                    "name": "can override collision layer",
+                    "name": "canOverrideCollisionLayer",
                     "type": "bool",
                     "value": false
                 }
@@ -139,6 +139,26 @@
             "useAs": [
                 "property",
                 "layer",
+                "project"
+            ]
+        },
+        {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 15,
+            "members": [
+            ],
+            "name": "Entity Spawner",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset",
                 "project"
             ]
         },
@@ -342,26 +362,6 @@
                 }
             ],
             "name": "VerticalBoostBlock",
-            "type": "class",
-            "useAs": [
-                "property",
-                "map",
-                "layer",
-                "object",
-                "tile",
-                "tileset",
-                "wangcolor",
-                "wangset",
-                "project"
-            ]
-        },
-        {
-            "color": "#ffa0a0a4",
-            "drawFill": true,
-            "id": 15,
-            "members": [
-            ],
-            "name": "Entity Spawner",
             "type": "class",
             "useAs": [
                 "property",

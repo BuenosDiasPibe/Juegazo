@@ -2,7 +2,7 @@
     {
         "color": "#ffa0a0a4",
         "drawFill": true,
-        "id": 3,
+        "id": 1,
         "members": [
         ],
         "name": "CheckPointBlock",
@@ -14,9 +14,48 @@
         ]
     },
     {
+        "color": "#ffa0a0a4",
+        "drawFill": true,
+        "id": 13,
+        "members": [
+            {
+                "name": "canOverrideCollisionLayer",
+                "type": "bool",
+                "value": true
+            }
+        ],
+        "name": "Collision Blocks Object Layer",
+        "type": "class",
+        "useAs": [
+            "property",
+            "layer",
+            "project"
+        ]
+    },
+    {
+        "color": "#ffa0a0a4",
+        "drawFill": true,
+        "id": 14,
+        "members": [
+        ],
+        "name": "Collision Tile Layer",
+        "type": "class",
+        "useAs": [
+            "property",
+            "map",
+            "layer",
+            "object",
+            "tile",
+            "tileset",
+            "wangcolor",
+            "wangset",
+            "project"
+        ]
+    },
+    {
         "color": "#fff6f5f4",
         "drawFill": true,
-        "id": 12,
+        "id": 2,
         "members": [
             {
                 "name": "isEnabled",
@@ -41,7 +80,7 @@
     {
         "color": "#ffa0a0a4",
         "drawFill": true,
-        "id": 10,
+        "id": 3,
         "members": [
             {
                 "name": "canDamage",
@@ -74,7 +113,46 @@
         ]
     },
     {
-        "id": 5,
+        "color": "#ffa0a0a4",
+        "drawFill": true,
+        "id": 12,
+        "members": [
+            {
+                "name": "canOverrideCollisionLayer",
+                "type": "bool",
+                "value": false
+            }
+        ],
+        "name": "Dynamic Block Layer",
+        "type": "class",
+        "useAs": [
+            "property",
+            "layer",
+            "project"
+        ]
+    },
+    {
+        "color": "#ffa0a0a4",
+        "drawFill": true,
+        "id": 15,
+        "members": [
+        ],
+        "name": "Entity Spawner",
+        "type": "class",
+        "useAs": [
+            "property",
+            "map",
+            "layer",
+            "object",
+            "tile",
+            "tileset",
+            "wangcolor",
+            "wangset",
+            "project"
+        ]
+    },
+    {
+        "id": 4,
         "name": "faces",
         "storageType": "int",
         "type": "enum",
@@ -89,7 +167,7 @@
     {
         "color": "#fff8e45c",
         "drawFill": true,
-        "id": 13,
+        "id": 5,
         "members": [
             {
                 "name": "canJump",
@@ -119,7 +197,7 @@
     {
         "color": "#ff3584e4",
         "drawFill": true,
-        "id": 11,
+        "id": 6,
         "members": [
             {
                 "name": "EndBlockPosition",
@@ -159,7 +237,7 @@
     {
         "color": "#ffa0a0a4",
         "drawFill": true,
-        "id": 4,
+        "id": 7,
         "members": [
             {
                 "name": "face",
@@ -185,7 +263,7 @@
     {
         "color": "#ffe01b24",
         "drawFill": true,
-        "id": 1,
+        "id": 8,
         "members": [
             {
                 "name": "isVisible",
@@ -204,32 +282,7 @@
     {
         "color": "#ffa0a0a4",
         "drawFill": true,
-        "id": 6,
-        "members": [
-            {
-                "name": "speedAmount",
-                "type": "int",
-                "value": 5
-            }
-        ],
-        "name": "speedUp",
-        "type": "class",
-        "useAs": [
-            "property",
-            "map",
-            "layer",
-            "object",
-            "tile",
-            "tileset",
-            "wangcolor",
-            "wangset",
-            "project"
-        ]
-    },
-    {
-        "color": "#ffa0a0a4",
-        "drawFill": true,
-        "id": 8,
+        "id": 10,
         "members": [
             {
                 "name": "slowAmount",
@@ -255,6 +308,31 @@
         "color": "#ffa0a0a4",
         "drawFill": true,
         "id": 9,
+        "members": [
+            {
+                "name": "speedAmount",
+                "type": "int",
+                "value": 5
+            }
+        ],
+        "name": "speedUp",
+        "type": "class",
+        "useAs": [
+            "property",
+            "map",
+            "layer",
+            "object",
+            "tile",
+            "tileset",
+            "wangcolor",
+            "wangset",
+            "project"
+        ]
+    },
+    {
+        "color": "#ffa0a0a4",
+        "drawFill": true,
+        "id": 11,
         "members": [
             {
                 "name": "Amount",

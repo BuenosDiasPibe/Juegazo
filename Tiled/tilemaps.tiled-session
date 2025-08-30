@@ -10,11 +10,11 @@
     "file.lastUsedOpenFilter": "Todos los archivos (*)",
     "fileStates": {
         "betterTest.tmx": {
-            "scale": 5.5,
-            "selectedLayer": 3,
+            "scale": 2,
+            "selectedLayer": 5,
             "viewCenter": {
-                "x": 127.81818181818183,
-                "y": 80.0909090909091
+                "x": 141.5,
+                "y": 79.75
             }
         },
         "goodOne.tmx": {
