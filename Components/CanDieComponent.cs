@@ -13,7 +13,6 @@ namespace Juegazo.Components
         public CanDieComponent(Vector2 initialPosition)
         {
             this.initialPosition = initialPosition;
-            Enable = false;
         }
         public override void Destroy()
         { }
@@ -22,6 +21,14 @@ namespace Juegazo.Components
         { }
 
         public override void Update(GameTime gameTime)
-        { }
+        {
+            if (Owner.health <= 0)
+            {
+                Console.WriteLine("papu");
+                Owner.velocity = new();
+                Owner.Destinationrectangle.Location = initialPosition.ToPoint();
+                Owner.health = 1;
+            }
+        }
     }
 }

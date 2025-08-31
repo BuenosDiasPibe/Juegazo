@@ -11,8 +11,8 @@ namespace Juegazo.Map.Blocks
     public class JumpWall : Block
     {
         private float jumpStrength = 7;
-        public bool canJump;
-        private float recoilVelocity = 20;
+        public bool canJump = true;
+        private float recoilVelocity = 15;
         public JumpWall(Rectangle collider)
             : base(collider)
         {
@@ -20,7 +20,7 @@ namespace Juegazo.Map.Blocks
         }
         public JumpWall(Rectangle collider, int jumpSptrength, bool canJump, float recoilVelocity) : base(collider)
         {
-            this.jumpStrength = jumpSptrength;
+            jumpStrength = jumpSptrength;
             this.recoilVelocity = recoilVelocity;
             this.canJump = canJump;
         }

@@ -31,15 +31,15 @@ namespace Juegazo.Map
 
         public Dictionary<Vector2, Block> collisionLayer { get; } = new();
         public Dictionary<string, Vector2> EntityPositionerByName { get; } = new();
-        public Dictionary<DotTiled.Object, TiledTypesUsed> MapObjectToType { get; } = new();
-        public Dictionary<DotTiled.ObjectLayer, CollisionBlockObjectLayer> MapObjectLayerToClass { get; } = new();
+        public Dictionary<TileObject, TiledTypesUsed> MapObjectToType { get; } = new();
+        public Dictionary<ObjectLayer, CollisionBlockObjectLayer> MapObjectLayerToClass { get; } = new();
         List<Block> blocks = AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(a => a.GetTypes())
                 .Where(t => t.IsSubclassOf(typeof(Block)) && !t.IsAbstract)
                 .Select(t => (Block)Activator.CreateInstance(t))
                 .ToList();
         public Dictionary<string, BaseLayer> AllLayersByName { get; } = new();
-        public Dictionary<DotTiled.Object, Block> dynamicBlocks = new();
+        public Dictionary<TileObject, Block> dynamicBlocks = new();
 
         public readonly List<ICustomTypeDefinition> CustomTypeDefinitions = new();
 
@@ -100,20 +100,29 @@ namespace Juegazo.Map
             {
                 if (!(layer is ObjectLayer)) continue;
                 var objLayer = (ObjectLayer)layer;
-                if (MapObjectLayerToClass.TryGetValue(objLayer, out var val) && !val.canOverrideCollisionLayer)
+
+                if (MapObjectLayerToClass.TryGetValue(objLayer, out var val))
                 {
-                    foreach (var obj in objLayer.Objects)
+                    foreach (TileObject obj in objLayer.Objects.OfType<TileObject>())
                     {
                         if (MapObjectToType.TryGetValue(obj, out var value))
                         {
-                            if (!(value is CustomTiledTypesImplementation.MovementBlock))
+                            foreach (Block block in blocks)
                             {
-                                Console.WriteLine("fufufufck");
+                                if (obj.GID - 1 == block.value)
+                                {
+                                    Block blockk = (Block)Activator.CreateInstance(block.GetType());
+                                    blockk.collider = new((int)(obj.X / TileWidth * TILESIZE),
+                                                          (int)(((obj.Y / TileHeight) - 1) * TILESIZE),
+                                                          TILESIZE,
+                                                          TILESIZE);
+                                    blockk = value.changeBlock(blockk);
+                                    if (val.canOverrideCollisionLayer)
+                                        collisionLayer[new(obj.X, obj.Y)] = blockk;
+                                    else
+                                        dynamicBlocks[obj] = blockk;
+                                }
                             }
-                            Blocks.MovementBlock block = new Blocks.MovementBlock(GetObjectDestinationRectangle(obj));
-                            Blocks.MovementBlock b = (Blocks.MovementBlock)value.changeBlock(block);
-                            Blocks.MovementBlock a = new(b.collider, b.initialBlockPosition, b.endBlockPosition);
-                            dynamicBlocks[obj] = a;
                         }
                     }
                 }
@@ -153,6 +162,8 @@ namespace Juegazo.Map
             IEnumerable<uint> objectProperties;
             foreach (var obj in objectLayer.Objects)
             {
+                if (!(obj is TileObject)) continue;
+                var tobj = (TileObject)obj;
                 switch (obj.Type)
                 {
                     case "MovementBlock":
@@ -165,7 +176,7 @@ namespace Juegazo.Map
                             .Select(op => op.Value);
                         unimplementedThings.AddRange(objectProperties);
 
-                        MapObjectToType[obj] = new CustomTiledTypesImplementation.MovementBlock(papu);
+                        MapObjectToType[tobj] = new CustomTiledTypesImplementation.MovementBlock(papu);
                         break;
                     case "DamageBlock":
                         var damage = obj.MapPropertiesTo<CustomTiledTypes.DamageBlock>();
@@ -176,7 +187,7 @@ namespace Juegazo.Map
                             .Select(op => op.Value);
                         unimplementedThings.AddRange(objectProperties);
 
-                        MapObjectToType[obj] = new CustomTiledTypesImplementation.DamageBlock(damage);
+                        MapObjectToType[tobj] = new CustomTiledTypesImplementation.DamageBlock(damage);
                         break;
                     case "CheckPointBlock":
                         Console.WriteLine("fuck i forgot this one");
@@ -196,7 +207,7 @@ namespace Juegazo.Map
                             .Select(op => op.Value);
                         unimplementedThings.AddRange(objectProperties);
 
-                        MapObjectToType[obj] = new CustomTiledTypesImplementation.VerticalBoostBlock(boost);
+                        MapObjectToType[tobj] = new CustomTiledTypesImplementation.VerticalBoostBlock(boost);
                         break;
                 }
             }
@@ -400,6 +411,7 @@ namespace Juegazo.Map
                 if (dynamicBlocks.TryGetValue(tileObject, out var _val))
                 {
                     spriteBatch.Draw(texture, _val.collider, srcRect, Color.White);
+                    return;
                 }
                 Rectangle destRect = GetObjectDestinationRectangle(tileObject);
                 spriteBatch.Draw(texture, destRect, srcRect, Color.White);

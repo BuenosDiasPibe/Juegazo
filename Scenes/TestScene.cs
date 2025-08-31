@@ -63,16 +63,17 @@ namespace Juegazo
                 new MoveHorizontalComponent(),
                 new ComplexGravityComponent(),
             };
-            Rectangle playerPosition = new(TILESIZE*12, TILESIZE*2, TILESIZE, TILESIZE); // random position in the map, if it spawns there, something went wrong
+            Rectangle playerPosition = new(TILESIZE * 12, TILESIZE * 2, TILESIZE, TILESIZE); // random position in the map, if it spawns there, something went wrong
             if (tilemap.EntityPositionerByName.TryGetValue("PlayerSpawner", out Vector2 position))
             {
                 playerPosition = new((int)position.X, (int)position.Y, TILESIZE, TILESIZE);
             }
-            entities.Add(new Entity(playerTexture, new Rectangle(TILESIZE, TILESIZE, TILESIZE, TILESIZE), playerPosition,componentsOnEntity, collider: 0.7f,Color.White));
+            componentsOnEntity.Add(new CanDieComponent(new(playerPosition.X, playerPosition.Y)));
+            entities.Add(new Entity(playerTexture, new Rectangle(TILESIZE, TILESIZE, TILESIZE, TILESIZE), playerPosition, componentsOnEntity, collider: 0.7f, Color.White));
             //entities.Add(new Player(playerTexture, new Rectangle(TILESIZE,TILESIZE,TILESIZE,TILESIZE), new Rectangle(TILESIZE*2, TILESIZE*2, TILESIZE, TILESIZE), camera, Color.White, componentsOnEntity));
             font = contentManager.Load<SpriteFont>("sheesh");
             camera.Origin = new Vector2(camera.Viewport.Width / 2, camera.Viewport.Height / 2);
-            camera.Zoom = 0.7f;
+            camera.Zoom = 1;
         }
 
         public void UnloadContent()
@@ -98,6 +99,13 @@ namespace Juegazo
                         block.horizontalActions(entity, block.collider);
                     }
                 }
+                foreach (Block block in tilemap.dynamicBlocks.Values)
+                {
+                    if (block.collider.Intersects(entity.Destinationrectangle))
+                    {
+                        block.horizontalActions(entity, block.collider);
+                    }
+                }
 
                 entity.Destinationrectangle.Y += (int)entity.velocity.Y;
                 foreach (Block block in tilemap.collisionLayer.Values)
@@ -107,16 +115,28 @@ namespace Juegazo
                         block.verticalActions(entity, block.collider);
                     }
                 }
+                foreach (Block block in tilemap.dynamicBlocks.Values)
+                {
+                    if (block.collider.Intersects(entity.Destinationrectangle))
+                    {
+                        block.horizontalActions(entity, block.collider);
+                    }
+                }
                 entity.UpdateColliderFromDest();
             }
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
+            var debugger = new Debugger(graphicsDevice);
             tilemap.Draw(spriteBatch);
             foreach (var entity in entities)
             {
                 entity.DrawSprite(spriteBatch);
+            }
+            foreach (var block in tilemap.collisionLayer.Values)
+            {
+                debugger.DrawRectHollow(spriteBatch, block.collider, 2);
             }
         }
 
@@ -124,11 +144,13 @@ namespace Juegazo
         { }
         public void DrawUI(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            foreach (var entity in entities) {
-            spriteBatch.DrawString(font, 
-                $"FPS: {Math.Round(1 / gameTime.ElapsedGameTime.TotalSeconds)}\nvelocity: {entity.velocity}", 
-                new Vector2(camera.Left, camera.Top + 60),
-                    Color.White);        }
+            foreach (var entity in entities)
+            {
+                spriteBatch.DrawString(font,
+                    $"FPS: {Math.Round(1 / gameTime.ElapsedGameTime.TotalSeconds)}\nposition: X:{entity.Destinationrectangle.X} Y:{entity.Destinationrectangle.Y}\nvelocity: {entity.velocity}",
+                    new Vector2(camera.Left, camera.Top + 60),
+                        Color.White);
+            }
         }
     }
 }

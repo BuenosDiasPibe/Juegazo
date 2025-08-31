@@ -109,10 +109,9 @@ namespace Juegazo.CustomTiledTypesImplementation
 
         public override void getNeededObjectPropeties(DotTiled.Object obj)
         {
-            if (obj is RectangleObject rObject && obj.ID == collisionHitbox)
+            if (obj.ID == collisionHitbox)
             {
-                Console.WriteLine("we gucci");
-                hitbox = new((int)rObject.X, (int)rObject.Y, (int)rObject.Width, (int)rObject.Height);
+                hitbox = new((int)obj.X, (int)obj.Y, (int)obj.Width, (int)obj.Height);
             }
         }
 
@@ -120,7 +119,7 @@ namespace Juegazo.CustomTiledTypesImplementation
         {
             if (block is Map.Blocks.KillBlock)
             {
-                Map.Blocks.KillBlock returnBlock = new(hitbox, damageAmmount);
+                Map.Blocks.KillBlock returnBlock = new(block.collider, damageAmmount);
                 return returnBlock;
             }
             Console.WriteLine("you fucked up");

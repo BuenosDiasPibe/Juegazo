@@ -23,8 +23,8 @@ namespace Juegazo.Map.Blocks
         public KillBlock() { value = 18; }
         public override void horizontalActions(Entity entity, Rectangle collision)
         {
-            Console.WriteLine("holly shiiii");
-            entity.health -= damageAmmount;
+            Console.WriteLine($"health: {entity.health}");
+            entity.health--;
         }
 
         public override void Update(GameTime gameTime)
@@ -32,7 +32,7 @@ namespace Juegazo.Map.Blocks
 
         public override void verticalActions(Entity entity, Rectangle collision)
         {
-            entity.health -= damageAmmount;
+            entity.health--;
         }
     }
 }

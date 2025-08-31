@@ -19,6 +19,7 @@ namespace Juegazo.Map.Blocks
         //TODO: añadir metodos que utilicen isCompleteBlock y toUP
         public VerticalBoostBlock(Rectangle collider, int vertBoost, bool isCompleteBlock, bool toUp) : base(collider)
         {
+            value = 8;
             this.vertBoost = vertBoost;
         }
         public VerticalBoostBlock() { value = 8; }
@@ -32,15 +33,7 @@ namespace Juegazo.Map.Blocks
 
         public override void verticalActions(Entity entity, Rectangle collision)
         {
-            if (entity.velocity.Y > 0)
-            {
-                entity.velocity.Y = -20; //dont know why i didnt made this months ago....
-            }
-            else if (entity.velocity.Y < 0.0f)
-            {
-                entity.velocity.Y *= 0.1f;
-                entity.Destinationrectangle.Y = collision.Bottom;
-            }
+            entity.velocity.Y -= 10;
         }
     }
 }
