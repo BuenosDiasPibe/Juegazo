@@ -86,7 +86,12 @@ namespace Juegazo
 
         public void Update(GameTime gameTime)
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.Escape) && pastKey.IsKeyDown(Keys.Escape))
+            if (Keyboard.GetState().IsKeyDown(Keys.R) && pastKey.IsKeyDown(Keys.R))
+            {
+            List<ICustomTypeDefinition> typeDefinitions = new();
+            tilemap = new(graphicsDevice, projectDirectory, "betterTest.tmx", TILESIZE, typeDefinitions);
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.M) && pastKey.IsKeyDown(Keys.M))
             {
                 UnloadContent();
                 sceneManager.RemoveScene();
@@ -163,7 +168,7 @@ namespace Juegazo
                         Color.White);
             }
             spriteBatch.DrawString(font,
-                                    $"exit game: {"END"}\nMain menu: {"Escape"}",
+                                    $"exit game: {"Escape"}\nReload: {"R"}\nMain Menu: {"M"}", //TODO: add the keys to variables so i dont need to change this every time
                                     new Vector2(camera.Right - 200, camera.Top),
                                     Color.White);
         }
