@@ -13,8 +13,8 @@
             "scale": 2,
             "selectedLayer": 5,
             "viewCenter": {
-                "x": 124,
-                "y": 156.25
+                "x": 141.5,
+                "y": 79.75
             }
         },
         "goodOne.tmx": {
@@ -40,7 +40,7 @@
         "goodOne.tmx"
     ],
     "project": "tilemaps.tiled-project",
-    "property.type": "bool",
+    "property.type": "float",
     "recentFiles": [
         "worldTexture.tsx",
         "goodOne.tmx",

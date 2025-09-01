@@ -96,34 +96,24 @@ namespace Juegazo.Map
 
         private void InitInteractiveObjectLayers(List<BaseLayer> layers)
         {
-            foreach (var layer in layers)
+            foreach (var layer in layers.OfType<ObjectLayer>())
             {
-                if (!(layer is ObjectLayer)) continue;
-                var objLayer = (ObjectLayer)layer;
+                if (!MapObjectLayerToClass.TryGetValue(layer, out var objectLayerClass)) continue;
 
-                if (MapObjectLayerToClass.TryGetValue(objLayer, out var val))
+                foreach (var tileObject in layer.Objects.OfType<TileObject>())
                 {
-                    foreach (TileObject obj in objLayer.Objects.OfType<TileObject>())
+                    if (!MapObjectToType.TryGetValue(tileObject, out var tiledType)) continue;
+
+                    Block block = tiledType.createBlock(tileObject, TILESIZE);
+
+                    Vector2 position = new(tileObject.X, tileObject.Y);
+                    if (objectLayerClass.canOverrideCollisionLayer)
                     {
-                        if (MapObjectToType.TryGetValue(obj, out var value))
-                        {
-                            foreach (Block block in blocks)
-                            {
-                                if (obj.GID - 1 == block.value)
-                                {
-                                    Block blockk = (Block)Activator.CreateInstance(block.GetType());
-                                    blockk.collider = new((int)(obj.X / TileWidth * TILESIZE),
-                                                          (int)(((obj.Y / TileHeight) - 1) * TILESIZE),
-                                                          TILESIZE,
-                                                          TILESIZE);
-                                    blockk = value.changeBlock(blockk);
-                                    if (val.canOverrideCollisionLayer)
-                                        collisionLayer[new(obj.X, obj.Y)] = blockk;
-                                    else
-                                        dynamicBlocks[obj] = blockk;
-                                }
-                            }
-                        }
+                        collisionLayer[position] = block;
+                    }
+                    else if (block is Blocks.MovementBlock movementBlock)
+                    {
+                        dynamicBlocks[tileObject] = movementBlock;
                     }
                 }
             }
@@ -219,7 +209,7 @@ namespace Juegazo.Map
                     {
                         foreach (var o in MapObjectToType.Values)
                         {
-                            o.getNeededObjectPropeties(obj);
+                            o.getNeededObjectPropeties(obj, TILESIZE);
                         }
                     }
                 }
@@ -401,7 +391,6 @@ namespace Juegazo.Map
 
         private void DrawTileObject(SpriteBatch spriteBatch, TileObject tileObject, ObjectLayer objectLayer)
         {
-            if (!tileObject.Visible) return;
             Tileset tileset = TilesetsByGID[tileObject.GID];
             uint id = tileObject.GID - tileset.FirstGID;
             if (tileset.Image.HasValue)
@@ -433,7 +422,6 @@ namespace Juegazo.Map
             string folder = Path.GetDirectoryName(relative_path);
             string path = Path.Combine(caller_directory, folder, file);
 
-            //TODO: fuck off
             return LoadImage(graphicsDevice, path, caller_directory);
         }
         public static Texture2D LoadImage(GraphicsDevice graphicsDevice, string path, string projectDirectory)

@@ -10,7 +10,7 @@ namespace Juegazo.Map.Blocks
 {
     public class ZoomInBlock : Block
     {
-        public ZoomInBlock( Rectangle collider)
+        public ZoomInBlock(Rectangle collider)
             : base(collider)
         { }
         public ZoomInBlock() {}

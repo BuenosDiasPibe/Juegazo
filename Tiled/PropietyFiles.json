@@ -215,9 +215,9 @@
                 "value": 0
             },
             {
-                "name": "movementSpeed",
-                "type": "int",
-                "value": 2
+                "name": "velocity",
+                "type": "float",
+                "value": 1
             }
         ],
         "name": "MovementBlock",
@@ -335,9 +335,9 @@
         "id": 11,
         "members": [
             {
-                "name": "Amount",
+                "name": "Ammount",
                 "type": "int",
-                "value": 5
+                "value": 20
             },
             {
                 "name": "isCompleteBlock",

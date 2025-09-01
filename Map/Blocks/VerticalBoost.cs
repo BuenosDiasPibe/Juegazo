@@ -33,7 +33,7 @@ namespace Juegazo.Map.Blocks
 
         public override void verticalActions(Entity entity, Rectangle collision)
         {
-            entity.velocity.Y -= 10;
+            entity.velocity.Y = -vertBoost;
         }
     }
 }

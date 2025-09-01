@@ -32,6 +32,7 @@ namespace Juegazo
         Texture2D playerTexture;
         private TiledMap tilemap;
         private string projectDirectory = GetExecutingDir("../../../Tiled");
+        private KeyboardState pastKey;
 
         private static string GetExecutingDir(string v)
         {
@@ -54,8 +55,9 @@ namespace Juegazo
 
         public void LoadContent()
         {
-            List<ICustomTypeDefinition> typeDefinitions = new();
             playerTexture = contentManager.Load<Texture2D>("playerr");
+
+            List<ICustomTypeDefinition> typeDefinitions = new();
             tilemap = new(graphicsDevice, projectDirectory, "betterTest.tmx", TILESIZE, typeDefinitions);
             var componentsOnEntity = new List<Component> {
                 new CameraToEntityComponent(camera),
@@ -73,17 +75,22 @@ namespace Juegazo
             //entities.Add(new Player(playerTexture, new Rectangle(TILESIZE,TILESIZE,TILESIZE,TILESIZE), new Rectangle(TILESIZE*2, TILESIZE*2, TILESIZE, TILESIZE), camera, Color.White, componentsOnEntity));
             font = contentManager.Load<SpriteFont>("sheesh");
             camera.Origin = new Vector2(camera.Viewport.Width / 2, camera.Viewport.Height / 2);
-            camera.Zoom = 1;
+            camera.Zoom = 1.5f;
         }
 
         public void UnloadContent()
         {
             font = null;
-            playerTexture.Dispose();
+            entities = new();
         }
 
         public void Update(GameTime gameTime)
         {
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape) && pastKey.IsKeyDown(Keys.Escape))
+            {
+                UnloadContent();
+                sceneManager.RemoveScene();
+            }
             foreach (var block in tilemap.dynamicBlocks.Values)
             {
                 block.Update(gameTime);
@@ -115,6 +122,7 @@ namespace Juegazo
                         block.verticalActions(entity, block.collider);
                     }
                 }
+
                 foreach (Block block in tilemap.dynamicBlocks.Values)
                 {
                     if (block.collider.Intersects(entity.Destinationrectangle))
@@ -122,21 +130,24 @@ namespace Juegazo
                         block.horizontalActions(entity, block.collider);
                     }
                 }
+                foreach (Block block in tilemap.dynamicBlocks.Values)
+                {
+                    if (block.collider.Intersects(entity.Destinationrectangle))
+                    {
+                        block.verticalActions(entity, block.collider);
+                    }
+                }
                 entity.UpdateColliderFromDest();
             }
+            pastKey = Keyboard.GetState();
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            var debugger = new Debugger(graphicsDevice);
             tilemap.Draw(spriteBatch);
             foreach (var entity in entities)
             {
                 entity.DrawSprite(spriteBatch);
-            }
-            foreach (var block in tilemap.collisionLayer.Values)
-            {
-                debugger.DrawRectHollow(spriteBatch, block.collider, 2);
             }
         }
 
@@ -148,9 +159,13 @@ namespace Juegazo
             {
                 spriteBatch.DrawString(font,
                     $"FPS: {Math.Round(1 / gameTime.ElapsedGameTime.TotalSeconds)}\nposition: X:{entity.Destinationrectangle.X} Y:{entity.Destinationrectangle.Y}\nvelocity: {entity.velocity}",
-                    new Vector2(camera.Left, camera.Top + 60),
+                    new Vector2(camera.Left, camera.Top),
                         Color.White);
             }
+            spriteBatch.DrawString(font,
+                                    $"exit game: {"END"}\nMain menu: {"Escape"}",
+                                    new Vector2(camera.Right - 200, camera.Top),
+                                    Color.White);
         }
     }
 }

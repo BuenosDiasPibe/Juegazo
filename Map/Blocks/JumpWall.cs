@@ -10,7 +10,7 @@ namespace Juegazo.Map.Blocks
 {
     public class JumpWall : Block
     {
-        private float jumpStrength = 7;
+        private float jumpStrength = 11;
         public bool canJump = true;
         private float recoilVelocity = 15;
         public JumpWall(Rectangle collider)
@@ -35,7 +35,6 @@ namespace Juegazo.Map.Blocks
                 new CollisionBlock().horizontalActions(entity, collision);
                 return;
             }
-            //change this to use the new ECS model
             entity.onGround = true;
             MoveVerticalComponent verticalMovement = (MoveVerticalComponent)entity.getComponent(typeof(MoveVerticalComponent));
             if (entity.velocity.X > 0)
@@ -54,16 +53,9 @@ namespace Juegazo.Map.Blocks
                 {
                     verticalMovement.JumpingVertical(jumpStrength);
                     entity.velocity.X = recoilVelocity;
-                    Console.WriteLine($"added {11} to entity velocity, now velocity is {entity.velocity.X}");
                 }
             }
         }
-        private void jumpMechanic(Player player)
-        {
-            jumpStrength = 11 + player.velocity.Y;
-            player.Jumping(jumpStrength);
-        }
-
 
         public override void verticalActions(Entity entity, Rectangle collision)
         {
