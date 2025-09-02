@@ -11,7 +11,7 @@
     "fileStates": {
         "betterTest.tmx": {
             "scale": 2,
-            "selectedLayer": 5,
+            "selectedLayer": 1,
             "viewCenter": {
                 "x": 2817.5,
                 "y": 79.75
@@ -40,7 +40,7 @@
         "goodOne.tmx"
     ],
     "project": "tilemaps.tiled-project",
-    "property.type": "float",
+    "property.type": "int",
     "recentFiles": [
         "worldTexture.tsx",
         "goodOne.tmx",

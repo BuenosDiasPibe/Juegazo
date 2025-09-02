@@ -4,6 +4,21 @@
         "drawFill": true,
         "id": 1,
         "members": [
+            {
+                "name": "isEnabled",
+                "type": "bool",
+                "value": true
+            },
+            {
+                "name": "message",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "position",
+                "type": "object",
+                "value": 0
+            }
         ],
         "name": "CheckPointBlock",
         "type": "class",
@@ -61,6 +76,11 @@
                 "name": "isEnabled",
                 "type": "bool",
                 "value": true
+            },
+            {
+                "name": "nextLevel",
+                "type": "int",
+                "value": 0
             }
         ],
         "name": "CompleteLevelBlock",

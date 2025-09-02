@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using DotTiled;
+using Juegazo.CustomTiledTypes;
 using Juegazo.Map.Blocks;
 using Microsoft.Xna.Framework;
 
@@ -25,14 +26,25 @@ namespace Juegazo.CustomTiledTypes
     }
     public class JumpWallBlock
     {
-        public bool canJump = true;
-        public int recoilIntensity = 11;
+        public bool canJump { get; set; } = true;
+        public int recoilIntensity { get; set; } = 11;
     }
     public class VerticalBoostBlock
     {
-        public int Ammount = 20;
-        public bool isCompleteBlock = false;
-        public bool toUp = true;
+        public int Ammount { get; set; } = 20;
+        public bool isCompleteBlock { get; set; } = false;
+        public bool toUp { get; set; } = true;
+    }
+    public class CompleteLevelBlock
+    {
+        public bool isEnabled { get; set; } = true;
+        public int nextLevel { get; set; } = 0;
+    }
+    public class CheckPointBlock
+    {
+        public bool isEnabled { get; set; } = true;
+        public int message { get; set; } = 0;
+        public uint position { get; set; } = 0;
     }
 }
 namespace Juegazo.CustomTiledTypesImplementation
@@ -92,7 +104,6 @@ namespace Juegazo.CustomTiledTypesImplementation
             return new([initialBlockPosition, EndBlockPosition]);
         }
     }
-    //This has been done with AI, probably something will be chahged
     public class DamageBlock : TiledTypesUsed
     {
         public override string ToString()
@@ -212,6 +223,71 @@ namespace Juegazo.CustomTiledTypesImplementation
         public override List<uint> neededObjects()
         {
             return new();
+        }
+    }
+    public class CompleteLevelBlock : TiledTypesUsed
+    {
+        public bool isEnabled { get; set; } = false;
+        public int nextLevel = 0;
+        public CompleteLevelBlock(CustomTiledTypes.CompleteLevelBlock coso)
+        {
+            isEnabled = coso.isEnabled;
+            nextLevel = coso.nextLevel;
+        }
+        public override Block createBlock(TileObject obj, int TILESIZE)
+        {
+            return new CompleteBlock(
+                new((int)(obj.X / obj.Width * TILESIZE),
+                    (int)(((obj.Y / obj.Height) - 1) * TILESIZE),
+                    TILESIZE,
+                    TILESIZE),
+                isEnabled,
+                nextLevel
+            );
+        }
+
+        public override void getNeededObjectPropeties(DotTiled.Object obj, int TILESIZE)
+        { }
+
+        public override List<uint> neededObjects()
+        {
+            return new();
+        }
+    }
+    public class CheckPointBlock : TiledTypesUsed
+    {
+        public bool isEnabled { get; set; } = true;
+        public int message { get; set; } = 0;
+        public uint position = 0;
+        public Vector2 Position = new();
+        public CheckPointBlock(CustomTiledTypes.CheckPointBlock cpb)
+        {
+            isEnabled = cpb.isEnabled;
+            message = cpb.message;
+            position = cpb.position;
+        }
+        public override Block createBlock(TileObject obj, int TILESIZE)
+        {
+            return new Map.Blocks.CheckPointBlock(
+                new((int)(obj.X / obj.Width * TILESIZE),
+                    (int)(((obj.Y / obj.Height) - 1) * TILESIZE),
+                    TILESIZE,
+                    TILESIZE),
+                isEnabled,
+                message,
+                Position
+            );
+        }
+
+        public override void getNeededObjectPropeties(DotTiled.Object obj, int TILESIZE)
+        {
+            if (obj.ID == position)
+                Position = new(obj.X / obj.Width * TILESIZE, obj.Y / obj.Height * TILESIZE);
+        }
+
+        public override List<uint> neededObjects()
+        {
+            return new([position]);
         }
     }
 }

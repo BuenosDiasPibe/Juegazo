@@ -169,7 +169,6 @@ namespace Juegazo.Map
                         MapObjectToType[tobj] = new CustomTiledTypesImplementation.MovementBlock(papu);
                         break;
                     case "DamageBlock":
-                        var damage = obj.MapPropertiesTo<CustomTiledTypes.DamageBlock>();
 
                         objectProperties = obj.Properties
                             .Where(p => p.Type == PropertyType.Object)
@@ -177,19 +176,10 @@ namespace Juegazo.Map
                             .Select(op => op.Value);
                         unimplementedThings.AddRange(objectProperties);
 
+                        var damage = obj.MapPropertiesTo<CustomTiledTypes.DamageBlock>();
                         MapObjectToType[tobj] = new CustomTiledTypesImplementation.DamageBlock(damage);
                         break;
                     case "CheckPointBlock":
-                        Console.WriteLine("fuck i forgot this one");
-                        break;
-                    case "CompleteLevelBlock":
-                        // var complete = obj.MapPropertiesTo<CustomTiledTypes.CompleteLevelBlock>();
-                        // unimplementedThings.Add(obj);
-                        // MapObjectToType[obj] = new CustomTiledTypesImplementation.CompleteLevelBlock(complete);
-                        Console.WriteLine("fuck i forgot completeblock");
-                        break;
-                    case "VerticalBoostBlock":
-                        var boost = obj.MapPropertiesTo<CustomTiledTypes.VerticalBoostBlock>();
 
                         objectProperties = obj.Properties
                             .Where(p => p.Type == PropertyType.Object)
@@ -197,6 +187,27 @@ namespace Juegazo.Map
                             .Select(op => op.Value);
                         unimplementedThings.AddRange(objectProperties);
 
+                        var checkPoint = obj.MapPropertiesTo<CustomTiledTypes.CheckPointBlock>();
+                        MapObjectToType[tobj] = new CustomTiledTypesImplementation.CheckPointBlock(checkPoint);
+                        break;
+                    case "CompleteLevelBlock":
+                        objectProperties = obj.Properties
+                            .Where(p => p.Type == PropertyType.Object)
+                            .Cast<ObjectProperty>()
+                            .Select(op => op.Value);
+                        unimplementedThings.AddRange(objectProperties);
+
+                        var complete = obj.MapPropertiesTo<CustomTiledTypes.CompleteLevelBlock>();
+                        MapObjectToType[tobj] = new CustomTiledTypesImplementation.CompleteLevelBlock(complete);
+                        break;
+                    case "VerticalBoostBlock":
+                        objectProperties = obj.Properties
+                            .Where(p => p.Type == PropertyType.Object)
+                            .Cast<ObjectProperty>()
+                            .Select(op => op.Value);
+                        unimplementedThings.AddRange(objectProperties);
+
+                        var boost = obj.MapPropertiesTo<CustomTiledTypes.VerticalBoostBlock>();
                         MapObjectToType[tobj] = new CustomTiledTypesImplementation.VerticalBoostBlock(boost);
                         break;
                 }
@@ -266,7 +277,6 @@ namespace Juegazo.Map
                                               (int)position.Y * TILESIZE,
                                               TILESIZE,
                                               TILESIZE);
-
                         collisionLayer[position] = blockk;
                         blocksTemp.Add(blockk);
                     }

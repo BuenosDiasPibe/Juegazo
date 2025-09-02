@@ -15,7 +15,7 @@ namespace Juegazo
         {
             this.graphicsDevice = graphicsDevice;
             rectangleTexture = new Texture2D(graphicsDevice, 1, 1);
-            rectangleTexture.SetData(new Color[] { new(255, 0, 0, 255) });
+            rectangleTexture.SetData(new Color[] { new(255, 255, 255, 255) });
         }
         public Debugger(GraphicsDevice graphicsDevice, Color color)
         {
@@ -35,7 +35,7 @@ namespace Juegazo
                         hitbox.Y * TILESIZE,
                         TILESIZE,
                         TILESIZE
-                    ), 4);
+                    ), 4, Color.White);
                 }
                 foreach (var hitbox in collisionMap.getIntersectingTilesVertical(entity.Destinationrectangle))
                 {
@@ -46,11 +46,11 @@ namespace Juegazo
                             hitbox.Y * TILESIZE,
                             TILESIZE,
                             TILESIZE),
-                        4);
+                        4, Color.White);
                 }
             }
         }
-        public void DrawRectHollow(SpriteBatch spriteBatch, Rectangle rect, int thickness)
+        public void DrawRectHollow(SpriteBatch spriteBatch, Rectangle rect, int thickness, Color color)
         { //shows hitbox
             spriteBatch.Draw(
                 rectangleTexture,
@@ -60,7 +60,7 @@ namespace Juegazo
                     rect.Width,
                     thickness
                 ),
-                Color.White
+                color
             );
             spriteBatch.Draw(
                 rectangleTexture,
@@ -70,7 +70,7 @@ namespace Juegazo
                     rect.Width,
                     thickness
                 ),
-                Color.White
+                color
             );
             spriteBatch.Draw(
                 rectangleTexture,
@@ -80,7 +80,7 @@ namespace Juegazo
                     thickness,
                     rect.Height
                 ),
-                Color.White
+                color
             );
             spriteBatch.Draw(
                     rectangleTexture,
@@ -90,7 +90,7 @@ namespace Juegazo
                     thickness,
                     rect.Height
                 ),
-                Color.White
+                color
             );
         }
     }

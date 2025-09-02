@@ -6,11 +6,12 @@ using MarinMol;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Juegazo
+namespace Juegazo.Map.Blocks
 {
     public class CompleteBlock : Block
     {
         public bool changeScene;
+        public int nextSceneID = 0;
 
         public CompleteBlock(Rectangle collider) : base(collider)
         {
@@ -18,6 +19,12 @@ namespace Juegazo
             changeScene = false;
         }
         public CompleteBlock() { value = 15; }
+        public CompleteBlock(Rectangle collider, bool isEnabled, int nextLevel) : base(collider)
+        {
+            value = 15;
+            EnableCollisions = isEnabled;
+            nextSceneID = nextLevel;
+        }
         public override void horizontalActions(Entity entity, Rectangle collision)
         {
             changeScene = true;
@@ -25,7 +32,6 @@ namespace Juegazo
 
         public override void Update(GameTime gameTime)
         {
-            throw new NotImplementedException();
         }
 
         public override void verticalActions(Entity entity, Rectangle collision)

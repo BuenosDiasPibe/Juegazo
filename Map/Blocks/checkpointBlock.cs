@@ -8,19 +8,33 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Juegazo.Map.Blocks
 {
-    public class CheckpointBlock : Block
+    public class CheckPointBlock : Block
     {
-        public CheckpointBlock(Rectangle collisionRectangle) : base(collisionRectangle)
+        public Vector2 position = new();
+        public int message = 0;
+        public CheckPointBlock(Rectangle collisionRectangle) : base(collisionRectangle)
         {
             value = 17;
+            position = new(collider.X, collider.Y);
         }
-        public CheckpointBlock() { value = 17; }
+        public CheckPointBlock() { value = 17; }
+        public CheckPointBlock(Rectangle collision, bool isEnabled, int message, Vector2 position) : base(collision)
+        {
+            EnableCollisions = isEnabled;
+            this.message = message;
+            this.position = position;
+        }
         public override void horizontalActions(Entity entity, Rectangle collision)
         {
+            if (position == Vector2.Zero)
+            {
+                Console.WriteLine("how am i supposed to know this??'"); //shit i cant fix this unless i do a giant ass switch statement
+                position = collider.Location.ToVector2();
+            }
             if (entity.hasComponent<CanDieComponent>())
             {
                 var canDieComponent = entity.getComponent<CanDieComponent>();
-                canDieComponent.initialPosition = new Vector2(collision.X, collision.Y);
+                canDieComponent.initialPosition = position;
             }
         }
 
@@ -29,6 +43,11 @@ namespace Juegazo.Map.Blocks
 
         public override void verticalActions(Entity entity, Rectangle collision)
         {
+            if (position == Vector2.Zero)
+            {
+                Console.WriteLine("how am i supposed to know this?? in vert");
+                position = collider.Location.ToVector2();
+            }
             horizontalActions(entity, collision);
         }
     }

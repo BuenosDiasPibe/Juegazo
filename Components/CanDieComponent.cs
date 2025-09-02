@@ -24,7 +24,6 @@ namespace Juegazo.Components
         {
             if (Owner.health <= 0)
             {
-                Console.WriteLine("papu");
                 Owner.velocity = new();
                 Owner.Destinationrectangle.Location = initialPosition.ToPoint();
                 Owner.health = 1;
