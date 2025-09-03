@@ -23,6 +23,7 @@ namespace Juegazo.Map.Blocks
             jumpStrength = jumpSptrength;
             this.recoilVelocity = recoilVelocity;
             this.canJump = canJump;
+            Console.WriteLine("shit was called");
         }
         public JumpWall()
         {

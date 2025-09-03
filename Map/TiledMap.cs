@@ -110,6 +110,7 @@ namespace Juegazo.Map
                     if (objectLayerClass.canOverrideCollisionLayer)
                     {
                         collisionLayer[position] = block;
+                        // Console.WriteLine($"block {block} with collider {block.collider}");
                     }
                     else if (block is Blocks.MovementBlock movementBlock)
                     {
@@ -139,8 +140,11 @@ namespace Juegazo.Map
                         ObjectLayer objectLayer1 = (ObjectLayer)layer;
                         InitObjectLayer(objectLayer1);
                         break;
+                    case "":
+                        Console.WriteLine("not a class, ignored");
+                        break;
                     default:
-                        Console.WriteLine("still not implemented");
+                        Console.WriteLine("not Implemented");
                         break;
                 }
             }
@@ -210,6 +214,16 @@ namespace Juegazo.Map
                         var boost = obj.MapPropertiesTo<CustomTiledTypes.VerticalBoostBlock>();
                         MapObjectToType[tobj] = new CustomTiledTypesImplementation.VerticalBoostBlock(boost);
                         break;
+                    case "JumpWallBlock":
+                        objectProperties = obj.Properties
+                            .Where(p => p.Type == PropertyType.Object)
+                            .Cast<ObjectProperty>()
+                            .Select(op => op.Value);
+                        unimplementedThings.AddRange(objectProperties);
+
+                        var jblock = obj.MapPropertiesTo<CustomTiledTypes.JumpWallBlock>();
+                        MapObjectToType[tobj] = new CustomTiledTypesImplementation.JumpWallBlock(jblock);
+                        break;
                 }
             }
             foreach (var obj in objectLayer.Objects)
@@ -220,7 +234,7 @@ namespace Juegazo.Map
                     {
                         foreach (var o in MapObjectToType.Values)
                         {
-                            o.getNeededObjectPropeties(obj, TILESIZE);
+                            o.getNeededObjectPropeties(obj, TILESIZE, TileWidth, TileHeight);
                         }
                     }
                 }
