@@ -52,8 +52,8 @@ namespace Juegazo.CustomTiledTypesImplementation
 
     public abstract class TiledTypesUsed
     {
-        public abstract Block createBlock(TileObject obj, int TILESIZE); //TODO: i should better add "Map" to this more than just TILESIZE
-        public abstract void getNeededObjectPropeties(DotTiled.Object obj, int TILESIZE, uint tWidth, uint tHeight);
+        public abstract Block createBlock(TileObject obj, int TILESIZE,  DotTiled.Map map); //TODO: i should better add "Map" to this more than just TILESIZE
+        public abstract void getNeededObjectPropeties(DotTiled.Object obj, int TILESIZE, DotTiled.Map map); 
         public abstract List<uint> neededObjects();
     }
     public class MovementBlock : TiledTypesUsed
@@ -75,7 +75,7 @@ namespace Juegazo.CustomTiledTypesImplementation
             initialBlockPosition = mblock.initialBlockPosition;
             speed = mblock.velocity;
         }
-        public override void getNeededObjectPropeties(DotTiled.Object obj, int TILESIZE, uint tWidth, uint tHeight)
+        public override void getNeededObjectPropeties(DotTiled.Object obj, int TILESIZE, DotTiled.Map map)
         {
             if (obj.Width == 4)
                 Console.WriteLine($"is too tiny :((");
@@ -87,13 +87,13 @@ namespace Juegazo.CustomTiledTypesImplementation
                     endBlockPosition = new((int)rObject.X, (int)rObject.Y, (int)rObject.Width, (int)rObject.Height);
             }
         }
-        public override Block createBlock(TileObject obj, int TILESIZE)
+        public override Block createBlock(TileObject obj, int TILESIZE,  DotTiled.Map map)
         {
             return new Map.Blocks.MovementBlock(
-                new((int)(obj.X / obj.Width * TILESIZE),
-                    (int)(((obj.Y / obj.Height) - 1) * TILESIZE),
-                    TILESIZE,
-                    TILESIZE),
+                new((int)(obj.X / map.TileWidth * TILESIZE),
+                    (int)(((obj.Y / map.TileHeight) - 1) * TILESIZE),
+                    (int)(obj.Width / map.TileWidth *TILESIZE),
+                    (int)(obj.Height / map.TileHeight *TILESIZE)),
                 InitialBlockPosition,
                 endBlockPosition,
                 speed,
@@ -124,27 +124,27 @@ namespace Juegazo.CustomTiledTypesImplementation
             damageAmmount = dblock.damageAmmount;
         }
 
-        public override void getNeededObjectPropeties(DotTiled.Object obj, int TILESIZE, uint tWidth, uint tHeight)
+        public override void getNeededObjectPropeties(DotTiled.Object obj, int TILESIZE, DotTiled.Map map)
         {
             if (obj.ID == collisionHitbox)
             {
                 hitbox = new(
-                    (int)(obj.X / tWidth * TILESIZE),
-                    (int)((obj.Y / tHeight-1) * TILESIZE),
-                    (int)(obj.Width / tWidth * TILESIZE),
-                    (int)(obj.Height / tHeight * TILESIZE));
+                    (int)(obj.X / map.TileWidth * TILESIZE),
+                    (int)((obj.Y / map.TileHeight-1) * TILESIZE),
+                    (int)(obj.Width / map.TileWidth * TILESIZE),
+                    (int)(obj.Height / map.TileHeight * TILESIZE));
             }
         }
 
-        public override Block createBlock(TileObject obj, int TILESIZE)
+        public override Block createBlock(TileObject obj, int TILESIZE,  DotTiled.Map map)
         {
             if (collisionHitbox == 0)
             {
                 return new KillBlock(new(
-                    (int)(obj.X / obj.Width * TILESIZE),
-                    (int)((obj.Y / obj.Height-1) * TILESIZE),
-                    TILESIZE,
-                    TILESIZE),
+                    (int)(obj.X / map.TileWidth * TILESIZE),
+                    (int)((obj.Y / map.TileHeight-1) * TILESIZE),
+                    (int)(obj.Width / map.TileWidth *TILESIZE),
+                    (int)(obj.Height / map.TileHeight *TILESIZE)),
                 damageAmmount
                 );
             }
@@ -175,18 +175,18 @@ namespace Juegazo.CustomTiledTypesImplementation
             recoilIntensity = jblock.recoilIntensity;
         }
 
-        public override void getNeededObjectPropeties(DotTiled.Object obj, int TILESIZE, uint tWidth, uint tHeight)
+        public override void getNeededObjectPropeties(DotTiled.Object obj, int TILESIZE, DotTiled.Map map)
         {
             // No additional properties needed from objects
         }
 
-        public override Block createBlock(TileObject obj, int TILESIZE)
+        public override Block createBlock(TileObject obj, int TILESIZE,  DotTiled.Map map)
         {
             return new JumpWall(
-                new((int)(obj.X / obj.Width * TILESIZE),
-                    (int)((obj.Y / obj.Height -1) * TILESIZE),
-                    TILESIZE,
-                    TILESIZE),
+                new((int)(obj.X / map.TileWidth * TILESIZE),
+                    (int)((obj.Y / map.TileHeight -1) * TILESIZE),
+                    (int)(obj.Width / map.TileWidth *TILESIZE),
+                    (int)(obj.Height / map.TileHeight *TILESIZE)),
                 15, //fuck i forgot to add that
                 canJump,
                 recoilIntensity
@@ -216,18 +216,18 @@ namespace Juegazo.CustomTiledTypesImplementation
             toUp = vblock.toUp;
         }
 
-        public override void getNeededObjectPropeties(DotTiled.Object obj, int TILESIZE, uint tWidth, uint tHeight)
+        public override void getNeededObjectPropeties(DotTiled.Object obj, int TILESIZE,DotTiled.Map map)
         {
             // No additional properties needed from objects
         }
 
-        public override Block createBlock(TileObject obj, int TILESIZE)
+        public override Block createBlock(TileObject obj, int TILESIZE,  DotTiled.Map map)
         {
             return new Map.Blocks.VerticalBoostBlock(
-                new((int)(obj.X / obj.Width * TILESIZE),
-                    (int)(((obj.Y / obj.Height) - 1) * TILESIZE),
-                    TILESIZE,
-                    TILESIZE),
+                new((int)(obj.X / map.TileWidth * TILESIZE),
+                    (int)(((obj.Y / map.TileHeight) - 1) * TILESIZE),
+                    (int)(obj.Width / map.TileWidth *TILESIZE),
+                    (int)(obj.Height / map.TileHeight *TILESIZE)),
                 Ammount,
                 isCompleteBlock,
                 toUp
@@ -248,19 +248,19 @@ namespace Juegazo.CustomTiledTypesImplementation
             isEnabled = coso.isEnabled;
             nextLevel = coso.nextLevel;
         }
-        public override Block createBlock(TileObject obj, int TILESIZE)
+        public override Block createBlock(TileObject obj, int TILESIZE,  DotTiled.Map map)
         {
             return new CompleteBlock(
-                new((int)(obj.X / obj.Width * TILESIZE),
-                    (int)(((obj.Y / obj.Height) - 1) * TILESIZE),
-                    TILESIZE,
-                    TILESIZE),
+                new((int)(obj.X / map.TileWidth * TILESIZE),
+                    (int)(((obj.Y / map.TileHeight) - 1) * TILESIZE),
+                    (int)(obj.Width / map.TileWidth *TILESIZE),
+                    (int)(obj.Height / map.TileHeight *TILESIZE)),
                 isEnabled,
                 nextLevel
             );
         }
 
-        public override void getNeededObjectPropeties(DotTiled.Object obj, int TILESIZE, uint tWidth, uint tHeight)
+        public override void getNeededObjectPropeties(DotTiled.Object obj, int TILESIZE,DotTiled.Map map )
         { }
 
         public override List<uint> neededObjects()
@@ -280,23 +280,23 @@ namespace Juegazo.CustomTiledTypesImplementation
             message = cpb.message;
             position = cpb.position;
         }
-        public override Block createBlock(TileObject obj, int TILESIZE)
+        public override Block createBlock(TileObject obj, int TILESIZE,  DotTiled.Map map)
         {
             return new Map.Blocks.CheckPointBlock(
-                new((int)(obj.X / obj.Width * TILESIZE),
-                    (int)(((obj.Y / obj.Height) - 1) * TILESIZE),
-                    TILESIZE,
-                    TILESIZE),
+                new((int)(obj.X / map.TileWidth* TILESIZE),
+                    (int)(((obj.Y / map.TileHeight) - 1) * TILESIZE),
+                    (int)(obj.Width / map.TileWidth *TILESIZE),
+                    (int)(obj.Height / map.TileHeight *TILESIZE)),
                 isEnabled,
                 message,
                 Position
             );
         }
 
-        public override void getNeededObjectPropeties(DotTiled.Object obj, int TILESIZE, uint tWidth, uint tHeight)
+        public override void getNeededObjectPropeties(DotTiled.Object obj, int TILESIZE,DotTiled.Map map )
         {
             if (obj.ID == position)
-                Position = new(obj.X / tWidth * TILESIZE, obj.Y / tHeight * TILESIZE);
+                Position = new(obj.X / map.TileWidth * TILESIZE, obj.Y / map.TileHeight * TILESIZE);
 
         }
 

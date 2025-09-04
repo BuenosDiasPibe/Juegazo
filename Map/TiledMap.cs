@@ -104,7 +104,7 @@ namespace Juegazo.Map
                 {
                     if (!MapObjectToType.TryGetValue(tileObject, out var tiledType)) continue;
 
-                    Block block = tiledType.createBlock(tileObject, TILESIZE);
+                    Block block = tiledType.createBlock(tileObject, TILESIZE, Map);
 
                     Vector2 position = new(tileObject.X, tileObject.Y);
                     if (objectLayerClass.canOverrideCollisionLayer)
@@ -161,7 +161,6 @@ namespace Juegazo.Map
                 switch (obj.Type)
                 {
                     case "MovementBlock":
-                        Console.WriteLine("MovementBock");
                         var papu = obj.MapPropertiesTo<CustomTiledTypes.MovementBlock>();
 
                         objectProperties = obj.Properties
@@ -234,7 +233,7 @@ namespace Juegazo.Map
                     {
                         foreach (var o in MapObjectToType.Values)
                         {
-                            o.getNeededObjectPropeties(obj, TILESIZE, TileWidth, TileHeight);
+                            o.getNeededObjectPropeties(obj, TILESIZE, Map); 
                         }
                     }
                 }

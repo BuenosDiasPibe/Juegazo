@@ -14,9 +14,11 @@ namespace Juegazo.Map.Blocks
         public Rectangle initialBlockPosition = new();
         public Rectangle endBlockPosition = new();
         private float velocityToEntity { set; get; } = 1;
-        private bool cosoToPlayer = false;
         private float lerpAmount = 0;
         public float velocity = 0;
+        private Vector2 lastPlayerPosition = new();
+        private Vector2 newPosition = new();
+        public bool movingLeft = false;
 
         public MovementBlock(Rectangle collider, Rectangle initialBlockPosition, Rectangle endBlockPosition, float velocity, bool canMove) : base(collider)
         {
@@ -32,6 +34,7 @@ namespace Juegazo.Map.Blocks
                                         32);
             this.velocity = velocity;
             EnableUpdate = canMove;
+            Console.WriteLine($"MovementBlock collider {collider}\ndirection {direction()}");
         }
         public MovementBlock()
         {
@@ -39,8 +42,6 @@ namespace Juegazo.Map.Blocks
             EnableUpdate = true;
         }
         public MovementBlock(Rectangle collider) : base(collider) { value = 16; }
-
-
         public override void horizontalActions(Entity entity, Rectangle collision)
         {
             //new CollisionBlock().horizontalActions(entity, collision);
@@ -58,44 +59,42 @@ namespace Juegazo.Map.Blocks
             // else if (entity.Destinationrectangle.Right > collision.Right) entity.velocity.X += velocityToEntity * direction;
             // else if (entity.Destinationrectangle.Left < collision.Left) entity.velocity.X -= velocityToEntity * direction; //those two lines cause the game to fucking die????
         }
-        private Vector2 checkMovementVector()
-        {
-            Vector2 direction = new Vector2(
-                endBlockPosition.X - initialBlockPosition.X,
-                endBlockPosition.Y - initialBlockPosition.Y
-            );
-            direction.Normalize();
-            return direction;
-        }
 
         public override void Update(GameTime gameTime)
         {
-            Vector2 target = toEndPosition ? new Vector2(initialBlockPosition.X, initialBlockPosition.Y) : new Vector2(endBlockPosition.X, endBlockPosition.Y);
+            Vector2 current = new Vector2(endBlockPosition.X, endBlockPosition.Y);
+            Vector2 target = new(initialBlockPosition.X, initialBlockPosition.Y);
+            float time = (float)(gameTime.TotalGameTime.TotalSeconds * velocity);
+            lerpAmount = 2 * Math.Abs(time % 1 - 0.5f);
 
-            Vector2 current = toEndPosition ? new Vector2(endBlockPosition.X, endBlockPosition.Y) : new Vector2(initialBlockPosition.X, initialBlockPosition.Y);
-
-            lerpAmount = (float)(Math.Sin(velocity * gameTime.TotalGameTime.TotalSeconds) * 0.5 + 0.5) * 1f;
-
-            Vector2 newPosition = Vector2.Lerp(current, target, lerpAmount);
+            newPosition = Vector2.Lerp(current, target, lerpAmount);
             if (lerpAmount >= 0.99)
             {
-                cosoToPlayer = true;
-            }
-            else if (lerpAmount <= 0.01)
+                movingLeft = true;
+            }if (lerpAmount <= 0.01)
             {
-                cosoToPlayer = false;
+                movingLeft = false;
             }
 
             collider = new Rectangle((int)newPosition.X, (int)newPosition.Y, collider.Width, collider.Height);
+            velocityToEntity = newPosition.X - lastPlayerPosition.X;
+            lastPlayerPosition = newPosition;
         }
 
         public override void verticalActions(Entity entity, Rectangle collision)
         {
             new CollisionBlock().verticalActions(entity, collision);
 
-            entity.velocity.X = cosoToPlayer
-                ? Math.Max(entity.velocity.X + 1, 3)
-                : Math.Min(entity.velocity.X - 1, -3);
+            float f = movingLeft ? 2 : -2;
+            Console.WriteLine($"velocity given to player: {velocityToEntity+f}");
+            entity.velocity.X = velocityToEntity + f;
+        }
+        public Vector2 direction()
+        {
+            return Vector2.Normalize(new Vector2(
+                endBlockPosition.X - initialBlockPosition.X,
+                endBlockPosition.Y - initialBlockPosition.Y
+            ));
         }
     }
 }

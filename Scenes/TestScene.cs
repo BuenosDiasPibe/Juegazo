@@ -36,6 +36,7 @@ namespace Juegazo
         private KeyboardState pastKey;
         private Debugger debugger;
         private bool enableDebugger;
+        private bool changeScene = false;
 
         private static string GetExecutingDir(string v)
         {
@@ -58,13 +59,14 @@ namespace Juegazo
 
         public void LoadContent()
         {
+            changeScene = false;
             debugger = new(graphicsDevice);
             playerTexture = contentManager.Load<Texture2D>("playerr");
 
             List<ICustomTypeDefinition> typeDefinitions = new();
             tilemap = new(graphicsDevice, projectDirectory, "betterTest.tmx", TILESIZE, typeDefinitions);
             var componentsOnEntity = new List<Component> {
-                new CameraToEntityComponent(camera),
+                new CameraToEntitySimpleComponent(camera),
                 new MoveVerticalComponent(),
                 new MoveHorizontalComponent(),
                 new ComplexGravityComponent(),
@@ -120,15 +122,21 @@ namespace Juegazo
                 {
                     if (block.collider.Intersects(entity.Destinationrectangle))
                         block.horizontalActions(entity, block.collider);
-                    if (block is CompleteBlock papu && papu.changeScene == true)
+                    if (block is CompleteBlock papu && papu.changeScene == true && !changeScene)
+                    {
                         sceneManager.AddScene(new EndScene(sceneManager, contentManager, graphicsDevice, gum, camera));
+                        changeScene = true;
+                    }
                 }
                 foreach (Block block in dynamicBlocks)
                 {
                     if (block.collider.Intersects(entity.Destinationrectangle))
                         block.horizontalActions(entity, block.collider);
-                    if (block is CompleteBlock papu && papu.changeScene == true)
+                    if (block is CompleteBlock papu && papu.changeScene == true && !changeScene)
+                    {
                         sceneManager.AddScene(new EndScene(sceneManager, contentManager, graphicsDevice, gum, camera));
+                        changeScene = true;       
+                    }
                 }
 
                 entity.Destinationrectangle.Y += (int)entity.velocity.Y;
@@ -136,27 +144,47 @@ namespace Juegazo
                 {
                     if (block.collider.Intersects(entity.Destinationrectangle))
                         block.verticalActions(entity, block.collider);
-                    if (block is CompleteBlock papu && papu.changeScene == true)
+                    if (block is CompleteBlock papu && papu.changeScene == true && !changeScene)
+                    {
                         sceneManager.AddScene(new EndScene(sceneManager, contentManager, graphicsDevice, gum, camera));
+                        changeScene = true;
+                    }
                 }
 
                 foreach (Block block in dynamicBlocks)
                 {
                     if (block.collider.Intersects(entity.Destinationrectangle))
                         block.horizontalActions(entity, block.collider);
-                    if (block is CompleteBlock papu && papu.changeScene)
+                    if (block is CompleteBlock papu && papu.changeScene && !changeScene)
+                    {
+                        changeScene = true;
                         sceneManager.AddScene(new EndScene(sceneManager, contentManager, graphicsDevice, gum, camera));
+                    }
                 }
                 foreach (Block block in tilemap.dynamicBlocks.Values)
                 {
                     if (block.collider.Intersects(entity.Destinationrectangle))
                         block.verticalActions(entity, block.collider);
-                    if (block is CompleteBlock papu && papu.changeScene)
+                    if (block is CompleteBlock papu && papu.changeScene && !changeScene)
+                    {
                         sceneManager.AddScene(new EndScene(sceneManager, contentManager, graphicsDevice, gum, camera));
+                        changeScene = true;
+                    }
                 }
                 entity.UpdateColliderFromDest();
             }
+            if (changeScene)
+            {
+                UnloadContent();
+            }
             pastKey = Keyboard.GetState();
+            foreach (var entity in entities)
+            {
+                if (entity.Destinationrectangle.X > tilemap.Width * TILESIZE || entity.Destinationrectangle.X < 0 || entity.Destinationrectangle.Y > tilemap.Height * TILESIZE || entity.Destinationrectangle.Y < 0)
+                {
+                    entity.health = 0;
+                }
+            }
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -181,7 +209,7 @@ namespace Juegazo
             {
 
                 if (p.EnableCollisions) debugger.DrawRectHollow(spriteBatch, p.collider, 4, Color.Brown);
-                else debugger.DrawRectHollow(spriteBatch, p.collider, 2, new Color(50,50,50,100));
+                else debugger.DrawRectHollow(spriteBatch, p.collider, 2, new Color(50, 50, 50, 100));
             }
         }
 
@@ -192,7 +220,7 @@ namespace Juegazo
             foreach (var entity in entities)
             {
                 spriteBatch.DrawString(font,
-                    $"FPS: {Math.Round(1 / gameTime.ElapsedGameTime.TotalSeconds)}\nposition: X:{entity.Destinationrectangle.X} Y:{entity.Destinationrectangle.Y}\nvelocity: {entity.velocity}",
+                    $"FPS: {Math.Round(1 / gameTime.ElapsedGameTime.TotalSeconds)}\nposition: X:{entity.Destinationrectangle.X} Y:{entity.Destinationrectangle.Y}\nvelocity: {entity.velocity}\nhealth: {entity.health}",
                     new Vector2(camera.Left, camera.Top),
                         Color.White);
             }
