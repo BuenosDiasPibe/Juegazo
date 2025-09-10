@@ -146,19 +146,34 @@
         {
             "color": "#ffa0a0a4",
             "drawFill": true,
-            "id": 12,
+            "id": 16,
             "members": [
                 {
-                    "name": "canOverrideCollisionLayer",
+                    "name": "color",
+                    "type": "color",
+                    "value": "#ffffffff"
+                },
+                {
+                    "name": "isOpen",
                     "type": "bool",
                     "value": false
+                },
+                {
+                    "name": "key",
+                    "type": "object",
+                    "value": 0
                 }
             ],
-            "name": "Dynamic Block Layer",
+            "name": "DoorBlock",
             "type": "class",
             "useAs": [
                 "property",
                 "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset",
                 "project"
             ]
         },
@@ -212,6 +227,31 @@
                 }
             ],
             "name": "JumpWallBlock",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset",
+                "project"
+            ]
+        },
+        {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 17,
+            "members": [
+                {
+                    "name": "isColected",
+                    "type": "bool",
+                    "value": false
+                }
+            ],
+            "name": "Key",
             "type": "class",
             "useAs": [
                 "property",

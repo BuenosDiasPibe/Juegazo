@@ -16,6 +16,7 @@ namespace Juegazo
         private List<Component> componentList = new();
         private Dictionary<Type, Component> componentDictionary = new();
         public Vector2 velocity; //only variable that makes sense right now, and that's debatable.
+        public Vector2 baseVelocity = new();
         public Rectangle collider;
         public bool onGround;
         public int health;

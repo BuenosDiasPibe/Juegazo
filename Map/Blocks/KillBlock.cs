@@ -23,7 +23,7 @@ namespace Juegazo.Map.Blocks
         public KillBlock() { value = 18; }
         public override void horizontalActions(Entity entity, Rectangle collision)
         {
-            Console.WriteLine($"health: {entity.health}");
+            entity.baseVelocity = new();
             entity.health--;
         }
 

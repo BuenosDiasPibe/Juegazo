@@ -12,7 +12,7 @@ namespace Juegazo.Map.Blocks
     {
         private float jumpStrength = 11;
         public bool canJump = true;
-        private float recoilVelocity = 15;
+        private float recoilVelocity = 20;
         public JumpWall(Rectangle collider)
             : base(collider)
         {
@@ -31,6 +31,7 @@ namespace Juegazo.Map.Blocks
         }
         public override void horizontalActions(Entity entity, Rectangle collision)
         {
+            entity.baseVelocity = new();
             if (!canJump)
             {
                 new CollisionBlock().horizontalActions(entity, collision);

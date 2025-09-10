@@ -13,7 +13,8 @@ namespace Juegazo
         public Rectangle collider = new();
         public bool EnableUpdate { get; protected set; } = false; //by default no object needs an update method
         public bool EnableCollisions { get; protected set; } = true;
-        protected Block(){ }
+        public bool isVisible { get; protected set; } = true; //probably i need to wrap all the bool variables on a struct, 'casuse this is a nightmare
+        protected Block() { }
         protected Block(Rectangle collider)
         {
             this.collider = collider;

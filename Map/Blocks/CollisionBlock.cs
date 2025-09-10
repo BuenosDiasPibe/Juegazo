@@ -17,6 +17,7 @@ namespace Juegazo
         public CollisionBlock() { value = 11; }
         public override void horizontalActions(Entity entity, Rectangle collision)
         {
+            entity.baseVelocity = new();
             if (entity is Player player) player.hasJumpedWall = false;
 
             int entityRight = entity.Destinationrectangle.Right;
@@ -53,6 +54,7 @@ namespace Juegazo
 
         public override void verticalActions(Entity entity, Rectangle collision)
         {
+            entity.baseVelocity = new();
             int entityBottom = entity.Destinationrectangle.Bottom;
             int entityTop = entity.Destinationrectangle.Top;
             int blockBottom = collision.Bottom;

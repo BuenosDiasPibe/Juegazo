@@ -16,7 +16,7 @@ namespace Juegazo.Map.Blocks
         private float velocityToEntity { set; get; } = 1;
         private float lerpAmount = 0;
         public float velocity = 0;
-        private Vector2 lastPlayerPosition = new();
+        private Vector2 lastBlockPosition = new();
         private Vector2 newPosition = new();
         public bool movingLeft = false;
 
@@ -34,7 +34,6 @@ namespace Juegazo.Map.Blocks
                                         32);
             this.velocity = velocity;
             EnableUpdate = canMove;
-            Console.WriteLine($"MovementBlock collider {collider}\ndirection {direction()}");
         }
         public MovementBlock()
         {
@@ -77,24 +76,16 @@ namespace Juegazo.Map.Blocks
             }
 
             collider = new Rectangle((int)newPosition.X, (int)newPosition.Y, collider.Width, collider.Height);
-            velocityToEntity = newPosition.X - lastPlayerPosition.X;
-            lastPlayerPosition = newPosition;
+            velocityToEntity = newPosition.X - lastBlockPosition.X;
+            lastBlockPosition = newPosition;
         }
 
         public override void verticalActions(Entity entity, Rectangle collision)
         {
             new CollisionBlock().verticalActions(entity, collision);
+            // float f = 0.6f;
 
-            float f = movingLeft ? 2 : -2;
-            Console.WriteLine($"velocity given to player: {velocityToEntity+f}");
-            entity.velocity.X = velocityToEntity + f;
-        }
-        public Vector2 direction()
-        {
-            return Vector2.Normalize(new Vector2(
-                endBlockPosition.X - initialBlockPosition.X,
-                endBlockPosition.Y - initialBlockPosition.Y
-            ));
+            entity.baseVelocity.X = velocityToEntity;
         }
     }
 }

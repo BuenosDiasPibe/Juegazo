@@ -15,6 +15,21 @@
             "drawFill": true,
             "id": 3,
             "members": [
+                {
+                    "name": "isEnabled",
+                    "type": "bool",
+                    "value": true
+                },
+                {
+                    "name": "message",
+                    "type": "int",
+                    "value": 0
+                },
+                {
+                    "name": "position",
+                    "type": "object",
+                    "value": 0
+                }
             ],
             "name": "CheckPointBlock",
             "type": "class",
@@ -33,6 +48,11 @@
                     "name": "isEnabled",
                     "type": "bool",
                     "value": true
+                },
+                {
+                    "name": "nextLevel",
+                    "type": "int",
+                    "value": 0
                 }
             ],
             "name": "CompleteLevelBlock",
@@ -148,9 +168,9 @@
                     "value": 0
                 },
                 {
-                    "name": "movementSpeed",
-                    "type": "int",
-                    "value": 2
+                    "name": "velocity",
+                    "type": "float",
+                    "value": 1
                 }
             ],
             "name": "MovementBlock",
@@ -215,31 +235,6 @@
         {
             "color": "#ffa0a0a4",
             "drawFill": true,
-            "id": 6,
-            "members": [
-                {
-                    "name": "speedAmount",
-                    "type": "int",
-                    "value": 5
-                }
-            ],
-            "name": "speedUp",
-            "type": "class",
-            "useAs": [
-                "property",
-                "map",
-                "layer",
-                "object",
-                "tile",
-                "tileset",
-                "wangcolor",
-                "wangset",
-                "project"
-            ]
-        },
-        {
-            "color": "#ffa0a0a4",
-            "drawFill": true,
             "id": 8,
             "members": [
                 {
@@ -265,12 +260,37 @@
         {
             "color": "#ffa0a0a4",
             "drawFill": true,
+            "id": 6,
+            "members": [
+                {
+                    "name": "speedAmount",
+                    "type": "int",
+                    "value": 5
+                }
+            ],
+            "name": "speedUp",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset",
+                "project"
+            ]
+        },
+        {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
             "id": 9,
             "members": [
                 {
-                    "name": "Amount",
+                    "name": "Ammount",
                     "type": "int",
-                    "value": 5
+                    "value": 20
                 },
                 {
                     "name": "isCompleteBlock",
@@ -284,6 +304,129 @@
                 }
             ],
             "name": "VerticalBoostBlock",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset",
+                "project"
+            ]
+        },
+        {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 14,
+            "members": [
+                {
+                    "name": "canOverrideCollisionLayer",
+                    "type": "bool",
+                    "value": true
+                }
+            ],
+            "name": "Collision Blocks Object Layer",
+            "type": "class",
+            "useAs": [
+                "property",
+                "layer",
+                "project"
+            ]
+        },
+        {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 15,
+            "members": [
+            ],
+            "name": "Collision Tile Layer",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset",
+                "project"
+            ]
+        },
+        {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 16,
+            "members": [
+                {
+                    "name": "color",
+                    "type": "color",
+                    "value": ""
+                },
+                {
+                    "name": "isOpen",
+                    "type": "bool",
+                    "value": false
+                },
+                {
+                    "name": "key",
+                    "type": "object",
+                    "value": 0
+                }
+            ],
+            "name": "DoorBlock",
+            "type": "class",
+            "useAs": [
+                "property",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset",
+                "project"
+            ]
+        },
+        {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 17,
+            "members": [
+            ],
+            "name": "Entity Spawner",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset",
+                "project"
+            ]
+        },
+        {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 18,
+            "members": [
+                {
+                    "name": "color",
+                    "type": "color",
+                    "value": ""
+                },
+                {
+                    "name": "isColected",
+                    "type": "bool",
+                    "value": false
+                }
+            ],
+            "name": "Key",
             "type": "class",
             "useAs": [
                 "property",

@@ -40,8 +40,8 @@
             "scale": 4,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 79.125,
-                "y": 92.125
+                "x": 81,
+                "y": 93.375
             }
         },
         "goodOne.tmx": {
@@ -89,7 +89,7 @@
     "openFiles": [
     ],
     "project": "untitled.tiled-project",
-    "property.type": "int",
+    "property.type": "object",
     "recentFiles": [
         "betterTest.tmx",
         "/home/clumpl/Documentos/other-projects/NuTiled/Content/tiled/map.tmx",

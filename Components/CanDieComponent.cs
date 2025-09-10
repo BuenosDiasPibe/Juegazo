@@ -27,6 +27,7 @@ namespace Juegazo.Components
                 Owner.velocity = new();
                 Owner.Destinationrectangle.Location = initialPosition.ToPoint();
                 Owner.health = 1;
+                Owner.velocity = new();
             }
         }
     }

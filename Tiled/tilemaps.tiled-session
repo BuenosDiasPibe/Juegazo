@@ -10,19 +10,36 @@
     "file.lastUsedOpenFilter": "Todos los archivos (*)",
     "fileStates": {
         "betterTest.tmx": {
+            "expandedObjectLayers": [
+                10,
+                2
+            ],
             "scale": 2,
-            "selectedLayer": 5,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 270,
-                "y": 64.25
+                "x": 1180.5,
+                "y": 93.75
             }
         },
         "goodOne.tmx": {
             "scale": 3,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 280,
+                "x": 270.66666666666663,
                 "y": 160.16666666666669
+            }
+        },
+        "second level.tmx": {
+            "expandedObjectLayers": [
+                4,
+                3,
+                5
+            ],
+            "scale": 2,
+            "selectedLayer": 4,
+            "viewCenter": {
+                "x": 146,
+                "y": 95.75
             }
         },
         "worldTexture.tsx": {
@@ -33,16 +50,21 @@
     "last.imagePath": "/home/clumpl/Documentos/Programacion/Juegazo/Content",
     "last.objectTypesPath": "/home/clumpl/Documentos/Programacion/Juegazo/Tiled/PropietyFiles.json",
     "map.height": 24,
+    "map.lastUsedFormat": "tmx",
+    "map.tileHeight": 8,
+    "map.tileWidth": 8,
     "map.width": 40,
     "openFiles": [
         "worldTexture.tsx",
         "betterTest.tmx",
-        "goodOne.tmx"
+        "goodOne.tmx",
+        "second level.tmx"
     ],
     "project": "tilemaps.tiled-project",
-    "property.type": "int",
+    "property.type": "bool",
     "recentFiles": [
         "worldTexture.tsx",
+        "second level.tmx",
         "goodOne.tmx",
         "betterTest.tmx"
     ],

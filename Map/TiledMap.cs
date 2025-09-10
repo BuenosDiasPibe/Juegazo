@@ -1,3 +1,8 @@
+/*
+    Most of the implementation is inspired of the NuTiled implementation of DotTiled
+    source: https://github.com/differenceclouds/NuTiled
+    he's really cool and awesome!
+*/
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -29,7 +34,6 @@ namespace Juegazo.Map
         public uint TileWidth => Map.TileWidth;
         public int TILESIZE { get; }
 
-        public Dictionary<Vector2, Block> collisionLayer { get; } = new();
         public Dictionary<string, Vector2> EntityPositionerByName { get; } = new();
         public Dictionary<TileObject, TiledTypesUsed> MapObjectToType { get; } = new();
         public Dictionary<ObjectLayer, CollisionBlockObjectLayer> MapObjectLayerToClass { get; } = new();
@@ -40,7 +44,7 @@ namespace Juegazo.Map
                 .ToList();
         public Dictionary<string, BaseLayer> AllLayersByName { get; } = new();
         public Dictionary<TileObject, Block> dynamicBlocks = new();
-
+        public Dictionary<Vector2, Block> collisionLayer { get; } = new(); //maybe Vector2 should be changed to Point
         public readonly List<ICustomTypeDefinition> CustomTypeDefinitions = new();
 
         public Dictionary<uint, Tileset> TilesetsByGID { get; } = new();
@@ -106,11 +110,14 @@ namespace Juegazo.Map
 
                     Block block = tiledType.createBlock(tileObject, TILESIZE, Map);
 
-                    Vector2 position = new(tileObject.X, tileObject.Y);
+                    Vector2 position = new((int)(tileObject.X/TileWidth),(int)(tileObject.Y/TileHeight)- (int)(tileObject.Height/TileHeight)); //OMFG I FUCKING FORGOT ABOUT THIS I ALMOST FUCKED THIS SHIT UP
                     if (objectLayerClass.canOverrideCollisionLayer)
                     {
                         collisionLayer[position] = block;
-                        // Console.WriteLine($"block {block} with collider {block.collider}");
+                        if (block is Blocks.Key)
+                        {
+                            Console.WriteLine($"key position: {position}");
+                        }
                     }
                     else if (block is Blocks.MovementBlock movementBlock)
                     {
@@ -145,6 +152,7 @@ namespace Juegazo.Map
                         break;
                     default:
                         Console.WriteLine("not Implemented");
+                        Console.WriteLine(layer.Name);
                         break;
                 }
             }
@@ -223,6 +231,23 @@ namespace Juegazo.Map
                         var jblock = obj.MapPropertiesTo<CustomTiledTypes.JumpWallBlock>();
                         MapObjectToType[tobj] = new CustomTiledTypesImplementation.JumpWallBlock(jblock);
                         break;
+                    case "Key":
+                        var key = obj.MapPropertiesTo<CustomTiledTypes.Key>();
+                        MapObjectToType[tobj] = new CustomTiledTypesImplementation.Key(key);
+                        break;
+                    case "DoorBlock":
+                        objectProperties = obj.Properties
+                            .Where(p => p.Type == PropertyType.Object)
+                            .Cast<ObjectProperty>()
+                            .Select(op => op.Value);
+                        unimplementedThings.AddRange(objectProperties);
+
+                        var doorBlock = obj.MapPropertiesTo<CustomTiledTypes.DoorBlock>();
+                        MapObjectToType[tobj] = new CustomTiledTypesImplementation.DoorBlock(doorBlock);
+                        break;
+                    default:
+                        Console.WriteLine("not a class or not implemented");
+                        break;
                 }
             }
             foreach (var obj in objectLayer.Objects)
@@ -233,7 +258,7 @@ namespace Juegazo.Map
                     {
                         foreach (var o in MapObjectToType.Values)
                         {
-                            o.getNeededObjectPropeties(obj, TILESIZE, Map); 
+                            o.getNeededObjectPropeties(obj, TILESIZE, Map);
                         }
                     }
                 }
@@ -353,7 +378,6 @@ namespace Juegazo.Map
                 else
                 {
                     //Collection tilesets can have missing IDs and IDs greater than the tile count
-
                     foreach (Tile tile in tileset.Tiles)
                     {
                         if (tile.ID == gid - tileset.FirstGID)
@@ -414,18 +438,25 @@ namespace Juegazo.Map
 
         private void DrawTileObject(SpriteBatch spriteBatch, TileObject tileObject, ObjectLayer objectLayer)
         {
+            dynamicBlocks.TryGetValue(tileObject, out var dynBlock);
+            collisionLayer.TryGetValue(new Vector2((int)(tileObject.X / TileWidth), (int)(tileObject.Y / TileHeight) - (int)(tileObject.Height/TileHeight)), out var colBlock);
+
+            if ((dynBlock != null && !dynBlock.isVisible) || colBlock != null && !colBlock.isVisible)
+            {
+                return;
+            } //TODO: instead of only using this once, use it to draw the object on screen. Probably change DrawObjectLayer too (it would also help with drawing the debugging info)
+
             Tileset tileset = TilesetsByGID[tileObject.GID];
             uint id = tileObject.GID - tileset.FirstGID;
             if (tileset.Image.HasValue)
             {
                 Texture2D texture = TilemapTextures[tileset];
                 Rectangle srcRect = GetSourceRect(id, tileset);
-                if (dynamicBlocks.TryGetValue(tileObject, out var _val))
-                {
-                    spriteBatch.Draw(texture, _val.collider, srcRect, Color.White);
-                    return;
-                }
-                Rectangle destRect = GetObjectDestinationRectangle(tileObject);
+                Rectangle destRect;
+                if (dynBlock != null) destRect = dynBlock.collider;
+                else if (colBlock != null) destRect = colBlock.collider;
+                else destRect = GetObjectDestinationRectangle(tileObject); // this is fucking stupid
+
                 spriteBatch.Draw(texture, destRect, srcRect, Color.White);
             }
         }
@@ -433,7 +464,7 @@ namespace Juegazo.Map
         private Rectangle GetObjectDestinationRectangle(DotTiled.Object tileObject)
         {
             int x = (int)(tileObject.X / TileWidth * TILESIZE);
-            int y = (int)(((tileObject.Y / TileHeight) - 1) * TILESIZE);
+            int y = (int)(((tileObject.Y / TileHeight) - (int)(tileObject.Height/TileHeight)) * TILESIZE);
             Rectangle destRect = new(x, y, TILESIZE, TILESIZE);
             return destRect;
         }

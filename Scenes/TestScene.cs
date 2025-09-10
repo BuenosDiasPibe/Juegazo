@@ -33,6 +33,7 @@ namespace Juegazo
         Texture2D playerTexture;
         private TiledMap tilemap;
         private string projectDirectory = GetExecutingDir("../../../Tiled");
+        private string levelPath;
         private KeyboardState pastKey;
         private Debugger debugger;
         private bool enableDebugger;
@@ -62,11 +63,15 @@ namespace Juegazo
             changeScene = false;
             debugger = new(graphicsDevice);
             playerTexture = contentManager.Load<Texture2D>("playerr");
+            if (levelPath == null)
+            {
+                levelPath = "betterTest.tmx";
+            }
 
             List<ICustomTypeDefinition> typeDefinitions = new();
-            tilemap = new(graphicsDevice, projectDirectory, "betterTest.tmx", TILESIZE, typeDefinitions);
+            tilemap = new(graphicsDevice, projectDirectory, levelPath, TILESIZE, typeDefinitions);
             var componentsOnEntity = new List<Component> {
-                new CameraToEntitySimpleComponent(camera),
+                new CameraToEntityComponent(camera),
                 new MoveVerticalComponent(),
                 new MoveHorizontalComponent(),
                 new ComplexGravityComponent(),
@@ -77,8 +82,9 @@ namespace Juegazo
                 playerPosition = new((int)position.X, (int)position.Y, TILESIZE, TILESIZE);
             }
             componentsOnEntity.Add(new CanDieComponent(new(playerPosition.X, playerPosition.Y)));
+
             entities.Add(new Entity(playerTexture, new Rectangle(TILESIZE, TILESIZE, TILESIZE, TILESIZE), playerPosition, componentsOnEntity, collider: 0.7f, Color.White));
-            //entities.Add(new Player(playerTexture, new Rectangle(TILESIZE,TILESIZE,TILESIZE,TILESIZE), new Rectangle(TILESIZE*2, TILESIZE*2, TILESIZE, TILESIZE), camera, Color.White, componentsOnEntity));
+
             font = contentManager.Load<SpriteFont>("sheesh");
             camera.Origin = new Vector2(camera.Viewport.Width / 2, camera.Viewport.Height / 2);
             camera.Zoom = 1.5f;
@@ -95,7 +101,7 @@ namespace Juegazo
             if (Keyboard.GetState().IsKeyDown(Keys.R) && pastKey.IsKeyDown(Keys.R))
             {
                 List<ICustomTypeDefinition> typeDefinitions = new();
-                tilemap = new(graphicsDevice, projectDirectory, "betterTest.tmx", TILESIZE, typeDefinitions);
+                tilemap = new(graphicsDevice, projectDirectory, levelPath, TILESIZE, typeDefinitions);
             }
             if (Keyboard.GetState().IsKeyDown(Keys.M) && pastKey.IsKeyDown(Keys.M))
             {
@@ -115,6 +121,7 @@ namespace Juegazo
             {
                 entity.Update(gameTime);
                 entity.Destinationrectangle.X += (int)entity.velocity.X;
+                entity.Destinationrectangle.X += (int)entity.baseVelocity.X;
 
                 var collisionBlocks = tilemap.collisionLayer.Values.Where(b => b.EnableCollisions);
                 var dynamicBlocks = tilemap.dynamicBlocks.Values.Where(b => b.EnableCollisions);
@@ -124,7 +131,6 @@ namespace Juegazo
                         block.horizontalActions(entity, block.collider);
                     if (block is CompleteBlock papu && papu.changeScene == true && !changeScene)
                     {
-                        sceneManager.AddScene(new EndScene(sceneManager, contentManager, graphicsDevice, gum, camera));
                         changeScene = true;
                     }
                 }
@@ -134,19 +140,19 @@ namespace Juegazo
                         block.horizontalActions(entity, block.collider);
                     if (block is CompleteBlock papu && papu.changeScene == true && !changeScene)
                     {
-                        sceneManager.AddScene(new EndScene(sceneManager, contentManager, graphicsDevice, gum, camera));
-                        changeScene = true;       
+                        changeScene = true;
                     }
                 }
 
                 entity.Destinationrectangle.Y += (int)entity.velocity.Y;
+                entity.Destinationrectangle.Y += (int)entity.baseVelocity.Y;
                 foreach (Block block in collisionBlocks)
                 {
                     if (block.collider.Intersects(entity.Destinationrectangle))
                         block.verticalActions(entity, block.collider);
                     if (block is CompleteBlock papu && papu.changeScene == true && !changeScene)
                     {
-                        sceneManager.AddScene(new EndScene(sceneManager, contentManager, graphicsDevice, gum, camera));
+                        //sceneManager.AddScene(new EndScene(sceneManager, contentManager, graphicsDevice, gum, camera));
                         changeScene = true;
                     }
                 }
@@ -158,7 +164,6 @@ namespace Juegazo
                     if (block is CompleteBlock papu && papu.changeScene && !changeScene)
                     {
                         changeScene = true;
-                        sceneManager.AddScene(new EndScene(sceneManager, contentManager, graphicsDevice, gum, camera));
                     }
                 }
                 foreach (Block block in tilemap.dynamicBlocks.Values)
@@ -167,7 +172,7 @@ namespace Juegazo
                         block.verticalActions(entity, block.collider);
                     if (block is CompleteBlock papu && papu.changeScene && !changeScene)
                     {
-                        sceneManager.AddScene(new EndScene(sceneManager, contentManager, graphicsDevice, gum, camera));
+                        //sceneManager.AddScene(new EndScene(sceneManager, contentManager, graphicsDevice, gum, camera));
                         changeScene = true;
                     }
                 }
@@ -176,6 +181,8 @@ namespace Juegazo
             if (changeScene)
             {
                 UnloadContent();
+                levelPath = "second level.tmx";
+                LoadContent();
             }
             pastKey = Keyboard.GetState();
             foreach (var entity in entities)
@@ -220,7 +227,7 @@ namespace Juegazo
             foreach (var entity in entities)
             {
                 spriteBatch.DrawString(font,
-                    $"FPS: {Math.Round(1 / gameTime.ElapsedGameTime.TotalSeconds)}\nposition: X:{entity.Destinationrectangle.X} Y:{entity.Destinationrectangle.Y}\nvelocity: {entity.velocity}\nhealth: {entity.health}",
+                    $"FPS: {Math.Round(1 / gameTime.ElapsedGameTime.TotalSeconds)}\nposition: X:{entity.Destinationrectangle.X} Y:{entity.Destinationrectangle.Y}\nvelocity: {entity.velocity}\nbaseVelocity: {entity.baseVelocity}\nhealth: {entity.health}",
                     new Vector2(camera.Left, camera.Top),
                         Color.White);
             }

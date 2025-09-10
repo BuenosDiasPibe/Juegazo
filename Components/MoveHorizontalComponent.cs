@@ -10,7 +10,7 @@ namespace Juegazo.Components
 {
     public class MoveHorizontalComponent : Component
     {
-        private const float MOVEMENT_SPEED = 5f;
+        private const float MOVEMENT_SPEED = 8f;
         private const float MAX_SPEED = 100f;
         private float dashCounter;
         public override void Destroy()
@@ -66,7 +66,6 @@ namespace Juegazo.Components
             }
             //max speed limit
             Owner.velocity.X = Math.Min(Math.Max(Owner.velocity.X, -MAX_SPEED), MAX_SPEED);
-
         }
     }
 }

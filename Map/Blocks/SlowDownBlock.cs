@@ -27,6 +27,7 @@ namespace Juegazo
         {
             if (entity.velocity.X != 0)
             {
+                entity.baseVelocity = new();
                 entity.velocity.X += entity.directionLeft ? slowingSpeed : -slowingSpeed;
             }
         }

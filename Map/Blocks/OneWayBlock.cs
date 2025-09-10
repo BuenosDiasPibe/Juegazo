@@ -31,6 +31,7 @@ namespace Juegazo
             bool collidesWithTop = entity.Destinationrectangle.Bottom > collision.Top && entity.Destinationrectangle.Top < collision.Top;
             if (entity.velocity.Y > 0.0f && collidesWithTop)
             {
+                entity.baseVelocity = new();
                 entity.Destinationrectangle.Y = collision.Top - entity.Destinationrectangle.Height;
                 entity.velocity.Y = 1f;
                 entity.onGround = true;
