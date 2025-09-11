@@ -50,6 +50,7 @@ namespace Juegazo.Map
         public Dictionary<uint, Tileset> TilesetsByGID { get; } = new();
         public Dictionary<string, Tileset> TilesetsByName { get; } = new();
         public Dictionary<Tileset, Texture2D> TilemapTextures { get; } = new();
+        public Camera camera { get; protected set; }
 
         public uint GID_Count
         {
@@ -79,7 +80,7 @@ namespace Juegazo.Map
         //temporal
         public List<Block> blocksTemp { get; } = new();
 
-        public TiledMap(GraphicsDevice graphicsDevice, string projectDirectory, string mapFilePath, int TILESIZE, List<ICustomTypeDefinition> typeDefinitions)
+        public TiledMap(GraphicsDevice graphicsDevice, string projectDirectory, string mapFilePath, int TILESIZE, List<ICustomTypeDefinition> typeDefinitions, Camera camera)
         {
             this.graphicsDevice = graphicsDevice;
             foreach (var t in typeDefinitions)
@@ -87,6 +88,7 @@ namespace Juegazo.Map
                 CustomTypeDefinitions.Add(t);
             }
             this.graphicsDevice = graphicsDevice;
+            this.camera = camera;
             TiledProjectDirectory = projectDirectory;
             MapFilePath = mapFilePath;
 
@@ -110,7 +112,7 @@ namespace Juegazo.Map
 
                     Block block = tiledType.createBlock(tileObject, TILESIZE, Map);
 
-                    Vector2 position = new((int)(tileObject.X/TileWidth),(int)(tileObject.Y/TileHeight)- (int)(tileObject.Height/TileHeight)); //OMFG I FUCKING FORGOT ABOUT THIS I ALMOST FUCKED THIS SHIT UP
+                    Vector2 position = new((int)(tileObject.X / TileWidth), (int)(tileObject.Y / TileHeight) - (int)(tileObject.Height / TileHeight)); //OMFG I FUCKING FORGOT ABOUT THIS I ALMOST FUCKED THIS SHIT UP
                     if (objectLayerClass.canOverrideCollisionLayer)
                     {
                         collisionLayer[position] = block;
@@ -324,9 +326,10 @@ namespace Juegazo.Map
 
         private void DrawTile(SpriteBatch spriteBatch, uint value, Vector2 position, Tileset atlasImage)
         {
+            Rectangle desRectangle = getDestinationRectangle(position);
+            if (!IsVisible(desRectangle)) return;
             Texture2D texture = TilemapTextures[atlasImage];
             Rectangle srcRectangle = GetSourceRect(value, atlasImage);
-            Rectangle desRectangle = getDestinationRectangle(position);
             spriteBatch.Draw(texture, desRectangle, srcRectangle, Color.White);
         }
 
@@ -403,6 +406,7 @@ namespace Juegazo.Map
         {
             foreach (BaseLayer layer in layers)
             {
+                if (!layer.Visible) continue;
                 // Vector2 parallax = new Vector2(layer.ParallaxX, layer.ParallaxY); //TODO: add parallax effect
                 switch (layer)
                 {
@@ -410,11 +414,40 @@ namespace Juegazo.Map
                         DrawLayerGroup(spriteBatch, group.Layers);
                         break;
                     case TileLayer tileLayer:
+                        if (tileLayer.Class == "Collision Tile Layer")
+                        {
+                            DrawTileCollisionLayer(spriteBatch, tileLayer);
+                            break;
+                        }
                         drawTileLayer(spriteBatch, tileLayer);
                         break;
                     case ObjectLayer objectLayer:
                         DrawObjectLayer(spriteBatch, objectLayer);
                         break;
+                }
+            }
+        }
+
+        private void DrawTileCollisionLayer(SpriteBatch spriteBatch, TileLayer tileLayer)
+        {
+            uint[] data = tileLayer.Data.Value.GlobalTileIDs; //get the csv
+            for (int i = 0; i < data.Length; i++)
+            {
+                uint value = data[i];
+                if (value == 0) continue; //air data
+                value--;
+                int x = (int)(i % tileLayer.Width);
+                int y = (int)(i / tileLayer.Width);
+
+                collisionLayer.TryGetValue(new(x, y), out var block);
+                if (!IsVisible(block.collider)) continue; //skips if block is not visible
+                Tileset atlasImage = TilesetsByGID[value]; //get the atlas image from dictionary
+                if (atlasImage.Image.HasValue)
+                {
+                    Texture2D texture = TilemapTextures[atlasImage];
+                    Rectangle srcRectangle = GetSourceRect(value, atlasImage);
+                    spriteBatch.Draw(texture, srcRectangle, srcRectangle, Color.White);
+                    block.Draw(spriteBatch, texture, srcRectangle);
                 }
             }
         }
@@ -438,33 +471,43 @@ namespace Juegazo.Map
 
         private void DrawTileObject(SpriteBatch spriteBatch, TileObject tileObject, ObjectLayer objectLayer)
         {
-            dynamicBlocks.TryGetValue(tileObject, out var dynBlock);
-            collisionLayer.TryGetValue(new Vector2((int)(tileObject.X / TileWidth), (int)(tileObject.Y / TileHeight) - (int)(tileObject.Height/TileHeight)), out var colBlock);
-
-            if ((dynBlock != null && !dynBlock.isVisible) || colBlock != null && !colBlock.isVisible)
-            {
+            Rectangle destRect = GetObjectDestinationRectangle(tileObject);
+            if (!IsVisible(destRect))
                 return;
-            } //TODO: instead of only using this once, use it to draw the object on screen. Probably change DrawObjectLayer too (it would also help with drawing the debugging info)
-
             Tileset tileset = TilesetsByGID[tileObject.GID];
             uint id = tileObject.GID - tileset.FirstGID;
             if (tileset.Image.HasValue)
             {
                 Texture2D texture = TilemapTextures[tileset];
                 Rectangle srcRect = GetSourceRect(id, tileset);
-                Rectangle destRect;
-                if (dynBlock != null) destRect = dynBlock.collider;
-                else if (colBlock != null) destRect = colBlock.collider;
-                else destRect = GetObjectDestinationRectangle(tileObject); // this is fucking stupid
 
-                spriteBatch.Draw(texture, destRect, srcRect, Color.White);
+                if (dynamicBlocks.TryGetValue(tileObject, out var dynBlock))
+                {
+                    dynBlock.Draw(spriteBatch, texture, srcRect);
+                }
+                else if (collisionLayer.TryGetValue(
+                    new Vector2((int)(tileObject.X / TileWidth), (int)(tileObject.Y / TileHeight) - (int)(tileObject.Height / TileHeight)),
+                    out var colBlock))
+                {
+                    colBlock.Draw(spriteBatch, texture, srcRect);
+                }
+                else
+                {
+                    spriteBatch.Draw(texture, destRect, srcRect, Color.White);
+                }
             }
+        }
+
+        // Helper method to determine if the destination rectangle is visible in the viewport.
+        private bool IsVisible(Rectangle destRect)
+        {
+            return camera.IsRectangleVisible(destRect);
         }
 
         private Rectangle GetObjectDestinationRectangle(DotTiled.Object tileObject)
         {
             int x = (int)(tileObject.X / TileWidth * TILESIZE);
-            int y = (int)(((tileObject.Y / TileHeight) - (int)(tileObject.Height/TileHeight)) * TILESIZE);
+            int y = (int)(((tileObject.Y / TileHeight) - (int)(tileObject.Height / TileHeight)) * TILESIZE);
             Rectangle destRect = new(x, y, TILESIZE, TILESIZE);
             return destRect;
         }

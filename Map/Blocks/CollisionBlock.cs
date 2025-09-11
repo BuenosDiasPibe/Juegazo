@@ -13,8 +13,13 @@ namespace Juegazo
         public CollisionBlock(Rectangle collisionRectangle) : base(collisionRectangle)
         {
             value = 11;
+            //isVisible = false;
         }
-        public CollisionBlock() { value = 11; }
+        public CollisionBlock()
+        {
+            value = 11;
+            //isVisible = false;
+        }
         public override void horizontalActions(Entity entity, Rectangle collision)
         {
             entity.baseVelocity = new();

@@ -22,5 +22,13 @@ namespace Juegazo
         public abstract void Update(GameTime gameTime);
         public abstract void horizontalActions(Entity entity, Rectangle collision);
         public abstract void verticalActions(Entity entity, Rectangle collision);
+        public virtual void Draw(SpriteBatch spriteBatch, Texture2D texture, Rectangle sourceRectangle)
+        {
+            if (!isVisible)
+            {
+                return;
+            }
+            spriteBatch.Draw(texture, collider, sourceRectangle, Color.White);
+        }
     }
 }

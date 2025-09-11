@@ -7,8 +7,24 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Juegazo
 {
-        public class Camera
+    public class Camera
     {
+        public bool IsRectangleVisible(Rectangle rect)
+        {
+            float viewLeft = Left;
+            float viewTop = Top;
+            float viewWidth = Right - Left;
+            float viewHeight = Bottom - Top;
+
+            var viewRect = new Rectangle(
+                (int)Math.Floor(viewLeft),
+                (int)Math.Floor(viewTop),
+                (int)Math.Ceiling(viewWidth),
+                (int)Math.Ceiling(viewHeight)
+            );
+
+            return viewRect.Intersects(rect);
+        }
         private Matrix matrix = Matrix.Identity;
         private Matrix inverse = Matrix.Identity;
         private bool changed;
