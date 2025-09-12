@@ -19,12 +19,11 @@ using Color = Microsoft.Xna.Framework.Color;
 
 namespace Juegazo
 {
-    public class TestScene : IScene
+    public class GameplayScene : IScene
     {
         private readonly ContentManager contentManager;
         private readonly GraphicsDevice graphicsDevice;
         private SceneManager sceneManager;
-
         private const int TILESIZE = 32;
         private List<Entity> entities = new();
         GumService gum;
@@ -38,14 +37,13 @@ namespace Juegazo
         private Debugger debugger;
         private bool enableDebugger;
         private bool changeScene = false;
-
         private static string GetExecutingDir(string v)
         {
             string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
             return Path.Combine(baseDirectory, v);
         }
 
-        public TestScene(ContentManager contentManager,
+        public GameplayScene(ContentManager contentManager,
         GraphicsDevice graphicsDevice,
         GumService gum,
         SceneManager sceneManager,
@@ -65,7 +63,7 @@ namespace Juegazo
             playerTexture = contentManager.Load<Texture2D>("playerr");
             if (levelPath == null)
             {
-                levelPath = "betterTest.tmx";
+                levelPath = "Main.tmx";
             }
 
             List<ICustomTypeDefinition> typeDefinitions = new();
@@ -80,6 +78,7 @@ namespace Juegazo
             if (tilemap.EntityPositionerByName.TryGetValue("PlayerSpawner", out Vector2 position))
             {
                 playerPosition = new((int)position.X, (int)position.Y, TILESIZE, TILESIZE);
+                camera.Position = new(position.X, position.Y);
             }
             componentsOnEntity.Add(new CanDieComponent(new(playerPosition.X, playerPosition.Y)));
 
@@ -98,6 +97,8 @@ namespace Juegazo
 
         public void Update(GameTime gameTime)
         {
+            int nextScene = 0;
+
             if (Keyboard.GetState().IsKeyDown(Keys.R) && pastKey.IsKeyDown(Keys.R))
             {
                 List<ICustomTypeDefinition> typeDefinitions = new();
@@ -132,6 +133,7 @@ namespace Juegazo
                     if (block is CompleteBlock papu && papu.changeScene == true && !changeScene)
                     {
                         changeScene = true;
+                        nextScene = papu.nextSceneID;
                     }
                 }
                 foreach (Block block in dynamicBlocks)
@@ -141,6 +143,7 @@ namespace Juegazo
                     if (block is CompleteBlock papu && papu.changeScene == true && !changeScene)
                     {
                         changeScene = true;
+                        nextScene = papu.nextSceneID;
                     }
                 }
 
@@ -152,8 +155,8 @@ namespace Juegazo
                         block.verticalActions(entity, block.collider);
                     if (block is CompleteBlock papu && papu.changeScene == true && !changeScene)
                     {
-                        //sceneManager.AddScene(new EndScene(sceneManager, contentManager, graphicsDevice, gum, camera));
                         changeScene = true;
+                        nextScene = papu.nextSceneID;
                     }
                 }
 
@@ -164,6 +167,7 @@ namespace Juegazo
                     if (block is CompleteBlock papu && papu.changeScene && !changeScene)
                     {
                         changeScene = true;
+                        nextScene = papu.nextSceneID;
                     }
                 }
                 foreach (Block block in tilemap.dynamicBlocks.Values)
@@ -172,8 +176,8 @@ namespace Juegazo
                         block.verticalActions(entity, block.collider);
                     if (block is CompleteBlock papu && papu.changeScene && !changeScene)
                     {
-                        //sceneManager.AddScene(new EndScene(sceneManager, contentManager, graphicsDevice, gum, camera));
                         changeScene = true;
+                        nextScene = papu.nextSceneID;
                     }
                 }
                 entity.UpdateColliderFromDest();
@@ -181,10 +185,18 @@ namespace Juegazo
             if (changeScene)
             {
                 UnloadContent();
-                levelPath = "second level.tmx";
+                if (nextScene == 0)
+                {
+                    levelPath = "Main.tmx";
+                    LoadContent();
+                    return;
+                }
+                Console.WriteLine("changing to " + levelPath);
+                levelPath = "Level" + nextScene + ".tmx";
                 LoadContent();
             }
             pastKey = Keyboard.GetState();
+            //killing entity if out of boundries
             foreach (var entity in entities)
             {
                 if (entity.Destinationrectangle.X > tilemap.Width * TILESIZE || entity.Destinationrectangle.X < 0 || entity.Destinationrectangle.Y > tilemap.Height * TILESIZE || entity.Destinationrectangle.Y < 0)

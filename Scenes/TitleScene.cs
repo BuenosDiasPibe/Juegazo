@@ -13,13 +13,21 @@ using MonoGameGum.GueDeriving;
 
 namespace Juegazo
 {
-    public class TitleScene(SceneManager manager, ContentManager contentManager, GraphicsDevice graphicsDevice, GumService gum, Camera camera) : IScene
+    public class TitleScene : IScene
     {
-        GumService gum = gum;
-        ContentManager cmanager = contentManager;
-        GraphicsDevice cdevice = graphicsDevice;
-        SceneManager manager = manager;
-        Camera camera = camera;
+        public TitleScene(SceneManager manager, ContentManager contentManafger, GraphicsDevice gdevice, GumService gum, Camera camera)
+        {
+            this.manager = manager;
+            this.gum = gum;
+            this.camera = camera;
+            cmanager = contentManafger;
+            graphicsDevice = gdevice;
+        }
+        GumService gum;
+        ContentManager cmanager;
+        GraphicsDevice graphicsDevice;
+        SceneManager manager;
+        Camera camera;
 
         public void CreateShit()
         {
@@ -53,7 +61,9 @@ namespace Juegazo
         }
 
         private EventHandler StartGame()
-        { return (sender, e) => manager.AddScene(new TestScene(cmanager, cdevice, gum, manager, camera)); }
+        {
+            return (sender, e) => manager.AddScene(new GameplayScene(cmanager, graphicsDevice, gum, manager, camera));
+        }
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         { }
 
@@ -70,13 +80,13 @@ namespace Juegazo
         }
 
         public void UnloadContent()
-        {}
+        { }
 
         public void Update(GameTime gameTime)
         {
             gum.Update(gameTime);
             if (Keyboard.GetState().IsKeyDown(Keys.Enter))
-                manager.AddScene(new TestScene(cmanager, cdevice, gum, manager, camera));
+                manager.AddScene(new GameplayScene(cmanager, graphicsDevice, gum, manager, camera));
         }
         public void DrawUI(GameTime gameTime, SpriteBatch spriteBatch)
         { gum.Draw(); }

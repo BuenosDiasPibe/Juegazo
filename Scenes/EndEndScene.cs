@@ -15,10 +15,10 @@ namespace Juegazo
     public class EndScene(SceneManager manager, ContentManager contentManager, GraphicsDevice graphicsDevice, GumService gum, Camera camera) : IScene
     {
         GumService gum = gum;
-        ContentManager cmanager = contentManager;
-        GraphicsDevice cdevice = graphicsDevice;
-        SceneManager manager = manager;
-        Camera camera = camera;
+        ContentManager Content = contentManager;
+        GraphicsDevice graphicsDevice = graphicsDevice;
+        SceneManager sceneManager = manager;
+        Camera principalCamera = camera;
 
         public void donmt()
         {
@@ -50,10 +50,10 @@ namespace Juegazo
         }
         private EventHandler RetryGame()
         {
-            return (sender, e) => manager.RemoveScene(); 
+            return (sender, e) => sceneManager.RemoveScene(); 
         }
         private EventHandler MenuMain()
-        { return (sender, e) => { manager.AddScene(new TitleScene(manager, cmanager, cdevice, gum, camera)); }; }
+        { return (sender, e) => { sceneManager.AddScene(new TitleScene(sceneManager, Content, graphicsDevice, gum, principalCamera)); }; }
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         { }
 

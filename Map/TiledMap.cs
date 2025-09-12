@@ -446,7 +446,7 @@ namespace Juegazo.Map
                 {
                     Texture2D texture = TilemapTextures[atlasImage];
                     Rectangle srcRectangle = GetSourceRect(value, atlasImage);
-                    spriteBatch.Draw(texture, srcRectangle, srcRectangle, Color.White);
+                    // spriteBatch.Draw(texture, srcRectangle, srcRectangle, Color.White); //why do i have this here????????
                     block.Draw(spriteBatch, texture, srcRectangle);
                 }
             }

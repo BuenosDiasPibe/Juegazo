@@ -33,8 +33,17 @@ public class Game1 : Game
     {
         // TODO: add new resolution
         _graphics.IsFullScreen = false;
-        _graphics.PreferredBackBufferWidth = 1280;
-        _graphics.PreferredBackBufferHeight = 720;
+        if (GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width >= 1920 &&
+            GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height >= 1080)
+        {
+            _graphics.PreferredBackBufferWidth = 1920;
+            _graphics.PreferredBackBufferHeight = 1080;
+        }
+        else
+        {
+            _graphics.PreferredBackBufferWidth = 1280;
+            _graphics.PreferredBackBufferHeight = 720;
+        }
         _graphics.ApplyChanges();
 
         viewport = GraphicsDevice.Viewport;
@@ -67,20 +76,6 @@ public class Game1 : Game
         sceneManager.GetScene().Draw(gameTime, _spriteBatch);
         sceneManager.GetScene().DrawUI(gameTime, _spriteBatch);
         _spriteBatch.End();
-        /*_spriteBatch.Begin();
-        Texture2D pixel = new Texture2D(GraphicsDevice, 1, 1);
-        pixel.SetData(new[] { Color.White });
-        
-        // Draw a 50x50 square at screen center
-        int squareSize = 50;
-        Rectangle squareRect = new Rectangle(
-            viewport.Width / 2 - squareSize / 2,
-            viewport.Height / 2 - squareSize / 2,
-            squareSize,
-            squareSize
-        );
-        _spriteBatch.Draw(pixel, squareRect, Color.White);
-        _spriteBatch.End(); */
         base.Draw(gameTime);
     }
 }

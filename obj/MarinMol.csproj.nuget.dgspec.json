@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/clumpl/Documentos/Programacion/Juegazo/MarinMol.csproj": {}
+    "/home/clumpl/Documentos/Juegazo/MarinMol.csproj": {}
   },
   "projects": {
-    "/home/clumpl/Documentos/Programacion/Juegazo/MarinMol.csproj": {
+    "/home/clumpl/Documentos/Juegazo/MarinMol.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/clumpl/Documentos/Programacion/Juegazo/MarinMol.csproj",
+        "projectUniqueName": "/home/clumpl/Documentos/Juegazo/MarinMol.csproj",
         "projectName": "MarinMol",
-        "projectPath": "/home/clumpl/Documentos/Programacion/Juegazo/MarinMol.csproj",
+        "projectPath": "/home/clumpl/Documentos/Juegazo/MarinMol.csproj",
         "packagesPath": "/home/clumpl/.nuget/packages/",
-        "outputPath": "/home/clumpl/Documentos/Programacion/Juegazo/obj/",
+        "outputPath": "/home/clumpl/Documentos/Juegazo/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/clumpl/.nuget/NuGet/NuGet.Config"
@@ -38,7 +38,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.200"
+        "SdkAnalysisLevel": "9.0.100"
       },
       "frameworks": {
         "net8.0": {
@@ -72,12 +72,26 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[8.0.19, 8.0.19]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Host.linux-x64",
+              "version": "[8.0.19, 8.0.19]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[8.0.19, 8.0.19]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/home/clumpl/.dotnet/sdk/9.0.203/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/9.0.109/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

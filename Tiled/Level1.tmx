@@ -88,20 +88,16 @@
   <object id="32" type="VerticalBoostBlock" gid="9" x="104" y="152" width="8" height="8"/>
   <object id="33" type="VerticalBoostBlock" gid="9" x="112" y="152" width="8" height="8"/>
   <object id="33" type="VerticalBoostBlock" gid="9" x="120" y="152" width="8" height="8"/>
-  <object id="34" type="CompleteLevelBlock" gid="16" x="224" y="32" width="8" height="8">
+  <object id="35" type="CompleteLevelBlock" gid="16" x="224" y="24" width="8" height="8">
    <properties>
     <property name="isEnabled" type="bool" value="false"/>
     <property name="nextLevel" type="int" value="2"/>
    </properties>
   </object>
-  <object id="35" type="CompleteLevelBlock" gid="16" x="224" y="24" width="8" height="8">
-   <properties>
-    <property name="isEnabled" type="bool" value="false"/>
-   </properties>
-  </object>
   <object id="36" type="CompleteLevelBlock" gid="16" x="224" y="16" width="8" height="8">
    <properties>
     <property name="isEnabled" type="bool" value="true"/>
+    <property name="nextLevel" type="int" value="2"/>
    </properties>
   </object>
   <object id="49" type="CheckPointBlock" gid="18" x="112" y="48" width="8" height="8">
