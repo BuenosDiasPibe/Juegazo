@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="20" height="12" tilewidth="8" tileheight="8" infinite="0" nextlayerid="3" nextobjectid="1">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="20" height="12" tilewidth="8" tileheight="8" infinite="0" nextlayerid="4" nextobjectid="1">
  <editorsettings>
   <export target="../Data/testLevel" format="csv"/>
  </editorsettings>
@@ -18,6 +18,22 @@
 12,12,12,12,12,12,12,0,0,0,0,0,13,13,13,13,13,0,0,12,
 0,0,0,0,0,0,12,0,0,0,0,0,0,0,0,0,0,0,0,12,
 0,0,0,0,0,0,12,9,9,12,12,12,12,12,12,12,12,12,12,12
+</data>
+ </layer>
+ <layer id="3" name="Capa de patrones 3" width="20" height="12">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+26,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+27,27,27,27,27,27,26,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,26,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,26,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
  <layer id="2" name="Capa de patrones 2" width="20" height="12">

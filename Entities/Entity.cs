@@ -116,5 +116,19 @@ namespace Juegazo
             return null;
         }
         public Component RemoveComponent<T>() where T : Component => RemoveComponent(typeof(T));
+
+        internal bool TryGetComponent<T>(out Component component)
+        {
+            if (componentDictionary.TryGetValue(typeof(T), out Component cmp))
+            {
+                component = cmp;
+                return true;
+            }
+            else
+            {
+                component = null;
+                return false;
+            }
+        }
     }
 }

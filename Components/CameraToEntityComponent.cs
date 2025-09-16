@@ -10,9 +10,9 @@ namespace Juegazo.Components
     public class CameraToEntityComponent : Component
     {
         public Camera Camera { get; private set; }
-        private int cameraHorizontal = 0;
-        private int cameraVertical = 0;
-        private int lookAhead = 0;
+        public int cameraHorizontal = 0;
+        public int cameraVertical = 0;
+        public int lookAhead = 0;
         public CameraToEntityComponent(Camera camera)
         {
             Camera = camera;

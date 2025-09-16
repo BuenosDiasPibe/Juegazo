@@ -23,8 +23,11 @@ namespace Juegazo.Map.Blocks
         public KillBlock() { value = 18; }
         public override void horizontalActions(Entity entity, Rectangle collision)
         {
-            entity.baseVelocity = new();
-            entity.health--;
+            if (collision.Intersects(entity.collider))
+            {
+                entity.baseVelocity = new();
+                entity.health--;
+            }
         }
 
         public override void Update(GameTime gameTime)
@@ -32,7 +35,11 @@ namespace Juegazo.Map.Blocks
 
         public override void verticalActions(Entity entity, Rectangle collision)
         {
-            entity.health--;
+            if (collision.Intersects(entity.collider))
+            {
+                entity.baseVelocity = new();
+                entity.health--;
+            }
         }
     }
 }

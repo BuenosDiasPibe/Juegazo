@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "second level.tmx",
+    "activeFile": "Level4.tmx",
     "expandedProjectPaths": [
         "."
     ],
@@ -33,6 +33,68 @@
         "/home/clumpl/Documentos/other-projects/NuTiled/Content/tiled/tilemap.tsx": {
             "scaleInDock": 1
         },
+        "Level1.tmx": {
+            "expandedObjectLayers": [
+                10
+            ],
+            "scale": 1.5,
+            "selectedLayer": 5,
+            "viewCenter": {
+                "x": 2796.333333333333,
+                "y": 79.66666666666666
+            }
+        },
+        "Level2.tmx": {
+            "scale": 0.87875,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 279.94310099573255,
+                "y": 159.8862019914651
+            }
+        },
+        "Level3.tmx": {
+            "scale": 1.5378124999999998,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 159.9674862832758,
+                "y": 95.91546433651698
+            }
+        },
+        "Level4.tmx": {
+            "scale": 3.0756249999999996,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 79.98374314163789,
+                "y": 47.95773216825849
+            }
+        },
+        "Level6.tmx": {
+            "scale": 3.07,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 80.13029315960912,
+                "y": 48.045602605863195
+            }
+        },
+        "Level7.tmx": {
+            "scale": 3.0756249999999996,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 79.9837431416379,
+                "y": 47.95773216825849
+            }
+        },
+        "Main.tmx": {
+            "expandedObjectLayers": [
+                4
+            ],
+            "scale": 1.5378124999999998,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 132.65596423491164,
+                "y": 136.2324730745784
+            }
+        },
         "betterTest.tmx": {
             "expandedObjectLayers": [
                 2
@@ -50,6 +112,17 @@
             "viewCenter": {
                 "x": 114.5,
                 "y": 220.25
+            }
+        },
+        "level8.tmx": {
+            "expandedObjectLayers": [
+                2
+            ],
+            "scale": 0.7689062499999999,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 100.14224751066857,
+                "y": 237.3501320869742
             }
         },
         "papapapapa.tmx": {
@@ -80,39 +153,54 @@
                 "y": 48.0514262756127
             }
         },
+        "worldSpace2.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
         "worldTexture.tsx": {
             "scaleInDock": 4,
             "scaleInEditor": 1
         }
     },
     "last.exportedFilePath": "/home/clumpl/Documentos/Programacion/Juegazo/Data",
-    "last.imagePath": "/home/facundo/Documentos/proyecto-ayayay-ay/MarinMol/Content",
+    "last.externalTilesetPath": "/home/clumpl/Documentos/Programacion/Juegazo/Tiled",
+    "last.imagePath": "/home/clumpl/Documentos/Programacion/Juegazo/Tiled",
     "last.objectTypesPath": "/home/clumpl/Documentos/Programacion/Juegazo/Tiled/PropietyFiles.json",
-    "map.height": 12,
+    "map.height": 24,
     "map.lastUsedExportFilter": "Todos los archivos (*)",
     "map.lastUsedFormat": "tmx",
-    "map.tileHeight": 8,
-    "map.tileWidth": 8,
-    "map.width": 20,
+    "map.tileHeight": 16,
+    "map.tileWidth": 16,
+    "map.width": 40,
     "openFiles": [
-        "betterTest.tmx",
-        "second level.tmx"
+        "Level1.tmx",
+        "Level6.tmx",
+        "Main.tmx",
+        "Level7.tmx",
+        "Level2.tmx",
+        "Level3.tmx",
+        "Level4.tmx"
     ],
     "project": "untitled.tiled-project",
     "property.type": "object",
     "recentFiles": [
-        "betterTest.tmx",
-        "second level.tmx",
-        "/home/clumpl/Documentos/other-projects/NuTiled/Content/tiled/map.tmx",
+        "level8.tmx",
+        "worldSpace2.tsx",
         "worldTexture.tsx",
-        "sin test1.tmx",
-        "polno.tsx",
-        "papapapapa.tmx",
-        "goodOne.tmx"
+        "Level1.tmx",
+        "Level6.tmx",
+        "Main.tmx",
+        "Level7.tmx",
+        "Level2.tmx",
+        "Level3.tmx",
+        "Level4.tmx",
+        "betterTest.tmx",
+        "second level.tmx"
     ],
+    "tileset.lastUsedFilter": "Archivos de conjuntos de patrones Tiled (*.tsx *.xml)",
     "tileset.lastUsedFormat": "tsx",
     "tileset.tileSize": {
-        "height": 8,
-        "width": 8
+        "height": 16,
+        "width": 16
     }
 }

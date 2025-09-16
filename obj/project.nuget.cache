@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "rhHEK4ZhDIE=",
+  "dgSpecHash": "A2PXxOJvlUU=",
   "success": true,
-  "projectFilePath": "/home/clumpl/Documentos/Juegazo/MarinMol.csproj",
+  "projectFilePath": "/home/clumpl/Documentos/Programacion/Juegazo/MarinMol.csproj",
   "expectedPackageFiles": [
     "/home/clumpl/.nuget/packages/dottiled/0.3.0/dottiled.0.3.0.nupkg.sha512",
     "/home/clumpl/.nuget/packages/flatredball.gumcommon/2025.5.1.1/flatredball.gumcommon.2025.5.1.1.nupkg.sha512",
