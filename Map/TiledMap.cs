@@ -50,6 +50,9 @@ namespace Juegazo.Map
         public Dictionary<uint, Tileset> TilesetsByGID { get; } = new();
         public Dictionary<string, Tileset> TilesetsByName { get; } = new();
         public Dictionary<Tileset, Texture2D> TilemapTextures { get; } = new();
+
+        public Dictionary<string, ImageLayer> imageLayerByName { get; } = new();
+        public Dictionary<ImageLayer, Texture2D> ImageLayerTexture { get; } = new();
         public Camera camera { get; protected set; }
 
         public uint GID_Count
@@ -98,6 +101,7 @@ namespace Juegazo.Map
             InitTilesets(Map.Tilesets, TiledProjectDirectory);
             InitImportantLayers(Map.Layers);
             InitInteractiveObjectLayers(Map.Layers);
+            InitLayerGroup(Map.Layers); //dont know dont care fuck it
         }
 
         private void InitInteractiveObjectLayers(List<BaseLayer> layers)
@@ -367,6 +371,26 @@ namespace Juegazo.Map
             }
 
         }
+        //IDK WHAT IT DOES
+        public void InitLayerGroup(List<BaseLayer> layers)
+        {
+            foreach (var layer in layers)
+            {
+                AllLayersByName[layer.Name] = layer;
+                switch (layer)
+                {
+                    case ImageLayer imageLayer:
+                        imageLayerByName[imageLayer.Name] = imageLayer;
+                        if(!imageLayer.Image.HasValue) break;
+                        Texture2D texture = LoadImage(graphicsDevice, MapFileDirectory, imageLayer.Image);
+                        ImageLayerTexture[imageLayer] = texture;
+                        break;
+                    default:
+                        Console.WriteLine("not important for now");
+                        break;
+                }
+            }
+        }
         public (Tileset tileset, Tile tile) GetTilesetFromGID(uint gid, bool safe = false)
         {
             foreach (Tileset tileset in Map.Tilesets)
@@ -424,7 +448,50 @@ namespace Juegazo.Map
                     case ObjectLayer objectLayer:
                         DrawObjectLayer(spriteBatch, objectLayer);
                         break;
+                    case ImageLayer imageLayer:
+                        //shit doesnt work
+                        DrawImageLayer(spriteBatch, imageLayer);
+                        break;
+                    default:
+                        Console.WriteLine($"layer type {layer.GetType()} not implemented");
+                        break;
                 }
+            }
+        }
+        //STILL DOESNT WORK!!!!!!
+        private void DrawImageLayer(SpriteBatch spriteBatch, ImageLayer imageLayer)
+        {
+            if (!imageLayer.Image.HasValue) return;
+            Texture2D texture = ImageLayerTexture[imageLayer];
+            bool repeatX = imageLayer.RepeatX;
+            bool repeatY = imageLayer.RepeatY;
+            Vector2 offset = new(imageLayer.OffsetX, imageLayer.OffsetY);
+            Rectangle srcRect;
+            Rectangle destRect;
+            Rectangle viewport_bounds = camera.ViewPortRectangle;
+            switch (repeatX, repeatY)
+            {
+                default:
+                case (false, false): {
+                        srcRect = texture.Bounds;
+                        destRect = new Rectangle((int)imageLayer.X, (int)imageLayer.Y.Value, texture.Width, texture.Height);
+                        break;
+                    }
+                case (true, true): {
+                        destRect = camera.ViewPortRectangle;
+                        srcRect = camera.ViewPortRectangle;
+                        break;
+                    }
+                case (true, false): {
+                        destRect = new Rectangle(viewport_bounds.X, (int)imageLayer.OffsetY, viewport_bounds.Width, texture.Height);
+                        srcRect = new Rectangle(destRect.X, 0, destRect.Width, texture.Height);
+                        break;
+                    }
+                case (false, true): {
+                        destRect = new Rectangle((int)offset.X, viewport_bounds.Y, texture.Width, viewport_bounds.Height);
+                        srcRect = new Rectangle(0, destRect.Y, texture.Width, destRect.Height);
+                        break;
+                    }
             }
         }
 

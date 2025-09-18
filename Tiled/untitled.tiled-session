@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "Level4.tmx",
+    "activeFile": "Level8.tmx",
     "expandedProjectPaths": [
         "."
     ],
@@ -64,7 +64,7 @@
             "scale": 3.0756249999999996,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 79.98374314163789,
+                "x": 79.9837431416379,
                 "y": 47.95773216825849
             }
         },
@@ -84,6 +84,14 @@
                 "y": 47.95773216825849
             }
         },
+        "Level8.tmx": {
+            "scale": 0.7689062499999999,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 262.7108311318838,
+                "y": 191.83092867303395
+            }
+        },
         "Main.tmx": {
             "expandedObjectLayers": [
                 4
@@ -91,8 +99,8 @@
             "scale": 1.5378124999999998,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 132.65596423491164,
-                "y": 136.2324730745784
+                "x": 159.9674862832758,
+                "y": 95.91546433651698
             }
         },
         "betterTest.tmx": {
@@ -153,7 +161,13 @@
                 "y": 48.0514262756127
             }
         },
+        "tux based 01.jpg.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
         "worldSpace2.tsx": {
+            "dynamicWrapping": false,
             "scaleInDock": 1,
             "scaleInEditor": 1
         },
@@ -164,7 +178,7 @@
     },
     "last.exportedFilePath": "/home/clumpl/Documentos/Programacion/Juegazo/Data",
     "last.externalTilesetPath": "/home/clumpl/Documentos/Programacion/Juegazo/Tiled",
-    "last.imagePath": "/home/clumpl/Documentos/Programacion/Juegazo/Tiled",
+    "last.imagePath": "/home/clumpl/Imágenes/tux one-liners",
     "last.objectTypesPath": "/home/clumpl/Documentos/Programacion/Juegazo/Tiled/PropietyFiles.json",
     "map.height": 24,
     "map.lastUsedExportFilter": "Todos los archivos (*)",
@@ -179,14 +193,12 @@
         "Level7.tmx",
         "Level2.tmx",
         "Level3.tmx",
-        "Level4.tmx"
+        "Level4.tmx",
+        "Level8.tmx"
     ],
     "project": "untitled.tiled-project",
     "property.type": "object",
     "recentFiles": [
-        "level8.tmx",
-        "worldSpace2.tsx",
-        "worldTexture.tsx",
         "Level1.tmx",
         "Level6.tmx",
         "Main.tmx",
@@ -194,13 +206,17 @@
         "Level2.tmx",
         "Level3.tmx",
         "Level4.tmx",
-        "betterTest.tmx",
-        "second level.tmx"
+        "Level8.tmx",
+        "tux based 01.jpg.tsx",
+        "level8.tmx",
+        "worldSpace2.tsx",
+        "worldTexture.tsx"
     ],
     "tileset.lastUsedFilter": "Archivos de conjuntos de patrones Tiled (*.tsx *.xml)",
     "tileset.lastUsedFormat": "tsx",
     "tileset.tileSize": {
         "height": 16,
         "width": 16
-    }
+    },
+    "tileset.type": 1
 }

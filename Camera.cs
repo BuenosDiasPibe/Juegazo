@@ -11,19 +11,17 @@ namespace Juegazo
     {
         public bool IsRectangleVisible(Rectangle rect)
         {
-            float viewLeft = Left;
-            float viewTop = Top;
-            float viewWidth = Right - Left;
-            float viewHeight = Bottom - Top;
-
-            var viewRect = new Rectangle(
-                (int)Math.Floor(viewLeft),
-                (int)Math.Floor(viewTop),
-                (int)Math.Ceiling(viewWidth),
-                (int)Math.Ceiling(viewHeight)
-            );
-
-            return viewRect.Intersects(rect);
+            return ViewPortRectangle.Intersects(rect);
+        }
+        public Rectangle ViewPortRectangle
+        {
+            get
+            {
+                return new((int)Math.Floor(Left),
+                    (int)Math.Floor(Top),
+                    (int)Math.Ceiling(Right - Left),
+                    (int)Math.Floor(Bottom - Top));
+            }
         }
         private Matrix matrix = Matrix.Identity;
         private Matrix inverse = Matrix.Identity;

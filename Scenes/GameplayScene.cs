@@ -60,7 +60,7 @@ namespace Juegazo
         {
             changeScene = false;
             debugger = new(graphicsDevice);
-            playerTexture = contentManager.Load<Texture2D>("playerr");
+            playerTexture = contentManager.Load<Texture2D>("diosMio");
             if (levelPath == null)
             {
                 levelPath = "Main.tmx";
@@ -73,6 +73,7 @@ namespace Juegazo
                 new MoveVerticalComponent(),
                 new MoveHorizontalComponent(),
                 new ComplexGravityComponent(),
+                new AnimationComponent(),
             };
             Rectangle playerPosition = new(TILESIZE * 12, TILESIZE * 2, TILESIZE, TILESIZE); // random position in the map, if it spawns there, something went wrong
             if (tilemap.EntityPositionerByName.TryGetValue("PlayerSpawner", out Vector2 position))
@@ -211,13 +212,14 @@ namespace Juegazo
             tilemap.Draw(spriteBatch);
             foreach (var entity in entities)
             {
-                entity.DrawSprite(spriteBatch);
+                entity.Draw(gameTime, spriteBatch);
                 if (enableDebugger)
                 {
                     debugger.DrawRectHollow(spriteBatch, entity.collider, 2, Color.Red);
                     debugger.DrawRectHollow(spriteBatch, entity.Destinationrectangle, 2, Color.Blue);
                 }
             }
+
             if (!enableDebugger) return;
             foreach (var t in tilemap.collisionLayer.Values)
             {

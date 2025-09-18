@@ -1,3 +1,7 @@
+/*
+    I stole this idea from the Monofoxe Game Engine: https://github.com/Martenfur/Monofoxe
+    it was on the awesome monogame list: https://github.com/aloisdeniel/awesome-monogame
+*/
 using System;
 using System.Collections.Generic;
 using System.Linq;
