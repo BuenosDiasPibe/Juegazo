@@ -100,11 +100,11 @@ namespace Juegazo.Map
             this.TILESIZE = TILESIZE;
             InitTilesets(Map.Tilesets, TiledProjectDirectory);
             InitImportantLayers(Map.Layers);
-            InitInteractiveObjectLayers(Map.Layers);
+            InitObjectLayers(Map.Layers);
             InitLayerGroup(Map.Layers); //dont know dont care fuck it
         }
 
-        private void InitInteractiveObjectLayers(List<BaseLayer> layers)
+        private void InitObjectLayers(List<BaseLayer> layers)
         {
             foreach (var layer in layers.OfType<ObjectLayer>())
             {
@@ -120,14 +120,10 @@ namespace Juegazo.Map
                     if (objectLayerClass.canOverrideCollisionLayer)
                     {
                         collisionLayer[position] = block;
-                        if (block is Blocks.Key)
-                        {
-                            Console.WriteLine($"key position: {position}");
-                        }
                     }
-                    else if (block is Blocks.MovementBlock movementBlock)
+                    else
                     {
-                        dynamicBlocks[tileObject] = movementBlock;
+                        dynamicBlocks[tileObject] = block;
                     }
                 }
             }
@@ -314,15 +310,14 @@ namespace Juegazo.Map
 
                 foreach (Block block in blocks)
                 {
-                    if (value == block.value)
+                    if (block.values.Contains(value) || value == block.value)
                     {
-                        Block blockk = (Block)Activator.CreateInstance(block.GetType());
-                        blockk.collider = new((int)position.X * TILESIZE,
-                                              (int)position.Y * TILESIZE,
-                                              TILESIZE,
-                                              TILESIZE);
-                        collisionLayer[position] = blockk;
-                        blocksTemp.Add(blockk);
+                            Block blockk = (Block)Activator.CreateInstance(block.GetType());
+                            blockk.collider = new((int)position.X * TILESIZE,
+                                                  (int)position.Y * TILESIZE,
+                                                  TILESIZE,
+                                                  TILESIZE);
+                            collisionLayer[position] = blockk;
                     }
                 }
             }
@@ -515,7 +510,7 @@ namespace Juegazo.Map
                     Rectangle srcRectangle = GetSourceRect(value, atlasImage);
                     // spriteBatch.Draw(texture, srcRectangle, srcRectangle, Color.White); //why do i have this here????????
                     block.Draw(spriteBatch, texture, srcRectangle);
-                }
+                } //this image will always be a tile layer with an atlasImage with value
             }
         }
 

@@ -11,9 +11,9 @@ namespace Juegazo.Components
     {
         private int frameCounter = 0;
         private int currentFrame = 0;
-        private int totalFrames = 4; // adjust based on your sprite sheet
-        private int frameWidth = 8;  // adjust to your frame width
-        private int frameHeight = 8; // adjust to your frame height
+        private int totalFrames = 2; // adjust based on your sprite sheet
+        private int frameWidth = 16;  // adjust to your frame width
+        private int frameHeight = 16; // adjust to your frame height
         private Rectangle sourceRectangle = new();
         public AnimationComponent()
         {
@@ -27,7 +27,8 @@ namespace Juegazo.Components
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Owner.texture, Owner.Destinationrectangle, sourceRectangle, Color.White);
+            var effects = !Owner.directionLeft ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+            spriteBatch.Draw(Owner.texture, Owner.Destinationrectangle, sourceRectangle, Color.White, 0f, Vector2.Zero, effects, 0f);
         }
 
         public override void Update(GameTime gameTime)
@@ -35,10 +36,12 @@ namespace Juegazo.Components
             frameCounter++;
             if (frameCounter % 5 == 0)
             {
-                Console.WriteLine("changed frame");
-                currentFrame = (currentFrame + 1) % totalFrames;
-                sourceRectangle = new Rectangle(currentFrame * frameWidth, 0, frameWidth, frameHeight);
+                if(Owner.velocity.X !=0 )
+                {
+                    currentFrame = (currentFrame + 1) % totalFrames;
+                }
             }
+            sourceRectangle = new Rectangle(currentFrame * frameWidth, 0, frameWidth, frameHeight);
         }
     }
 }

@@ -40,7 +40,7 @@ namespace Juegazo.Map.Blocks
             entityComponent = (KeysIDHolderComponent)entity.getComponent(entityComponent.GetType());
             entityComponent.keyHolder.Add(this.KeyID);
             this.EnableCollisions = false;
-            this.isVisible = false;
+            this.EnableDifferentDraw = false;
         }
 
         public override void verticalActions(Entity entity, Rectangle collision)

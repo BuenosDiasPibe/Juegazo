@@ -9,10 +9,14 @@
     <File>/home/clumpl/Documentos/Programacion/Juegazo/Content/player_body.png</File>
     <File>/home/clumpl/Documentos/Programacion/Juegazo/Content/player.png</File>
     <File>/home/clumpl/Documentos/Programacion/Juegazo/Content/playerr.png</File>
+    <File>/home/clumpl/Documentos/Programacion/Juegazo/Content/playerSprite.png</File>
+    <File>/home/clumpl/Documentos/Programacion/Juegazo/Content/second_player_sprite.png</File>
     <File>/home/clumpl/Documentos/Programacion/Juegazo/Content/sheesh.spritefont</File>
     <File>/home/clumpl/Documentos/Programacion/Juegazo/Content/worldTexture.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

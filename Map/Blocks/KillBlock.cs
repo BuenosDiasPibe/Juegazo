@@ -10,36 +10,52 @@ namespace Juegazo.Map.Blocks
     public class KillBlock : Block
     {
         private int damageAmmount = 1;
+        int frames = 3;
+        int currentFrame = 0;
         public KillBlock(Rectangle collider, int damageAmmount)
             : base(collider)
         {
-            value = 18;
+            values.AddRange([18, 19, 20]);
             this.damageAmmount = damageAmmount;
+            EnableUpdate = true;
         }
-        public KillBlock(Rectangle collider) : base(collider)
+        public KillBlock(Rectangle collider) : base(collider){}
+        public KillBlock()
         {
-            
+            values.AddRange([18, 19, 20]);
+            EnableUpdate = true;
         }
-        public KillBlock() { value = 18; }
         public override void horizontalActions(Entity entity, Rectangle collision)
         {
             if (collision.Intersects(entity.collider))
             {
                 entity.baseVelocity = new();
-                entity.health--;
+                entity.health-=damageAmmount;
             }
         }
 
         public override void Update(GameTime gameTime)
-        { }
+        {
+            long totalFrames = (long)(gameTime.TotalGameTime.TotalMilliseconds / (1000.0 / 60.0));
+            if (totalFrames % 10 == 0)
+            {
+                currentFrame = (currentFrame + 1) % frames;
+            }
+        }
 
         public override void verticalActions(Entity entity, Rectangle collision)
         {
             if (collision.Intersects(entity.collider))
             {
                 entity.baseVelocity = new();
-                entity.health--;
+                entity.health-=damageAmmount;
             }
+        }
+        //i was just testing something, it was really funny
+        public override void Draw(SpriteBatch spriteBatch, Texture2D texture, Rectangle sourceRectangle)
+        {
+            sourceRectangle.X = sourceRectangle.X + currentFrame * 16;
+            spriteBatch.Draw(texture, collider, sourceRectangle, Color.White);
         }
     }
 }

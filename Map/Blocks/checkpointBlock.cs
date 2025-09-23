@@ -38,9 +38,6 @@ namespace Juegazo.Map.Blocks
             }
         }
 
-        public override void Update(GameTime gameTime)
-        { }
-
         public override void verticalActions(Entity entity, Rectangle collision)
         {
             if (position == Vector2.Zero)

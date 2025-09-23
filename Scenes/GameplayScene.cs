@@ -60,7 +60,7 @@ namespace Juegazo
         {
             changeScene = false;
             debugger = new(graphicsDevice);
-            playerTexture = contentManager.Load<Texture2D>("diosMio");
+            playerTexture = contentManager.Load<Texture2D>("second_player_sprite");
             if (levelPath == null)
             {
                 levelPath = "Main.tmx";
@@ -115,10 +115,15 @@ namespace Juegazo
             {
                 enableDebugger = !enableDebugger;
             }
-            foreach (var block in tilemap.dynamicBlocks.Values)
+            // Update all blocks that have EnableUpdate == true from both dynamic and collision layers
+            var updatableBlocks = tilemap.dynamicBlocks.Values
+                .Concat(tilemap.collisionLayer.Values)
+                .Where(b => b != null && b.EnableUpdate);
+            foreach (var block in updatableBlocks)
             {
                 block.Update(gameTime);
             }
+
             foreach (var entity in entities)
             {
                 entity.Update(gameTime);

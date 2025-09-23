@@ -168,7 +168,7 @@
         },
         "worldSpace2.tsx": {
             "dynamicWrapping": false,
-            "scaleInDock": 1,
+            "scaleInDock": 2,
             "scaleInEditor": 1
         },
         "worldTexture.tsx": {
