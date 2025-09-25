@@ -1,10 +1,10 @@
 Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
-"/home/clumpl/Documentos/Programacion/Juegazo/Content/diosMio.jpg","/home/clumpl/Documentos/Programacion/Juegazo/Content/bin/DesktopGL/diosMio.xnb","TextureProcessor","Texture2DContent",21346,36125,0,3921832
-"/home/clumpl/Documentos/Programacion/Juegazo/Content/jugador.png","/home/clumpl/Documentos/Programacion/Juegazo/Content/bin/DesktopGL/jugador.xnb","TextureProcessor","Texture2DContent",29737,65621,0,0291562
-"/home/clumpl/Documentos/Programacion/Juegazo/Content/player_body.png","/home/clumpl/Documentos/Programacion/Juegazo/Content/bin/DesktopGL/player_body.xnb","TextureProcessor","Texture2DContent",790,160085,0,038698
-"/home/clumpl/Documentos/Programacion/Juegazo/Content/player.png","/home/clumpl/Documentos/Programacion/Juegazo/Content/bin/DesktopGL/player.xnb","TextureProcessor","Texture2DContent",9049,160085,0,0357319
-"/home/clumpl/Documentos/Programacion/Juegazo/Content/playerr.png","/home/clumpl/Documentos/Programacion/Juegazo/Content/bin/DesktopGL/playerr.xnb","TextureProcessor","Texture2DContent",100,341,0,0059436
-"/home/clumpl/Documentos/Programacion/Juegazo/Content/playerSprite.png","/home/clumpl/Documentos/Programacion/Juegazo/Content/bin/DesktopGL/playerSprite.xnb","TextureProcessor","Texture2DContent",208,1365,0,0115647
-"/home/clumpl/Documentos/Programacion/Juegazo/Content/second_player_sprite.png","/home/clumpl/Documentos/Programacion/Juegazo/Content/bin/DesktopGL/second_player_sprite.xnb","TextureProcessor","Texture2DContent",397,4181,0,0102859
-"/home/clumpl/Documentos/Programacion/Juegazo/Content/sheesh.spritefont","/home/clumpl/Documentos/Programacion/Juegazo/Content/bin/DesktopGL/sheesh.xnb","FontDescriptionProcessor","SpriteFontContent",2035,21538,0,4031548
-"/home/clumpl/Documentos/Programacion/Juegazo/Content/worldTexture.png","/home/clumpl/Documentos/Programacion/Juegazo/Content/bin/DesktopGL/worldTexture.xnb","TextureProcessor","Texture2DContent",1424,32853,0,0071179
+"/home/clumpl/Documentos/Programacion/Juegazo/Content/diosMio.jpg","/home/clumpl/Documentos/Programacion/Juegazo/Content/bin/DesktopGL/diosMio.xnb","TextureProcessor","Texture2DContent",21346,36125,0,3797625
+"/home/clumpl/Documentos/Programacion/Juegazo/Content/jugador.png","/home/clumpl/Documentos/Programacion/Juegazo/Content/bin/DesktopGL/jugador.xnb","TextureProcessor","Texture2DContent",29737,65621,0,058085
+"/home/clumpl/Documentos/Programacion/Juegazo/Content/player_body.png","/home/clumpl/Documentos/Programacion/Juegazo/Content/bin/DesktopGL/player_body.xnb","TextureProcessor","Texture2DContent",790,160085,0,0458323
+"/home/clumpl/Documentos/Programacion/Juegazo/Content/player.png","/home/clumpl/Documentos/Programacion/Juegazo/Content/bin/DesktopGL/player.xnb","TextureProcessor","Texture2DContent",9049,160085,0,0368702
+"/home/clumpl/Documentos/Programacion/Juegazo/Content/playerr.png","/home/clumpl/Documentos/Programacion/Juegazo/Content/bin/DesktopGL/playerr.xnb","TextureProcessor","Texture2DContent",100,341,0,0036925
+"/home/clumpl/Documentos/Programacion/Juegazo/Content/playerSprite.png","/home/clumpl/Documentos/Programacion/Juegazo/Content/bin/DesktopGL/playerSprite.xnb","TextureProcessor","Texture2DContent",208,1365,0,005669
+"/home/clumpl/Documentos/Programacion/Juegazo/Content/second_player_sprite.png","/home/clumpl/Documentos/Programacion/Juegazo/Content/bin/DesktopGL/second_player_sprite.xnb","TextureProcessor","Texture2DContent",534,4181,0,0068005
+"/home/clumpl/Documentos/Programacion/Juegazo/Content/sheesh.spritefont","/home/clumpl/Documentos/Programacion/Juegazo/Content/bin/DesktopGL/sheesh.xnb","FontDescriptionProcessor","SpriteFontContent",2035,21538,0,3626465
+"/home/clumpl/Documentos/Programacion/Juegazo/Content/worldTexture.png","/home/clumpl/Documentos/Programacion/Juegazo/Content/bin/DesktopGL/worldTexture.xnb","TextureProcessor","Texture2DContent",1424,32853,0,022663

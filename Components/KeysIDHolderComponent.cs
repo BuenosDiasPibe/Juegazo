@@ -13,8 +13,8 @@ namespace Juegazo.Components
         public KeysIDHolderComponent()
         {
             keyHolder = new();
-            this.Enable = false;
-            this.Visible = false;
+            this.EnableUpdate = false;
+            this.EnableDraw = false;
         }
         public bool isKeyOnPlayer(uint keyID)
         {

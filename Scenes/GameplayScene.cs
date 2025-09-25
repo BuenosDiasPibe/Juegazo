@@ -68,12 +68,15 @@ namespace Juegazo
 
             List<ICustomTypeDefinition> typeDefinitions = new();
             tilemap = new(graphicsDevice, projectDirectory, levelPath, TILESIZE, typeDefinitions, camera);
+            entities.AddRange(tilemap.entities);
+
             var componentsOnEntity = new List<Component> {
                 new CameraToEntityComponent(camera),
                 new MoveVerticalComponent(),
                 new MoveHorizontalComponent(),
                 new ComplexGravityComponent(),
                 new AnimationComponent(),
+                new EntitiesInteractionsComponent(entities),
             };
             Rectangle playerPosition = new(TILESIZE * 12, TILESIZE * 2, TILESIZE, TILESIZE); // random position in the map, if it spawns there, something went wrong
             if (tilemap.EntityPositionerByName.TryGetValue("PlayerSpawner", out Vector2 position))
@@ -83,7 +86,8 @@ namespace Juegazo
             }
             componentsOnEntity.Add(new CanDieComponent(new(playerPosition.X, playerPosition.Y)));
 
-            entities.Add(new Entity(playerTexture, new Rectangle(TILESIZE, TILESIZE, TILESIZE, TILESIZE), playerPosition, componentsOnEntity, collider: 0.7f, Color.White));
+            entities.Add(new Entity(playerTexture, new Rectangle(0, 0, playerTexture.Width, playerTexture.Height), playerPosition, componentsOnEntity, collider: 0.7f, Color.White));
+            // get all the entities from Tiled
 
             font = contentManager.Load<SpriteFont>("sheesh");
             camera.Origin = new Vector2(camera.Viewport.Width / 2, camera.Viewport.Height / 2);
@@ -115,7 +119,7 @@ namespace Juegazo
             {
                 enableDebugger = !enableDebugger;
             }
-            // Update all blocks that have EnableUpdate == true from both dynamic and collision layers
+            // updating blocks
             var updatableBlocks = tilemap.dynamicBlocks.Values
                 .Concat(tilemap.collisionLayer.Values)
                 .Where(b => b != null && b.EnableUpdate);
@@ -188,6 +192,7 @@ namespace Juegazo
                 }
                 entity.UpdateColliderFromDest();
             }
+
             if (changeScene)
             {
                 UnloadContent();
@@ -245,6 +250,7 @@ namespace Juegazo
         {
             foreach (var entity in entities)
             {
+                if (entity.hasComponent(typeof(NPCComponent))) continue;
                 spriteBatch.DrawString(font,
                     $"FPS: {Math.Round(1 / gameTime.ElapsedGameTime.TotalSeconds)}\nposition: X:{entity.Destinationrectangle.X} Y:{entity.Destinationrectangle.Y}\nvelocity: {entity.velocity}\nbaseVelocity: {entity.baseVelocity}\nhealth: {entity.health}",
                     new Vector2(camera.Left, camera.Top),

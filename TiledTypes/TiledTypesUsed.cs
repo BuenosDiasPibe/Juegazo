@@ -7,6 +7,12 @@ using Microsoft.Xna.Framework;
 
 namespace Juegazo.CustomTiledTypes
 {
+    public class NPC
+    {
+        public int dialogEnd { get; set; } = 0;
+        public int dialogStart { get; set; } = 1;
+        public string name {get; set; } = "Jose";
+    }
     public class CollisionBlockObjectLayer
     {
         public bool canOverrideCollisionLayer { get; set; } = true;

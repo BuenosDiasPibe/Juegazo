@@ -40,6 +40,45 @@
             ]
         },
         {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 14,
+            "members": [
+                {
+                    "name": "canOverrideCollisionLayer",
+                    "type": "bool",
+                    "value": true
+                }
+            ],
+            "name": "Collision Blocks Object Layer",
+            "type": "class",
+            "useAs": [
+                "property",
+                "layer",
+                "project"
+            ]
+        },
+        {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 15,
+            "members": [
+            ],
+            "name": "Collision Tile Layer",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset",
+                "project"
+            ]
+        },
+        {
             "color": "#fff6f5f4",
             "drawFill": true,
             "id": 12,
@@ -105,6 +144,60 @@
             ]
         },
         {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 16,
+            "members": [
+                {
+                    "name": "color",
+                    "type": "color",
+                    "value": ""
+                },
+                {
+                    "name": "isOpen",
+                    "type": "bool",
+                    "value": false
+                },
+                {
+                    "name": "key",
+                    "type": "object",
+                    "value": 0
+                }
+            ],
+            "name": "DoorBlock",
+            "type": "class",
+            "useAs": [
+                "property",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset",
+                "project"
+            ]
+        },
+        {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 17,
+            "members": [
+            ],
+            "name": "Entity Spawner",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset",
+                "project"
+            ]
+        },
+        {
             "id": 5,
             "name": "faces",
             "storageType": "int",
@@ -134,6 +227,36 @@
                 }
             ],
             "name": "JumpWallBlock",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset",
+                "project"
+            ]
+        },
+        {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 18,
+            "members": [
+                {
+                    "name": "color",
+                    "type": "color",
+                    "value": ""
+                },
+                {
+                    "name": "isColected",
+                    "type": "bool",
+                    "value": false
+                }
+            ],
+            "name": "Key",
             "type": "class",
             "useAs": [
                 "property",
@@ -184,6 +307,35 @@
                 "tileset",
                 "wangcolor",
                 "wangset",
+                "project"
+            ]
+        },
+        {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 19,
+            "members": [
+                {
+                    "name": "dialogEnd",
+                    "type": "int",
+                    "value": 1
+                },
+                {
+                    "name": "dialogStart",
+                    "type": "int",
+                    "value": 0
+                },
+                {
+                    "name": "name",
+                    "type": "string",
+                    "value": "Jose"
+                }
+            ],
+            "name": "NPC",
+            "type": "class",
+            "useAs": [
+                "property",
+                "object",
                 "project"
             ]
         },
@@ -304,129 +456,6 @@
                 }
             ],
             "name": "VerticalBoostBlock",
-            "type": "class",
-            "useAs": [
-                "property",
-                "map",
-                "layer",
-                "object",
-                "tile",
-                "tileset",
-                "wangcolor",
-                "wangset",
-                "project"
-            ]
-        },
-        {
-            "color": "#ffa0a0a4",
-            "drawFill": true,
-            "id": 14,
-            "members": [
-                {
-                    "name": "canOverrideCollisionLayer",
-                    "type": "bool",
-                    "value": true
-                }
-            ],
-            "name": "Collision Blocks Object Layer",
-            "type": "class",
-            "useAs": [
-                "property",
-                "layer",
-                "project"
-            ]
-        },
-        {
-            "color": "#ffa0a0a4",
-            "drawFill": true,
-            "id": 15,
-            "members": [
-            ],
-            "name": "Collision Tile Layer",
-            "type": "class",
-            "useAs": [
-                "property",
-                "map",
-                "layer",
-                "object",
-                "tile",
-                "tileset",
-                "wangcolor",
-                "wangset",
-                "project"
-            ]
-        },
-        {
-            "color": "#ffa0a0a4",
-            "drawFill": true,
-            "id": 16,
-            "members": [
-                {
-                    "name": "color",
-                    "type": "color",
-                    "value": ""
-                },
-                {
-                    "name": "isOpen",
-                    "type": "bool",
-                    "value": false
-                },
-                {
-                    "name": "key",
-                    "type": "object",
-                    "value": 0
-                }
-            ],
-            "name": "DoorBlock",
-            "type": "class",
-            "useAs": [
-                "property",
-                "layer",
-                "object",
-                "tile",
-                "tileset",
-                "wangcolor",
-                "wangset",
-                "project"
-            ]
-        },
-        {
-            "color": "#ffa0a0a4",
-            "drawFill": true,
-            "id": 17,
-            "members": [
-            ],
-            "name": "Entity Spawner",
-            "type": "class",
-            "useAs": [
-                "property",
-                "map",
-                "layer",
-                "object",
-                "tile",
-                "tileset",
-                "wangcolor",
-                "wangset",
-                "project"
-            ]
-        },
-        {
-            "color": "#ffa0a0a4",
-            "drawFill": true,
-            "id": 18,
-            "members": [
-                {
-                    "name": "color",
-                    "type": "color",
-                    "value": ""
-                },
-                {
-                    "name": "isColected",
-                    "type": "bool",
-                    "value": false
-                }
-            ],
-            "name": "Key",
             "type": "class",
             "useAs": [
                 "property",

@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using DotTiled;
 using DotTiled.Serialization;
+using Juegazo.Components;
 using Juegazo.CustomTiledTypes;
 using Juegazo.CustomTiledTypesImplementation;
 using Juegazo.Map.Blocks;
@@ -45,6 +46,7 @@ namespace Juegazo.Map
         public Dictionary<string, BaseLayer> AllLayersByName { get; } = new();
         public Dictionary<TileObject, Block> dynamicBlocks = new();
         public Dictionary<Vector2, Block> collisionLayer { get; } = new(); //maybe Vector2 should be changed to Point
+        public List<Entity> entities { get; set; } = new();
         public readonly List<ICustomTypeDefinition> CustomTypeDefinitions = new();
 
         public Dictionary<uint, Tileset> TilesetsByGID { get; } = new();
@@ -80,9 +82,6 @@ namespace Juegazo.Map
             return data.GlobalTileIDs;
         }
 
-        //temporal
-        public List<Block> blocksTemp { get; } = new();
-
         public TiledMap(GraphicsDevice graphicsDevice, string projectDirectory, string mapFilePath, int TILESIZE, List<ICustomTypeDefinition> typeDefinitions, Camera camera)
         {
             this.graphicsDevice = graphicsDevice;
@@ -99,7 +98,7 @@ namespace Juegazo.Map
             Map = loader.LoadMap(Path.Combine(TiledProjectDirectory, MapFilePath));
             this.TILESIZE = TILESIZE;
             InitTilesets(Map.Tilesets, TiledProjectDirectory);
-            InitImportantLayers(Map.Layers);
+            InitLayers(Map.Layers);
             InitObjectLayers(Map.Layers);
             InitLayerGroup(Map.Layers); //dont know dont care fuck it
         }
@@ -129,11 +128,11 @@ namespace Juegazo.Map
             }
         }
 
-        private void InitImportantLayers(List<BaseLayer> layers)
+        private void InitLayers(List<BaseLayer> layers)
         {
-
             foreach (var layer in layers)
             {
+                AllLayersByName[layer.Class] = layer;
                 switch (layer.Class)
                 {
                     case "Collision Tile Layer":
@@ -142,7 +141,9 @@ namespace Juegazo.Map
                         break;
                     case "Entity Spawner":
                         ObjectLayer objectLayer = (ObjectLayer)layer;
+                        Console.WriteLine("fc");
                         AddImportantPositions(objectLayer);
+                        CreateEntities(objectLayer);
                         break;
                     case "Collision Blocks Object Layer":
                         MapObjectLayerToClass[(ObjectLayer)layer] = layer.MapPropertiesTo<CollisionBlockObjectLayer>();
@@ -252,6 +253,7 @@ namespace Juegazo.Map
                         break;
                 }
             }
+
             foreach (var obj in objectLayer.Objects)
             {
                 foreach (uint idNeeded in unimplementedThings)
@@ -274,6 +276,31 @@ namespace Juegazo.Map
                 float x = objectObject.X / Map.TileWidth * TILESIZE;
                 float y = objectObject.Y / Map.TileHeight * TILESIZE;
                 EntityPositionerByName[objectObject.Type] = new Vector2(x, y);
+            }
+        }
+        public void CreateEntities(ObjectLayer objectLayer) 
+        {
+            foreach (var obj in objectLayer.Objects)
+            {
+                if (!(obj is TileObject tile)) continue;
+                if (tile.Type == "NPC")
+                {
+                    var papu = tile.MapPropertiesTo<NPC>();
+                    Tileset tileset = TilesetsByGID[tile.GID];
+                    Texture2D atlasImage = TilemapTextures[tileset]; //this looks like shit but idk
+
+                    Entity entity = new Entity(atlasImage, GetSourceRect(tile.GID, tileset), GetObjectDestinationRectangle(tile), 1, Color.White);
+                    //TODO: find a way to not do this horrible thing
+                    if (papu.name == "Jose")
+                    {
+                        // Console.WriteLine((int)((tile.GID-32) % 4)); //DIOS Y LA VIRGEN TE BENDIGAN DI GRACIA!!!!!!! its not working completly as intended but it gets the job done
+                        entity.AddComponents(new List<Component>{
+                            new AnimationComponent(4, (int)((tile.GID+32)%4), 16, 16),
+                            new NPCComponent(camera, tile.Name, papu.dialogStart, papu.dialogEnd)
+                        });
+                    }
+                    entities.Add(entity);
+                }
             }
         }
 
@@ -441,6 +468,7 @@ namespace Juegazo.Map
                         drawTileLayer(spriteBatch, tileLayer);
                         break;
                     case ObjectLayer objectLayer:
+                        if (objectLayer.Class == "Entity Spawner") continue;
                         DrawObjectLayer(spriteBatch, objectLayer);
                         break;
                     case ImageLayer imageLayer:
@@ -453,7 +481,7 @@ namespace Juegazo.Map
                 }
             }
         }
-        //STILL DOESNT WORK!!!!!!
+        //TODO: STILL DOESNT WORK!!!!!!
         private void DrawImageLayer(SpriteBatch spriteBatch, ImageLayer imageLayer)
         {
             if (!imageLayer.Image.HasValue) return;

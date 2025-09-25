@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Juegazo.Components;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -77,14 +78,15 @@ namespace Juegazo
         {
             foreach (var component in componentList)
             {
-                if (component.Enable) component.Update(gameTime);
+                if (component.EnableUpdate) component.Update(gameTime);
             }
         }
         public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             foreach (var component in componentList)
             {
-                if (component.Visible) component.Draw(gameTime, spriteBatch);
+                if (component.EnableDraw)
+                    component.Draw(gameTime, spriteBatch);
             }
         }
         
@@ -94,10 +96,19 @@ namespace Juegazo
             {
                 throw new Exception("Component " + component + " already has an owner");
             }
+            component.Owner = this; //I FUCKING FORFOT TO ADD THIS COMPONENT IM GOING TO KMS
+            component.Start(); //i need this if i have to make some rectangles or shit
             componentList.Add(component);
             componentDictionary.Add(type, component);
-            component.Owner = this; //I FUCKING FORFOT TO ADD THIS COMPONENT IM GOING TO KMS
             return component; //why? because fuck it why not
+        }
+        public List<Component> AddComponents(List<Component> components)
+        {
+            foreach (var component in components)
+            {
+                AddComponent(component.GetType(), component);
+            }
+            return components;
         }
         public Component getComponent(Type type) => componentDictionary[type];
         public T getComponent<T>() where T : Component => (T)componentDictionary[typeof(T)];

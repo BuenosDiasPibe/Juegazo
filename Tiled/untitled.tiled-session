@@ -92,6 +92,14 @@
                 "y": 191.83092867303395
             }
         },
+        "Level9.tmx": {
+            "scale": 0.7689062499999999,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 319.93497256655155,
+                "y": 191.83092867303395
+            }
+        },
         "Main.tmx": {
             "expandedObjectLayers": [
                 4
@@ -197,7 +205,7 @@
         "Level8.tmx"
     ],
     "project": "untitled.tiled-project",
-    "property.type": "object",
+    "property.type": "int",
     "recentFiles": [
         "Level1.tmx",
         "Level6.tmx",

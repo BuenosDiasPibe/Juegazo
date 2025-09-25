@@ -11,8 +11,8 @@ namespace Juegazo
     {
         public Texture2D texture;
         public Color color;
-        public Rectangle Destinationrectangle;
-        public Rectangle sourceRectangle;
+        public Rectangle Destinationrectangle = new();
+        public Rectangle sourceRectangle = new();
         public Sprite(Texture2D texture, Rectangle sourceRectangle, Rectangle Destrectangle, Color color)
         {
             this.texture = texture;
