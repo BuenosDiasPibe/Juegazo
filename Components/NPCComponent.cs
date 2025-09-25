@@ -5,6 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Gum.Wireframe;
+using MonoGameGum.Forms.Controls;
+using MonoGameGum;
+using MonoGameGum.GueDeriving;
 
 namespace Juegazo.Components
 {
@@ -16,13 +20,18 @@ namespace Juegazo.Components
         private int dialogEnd = 1;
         private string name;
         public Rectangle interactiveArea { get; protected set; } = new();
-        public NPCComponent(Camera camera, string name, int dialogStart, int dialogEnd)
+        private GumService gum;
+        public bool displayBox = false;
+        public NPCComponent(Camera camera, string name, int dialogStart, int dialogEnd, GumService gum)
         {
             this.camera = camera;
             this.EnableUpdate = true;
             this.name = name;
             this.dialogStart = dialogStart;
             this.dialogEnd = dialogEnd;
+            this.gum = gum;
+            this.EnableDraw = true;
+
         }
         public override void Start()
         {
@@ -31,6 +40,26 @@ namespace Juegazo.Components
                     Owner.collider.Y - Owner.collider.Height,
                     Owner.collider.Width * 3, Owner.collider.Height * 3);
         }
+        private void CreateDialogBox(Rectangle rec) //TODO: this doesnt work
+        {
+            GumService.Default.Root.Children.Clear();
+            GraphicalUiElement container = new();
+            container.SetProperty("Width", (float)rec.Width);
+            container.SetProperty("Height", (float)(rec.Y + rec.Height/2));
+            container.SetProperty("Background", Color.Red);
+            container.SetProperty("ForeGround", Color.White);
+            container.SetProperty("X", (float)rec.X);
+            container.SetProperty("Y", (float)(rec.Height/2));
+
+            var textDisplay = new TextRuntime();
+            textDisplay.SetProperty("Width", 380f);
+            textDisplay.SetProperty("Height", 180f);
+            textDisplay.SetProperty("X", 10f);
+            textDisplay.SetProperty("Y", 10f);
+            textDisplay.SetProperty("Text", $"Hello, I am {name}");
+
+            container.AddToRoot();
+        }
         public override void Destroy()
         {
             Console.WriteLine("hay causita no quiero irme");
@@ -38,14 +67,19 @@ namespace Juegazo.Components
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
+            Rectangle srcRect = Owner.sourceRectangle;
+            if (Owner.getComponent(typeof(AnimationComponent)) is AnimationComponent component)
+            {
+                srcRect = component.sourceRectangle;
+            }
             Rectangle r = camera.ViewPortRectangle;
-            spriteBatch.Draw(Owner.texture, new Rectangle(
-                r.X,
-                r.Y+r.Height/2,
-                r.Width,
-                r.Height/2),
-                Owner.sourceRectangle,
-                Color.Red);
+            // CreateDialogBox(r);
+            if (displayBox)
+            {
+                CreateDialogBox(r);
+                spriteBatch.Draw(Owner.texture, new Rectangle(r.X, r.Y + r.Height / 2, r.Width, r.Height / 2), srcRect, Color.Red);
+                gum.Draw();
+            }
         }
 
         public override void Update(GameTime gameTime)
@@ -54,12 +88,18 @@ namespace Juegazo.Components
         private KeyboardState prevState;
         public void Collisions(Entity entity)
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.X) && prevState.IsKeyUp(Keys.X))
+            if (interactiveArea.Intersects(entity.Destinationrectangle))
             {
-                this.EnableDraw = !EnableDraw;
-                Console.WriteLine("yipieeee");
+                if (Keyboard.GetState().IsKeyDown(Keys.X) && prevState.IsKeyUp(Keys.X))
+                {
+                    displayBox = !displayBox;
+                }
+                prevState = Keyboard.GetState();
             }
-            prevState = Keyboard.GetState();
+            else
+            {
+                displayBox = false;
+            }
         }
     }
 }

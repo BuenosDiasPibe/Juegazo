@@ -67,7 +67,7 @@ namespace Juegazo
             }
 
             List<ICustomTypeDefinition> typeDefinitions = new();
-            tilemap = new(graphicsDevice, projectDirectory, levelPath, TILESIZE, typeDefinitions, camera);
+            tilemap = new(graphicsDevice, projectDirectory, levelPath, TILESIZE, typeDefinitions, camera, gum);
             entities.AddRange(tilemap.entities);
 
             var componentsOnEntity = new List<Component> {
@@ -107,7 +107,7 @@ namespace Juegazo
             if (Keyboard.GetState().IsKeyDown(Keys.R) && pastKey.IsKeyDown(Keys.R))
             {
                 List<ICustomTypeDefinition> typeDefinitions = new();
-                tilemap = new(graphicsDevice, projectDirectory, levelPath, TILESIZE, typeDefinitions, camera);
+                tilemap = new(graphicsDevice, projectDirectory, levelPath, TILESIZE, typeDefinitions, camera, gum);
             }
             if (Keyboard.GetState().IsKeyDown(Keys.M) && pastKey.IsKeyDown(Keys.M))
             {

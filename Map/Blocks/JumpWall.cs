@@ -12,7 +12,7 @@ namespace Juegazo.Map.Blocks
     {
         private float jumpStrength = 11;
         public bool canJump = true;
-        private float recoilVelocity = 20;
+        private float recoilVelocity = 25;
         public JumpWall(Rectangle collider)
             : base(collider)
         {

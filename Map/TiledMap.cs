@@ -16,6 +16,7 @@ using Juegazo.CustomTiledTypesImplementation;
 using Juegazo.Map.Blocks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGameGum;
 using ToolsUtilities;
 using Color = Microsoft.Xna.Framework.Color;
 
@@ -25,6 +26,7 @@ namespace Juegazo.Map
     public class TiledMap
     {
         GraphicsDevice graphicsDevice;
+        GumService gum;
         public DotTiled.Map Map { get; }
         public string MapFilePath { get; }
         public string TiledProjectDirectory { get; }
@@ -82,7 +84,7 @@ namespace Juegazo.Map
             return data.GlobalTileIDs;
         }
 
-        public TiledMap(GraphicsDevice graphicsDevice, string projectDirectory, string mapFilePath, int TILESIZE, List<ICustomTypeDefinition> typeDefinitions, Camera camera)
+        public TiledMap(GraphicsDevice graphicsDevice, string projectDirectory, string mapFilePath, int TILESIZE, List<ICustomTypeDefinition> typeDefinitions, Camera camera, GumService gum)
         {
             this.graphicsDevice = graphicsDevice;
             foreach (var t in typeDefinitions)
@@ -91,6 +93,7 @@ namespace Juegazo.Map
             }
             this.graphicsDevice = graphicsDevice;
             this.camera = camera;
+            this.gum = gum;
             TiledProjectDirectory = projectDirectory;
             MapFilePath = mapFilePath;
 
@@ -296,7 +299,7 @@ namespace Juegazo.Map
                         // Console.WriteLine((int)((tile.GID-32) % 4)); //DIOS Y LA VIRGEN TE BENDIGAN DI GRACIA!!!!!!! its not working completly as intended but it gets the job done
                         entity.AddComponents(new List<Component>{
                             new AnimationComponent(4, (int)((tile.GID+32)%4), 16, 16),
-                            new NPCComponent(camera, tile.Name, papu.dialogStart, papu.dialogEnd)
+                            new NPCComponent(camera, tile.Name, papu.dialogStart, papu.dialogEnd, gum)
                         });
                     }
                     entities.Add(entity);
@@ -481,7 +484,6 @@ namespace Juegazo.Map
                 }
             }
         }
-        //TODO: STILL DOESNT WORK!!!!!!
         private void DrawImageLayer(SpriteBatch spriteBatch, ImageLayer imageLayer)
         {
             if (!imageLayer.Image.HasValue) return;
@@ -495,27 +497,32 @@ namespace Juegazo.Map
             switch (repeatX, repeatY)
             {
                 default:
-                case (false, false): {
+                case (false, false):
+                    {
                         srcRect = texture.Bounds;
-                        destRect = new Rectangle((int)imageLayer.X, (int)imageLayer.Y.Value, texture.Width, texture.Height);
+                        destRect = new Rectangle((int)(imageLayer.X+imageLayer.ParallaxX), (int)(imageLayer.Y.Value+imageLayer.ParallaxY), texture.Width, texture.Height);
                         break;
                     }
-                case (true, true): {
+                case (true, true):
+                    {
                         destRect = camera.ViewPortRectangle;
                         srcRect = camera.ViewPortRectangle;
                         break;
                     }
-                case (true, false): {
+                case (true, false):
+                    {
                         destRect = new Rectangle(viewport_bounds.X, (int)imageLayer.OffsetY, viewport_bounds.Width, texture.Height);
                         srcRect = new Rectangle(destRect.X, 0, destRect.Width, texture.Height);
                         break;
                     }
-                case (false, true): {
+                case (false, true):
+                    {
                         destRect = new Rectangle((int)offset.X, viewport_bounds.Y, texture.Width, viewport_bounds.Height);
                         srcRect = new Rectangle(0, destRect.Y, texture.Width, destRect.Height);
                         break;
                     }
             }
+            spriteBatch.Draw(texture, destRect, srcRect, Color.White);
         }
 
         private void DrawTileCollisionLayer(SpriteBatch spriteBatch, TileLayer tileLayer)

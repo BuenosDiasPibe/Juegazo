@@ -22,7 +22,7 @@ namespace Juegazo.Components
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
         }
-
+        //TODO: if you collide with more than one entity with NPCComponent, there should only be one instance
         public override void Update(GameTime gameTime)
         {
             foreach (var entity in entities)
@@ -30,10 +30,7 @@ namespace Juegazo.Components
                 if (!entity.hasComponent(typeof(NPCComponent))) continue;
                 if (entity.getComponent(typeof(NPCComponent)) is NPCComponent component)
                 {
-                    if (component.interactiveArea.Intersects(Owner.collider))
-                    {
-                        component.Collisions(Owner);
-                    }
+                    component.Collisions(Owner);
                 }
             }
         }

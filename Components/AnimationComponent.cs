@@ -14,7 +14,7 @@ namespace Juegazo.Components
         private int totalFrames = 2; // adjust based on your sprite sheet
         private int frameWidth = 16;
         int frameHeight = 16;
-        private Rectangle sourceRectangle = new();
+        public Rectangle sourceRectangle { get; protected set; } = new();
         public AnimationComponent()
         {
             this.EnableDraw = true;
