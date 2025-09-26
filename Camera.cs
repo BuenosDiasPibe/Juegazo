@@ -44,11 +44,12 @@ namespace Juegazo
 
         public override string ToString()
         {
-            return "Camera:\n\tViewport: { " + Viewport.X + ", " + Viewport.Y + ", " + Viewport.Width + ", " + Viewport.Height +
-                " }\n\tPosition: { " + position.X + ", " + position.Y +
-                " }\n\tOrigin: { " + origin.X + ", " + origin.Y +
-                " }\n\tZoom: { " + zoom.X + ", " + zoom.Y +
-                " }\n\tAngle: " + angle;
+            return "Camera:\nViewport: { " + Viewport.X + ", " + Viewport.Y + ", " + Viewport.Width + ", " + Viewport.Height +
+                " }\nPosition: { " + position.X + ", " + position.Y +
+                " }\nOrigin: { " + origin.X + ", " + origin.Y +
+                " }\nZoom: { " + zoom.X + ", " + zoom.Y +
+                " }\nAngle: " + angle +
+                "\nRectangle: " +ViewPortRectangle;
         }
 
         private void UpdateMatrices()

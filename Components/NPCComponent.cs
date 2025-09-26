@@ -9,6 +9,7 @@ using Gum.Wireframe;
 using MonoGameGum.Forms.Controls;
 using MonoGameGum;
 using MonoGameGum.GueDeriving;
+using FlatRedBall.Glue.StateInterpolation;
 
 namespace Juegazo.Components
 {
@@ -22,6 +23,8 @@ namespace Juegazo.Components
         public Rectangle interactiveArea { get; protected set; } = new();
         private GumService gum;
         public bool displayBox = false;
+        private ColoredRectangleRuntime background;
+        private bool displayCreature;
         public NPCComponent(Camera camera, string name, int dialogStart, int dialogEnd, GumService gum)
         {
             this.camera = camera;
@@ -31,7 +34,6 @@ namespace Juegazo.Components
             this.dialogEnd = dialogEnd;
             this.gum = gum;
             this.EnableDraw = true;
-
         }
         public override void Start()
         {
@@ -39,26 +41,21 @@ namespace Juegazo.Components
                     Owner.collider.X - Owner.collider.Width,
                     Owner.collider.Y - Owner.collider.Height,
                     Owner.collider.Width * 3, Owner.collider.Height * 3);
-        }
-        private void CreateDialogBox(Rectangle rec) //TODO: this doesnt work
-        {
+
             GumService.Default.Root.Children.Clear();
-            GraphicalUiElement container = new();
-            container.SetProperty("Width", (float)rec.Width);
-            container.SetProperty("Height", (float)(rec.Y + rec.Height/2));
-            container.SetProperty("Background", Color.Red);
-            container.SetProperty("ForeGround", Color.White);
-            container.SetProperty("X", (float)rec.X);
-            container.SetProperty("Y", (float)(rec.Height/2));
+            background = CreateDialogBox(camera.ViewPortRectangle);
+            background.AddToRoot();
+        }
+        private ColoredRectangleRuntime CreateDialogBox(Rectangle rec)
+        {
+            var background = new ColoredRectangleRuntime();
+            background.X = 0;
+            background.Y = camera.Viewport.Height/2;
+            background.Width = rec.Width;
+            background.Height = rec.Height/2;
+            background.Color = Color.Black;
 
-            var textDisplay = new TextRuntime();
-            textDisplay.SetProperty("Width", 380f);
-            textDisplay.SetProperty("Height", 180f);
-            textDisplay.SetProperty("X", 10f);
-            textDisplay.SetProperty("Y", 10f);
-            textDisplay.SetProperty("Text", $"Hello, I am {name}");
-
-            container.AddToRoot();
+            return background;
         }
         public override void Destroy()
         {
@@ -73,13 +70,12 @@ namespace Juegazo.Components
                 srcRect = component.sourceRectangle;
             }
             Rectangle r = camera.ViewPortRectangle;
-            // CreateDialogBox(r);
+            // background.X = 0; //apparently gum doesnt need to change on camera view, fuck me i guess
             if (displayBox)
             {
-                CreateDialogBox(r);
-                spriteBatch.Draw(Owner.texture, new Rectangle(r.X, r.Y + r.Height / 2, r.Width, r.Height / 2), srcRect, Color.Red);
                 gum.Draw();
             }
+            if (displayCreature) spriteBatch.Draw(Owner.texture, r, srcRect, Color.Red);
         }
 
         public override void Update(GameTime gameTime)
@@ -94,6 +90,8 @@ namespace Juegazo.Components
                 {
                     displayBox = !displayBox;
                 }
+                if (Keyboard.GetState().IsKeyDown(Keys.C) && prevState.IsKeyUp(Keys.C))
+                    displayCreature = !displayCreature;
                 prevState = Keyboard.GetState();
             }
             else

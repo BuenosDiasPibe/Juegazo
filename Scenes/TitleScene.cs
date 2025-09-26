@@ -69,14 +69,11 @@ namespace Juegazo
 
         public void Initialize(Game game)
         {
-            gum.Initialize(game);
-            CreateShit();
         }
 
         public void LoadContent()
         {
-            if (manager.hasScenes())
-                CreateShit();
+            CreateShit();
         }
 
         public void UnloadContent()

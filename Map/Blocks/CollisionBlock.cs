@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
 using Juegazo.Components;
 
-namespace Juegazo
+namespace Juegazo.Map.Blocks
 {
     public class CollisionBlock : Block
     {

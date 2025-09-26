@@ -174,6 +174,10 @@ namespace Juegazo.Map
                 var tobj = (TileObject)obj;
                 switch (obj.Type)
                 {
+                    case "Collision Block":
+                        var paap = obj.MapPropertiesTo<CustomTiledTypes.CollisionBlock>();
+                        MapObjectToType[tobj] = new CustomTiledTypesImplementation.CollisionBlock(paap);
+                        break;
                     case "MovementBlock":
                         var papu = obj.MapPropertiesTo<CustomTiledTypes.MovementBlock>();
 
@@ -289,18 +293,30 @@ namespace Juegazo.Map
                 if (tile.Type == "NPC")
                 {
                     var papu = tile.MapPropertiesTo<NPC>();
-                    Tileset tileset = TilesetsByGID[tile.GID];
+                    Tileset tileset = TilesetsByGID[tile.GID]; //TODO: add a has variable that stores all data from tileset and you access it by a GID
+                    Console.WriteLine($"tileset things: {tileset.Tiles.Count}");
                     Texture2D atlasImage = TilemapTextures[tileset]; //this looks like shit but idk
 
                     Entity entity = new Entity(atlasImage, GetSourceRect(tile.GID, tileset), GetObjectDestinationRectangle(tile), 1, Color.White);
                     //TODO: find a way to not do this horrible thing
-                    if (papu.name == "Jose")
+                    Console.WriteLine($"npc name: {papu.name}");
+                    switch (papu.name)
                     {
-                        // Console.WriteLine((int)((tile.GID-32) % 4)); //DIOS Y LA VIRGEN TE BENDIGAN DI GRACIA!!!!!!! its not working completly as intended but it gets the job done
-                        entity.AddComponents(new List<Component>{
-                            new AnimationComponent(4, (int)((tile.GID+32)%4), 16, 16),
-                            new NPCComponent(camera, tile.Name, papu.dialogStart, papu.dialogEnd, gum)
-                        });
+                        case "Jose":
+                            entity.AddComponents(new List<Component>{
+                                new AnimationComponent(4, (int)((tile.GID+32)%4), 16, 16),
+                                new NPCComponent(camera, tile.Name, papu.dialogStart, papu.dialogEnd, gum)
+                            });
+                            break;
+                        case "Grandma":
+                                entity.AddComponents(new List<Component>{
+                                    new AnimationComponent(3, (int)((tile.GID-40)%3), 16, 16),
+                                    new NPCComponent(camera, tile.Name, papu.dialogStart, papu.dialogEnd, gum)
+                                });
+                            break;
+                        default:
+                            Console.WriteLine("im really sorry :(((");
+                            break;
                     }
                     entities.Add(entity);
                 }

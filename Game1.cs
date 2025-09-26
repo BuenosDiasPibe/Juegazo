@@ -45,12 +45,13 @@ public class Game1 : Game
             _graphics.PreferredBackBufferHeight = 720;
         }
         _graphics.ApplyChanges();
+        gum.Initialize(this);
 
         viewport = GraphicsDevice.Viewport;
         principalCamera = new(viewport.Width, viewport.Height);        
 
         sceneManager.AddScene(new TitleScene(sceneManager, Content, GraphicsDevice, gum, principalCamera));
-        sceneManager.GetScene().Initialize(this);
+        // sceneManager.GetScene().Initialize(this); // only used on TitleScene, its not very useful
         base.Initialize();
     }
 

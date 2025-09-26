@@ -71,7 +71,7 @@ namespace Juegazo
             entities.AddRange(tilemap.entities);
 
             var componentsOnEntity = new List<Component> {
-                new CameraToEntityComponent(camera),
+                new CameraToEntitySimpleComponent(camera),
                 new MoveVerticalComponent(),
                 new MoveHorizontalComponent(),
                 new ComplexGravityComponent(),
@@ -91,7 +91,7 @@ namespace Juegazo
 
             font = contentManager.Load<SpriteFont>("sheesh");
             camera.Origin = new Vector2(camera.Viewport.Width / 2, camera.Viewport.Height / 2);
-            camera.Zoom = 1.5f;
+            camera.Zoom = 1;
         }
 
         public void UnloadContent()
@@ -106,8 +106,15 @@ namespace Juegazo
 
             if (Keyboard.GetState().IsKeyDown(Keys.R) && pastKey.IsKeyDown(Keys.R))
             {
+                var playerEntity = entities.First(e => e.hasComponent(typeof(CanDieComponent)));
+                entities.Clear();
+                entities.Add(playerEntity);
+                entities.AddRange(tilemap.entities);
+                var interactions = playerEntity.getComponent<EntitiesInteractionsComponent>();
+                interactions.entities = entities;
                 List<ICustomTypeDefinition> typeDefinitions = new();
                 tilemap = new(graphicsDevice, projectDirectory, levelPath, TILESIZE, typeDefinitions, camera, gum);
+                entities.AddRange(tilemap.entities);
             }
             if (Keyboard.GetState().IsKeyDown(Keys.M) && pastKey.IsKeyDown(Keys.M))
             {
@@ -242,6 +249,7 @@ namespace Juegazo
                 if (p.EnableCollisions) debugger.DrawRectHollow(spriteBatch, p.collider, 4, Color.Brown);
                 else debugger.DrawRectHollow(spriteBatch, p.collider, 2, new Color(50, 50, 50, 100));
             }
+            debugger.DrawRectHollow(spriteBatch, camera.ViewPortRectangle, 2, Color.White);
         }
 
         public void Initialize(Game game)
@@ -260,6 +268,7 @@ namespace Juegazo
                                     $"exit game: {"Escape"}\nReload: {"R"}\nMain Menu: {"M"}", //TODO: add the keys to variables so i dont need to change this every time
                                     new Vector2(camera.Right - 200, camera.Top),
                                     Color.White);
+            spriteBatch.DrawString(font, camera.ToString(), new(camera.Left, camera.Top + 300), Color.White, 0f, Vector2.Zero, 0.7f, SpriteEffects.None, 0f);
         }
     }
 }

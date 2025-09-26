@@ -9,7 +9,7 @@ namespace Juegazo.Components
 {
     public class EntitiesInteractionsComponent : Component
     {
-        List<Entity> entities;
+        public List<Entity> entities;
         public EntitiesInteractionsComponent(List<Entity> entities)
         {
             this.entities = entities;

@@ -21,7 +21,9 @@ namespace Juegazo.Components
         { }
         public override void Update(GameTime gameTime)
         {
-            Camera.Position = new Vector2(Owner.Destinationrectangle.X + Owner.Destinationrectangle.Width/2, Owner.Destinationrectangle.Y + Owner.Destinationrectangle.Height / 2);
+            Camera.Position = new Vector2(Owner.Destinationrectangle.X //+ Owner.Destinationrectangle.Width/2
+                                          , Owner.Destinationrectangle.Y //+ Owner.Destinationrectangle.Height / 2
+                                          );
         }
     }
 }

@@ -42,6 +42,26 @@
         {
             "color": "#ffa0a0a4",
             "drawFill": true,
+            "id": 20,
+            "members": [
+                {
+                    "name": "canCollide",
+                    "type": "bool",
+                    "value": true
+                }
+            ],
+            "name": "Collision Block",
+            "type": "class",
+            "useAs": [
+                "property",
+                "object",
+                "tileset",
+                "project"
+            ]
+        },
+        {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
             "id": 14,
             "members": [
                 {
@@ -328,7 +348,7 @@
                 {
                     "name": "name",
                     "type": "string",
-                    "value": "Jose"
+                    "value": ""
                 }
             ],
             "name": "NPC",
@@ -336,6 +356,8 @@
             "useAs": [
                 "property",
                 "object",
+                "tile",
+                "tileset",
                 "project"
             ]
         },

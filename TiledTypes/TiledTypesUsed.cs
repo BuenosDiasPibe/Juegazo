@@ -11,7 +11,11 @@ namespace Juegazo.CustomTiledTypes
     {
         public int dialogEnd { get; set; } = 0;
         public int dialogStart { get; set; } = 1;
-        public string name {get; set; } = "Jose";
+        public string name { get; set; } = "";
+    }
+    public class CollisionBlock
+    {
+        public bool canCollide {get; set;} = true;
     }
     public class CollisionBlockObjectLayer
     {
@@ -362,5 +366,27 @@ namespace Juegazo.CustomTiledTypesImplementation
         {
             return new();
         }
-    }      
+    }
+    public class CollisionBlock : TiledTypesUsed
+    {
+        public bool canCollide = true;
+        public CollisionBlock(CustomTiledTypes.CollisionBlock cBlock)
+        {
+            canCollide = cBlock.canCollide;
+        }
+        public override Block createBlock(TileObject obj, int TILESIZE, DotTiled.Map map)
+        {
+            if (!canCollide) return null;
+            return new Map.Blocks.CollisionBlock(GetRect(obj, TILESIZE, map));
+        }
+
+        public override void getNeededObjectPropeties(DotTiled.Object obj, int TILESIZE, DotTiled.Map map)
+        {
+        }
+
+        public override List<uint> neededObjects()
+        {
+            return new();
+        }
+    }
 }
