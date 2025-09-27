@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "worldSpace2.tsx",
+    "activeFile": "Level9.tmx",
     "expandedProjectPaths": [
         "."
     ],
@@ -105,11 +105,14 @@
             }
         },
         "Level9.tmx": {
+            "expandedObjectLayers": [
+                2
+            ],
             "scale": 2,
-            "selectedLayer": 1,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": 320,
-                "y": 192.25
+                "x": 167,
+                "y": 150.25
             }
         },
         "Main.tmx": {
@@ -119,7 +122,7 @@
             "scale": 1.5378124999999998,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": 159.96748628327578,
+                "x": 159.9674862832758,
                 "y": 95.91546433651698
             }
         },
@@ -216,22 +219,23 @@
         "Level4.tmx",
         "Level8.tmx",
         "Level9.tmx",
-        "worldSpace2.tsx"
+        "worldSpace2.tsx",
+        "Main.tmx"
     ],
     "project": "untitled.tiled-project",
     "property.type": "bool",
     "recentFiles": [
-        "Level10.tmx",
         "Level1.tmx",
         "Level6.tmx",
         "Level2.tmx",
         "Level3.tmx",
         "Level4.tmx",
         "Level8.tmx",
-        "Level9.tmx",
-        "worldSpace2.tsx",
-        "Level7.tmx",
         "Main.tmx",
+        "worldSpace2.tsx",
+        "Level9.tmx",
+        "Level10.tmx",
+        "Level7.tmx",
         "tux based 01.jpg.tsx"
     ],
     "tileset.lastUsedFilter": "Archivos de conjuntos de patrones Tiled (*.tsx *.xml)",

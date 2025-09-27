@@ -53,6 +53,7 @@ namespace Juegazo.Map
 
         public Dictionary<uint, Tileset> TilesetsByGID { get; } = new();
         public Dictionary<string, Tileset> TilesetsByName { get; } = new();
+        public Dictionary<Tile, uint> TilesetTileByGID { get; } = new();
         public Dictionary<Tileset, Texture2D> TilemapTextures { get; } = new();
 
         public Dictionary<string, ImageLayer> imageLayerByName { get; } = new();
