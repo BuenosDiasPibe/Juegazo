@@ -3,18 +3,46 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "second level.tmx",
+    "activeFile": "/home/clumpl/Documentos/nuTiled/NuTiled/Content/tiled/map.tmx",
     "expandedProjectPaths": [
         "."
     ],
     "file.lastUsedOpenFilter": "Todos los archivos (*)",
     "fileStates": {
+        "/home/clumpl/Documentos/nuTiled/NuTiled/Content/tiled/Castlevania.tsx": {
+            "scaleInDock": 1
+        },
+        "/home/clumpl/Documentos/nuTiled/NuTiled/Content/tiled/Chips.tsx": {
+            "scaleInDock": 1
+        },
+        "/home/clumpl/Documentos/nuTiled/NuTiled/Content/tiled/Rando.tsx": {
+            "scaleInDock": 1
+        },
+        "/home/clumpl/Documentos/nuTiled/NuTiled/Content/tiled/map.tmx": {
+            "scale": 0.5690104166666666,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 960.4393592677347,
+                "y": 639.7070938215104
+            }
+        },
+        "/home/clumpl/Documentos/nuTiled/NuTiled/Content/tiled/tilemap.tsx": {
+            "scaleInDock": 1
+        },
         "Level1.tmx": {
             "scale": 3,
             "selectedLayer": 4,
             "viewCenter": {
                 "x": 245.33333333333334,
                 "y": 86.66666666666667
+            }
+        },
+        "Level10.tmx": {
+            "scale": 1.497734375,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 486.4013353502686,
+                "y": 306.46288665171346
             }
         },
         "Level2.tmx": {
@@ -50,6 +78,14 @@
             "viewCenter": {
                 "x": 292.33333333333337,
                 "y": 117.33333333333334
+            }
+        },
+        "Level8.tmx": {
+            "scale": 0.33,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 1331.818181818182,
+                "y": 36.36363636363649
             }
         },
         "Main.tmx": {
@@ -97,28 +133,36 @@
                 "y": 95.5
             }
         },
+        "worldSpace2.tsx": {
+            "scaleInDock": 1
+        },
         "worldTexture.tsx": {
             "scaleInDock": 3,
             "scaleInEditor": 1
         }
     },
+    "last.exportedFilePath": "/home/clumpl/Documentos/Juegazo/Tiled",
     "last.imagePath": "/home/clumpl/Documentos/Programacion/Juegazo/Content",
     "last.objectTypesPath": "/home/clumpl/Documentos/Juegazo/Tiled/PropietyFiles.json",
     "map.height": 24,
+    "map.lastUsedExportFilter": "JSON map files (*.tmj *.json)",
     "map.lastUsedFormat": "tmx",
     "map.tileHeight": 8,
     "map.tileWidth": 8,
     "map.width": 40,
     "openFiles": [
         "worldTexture.tsx",
-        "betterTest.tmx",
-        "goodOne.tmx",
-        "second level.tmx"
+        "Level10.tmx",
+        "Level8.tmx",
+        "/home/clumpl/Documentos/nuTiled/NuTiled/Content/tiled/map.tmx"
     ],
     "project": "tilemaps.tiled-project",
     "property.type": "bool",
     "recentFiles": [
         "worldTexture.tsx",
+        "Level10.tmx",
+        "Level8.tmx",
+        "/home/clumpl/Documentos/nuTiled/NuTiled/Content/tiled/map.tmx",
         "betterTest.tmx",
         "goodOne.tmx",
         "second level.tmx"

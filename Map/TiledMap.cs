@@ -99,7 +99,8 @@ namespace Juegazo.Map
             MapFilePath = mapFilePath;
 
             var loader = Loader.DefaultWith(customTypeDefinitions: typeDefinitions);
-            Map = loader.LoadMap(Path.Combine(TiledProjectDirectory, MapFilePath));
+            Map = loader.LoadMap(Path.Combine(TiledProjectDirectory, MapFilePath)); //this can throw an exception if a layer is not visible, because tiled puts that as 0, idfk why
+
             this.TILESIZE = TILESIZE;
             InitTilesets(Map.Tilesets, TiledProjectDirectory);
             InitLayers(Map.Layers);
@@ -118,6 +119,11 @@ namespace Juegazo.Map
                     if (!MapObjectToType.TryGetValue(tileObject, out var tiledType)) continue;
 
                     Block block = tiledType.createBlock(tileObject, TILESIZE, Map);
+                    if (block == null)
+                    {
+                        Console.WriteLine("not block created");
+                        continue;
+                    }
 
                     Vector2 position = new((int)(tileObject.X / TileWidth), (int)(tileObject.Y / TileHeight) - (int)(tileObject.Height / TileHeight)); //OMFG I FUCKING FORGOT ABOUT THIS I ALMOST FUCKED THIS SHIT UP
                     if (objectLayerClass.canOverrideCollisionLayer)
@@ -140,6 +146,7 @@ namespace Juegazo.Map
                 switch (layer.Class)
                 {
                     case "Collision Tile Layer":
+                        Console.WriteLine("fuck off");
                         TileLayer tileLayer = (TileLayer)layer;
                         CreateCollisionLayer(tileLayer);
                         break;
@@ -176,6 +183,7 @@ namespace Juegazo.Map
                 switch (obj.Type)
                 {
                     case "Collision Block":
+                        Console.WriteLine($"layer {objectLayer.Name} tries to add a {obj.Type}");
                         var paap = obj.MapPropertiesTo<CustomTiledTypes.CollisionBlock>();
                         MapObjectToType[tobj] = new CustomTiledTypesImplementation.CollisionBlock(paap);
                         break;
@@ -286,7 +294,7 @@ namespace Juegazo.Map
                 EntityPositionerByName[objectObject.Type] = new Vector2(x, y);
             }
         }
-        public void CreateEntities(ObjectLayer objectLayer) 
+        public void CreateEntities(ObjectLayer objectLayer)
         {
             foreach (var obj in objectLayer.Objects)
             {
@@ -310,7 +318,7 @@ namespace Juegazo.Map
                             });
                             break;
                         case "Grandma":
-                                entity.AddComponents(new List<Component>{
+                            entity.AddComponents(new List<Component>{
                                     new AnimationComponent(3, (int)((tile.GID-40)%3), 16, 16),
                                     new NPCComponent(camera, tile.Name, papu.dialogStart, papu.dialogEnd, gum)
                                 });
@@ -359,12 +367,12 @@ namespace Juegazo.Map
                 {
                     if (block.values.Contains(value) || value == block.value)
                     {
-                            Block blockk = (Block)Activator.CreateInstance(block.GetType());
-                            blockk.collider = new((int)position.X * TILESIZE,
-                                                  (int)position.Y * TILESIZE,
-                                                  TILESIZE,
-                                                  TILESIZE);
-                            collisionLayer[position] = blockk;
+                        Block blockk = (Block)Activator.CreateInstance(block.GetType());
+                        blockk.collider = new((int)position.X * TILESIZE,
+                                              (int)position.Y * TILESIZE,
+                                              TILESIZE,
+                                              TILESIZE);
+                        collisionLayer[position] = blockk;
                     }
                 }
             }
@@ -423,7 +431,7 @@ namespace Juegazo.Map
                 {
                     case ImageLayer imageLayer:
                         imageLayerByName[imageLayer.Name] = imageLayer;
-                        if(!imageLayer.Image.HasValue) break;
+                        if (!imageLayer.Image.HasValue) break;
                         Texture2D texture = LoadImage(graphicsDevice, MapFileDirectory, imageLayer.Image);
                         ImageLayerTexture[imageLayer] = texture;
                         break;
@@ -473,7 +481,6 @@ namespace Juegazo.Map
             foreach (BaseLayer layer in layers)
             {
                 if (!layer.Visible) continue;
-                // Vector2 parallax = new Vector2(layer.ParallaxX, layer.ParallaxY); //TODO: add parallax effect
                 switch (layer)
                 {
                     case Group group:
@@ -517,7 +524,7 @@ namespace Juegazo.Map
                 case (false, false):
                     {
                         srcRect = texture.Bounds;
-                        destRect = new Rectangle((int)(imageLayer.X+imageLayer.ParallaxX), (int)(imageLayer.Y.Value+imageLayer.ParallaxY), texture.Width, texture.Height);
+                        destRect = new Rectangle((int)(imageLayer.X + imageLayer.ParallaxX * camera.ViewPortRectangle.X), (int)(imageLayer.Y.Value + imageLayer.ParallaxY * camera.ViewPortRectangle.Y), texture.Width, texture.Height);
                         break;
                     }
                 case (true, true):
@@ -607,6 +614,10 @@ namespace Juegazo.Map
                 }
                 else
                 {
+                    destRect = new((int)(tileObject.X / TileWidth * TILESIZE),
+                                   (int)(((tileObject.Y / TileHeight) - (int)(tileObject.Height / TileHeight)) * TILESIZE),
+                                   (int)(tileObject.Width / TileWidth * TILESIZE),
+                                   (int)(tileObject.Height / TileHeight * TILESIZE));
                     spriteBatch.Draw(texture, destRect, srcRect, Color.White);
                 }
             }

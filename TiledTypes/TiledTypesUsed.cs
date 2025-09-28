@@ -376,8 +376,8 @@ namespace Juegazo.CustomTiledTypesImplementation
         }
         public override Block createBlock(TileObject obj, int TILESIZE, DotTiled.Map map)
         {
-            if (!canCollide) return null;
-            return new Map.Blocks.CollisionBlock(GetRect(obj, TILESIZE, map));
+            if (!canCollide) return null; // this causes some issues with a lot of things, its best to create a Collision block instead for now
+            return new Map.Blocks.CollisionBlock(GetRect(obj, TILESIZE, map), canCollide);
         }
 
         public override void getNeededObjectPropeties(DotTiled.Object obj, int TILESIZE, DotTiled.Map map)

@@ -10,6 +10,7 @@ namespace Juegazo.Map.Blocks
 {
     public class CollisionBlock : Block
     {
+        public bool canCollide { get; protected set; } = true;
         public CollisionBlock(Rectangle collisionRectangle) : base(collisionRectangle)
         {
             value = 11;
@@ -20,8 +21,14 @@ namespace Juegazo.Map.Blocks
             value = 11;
             //isVisible = false;
         }
+        public CollisionBlock(Rectangle collision, bool canCollide) : base(collision)
+        {
+            value = 11;
+            this.canCollide = canCollide;
+        }
         public override void horizontalActions(Entity entity, Rectangle collision)
         {
+            if (!canCollide) return;
             entity.baseVelocity = new();
             if (entity is Player player) player.hasJumpedWall = false;
 
@@ -59,6 +66,7 @@ namespace Juegazo.Map.Blocks
 
         public override void verticalActions(Entity entity, Rectangle collision)
         {
+            if (!canCollide) return;
             entity.baseVelocity = new();
             int entityBottom = entity.Destinationrectangle.Bottom;
             int entityTop = entity.Destinationrectangle.Top;

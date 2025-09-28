@@ -63,7 +63,7 @@ namespace Juegazo
             playerTexture = contentManager.Load<Texture2D>("second_player_sprite");
             if (levelPath == null)
             {
-                levelPath = "Main.tmx";
+                levelPath = "Main.tmj";
             }
 
             List<ICustomTypeDefinition> typeDefinitions = new();
@@ -91,7 +91,7 @@ namespace Juegazo
 
             font = contentManager.Load<SpriteFont>("sheesh");
             camera.Origin = new Vector2(camera.Viewport.Width / 2, camera.Viewport.Height / 2);
-            camera.Zoom = 1;
+            camera.Zoom = 1.5f;
         }
 
         public void UnloadContent()
@@ -205,12 +205,12 @@ namespace Juegazo
                 UnloadContent();
                 if (nextScene == 0)
                 {
-                    levelPath = "Main.tmx";
+                    levelPath = "Main.tmj";
                     LoadContent();
                     return;
                 }
                 Console.WriteLine("changing to " + levelPath);
-                levelPath = "Level" + nextScene + ".tmx";
+                levelPath = "Level" + nextScene + ".tmj";
                 LoadContent();
             }
             pastKey = Keyboard.GetState();

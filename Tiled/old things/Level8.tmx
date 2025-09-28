@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="40" height="24" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="2">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="40" height="24" tilewidth="16" tileheight="16" infinite="0" nextlayerid="8" nextobjectid="2">
+ <editorsettings>
+  <export target="Level8.json" format="json"/>
+ </editorsettings>
  <tileset firstgid="1" source="worldSpace2.tsx"/>
- <imagelayer id="5" name="Capa de Imagen 1" parallaxx="10" parallaxy="10" repeatx="1" repeaty="1">
-  <image source="../../../../Imágenes/tux one-liners/tux based 01.jpg" width="405" height="286"/>
+ <imagelayer id="5" name="Capa de Imagen 1" visible="0" parallaxx="5" parallaxy="0">
+  <image source="../../../Imágenes/GruvBox-Repositories/everforest-weirdcore.png" width="1920" height="1080"/>
+ </imagelayer>
+ <imagelayer id="7" name="Capa de Imagen 2" visible="0" parallaxx="0" parallaxy="0">
+  <image source="../../../Imágenes/GruvBox-Repositories/gruvbox-wallpapers-sirDave141/wallpapers/light/squirrel.jpg" width="1626" height="2322"/>
+  
  </imagelayer>
  <layer id="1" name="Capa de patrones 1" class="Collision Tile Layer" width="40" height="24">
   <data encoding="csv">
