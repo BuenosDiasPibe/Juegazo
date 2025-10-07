@@ -53,7 +53,7 @@ namespace Juegazo.Map
 
         public Dictionary<uint, Tileset> TilesetsByGID { get; } = new();
         public Dictionary<string, Tileset> TilesetsByName { get; } = new();
-        public Dictionary<Tile, uint> TilesetTileByGID { get; } = new();
+        public Dictionary<Dictionary<uint, Tileset>, Tile> TilesetTileByGID { get; } = new();
         public Dictionary<Tileset, Texture2D> TilemapTextures { get; } = new();
 
         public Dictionary<string, ImageLayer> imageLayerByName { get; } = new();
@@ -146,7 +146,6 @@ namespace Juegazo.Map
                 switch (layer.Class)
                 {
                     case "Collision Tile Layer":
-                        Console.WriteLine("fuck off");
                         TileLayer tileLayer = (TileLayer)layer;
                         CreateCollisionLayer(tileLayer);
                         break;
@@ -179,95 +178,101 @@ namespace Juegazo.Map
             foreach (var obj in objectLayer.Objects)
             {
                 if (!(obj is TileObject)) continue;
+
                 var tobj = (TileObject)obj;
+
+                var tileData = TilesetTileByGID.FirstOrDefault(x => x.Key.ContainsKey(tobj.GID)).Value;
+                if (tileData !=null)
+                { Console.WriteLine($"tileData: {tileData.Type}"); }
+
                 switch (obj.Type)
-                {
-                    case "Collision Block":
-                        Console.WriteLine($"layer {objectLayer.Name} tries to add a {obj.Type}");
-                        var paap = obj.MapPropertiesTo<CustomTiledTypes.CollisionBlock>();
-                        MapObjectToType[tobj] = new CustomTiledTypesImplementation.CollisionBlock(paap);
-                        break;
-                    case "MovementBlock":
-                        var papu = obj.MapPropertiesTo<CustomTiledTypes.MovementBlock>();
+                    {
+                        case "Collision Block":
+                            Console.WriteLine($"layer {objectLayer.Name} tries to add a {obj.Type}");
+                            var paap = obj.MapPropertiesTo<CustomTiledTypes.CollisionBlock>();
+                            MapObjectToType[tobj] = new CustomTiledTypesImplementation.CollisionBlock(paap);
+                            break;
+                        case "MovementBlock":
+                            var papu = obj.MapPropertiesTo<CustomTiledTypes.MovementBlock>();
 
-                        objectProperties = obj.Properties
-                            .Where(p => p.Type == PropertyType.Object)
-                            .Cast<ObjectProperty>()
-                            .Select(op => op.Value);
-                        unimplementedThings.AddRange(objectProperties);
+                            objectProperties = obj.Properties
+                                .Where(p => p.Type == PropertyType.Object)
+                                .Cast<ObjectProperty>()
+                                .Select(op => op.Value);
+                            unimplementedThings.AddRange(objectProperties);
 
-                        MapObjectToType[tobj] = new CustomTiledTypesImplementation.MovementBlock(papu);
-                        break;
-                    case "DamageBlock":
+                            MapObjectToType[tobj] = new CustomTiledTypesImplementation.MovementBlock(papu);
+                            break;
+                        case "DamageBlock":
 
-                        objectProperties = obj.Properties
-                            .Where(p => p.Type == PropertyType.Object)
-                            .Cast<ObjectProperty>()
-                            .Select(op => op.Value);
-                        unimplementedThings.AddRange(objectProperties);
+                            objectProperties = obj.Properties
+                                .Where(p => p.Type == PropertyType.Object)
+                                .Cast<ObjectProperty>()
+                                .Select(op => op.Value);
+                            unimplementedThings.AddRange(objectProperties);
 
-                        var damage = obj.MapPropertiesTo<CustomTiledTypes.DamageBlock>();
-                        MapObjectToType[tobj] = new CustomTiledTypesImplementation.DamageBlock(damage);
-                        break;
-                    case "CheckPointBlock":
+                            var damage = obj.MapPropertiesTo<CustomTiledTypes.DamageBlock>();
+                            MapObjectToType[tobj] = new CustomTiledTypesImplementation.DamageBlock(damage);
+                            break;
+                        case "CheckPointBlock":
 
-                        objectProperties = obj.Properties
-                            .Where(p => p.Type == PropertyType.Object)
-                            .Cast<ObjectProperty>()
-                            .Select(op => op.Value);
-                        unimplementedThings.AddRange(objectProperties);
+                            objectProperties = obj.Properties
+                                .Where(p => p.Type == PropertyType.Object)
+                                .Cast<ObjectProperty>()
+                                .Select(op => op.Value);
+                            unimplementedThings.AddRange(objectProperties);
 
-                        var checkPoint = obj.MapPropertiesTo<CustomTiledTypes.CheckPointBlock>();
-                        MapObjectToType[tobj] = new CustomTiledTypesImplementation.CheckPointBlock(checkPoint);
-                        break;
-                    case "CompleteLevelBlock":
-                        objectProperties = obj.Properties
-                            .Where(p => p.Type == PropertyType.Object)
-                            .Cast<ObjectProperty>()
-                            .Select(op => op.Value);
-                        unimplementedThings.AddRange(objectProperties);
+                            var checkPoint = obj.MapPropertiesTo<CustomTiledTypes.CheckPointBlock>();
+                            MapObjectToType[tobj] = new CustomTiledTypesImplementation.CheckPointBlock(checkPoint);
+                            break;
+                        case "CompleteLevelBlock":
+                            objectProperties = obj.Properties
+                                .Where(p => p.Type == PropertyType.Object)
+                                .Cast<ObjectProperty>()
+                                .Select(op => op.Value);
+                            unimplementedThings.AddRange(objectProperties);
 
-                        var complete = obj.MapPropertiesTo<CustomTiledTypes.CompleteLevelBlock>();
-                        MapObjectToType[tobj] = new CustomTiledTypesImplementation.CompleteLevelBlock(complete);
-                        break;
-                    case "VerticalBoostBlock":
-                        objectProperties = obj.Properties
-                            .Where(p => p.Type == PropertyType.Object)
-                            .Cast<ObjectProperty>()
-                            .Select(op => op.Value);
-                        unimplementedThings.AddRange(objectProperties);
+                            var complete = obj.MapPropertiesTo<CustomTiledTypes.CompleteLevelBlock>();
+                            MapObjectToType[tobj] = new CustomTiledTypesImplementation.CompleteLevelBlock(complete);
+                            break;
+                        case "VerticalBoostBlock":
+                            objectProperties = obj.Properties
+                                .Where(p => p.Type == PropertyType.Object)
+                                .Cast<ObjectProperty>()
+                                .Select(op => op.Value);
+                            unimplementedThings.AddRange(objectProperties);
 
-                        var boost = obj.MapPropertiesTo<CustomTiledTypes.VerticalBoostBlock>();
-                        MapObjectToType[tobj] = new CustomTiledTypesImplementation.VerticalBoostBlock(boost);
-                        break;
-                    case "JumpWallBlock":
-                        objectProperties = obj.Properties
-                            .Where(p => p.Type == PropertyType.Object)
-                            .Cast<ObjectProperty>()
-                            .Select(op => op.Value);
-                        unimplementedThings.AddRange(objectProperties);
+                            var boost = obj.MapPropertiesTo<CustomTiledTypes.VerticalBoostBlock>();
+                            MapObjectToType[tobj] = new CustomTiledTypesImplementation.VerticalBoostBlock(boost);
+                            break;
+                        case "JumpWallBlock":
+                            objectProperties = obj.Properties
+                                .Where(p => p.Type == PropertyType.Object)
+                                .Cast<ObjectProperty>()
+                                .Select(op => op.Value);
+                            unimplementedThings.AddRange(objectProperties);
 
-                        var jblock = obj.MapPropertiesTo<CustomTiledTypes.JumpWallBlock>();
-                        MapObjectToType[tobj] = new CustomTiledTypesImplementation.JumpWallBlock(jblock);
-                        break;
-                    case "Key":
-                        var key = obj.MapPropertiesTo<CustomTiledTypes.Key>();
-                        MapObjectToType[tobj] = new CustomTiledTypesImplementation.Key(key);
-                        break;
-                    case "DoorBlock":
-                        objectProperties = obj.Properties
-                            .Where(p => p.Type == PropertyType.Object)
-                            .Cast<ObjectProperty>()
-                            .Select(op => op.Value);
-                        unimplementedThings.AddRange(objectProperties);
+                            var jblock = obj.MapPropertiesTo<CustomTiledTypes.JumpWallBlock>();
+                            MapObjectToType[tobj] = new CustomTiledTypesImplementation.JumpWallBlock(jblock);
+                            break;
+                        case "Key":
+                            var key = obj.MapPropertiesTo<CustomTiledTypes.Key>();
+                            MapObjectToType[tobj] = new CustomTiledTypesImplementation.Key(key);
+                            break;
+                        case "DoorBlock":
+                            objectProperties = obj.Properties
+                                .Where(p => p.Type == PropertyType.Object)
+                                .Cast<ObjectProperty>()
+                                .Select(op => op.Value);
+                            unimplementedThings.AddRange(objectProperties);
 
-                        var doorBlock = obj.MapPropertiesTo<CustomTiledTypes.DoorBlock>();
-                        MapObjectToType[tobj] = new CustomTiledTypesImplementation.DoorBlock(doorBlock);
-                        break;
-                    default:
-                        Console.WriteLine("not a class or not implemented");
-                        break;
-                }
+                            var doorBlock = obj.MapPropertiesTo<CustomTiledTypes.DoorBlock>();
+                            MapObjectToType[tobj] = new CustomTiledTypesImplementation.DoorBlock(doorBlock);
+                            break;
+                        default:
+                            Console.WriteLine("not a class or not implemented");
+                            break;
+                    }
             }
 
             foreach (var obj in objectLayer.Objects)
@@ -303,7 +308,11 @@ namespace Juegazo.Map
                 {
                     var papu = tile.MapPropertiesTo<NPC>();
                     Tileset tileset = TilesetsByGID[tile.GID]; //TODO: add a has variable that stores all data from tileset and you access it by a GID
-                    Console.WriteLine($"tileset things: {tileset.Tiles.Count}");
+                    var tileData = TilesetTileByGID.FirstOrDefault(x => x.Key.ContainsKey(tile.GID)).Value;
+
+                    if (tileData == null) continue;
+                    Console.WriteLine($"Found tile data for GID {tile.GID}");
+                    Console.WriteLine($"tileData: {tileData.Type}");
                     Texture2D atlasImage = TilemapTextures[tileset]; //this looks like shit but idk
 
                     Entity entity = new Entity(atlasImage, GetSourceRect(tile.GID, tileset), GetObjectDestinationRectangle(tile), 1, Color.White);
@@ -418,10 +427,43 @@ namespace Juegazo.Map
             {
                 var (tileset, tile) = GetTilesetFromGID(gid, true);
                 TilesetsByGID.Add(gid, tileset);
+                
+                if (tile != null)
+                {
+                    var tilesetDict = new Dictionary<uint, Tileset> { { gid, tileset } };
+                    TilesetTileByGID[tilesetDict] = tile;
+                }
             }
 
         }
-        //IDK WHAT IT DOES
+        public (Tileset tileset, Tile tile) GetTilesetFromGID(uint gid, bool safe = false)
+        {
+            foreach (Tileset tileset in Map.Tilesets)
+            {
+                foreach (Tile tile in tileset.Tiles)
+                {
+                    if (tile.ID == gid - tileset.FirstGID)
+                    {
+                        return (tileset, tile);
+                    }
+                }
+                if (gid >= tileset.FirstGID && gid < tileset.FirstGID + tileset.TileCount)
+                {
+                    return (tileset, null);
+                }
+            }
+            if (!safe)
+            {
+                if (gid < 1000000)
+                    throw new Exception($"No tileset with gid {gid} exists.");
+                else
+                    throw new Exception($"gid {gid} doesn't have FlippingFlag bits stripped");
+            }
+            else
+            {
+                return (null, null);
+            }
+        }
         public void InitLayerGroup(List<BaseLayer> layers)
         {
             foreach (var layer in layers)
@@ -439,41 +481,6 @@ namespace Juegazo.Map
                         Console.WriteLine("not important for now");
                         break;
                 }
-            }
-        }
-        public (Tileset tileset, Tile tile) GetTilesetFromGID(uint gid, bool safe = false)
-        {
-            foreach (Tileset tileset in Map.Tilesets)
-            {
-                if (tileset.Image.HasValue)
-                {
-                    if (gid >= tileset.FirstGID && gid < tileset.FirstGID + tileset.TileCount)
-                    {
-                        return (tileset, null);
-                    }
-                }
-                else
-                {
-                    //Collection tilesets can have missing IDs and IDs greater than the tile count
-                    foreach (Tile tile in tileset.Tiles)
-                    {
-                        if (tile.ID == gid - tileset.FirstGID)
-                        {
-                            return (tileset, tile);
-                        }
-                    }
-                }
-            }
-            if (!safe)
-            {
-                if (gid < 1000000)
-                    throw new Exception($"No tileset with gid {gid} exists.");
-                else
-                    throw new Exception($"gid {gid} doesn't have FlippingFlag bits stripped");
-            }
-            else
-            {
-                return (null, null);
             }
         }
         public void DrawLayerGroup(SpriteBatch spriteBatch, List<BaseLayer> layers)
