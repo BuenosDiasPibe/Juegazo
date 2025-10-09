@@ -91,9 +91,45 @@
          "visible":true,
          "x":0,
          "y":0
+        }, 
+        {
+         "class":"Collision Blocks Object Layer",
+         "draworder":"topdown",
+         "id":6,
+         "name":"Capa de Objetos 2",
+         "objects":[
+                {
+                 "gid":19,
+                 "height":8,
+                 "id":3,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":8,
+                 "x":80,
+                 "y":280
+                }, 
+                {
+                 "gid":12,
+                 "height":8,
+                 "id":4,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":8,
+                 "x":96,
+                 "y":280
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
         }],
- "nextlayerid":6,
- "nextobjectid":3,
+ "nextlayerid":7,
+ "nextobjectid":6,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.2",

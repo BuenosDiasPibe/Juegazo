@@ -71,7 +71,7 @@ namespace Juegazo
             entities.AddRange(tilemap.entities);
 
             var componentsOnEntity = new List<Component> {
-                new CameraToEntitySimpleComponent(camera),
+                new CameraToEntityComponent(camera),
                 new MoveVerticalComponent(),
                 new MoveHorizontalComponent(),
                 new ComplexGravityComponent(),

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DotTiled;
 using Juegazo.Map;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -11,6 +12,7 @@ namespace Juegazo
     public abstract class Block
     {
         public string type = "";
+        public Tile tile;
         public Rectangle collider = new();
 
         public bool EnableUpdate { get; protected set; } = false; //by default no object needs an update method
@@ -20,6 +22,12 @@ namespace Juegazo
         protected Block() { }
         protected Block(Rectangle collider)
         {
+            this.collider = collider;
+        }
+        protected Block(Tile tile) { this.tile = tile; }
+        protected Block(Tile tile, Rectangle collider)
+        {
+            this.tile = tile;
             this.collider = collider;
         }
 
@@ -32,7 +40,7 @@ namespace Juegazo
             {
                 return;
             }
-            spriteBatch.Draw(texture, collider, sourceRectangle, Color.White);
+            spriteBatch.Draw(texture, collider, sourceRectangle, Microsoft.Xna.Framework.Color.White);
         }
     }
 }

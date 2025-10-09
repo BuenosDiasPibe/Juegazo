@@ -9,13 +9,27 @@
  <tile id="12" type="OneWayBlock"/>
  <tile id="15" type="CompleteLevelBlock">
   <properties>
-   <property name="isEnabled" type="bool" value="false"/>
-   <property name="nextLevel" type="int" value="1"/>
+   <property name="isEnabled" type="bool" value="true"/>
+   <property name="nextLevel" type="int" value="0"/>
   </properties>
  </tile>
  <tile id="16" type="MovementBlock"/>
  <tile id="17" type="CheckPointBlock"/>
- <tile id="18" type="DamageBlock"/>
+ <tile id="18" type="DamageBlock">
+  <properties>
+   <property name="canDamage" type="bool" value="true"/>
+   <property name="damageAmount" type="int" value="1"/>
+  </properties>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="2" y="2" width="4" height="4"/>
+  </objectgroup>
+  <animation>
+   <frame tileid="18" duration="150"/>
+   <frame tileid="13" duration="150"/>
+   <frame tileid="14" duration="150"/>
+   <frame tileid="28" duration="150"/>
+  </animation>
+ </tile>
  <tile id="22" type="DamageBlock"/>
  <tile id="27" type="DoorBlock"/>
  <tile id="28" type="Key"/>

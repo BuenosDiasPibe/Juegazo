@@ -24,11 +24,8 @@ namespace Juegazo.Map.Blocks
         }
         public override void horizontalActions(Entity entity, Rectangle collision)
         {
-            if (collision.Intersects(entity.collider))
-            {
-                entity.baseVelocity = new();
-                entity.health-=damageAmmount;
-            }
+            entity.baseVelocity = new();
+            entity.health-=damageAmmount;
         }
 
         public override void Update(GameTime gameTime)
@@ -38,13 +35,9 @@ namespace Juegazo.Map.Blocks
 
         public override void verticalActions(Entity entity, Rectangle collision)
         {
-            if (collision.Intersects(entity.collider))
-            {
-                entity.baseVelocity = new();
-                entity.health-=damageAmmount;
-            }
+            entity.baseVelocity = new();
+            entity.health-=damageAmmount;
         }
-        //i was just testing something, it was really funny
         public override void Draw(SpriteBatch spriteBatch, Texture2D texture, Rectangle sourceRectangle)
         {
             spriteBatch.Draw(texture, collider, sourceRectangle, Color.White);

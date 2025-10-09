@@ -25,6 +25,8 @@
         "useAs": [
             "property",
             "object",
+            "tile",
+            "tileset",
             "project"
         ]
     },
@@ -44,6 +46,7 @@
         "useAs": [
             "property",
             "object",
+            "tile",
             "tileset",
             "project"
         ]
@@ -125,17 +128,12 @@
             {
                 "name": "canDamage",
                 "type": "bool",
-                "value": true
-            },
-            {
-                "name": "collisionHitbox",
-                "type": "object",
-                "value": 0
+                "value": false
             },
             {
                 "name": "damageAmount",
                 "type": "int",
-                "value": 1
+                "value": 0
             }
         ],
         "name": "DamageBlock",

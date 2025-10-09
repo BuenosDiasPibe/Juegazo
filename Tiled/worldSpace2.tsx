@@ -11,14 +11,38 @@
  <tile id="16" type="MovementBlock"/>
  <tile id="17" type="CheckPointBlock"/>
  <tile id="18" type="DamageBlock">
+  <properties>
+   <property name="canDamage" type="bool" value="true"/>
+   <property name="damageAmount" type="int" value="1"/>
+  </properties>
   <animation>
    <frame tileid="18" duration="150"/>
    <frame tileid="19" duration="150"/>
    <frame tileid="20" duration="150"/>
   </animation>
  </tile>
- <tile id="19" type="DamageBlock"/>
- <tile id="20" type="DamageBlock"/>
+ <tile id="19" type="DamageBlock">
+  <properties>
+   <property name="canDamage" type="bool" value="true"/>
+   <property name="damageAmount" type="int" value="1"/>
+  </properties>
+  <animation>
+   <frame tileid="20" duration="150"/>
+   <frame tileid="18" duration="150"/>
+   <frame tileid="19" duration="150"/>
+  </animation>
+ </tile>
+ <tile id="20" type="DamageBlock">
+  <properties>
+   <property name="canDamage" type="bool" value="true"/>
+   <property name="damageAmount" type="int" value="1"/>
+  </properties>
+  <animation>
+   <frame tileid="20" duration="150"/>
+   <frame tileid="18" duration="150"/>
+   <frame tileid="19" duration="150"/>
+  </animation>
+ </tile>
  <tile id="27" type="DoorBlock"/>
  <tile id="28" type="Key"/>
  <tile id="32" type="NPC">
@@ -47,11 +71,19 @@
   <properties>
    <property name="name" value="Jose"/>
   </properties>
+  <animation>
+   <frame tileid="32" duration="150"/>
+   <frame tileid="33" duration="150"/>
+  </animation>
  </tile>
  <tile id="35" type="NPC">
   <properties>
    <property name="name" value="Jose"/>
   </properties>
+  <animation>
+   <frame tileid="35" duration="150"/>
+   <frame tileid="34" duration="150"/>
+  </animation>
  </tile>
  <tile id="40" type="NPC">
   <properties>
@@ -67,10 +99,20 @@
   <properties>
    <property name="name" value="Grandma"/>
   </properties>
+  <animation>
+   <frame tileid="40" duration="150"/>
+   <frame tileid="41" duration="150"/>
+   <frame tileid="42" duration="150"/>
+  </animation>
  </tile>
  <tile id="42" type="NPC">
   <properties>
    <property name="name" value="Grandma"/>
   </properties>
+  <animation>
+   <frame tileid="42" duration="150"/>
+   <frame tileid="40" duration="150"/>
+   <frame tileid="41" duration="150"/>
+  </animation>
  </tile>
 </tileset>

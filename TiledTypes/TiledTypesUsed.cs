@@ -31,8 +31,7 @@ namespace Juegazo.CustomTiledTypes
     public class DamageBlock
     {
         public bool canDamage { get; set; } = false;
-        public uint collisionHitbox { get; set; } = 0;
-        public int damageAmmount { get; set; } = 0;
+        public int damageAmount { get; set; } = 0;
     }
     public class JumpWallBlock
     {
@@ -139,47 +138,30 @@ namespace Juegazo.CustomTiledTypesImplementation
     {
         public override string ToString()
         {
-            return $"CanDamage: {canDamage}, CollisionHitbox: {collisionHitbox}, DamageAmount: {damageAmmount}, Hitbox: {hitbox}";
+            return $"CanDamage: {canDamage}, DamageAmount: {damageAmmount}";
         }
         public bool canDamage { get; } = false;
-        public uint collisionHitbox { get; } = 0;
         public int damageAmmount { get; } = 0;
-        public Rectangle hitbox { get; set; } = new();
 
         public DamageBlock(CustomTiledTypes.DamageBlock dblock)
         {
             canDamage = dblock.canDamage;
-            collisionHitbox = dblock.collisionHitbox;
-            damageAmmount = dblock.damageAmmount;
-        }
-
-        public override void getNeededObjectPropeties(DotTiled.Object obj, int TILESIZE, DotTiled.Map map)
-        {
-            if (obj.ID == collisionHitbox)
-            {
-                hitbox = GetRect(obj, TILESIZE, map);
-            }
+            damageAmmount = dblock.damageAmount;
         }
 
         public override Block createBlock(TileObject obj, int TILESIZE, DotTiled.Map map)
         {
-            if (collisionHitbox == 0)
-            {
-                return new KillBlock(
-                    GetRect(obj, TILESIZE, map),
-                    damageAmmount
-                );
-            }
             return new Map.Blocks.KillBlock(
-                hitbox, damageAmmount
+                GetRect(obj, TILESIZE, map), damageAmmount
             );
         }
 
         public override List<uint> neededObjects()
         {
-            return new([collisionHitbox]);
+            return new();
         }
-
+        public override void getNeededObjectPropeties(DotTiled.Object obj, int TILESIZE, DotTiled.Map map)
+        { }
     }
 
     public class JumpWallBlock : TiledTypesUsed
