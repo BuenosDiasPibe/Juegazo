@@ -12,16 +12,17 @@ namespace Juegazo.Map.Blocks
         private int damageAmmount = 1;
         int frames = 3;
         int currentFrame = 0;
-        public KillBlock(Rectangle collider, int damageAmmount)
-            : base(collider)
+        public KillBlock(Rectangle collider, int damageAmmount) : base(collider)
         {
+            type = "DamageBlock";
             values.AddRange([18, 19, 20]);
             this.damageAmmount = damageAmmount;
             EnableUpdate = true;
         }
-        public KillBlock(Rectangle collider) : base(collider){}
+        public KillBlock(Rectangle collider) : base(collider){ type = "DamageBlock";}
         public KillBlock()
         {
+            type = "DamageBlock";
             values.AddRange([18, 19, 20]);
             EnableUpdate = true;
         }

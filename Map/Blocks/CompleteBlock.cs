@@ -19,11 +19,13 @@ namespace Juegazo.Map.Blocks
         {
             value = 15;
             changeScene = false;
+            type ="CompleteLevelBlock";
         }
-        public CompleteBlock() { value = 15; }
+        public CompleteBlock() { value = 15; type="CompleteLevelBlock"; }
         public CompleteBlock(Rectangle collider, bool isEnabled, int nextLevel) : base(collider)
         {
             value = 15;
+            type ="CompleteLevelBlock";
             EnableCollisions = isEnabled;
             nextSceneID = nextLevel;
             a = new ColorProvider().GetColorByNumber(nextLevel);
@@ -34,9 +36,6 @@ namespace Juegazo.Map.Blocks
             changeScene = true;
         }
 
-        public override void Update(GameTime gameTime)
-        {
-        }
 
         public override void verticalActions(Entity entity, Rectangle collision)
         {

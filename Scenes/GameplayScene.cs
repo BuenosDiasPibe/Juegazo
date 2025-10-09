@@ -213,7 +213,6 @@ namespace Juegazo
                 levelPath = "Level" + nextScene + ".tmj";
                 LoadContent();
             }
-            pastKey = Keyboard.GetState();
             //killing entity if out of boundries
             foreach (var entity in entities)
             {
@@ -222,6 +221,16 @@ namespace Juegazo
                     entity.health = 0;
                 }
             }
+            // Clamp camera position within map bounds, copilot made this 
+            // i dont know how math works im really sorry :(
+            camera.X = MathHelper.Clamp(camera.X, 
+                camera.ViewPortRectangle.Width / 2, 
+                tilemap.Width * TILESIZE - camera.ViewPortRectangle.Width / 2);
+            camera.Y = MathHelper.Clamp(camera.Y,
+                camera.ViewPortRectangle.Height / 2,
+                tilemap.Height * TILESIZE - camera.ViewPortRectangle.Height / 2);
+
+            pastKey = Keyboard.GetState();
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)

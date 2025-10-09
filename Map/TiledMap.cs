@@ -371,11 +371,18 @@ namespace Juegazo.Map
                 int x = (int)(i % tileLayer.Width);
                 int y = (int)(i / tileLayer.Width);
                 Vector2 position = new(x, y);
-
+                var (tileset, tile) = GetTilesetFromGID(value, true);
+                if (tile == null)
+                {
+                    Console.WriteLine($"value = {value}");
+                    continue;
+                }
                 foreach (Block block in blocks)
                 {
-                    if (block.values.Contains(value) || value == block.value)
+                    if (block.values.Contains(value) || value == block.value || block.type == tile.Type)
                     {
+                        // Console.Write($"type = {block.type == tile.Type}");
+
                         Block blockk = (Block)Activator.CreateInstance(block.GetType());
                         blockk.collider = new((int)position.X * TILESIZE,
                                               (int)position.Y * TILESIZE,
@@ -442,14 +449,10 @@ namespace Juegazo.Map
             {
                 foreach (Tile tile in tileset.Tiles)
                 {
-                    if (tile.ID == gid - tileset.FirstGID)
+                    if (tile.ID == gid - tileset.FirstGID || tile.ID == 15)
                     {
                         return (tileset, tile);
                     }
-                }
-                if (gid >= tileset.FirstGID && gid < tileset.FirstGID + tileset.TileCount)
-                {
-                    return (tileset, null);
                 }
             }
             if (!safe)
@@ -568,6 +571,7 @@ namespace Juegazo.Map
                 int y = (int)(i / tileLayer.Width);
 
                 collisionLayer.TryGetValue(new(x, y), out var block);
+                if (block == null) continue;
                 if (!IsVisible(block.collider)) continue; //skips if block is not visible
                 Tileset atlasImage = TilesetsByGID[value]; //get the atlas image from dictionary
                 if (atlasImage.Image.HasValue)

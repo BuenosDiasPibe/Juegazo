@@ -11,18 +11,23 @@ namespace Juegazo
     public class SlowDownBlock : Block
     {
         public int slowingSpeed;
-        public SlowDownBlock(Rectangle collider)
-            : base(collider)
+        public SlowDownBlock(Rectangle collider) : base(collider)
         {
+            type = "SlowDownBlock";
             value = 10;
             slowingSpeed = 1;
         }
         public SlowDownBlock(Rectangle collider, int slowingSpeed) : base(collider)
         {
+            type = "SlowDownBlock";
             value = 10;
             this.slowingSpeed = slowingSpeed;
         }
-        public SlowDownBlock() { value = 10; }
+        public SlowDownBlock()
+        {
+            value = 10;
+            type = "SlowDownBlock";
+        }
         public override void horizontalActions(Entity entity, Rectangle collision)
         {
             if (entity.velocity.X != 0)
@@ -31,9 +36,6 @@ namespace Juegazo
                 entity.velocity.X += entity.directionLeft ? slowingSpeed : -slowingSpeed;
             }
         }
-
-        public override void Update(GameTime gameTime)
-        { }
 
         public override void verticalActions(Entity entity, Rectangle collision)
         {

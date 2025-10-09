@@ -14,11 +14,15 @@ namespace Juegazo.Map.Blocks
         public DoorBlock()
         {
             value = 27;
+            type = "DoorBlock";
         }
         public DoorBlock(Rectangle collider) : base(collider)
-        { }
+        {
+            type = "DoorBlock";
+        }
         public DoorBlock(Rectangle collider, uint key, bool isOpen) : base(collider)
         {
+            type = "DoorBlock";
             Console.WriteLine($"DoorBlock key {key}");
             this.key = key;
             this.isOpen = isOpen;
@@ -36,8 +40,6 @@ namespace Juegazo.Map.Blocks
             new CollisionBlock().horizontalActions(entity, collision);
         }
 
-        public override void Update(GameTime gameTime)
-        { }
 
         public override void verticalActions(Entity entity, Rectangle collision)
         {

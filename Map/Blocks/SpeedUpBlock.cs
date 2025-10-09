@@ -12,15 +12,16 @@ namespace Juegazo
     public class SpeedUpBlock : Block
     {
         private int velocitySpeed;
-        public SpeedUpBlock(Rectangle collider)
-            : base(collider)
+        public SpeedUpBlock(Rectangle collider) : base(collider)
         {
+            type = "SpeedUp";
             value = 5;
             velocitySpeed = 3;
         }
 
         public SpeedUpBlock()
         {
+            type = "SpeedUp";
             value = 5;
             velocitySpeed = 3;
         }
@@ -32,9 +33,6 @@ namespace Juegazo
                 entity.velocity.X += entity.directionLeft ? -velocitySpeed : velocitySpeed;
             }
         }
-
-        public override void Update(GameTime gameTime)
-        { }
 
         public override void verticalActions(Entity entity, Rectangle collision)
         {

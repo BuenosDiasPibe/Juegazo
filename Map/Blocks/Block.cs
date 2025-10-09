@@ -12,6 +12,7 @@ namespace Juegazo
     {
         public List<uint> values { get; protected set; } = new();
         public int value { get; protected set; } = 0;
+        public string type = "";
         public Rectangle collider = new();
 
         public bool EnableUpdate { get; protected set; } = false; //by default no object needs an update method

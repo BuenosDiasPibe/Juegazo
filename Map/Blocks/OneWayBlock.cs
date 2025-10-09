@@ -14,16 +14,15 @@ namespace Juegazo
         public OneWayBlock(Rectangle collider)
             : base(collider)
         {
+            type = "OneWayBlock";
             value = 12;
         }
         public OneWayBlock()
         {
+            type = "OneWayBlock";
             value = 12;
         }
         public override void horizontalActions(Entity entity, Rectangle collision)
-        { }
-
-        public override void Update(GameTime gameTime)
         { }
 
         public override void verticalActions(Entity entity, Rectangle collision)

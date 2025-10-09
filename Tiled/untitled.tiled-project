@@ -36,6 +36,8 @@
             "useAs": [
                 "property",
                 "object",
+                "tile",
+                "tileset",
                 "project"
             ]
         },

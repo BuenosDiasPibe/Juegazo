@@ -22,7 +22,8 @@ namespace Juegazo.Map.Blocks
 
         public MovementBlock(Rectangle collider, Rectangle initialBlockPosition, Rectangle endBlockPosition, float velocity, bool canMove) : base(collider)
         {
-            value = 16; ;
+            value = 16;
+            type = "MovementBlock";
             EnableUpdate = true;
             this.initialBlockPosition = new(initialBlockPosition.X / initialBlockPosition.Width * 32,
                                             (initialBlockPosition.Y / initialBlockPosition.Height * 32) - 1,
@@ -63,7 +64,8 @@ namespace Juegazo.Map.Blocks
         {
             Vector2 current = new Vector2(endBlockPosition.X, endBlockPosition.Y);
             Vector2 target = new(initialBlockPosition.X, initialBlockPosition.Y);
-            float time = (float)(gameTime.TotalGameTime.TotalSeconds * velocity);
+            float distance = Vector2.Distance(current, target);
+            float time = (float)(gameTime.TotalGameTime.TotalSeconds * velocity / distance);
             lerpAmount = 2 * Math.Abs(time % 1 - 0.5f);
 
             newPosition = Vector2.Lerp(current, target, lerpAmount);
@@ -76,8 +78,9 @@ namespace Juegazo.Map.Blocks
             }
 
             collider = new Rectangle((int)newPosition.X, (int)newPosition.Y, collider.Width, collider.Height);
-            velocityToEntity = newPosition.X - lastBlockPosition.X;
-            lastBlockPosition = newPosition;
+
+            velocityToEntity = collider.X - lastBlockPosition.X;
+            lastBlockPosition = new(collider.X, collider.Y);
         }
 
         public override void verticalActions(Entity entity, Rectangle collision)

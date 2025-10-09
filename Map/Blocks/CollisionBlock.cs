@@ -14,16 +14,17 @@ namespace Juegazo.Map.Blocks
         public CollisionBlock(Rectangle collisionRectangle) : base(collisionRectangle)
         {
             value = 11;
-            //isVisible = false;
+            type = "Collision Block";
         }
         public CollisionBlock()
         {
             value = 11;
-            //isVisible = false;
+            type = "Collision Block";
         }
         public CollisionBlock(Rectangle collision, bool canCollide) : base(collision)
         {
             value = 11;
+            type = "Collision Block";
             this.canCollide = canCollide;
         }
         public override void horizontalActions(Entity entity, Rectangle collision)
@@ -45,7 +46,7 @@ namespace Juegazo.Map.Blocks
             {
                 entity.Destinationrectangle.X = blockRight;
             }
-            // If entity is clipping through, push them out
+            // If entity is cli            //isVisible = false;pping through, push them out
             else if (entityLeft < blockRight && entityRight > blockLeft)
             {
                 float distanceToRight = Math.Abs(entityLeft - blockRight);
@@ -61,8 +62,6 @@ namespace Juegazo.Map.Blocks
             }
         }
 
-        public override void Update(GameTime gameTime)
-        { }
 
         public override void verticalActions(Entity entity, Rectangle collision)
         {
