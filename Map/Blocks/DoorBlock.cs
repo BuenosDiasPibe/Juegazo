@@ -13,7 +13,6 @@ namespace Juegazo.Map.Blocks
         public uint key { get; protected set; }
         public DoorBlock()
         {
-            value = 27;
             type = "DoorBlock";
         }
         public DoorBlock(Rectangle collider) : base(collider)

@@ -15,14 +15,12 @@ namespace Juegazo
         public SpeedUpBlock(Rectangle collider) : base(collider)
         {
             type = "SpeedUp";
-            value = 5;
             velocitySpeed = 3;
         }
 
         public SpeedUpBlock()
         {
             type = "SpeedUp";
-            value = 5;
             velocitySpeed = 3;
         }
         public override void horizontalActions(Entity entity, Rectangle collision)

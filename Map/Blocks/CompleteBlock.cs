@@ -17,14 +17,12 @@ namespace Juegazo.Map.Blocks
         Color color = Color.White;
         public CompleteBlock(Rectangle collider) : base(collider)
         {
-            value = 15;
             changeScene = false;
             type ="CompleteLevelBlock";
         }
-        public CompleteBlock() { value = 15; type="CompleteLevelBlock"; }
+        public CompleteBlock() { type="CompleteLevelBlock"; }
         public CompleteBlock(Rectangle collider, bool isEnabled, int nextLevel) : base(collider)
         {
-            value = 15;
             type ="CompleteLevelBlock";
             EnableCollisions = isEnabled;
             nextSceneID = nextLevel;

@@ -9,6 +9,7 @@
  <tile id="12" type="OneWayBlock"/>
  <tile id="15" type="CompleteLevelBlock">
   <properties>
+   <property name="isEnabled" type="bool" value="false"/>
    <property name="nextLevel" type="int" value="1"/>
   </properties>
  </tile>

@@ -15,12 +15,10 @@ namespace Juegazo
             : base(collider)
         {
             type = "OneWayBlock";
-            value = 12;
         }
         public OneWayBlock()
         {
             type = "OneWayBlock";
-            value = 12;
         }
         public override void horizontalActions(Entity entity, Rectangle collision)
         { }

@@ -10,8 +10,6 @@ namespace Juegazo
 {
     public abstract class Block
     {
-        public List<uint> values { get; protected set; } = new();
-        public int value { get; protected set; } = 0;
         public string type = "";
         public Rectangle collider = new();
 

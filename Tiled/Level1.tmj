@@ -564,13 +564,13 @@
                         {
                          "name":"velocity",
                          "type":"float",
-                         "value":0.1
+                         "value":5
                         }],
                  "rotation":0,
                  "type":"MovementBlock",
                  "visible":true,
-                 "width":120,
-                 "x":528,
+                 "width":48,
+                 "x":600,
                  "y":112
                 }, 
                 {

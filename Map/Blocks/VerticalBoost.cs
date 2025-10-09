@@ -15,18 +15,15 @@ namespace Juegazo.Map.Blocks
             : base(collider)
         {
             type = "VerticalBoostBlock";
-            value = 8;
         }
         //TODO: añadir metodos que utilicen isCompleteBlock y toUP
         public VerticalBoostBlock(Rectangle collider, int vertBoost, bool isCompleteBlock, bool toUp) : base(collider)
         {
             type = "VerticalBoostBlock";
-            value = 8;
             this.vertBoost = vertBoost;
         }
         public VerticalBoostBlock()
         {
-            value = 8;
             type = "VerticalBoostBlock";
         }
         public override void horizontalActions(Entity entity, Rectangle collision)

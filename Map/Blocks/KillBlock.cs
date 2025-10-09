@@ -10,12 +10,9 @@ namespace Juegazo.Map.Blocks
     public class KillBlock : Block
     {
         private int damageAmmount = 1;
-        int frames = 3;
-        int currentFrame = 0;
         public KillBlock(Rectangle collider, int damageAmmount) : base(collider)
         {
             type = "DamageBlock";
-            values.AddRange([18, 19, 20]);
             this.damageAmmount = damageAmmount;
             EnableUpdate = true;
         }
@@ -23,7 +20,6 @@ namespace Juegazo.Map.Blocks
         public KillBlock()
         {
             type = "DamageBlock";
-            values.AddRange([18, 19, 20]);
             EnableUpdate = true;
         }
         public override void horizontalActions(Entity entity, Rectangle collision)
@@ -38,10 +34,6 @@ namespace Juegazo.Map.Blocks
         public override void Update(GameTime gameTime)
         {
             long totalFrames = (long)(gameTime.TotalGameTime.TotalMilliseconds / (1000.0 / 60.0));
-            if (totalFrames % 10 == 0)
-            {
-                currentFrame = (currentFrame + 1) % frames;
-            }
         }
 
         public override void verticalActions(Entity entity, Rectangle collision)
@@ -55,7 +47,6 @@ namespace Juegazo.Map.Blocks
         //i was just testing something, it was really funny
         public override void Draw(SpriteBatch spriteBatch, Texture2D texture, Rectangle sourceRectangle)
         {
-            sourceRectangle.X = sourceRectangle.X + currentFrame * 16;
             spriteBatch.Draw(texture, collider, sourceRectangle, Color.White);
         }
     }

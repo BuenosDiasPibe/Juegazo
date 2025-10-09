@@ -14,18 +14,15 @@ namespace Juegazo
         public SlowDownBlock(Rectangle collider) : base(collider)
         {
             type = "SlowDownBlock";
-            value = 10;
             slowingSpeed = 1;
         }
         public SlowDownBlock(Rectangle collider, int slowingSpeed) : base(collider)
         {
             type = "SlowDownBlock";
-            value = 10;
             this.slowingSpeed = slowingSpeed;
         }
         public SlowDownBlock()
         {
-            value = 10;
             type = "SlowDownBlock";
         }
         public override void horizontalActions(Entity entity, Rectangle collision)

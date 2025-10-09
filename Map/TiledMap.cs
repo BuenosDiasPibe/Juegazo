@@ -53,7 +53,7 @@ namespace Juegazo.Map
 
         public Dictionary<uint, Tileset> TilesetsByGID { get; } = new();
         public Dictionary<string, Tileset> TilesetsByName { get; } = new();
-        public Dictionary<Dictionary<uint, Tileset>, Tile> TilesetTileByGID { get; } = new();
+        public Dictionary<uint, Tile> TilesetTileByGID { get; } = new();
         public Dictionary<Tileset, Texture2D> TilemapTextures { get; } = new();
 
         public Dictionary<string, ImageLayer> imageLayerByName { get; } = new();
@@ -151,7 +151,6 @@ namespace Juegazo.Map
                         break;
                     case "Entity Spawner":
                         ObjectLayer objectLayer = (ObjectLayer)layer;
-                        Console.WriteLine("fc");
                         AddImportantPositions(objectLayer);
                         CreateEntities(objectLayer);
                         break;
@@ -181,9 +180,7 @@ namespace Juegazo.Map
 
                 var tobj = (TileObject)obj;
 
-                var tileData = TilesetTileByGID.FirstOrDefault(x => x.Key.ContainsKey(tobj.GID)).Value;
-                if (tileData !=null)
-                { Console.WriteLine($"tileData: {tileData.Type}"); }
+                TilesetTileByGID.TryGetValue(tobj.ID, out Tile tileData);
 
                 switch (obj.Type)
                     {
@@ -308,7 +305,7 @@ namespace Juegazo.Map
                 {
                     var papu = tile.MapPropertiesTo<NPC>();
                     Tileset tileset = TilesetsByGID[tile.GID]; //TODO: add a has variable that stores all data from tileset and you access it by a GID
-                    var tileData = TilesetTileByGID.FirstOrDefault(x => x.Key.ContainsKey(tile.GID)).Value;
+                    TilesetTileByGID.TryGetValue(obj.ID, out Tile tileData);
 
                     if (tileData == null) continue;
                     Console.WriteLine($"Found tile data for GID {tile.GID}");
@@ -353,6 +350,10 @@ namespace Juegazo.Map
                 int y = (int)(i / tileLayer.Width);
                 Vector2 position = new(x, y);
                 Tileset atlasImage = TilesetsByGID[value]; //get the atlas image from dictionary
+                if (atlasImage == null)
+                {
+                    Console.WriteLine($"tile value missing tileset: {value}");
+                }
                 if (atlasImage.Image.HasValue)
                 {
                     DrawTile(spriteBatch, value, position, atlasImage);
@@ -367,11 +368,11 @@ namespace Juegazo.Map
             {
                 uint value = data[i];
                 if (value == 0) continue;
-                value--;
+                // value--; // for some reason this made it so some values were missing
                 int x = (int)(i % tileLayer.Width);
                 int y = (int)(i / tileLayer.Width);
                 Vector2 position = new(x, y);
-                var (tileset, tile) = GetTilesetFromGID(value, true);
+                TilesetTileByGID.TryGetValue(value, out Tile tile);
                 if (tile == null)
                 {
                     Console.WriteLine($"value = {value}");
@@ -379,7 +380,7 @@ namespace Juegazo.Map
                 }
                 foreach (Block block in blocks)
                 {
-                    if (block.values.Contains(value) || value == block.value || block.type == tile.Type)
+                    if (block.type == tile.Type)
                     {
                         // Console.Write($"type = {block.type == tile.Type}");
 
@@ -434,12 +435,8 @@ namespace Juegazo.Map
             {
                 var (tileset, tile) = GetTilesetFromGID(gid, true);
                 TilesetsByGID.Add(gid, tileset);
-                
                 if (tile != null)
-                {
-                    var tilesetDict = new Dictionary<uint, Tileset> { { gid, tileset } };
-                    TilesetTileByGID[tilesetDict] = tile;
-                }
+                    TilesetTileByGID[gid] = tile;
             }
 
         }
@@ -449,11 +446,12 @@ namespace Juegazo.Map
             {
                 foreach (Tile tile in tileset.Tiles)
                 {
-                    if (tile.ID == gid - tileset.FirstGID || tile.ID == 15)
+                    if (tile.ID == gid - tileset.FirstGID)
                     {
                         return (tileset, tile);
                     }
                 }
+                return (tileset, null);
             }
             if (!safe)
             {

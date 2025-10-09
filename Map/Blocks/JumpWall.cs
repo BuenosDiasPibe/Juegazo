@@ -15,7 +15,6 @@ namespace Juegazo.Map.Blocks
         private float recoilVelocity = 25;
         public JumpWall(Rectangle collider) : base(collider)
         {
-            value = 1;
             type = "JumpWallBlock";
         }
         public JumpWall(Rectangle collider, int jumpSptrength, bool canJump, float recoilVelocity) : base(collider)
@@ -29,7 +28,6 @@ namespace Juegazo.Map.Blocks
         public JumpWall()
         {
             type = "JumpWallBlock";
-            value = 1;
         }
         public override void horizontalActions(Entity entity, Rectangle collision)
         {
