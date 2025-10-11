@@ -19,8 +19,9 @@ namespace Juegazo.Map.Blocks
         {
             type = "Collision Block";
         }
-        public CollisionBlock(Rectangle collision, bool canCollide) : base(collision)
+        public CollisionBlock(Rectangle collision, bool canCollide, DotTiled.Tile tile) : base(collision)
         {
+            this.tile = tile;
             type = "Collision Block";
             this.canCollide = canCollide;
         }

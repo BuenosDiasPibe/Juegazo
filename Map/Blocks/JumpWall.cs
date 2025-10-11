@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DotTiled;
 using Juegazo.Components;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -17,8 +18,9 @@ namespace Juegazo.Map.Blocks
         {
             type = "JumpWallBlock";
         }
-        public JumpWall(Rectangle collider, int jumpSptrength, bool canJump, float recoilVelocity) : base(collider)
+        public JumpWall(Rectangle collider, int jumpSptrength, bool canJump, float recoilVelocity, Tile tile) : base(collider)
         {
+            this.tile = tile;
             type = "JumpWallBlock";
             jumpStrength = jumpSptrength;
             this.recoilVelocity = recoilVelocity;

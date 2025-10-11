@@ -17,8 +17,9 @@ namespace Juegazo.Map.Blocks
             type = "VerticalBoostBlock";
         }
         //TODO: añadir metodos que utilicen isCompleteBlock y toUP
-        public VerticalBoostBlock(Rectangle collider, int vertBoost, bool isCompleteBlock, bool toUp) : base(collider)
+        public VerticalBoostBlock(Rectangle collider, int vertBoost, bool isCompleteBlock, bool toUp, DotTiled.Tile tile) : base(collider)
         {
+            this.tile = tile;
             type = "VerticalBoostBlock";
             this.vertBoost = vertBoost;
         }

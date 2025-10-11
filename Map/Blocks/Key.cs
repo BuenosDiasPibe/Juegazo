@@ -17,8 +17,9 @@ namespace Juegazo.Map.Blocks
             type = "Key";
             keyCollider = new();
         }
-        public Key(uint gotKey, Rectangle keyCollider) : base(keyCollider)
+        public Key(uint gotKey, Rectangle keyCollider, DotTiled.Tile tile) : base(keyCollider)
         {
+            this.tile = tile;
             type = "Key";
             this.KeyID = gotKey;
             this.keyCollider = keyCollider;
@@ -40,7 +41,6 @@ namespace Juegazo.Map.Blocks
             entityComponent = (KeysIDHolderComponent)entity.getComponent(entityComponent.GetType());
             entityComponent.keyHolder.Add(this.KeyID);
             this.EnableCollisions = false;
-            this.EnableDifferentDraw = false;
         }
 
         public override void verticalActions(Entity entity, Rectangle collision)

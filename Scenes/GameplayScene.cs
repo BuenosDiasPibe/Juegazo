@@ -267,7 +267,12 @@ namespace Juegazo
         {
             foreach (var entity in entities)
             {
-                if (entity.hasComponent(typeof(NPCComponent))) continue;
+                if (entity.hasComponent(typeof(NPCComponent)) && entity.getComponent(typeof(NPCComponent)) is NPCComponent comp)
+                {
+                    comp.DrawUI(gameTime, spriteBatch);
+                    continue;
+                }
+
                 spriteBatch.DrawString(font,
                     $"FPS: {Math.Round(1 / gameTime.ElapsedGameTime.TotalSeconds)}\nposition: X:{entity.Destinationrectangle.X} Y:{entity.Destinationrectangle.Y}\nvelocity: {entity.velocity}\nbaseVelocity: {entity.baseVelocity}\nhealth: {entity.health}",
                     new Vector2(camera.Left, camera.Top),

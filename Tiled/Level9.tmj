@@ -110,62 +110,6 @@
                  "y":112
                 }, 
                 {
-                 "gid":33,
-                 "height":16,
-                 "id":3,
-                 "name":"",
-                 "properties":[
-                        {
-                         "name":"dialogEnd",
-                         "type":"int",
-                         "value":2
-                        }, 
-                        {
-                         "name":"dialogStart",
-                         "type":"int",
-                         "value":3
-                        }, 
-                        {
-                         "name":"name",
-                         "type":"string",
-                         "value":"Jose"
-                        }],
-                 "rotation":0,
-                 "type":"NPC",
-                 "visible":true,
-                 "width":16,
-                 "x":320,
-                 "y":128
-                }, 
-                {
-                 "gid":36,
-                 "height":16,
-                 "id":5,
-                 "name":"",
-                 "properties":[
-                        {
-                         "name":"dialogEnd",
-                         "type":"int",
-                         "value":5
-                        }, 
-                        {
-                         "name":"dialogStart",
-                         "type":"int",
-                         "value":6
-                        }, 
-                        {
-                         "name":"name",
-                         "type":"string",
-                         "value":"Jose"
-                        }],
-                 "rotation":0,
-                 "type":"NPC",
-                 "visible":true,
-                 "width":16,
-                 "x":352,
-                 "y":128
-                }, 
-                {
                  "gid":34,
                  "height":16,
                  "id":6,
@@ -216,20 +160,32 @@
                  "type":"NPC",
                  "visible":true,
                  "width":16,
-                 "x":224,
-                 "y":128
+                 "x":192,
+                 "y":96
                 }, 
                 {
-                 "gid":42,
+                 "gid":33,
                  "height":16,
-                 "id":12,
+                 "id":28,
                  "name":"",
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":208,
-                 "y":112
+                 "x":128,
+                 "y":96
+                }, 
+                {
+                 "gid":43,
+                 "height":16,
+                 "id":29,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":224,
+                 "y":64
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -238,7 +194,7 @@
          "y":0
         }],
  "nextlayerid":4,
- "nextobjectid":21,
+ "nextobjectid":30,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.2",

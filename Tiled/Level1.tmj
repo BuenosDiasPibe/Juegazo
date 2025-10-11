@@ -321,7 +321,7 @@
                         {
                          "name":"velocity",
                          "type":"float",
-                         "value":0.2
+                         "value":100
                         }],
                  "rotation":0,
                  "type":"MovementBlock",
@@ -376,7 +376,7 @@
                         {
                          "name":"velocity",
                          "type":"float",
-                         "value":50
+                         "value":80
                         }],
                  "rotation":0,
                  "type":"MovementBlock",

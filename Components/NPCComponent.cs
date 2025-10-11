@@ -19,7 +19,7 @@ namespace Juegazo.Components
         private Rectangle collisionArea = new();
         private int dialogStart = 0;
         private int dialogEnd = 1;
-        private string name;
+        public string name { get; protected set; }
         public Rectangle interactiveArea { get; protected set; } = new();
         private GumService gum;
         public bool displayBox = false;
@@ -43,16 +43,16 @@ namespace Juegazo.Components
                     Owner.collider.Width * 3, Owner.collider.Height * 3);
 
             GumService.Default.Root.Children.Clear();
-            background = CreateDialogBox(camera.ViewPortRectangle);
+            background = CreateDialogBox(camera.Viewport.Bounds);
             background.AddToRoot();
         }
         private ColoredRectangleRuntime CreateDialogBox(Rectangle rec)
         {
             var background = new ColoredRectangleRuntime();
             background.X = 0;
-            background.Y = camera.Viewport.Height/2;
+            background.Y = camera.Viewport.Height / 2;
             background.Width = rec.Width;
-            background.Height = rec.Height/2;
+            background.Height = rec.Height / 2;
             background.Color = Color.Black;
 
             return background;
@@ -64,18 +64,17 @@ namespace Juegazo.Components
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            Rectangle srcRect = Owner.sourceRectangle;
-            if (Owner.getComponent(typeof(AnimationComponent)) is AnimationComponent component)
-            {
-                srcRect = component.sourceRectangle;
-            }
-            Rectangle r = camera.ViewPortRectangle;
-            // background.X = 0; //apparently gum doesnt need to change on camera view, fuck me i guess
             if (displayBox)
             {
                 gum.Draw();
             }
-            if (displayCreature) spriteBatch.Draw(Owner.texture, r, srcRect, Color.Red);
+        }
+        public void DrawUI(GameTime gameTime, SpriteBatch spriteBatch)
+        {
+                if (displayBox)
+                {
+                    gum.Draw();
+                }
         }
 
         public override void Update(GameTime gameTime)

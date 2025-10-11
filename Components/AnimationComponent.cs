@@ -55,7 +55,6 @@ namespace Juegazo.Components
                     currentFrame = (currentFrame + 1) % totalFrames;
             }
             sourceRectangle = new Rectangle(currentFrame * frameWidth, Owner.sourceRectangle.Y, frameWidth, frameHeight);
-
         }
     }
 }

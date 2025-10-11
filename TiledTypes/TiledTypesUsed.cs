@@ -73,7 +73,7 @@ namespace Juegazo.CustomTiledTypesImplementation
 
     public abstract class TiledTypesUsed
     {
-        public abstract Block createBlock(TileObject obj, int TILESIZE, DotTiled.Map map); //TODO: i should better add "Map" to this more than just TILESIZE
+        public abstract Block createBlock(TileObject obj, int TILESIZE, DotTiled.Map map, Tile tile); //TODO: i should better add "Map" to this more than just TILESIZE
         public abstract void getNeededObjectPropeties(DotTiled.Object obj, int TILESIZE, DotTiled.Map map);
         public abstract List<uint> neededObjects();
         protected Rectangle GetRect(DotTiled.Object obj, int TILESIZE, DotTiled.Map map)
@@ -118,14 +118,15 @@ namespace Juegazo.CustomTiledTypesImplementation
                     endBlockPosition = new((int)rObject.X, (int)rObject.Y, (int)rObject.Width, (int)rObject.Height);
             }
         }
-        public override Block createBlock(TileObject obj, int TILESIZE, DotTiled.Map map)
+        public override Block createBlock(TileObject obj, int TILESIZE, DotTiled.Map map, Tile tile)
         {
             return new Map.Blocks.MovementBlock(
                 GetRect(obj, TILESIZE, map),
                 InitialBlockPosition,
                 endBlockPosition,
                 speed,
-                canMove
+                canMove,
+                tile
             );
         }
 
@@ -149,10 +150,11 @@ namespace Juegazo.CustomTiledTypesImplementation
             damageAmmount = dblock.damageAmount;
         }
 
-        public override Block createBlock(TileObject obj, int TILESIZE, DotTiled.Map map)
+        public override Block createBlock(TileObject obj, int TILESIZE, DotTiled.Map map, Tile tile)
         {
+            Console.WriteLine("killblock created");
             return new Map.Blocks.KillBlock(
-                GetRect(obj, TILESIZE, map), damageAmmount
+                GetRect(obj, TILESIZE, map), damageAmmount, tile
             );
         }
 
@@ -184,13 +186,14 @@ namespace Juegazo.CustomTiledTypesImplementation
             // No additional properties needed from objects
         }
 
-        public override Block createBlock(TileObject obj, int TILESIZE, DotTiled.Map map)
+        public override Block createBlock(TileObject obj, int TILESIZE, DotTiled.Map map, DotTiled.Tile tile)
         {
             return new JumpWall(
                 GetRect(obj, TILESIZE, map),
                 15, //TODO: fuck i forgot to add that
                 canJump,
-                recoilIntensity
+                recoilIntensity,
+                tile
             );
         }
 
@@ -222,13 +225,14 @@ namespace Juegazo.CustomTiledTypesImplementation
             // No additional properties needed from objects
         }
 
-        public override Block createBlock(TileObject obj, int TILESIZE, DotTiled.Map map)
+        public override Block createBlock(TileObject obj, int TILESIZE, DotTiled.Map map, Tile tile)
         {
             return new Map.Blocks.VerticalBoostBlock(
                 GetRect(obj, TILESIZE, map),
                 Ammount,
                 isCompleteBlock,
-                toUp
+                toUp,
+                tile
             );
         }
 
@@ -246,12 +250,13 @@ namespace Juegazo.CustomTiledTypesImplementation
             isEnabled = coso.isEnabled;
             nextLevel = coso.nextLevel;
         }
-        public override Block createBlock(TileObject obj, int TILESIZE, DotTiled.Map map)
+        public override Block createBlock(TileObject obj, int TILESIZE, DotTiled.Map map, Tile tile)
         {
             return new CompleteBlock(
                 GetRect(obj, TILESIZE, map),
                 isEnabled,
-                nextLevel
+                nextLevel,
+                tile
             );
         }
 
@@ -275,13 +280,14 @@ namespace Juegazo.CustomTiledTypesImplementation
             message = cpb.message;
             position = cpb.position;
         }
-        public override Block createBlock(TileObject obj, int TILESIZE, DotTiled.Map map)
+        public override Block createBlock(TileObject obj, int TILESIZE, DotTiled.Map map, Tile tile)
         {
             return new Map.Blocks.CheckPointBlock(
                 GetRect(obj, TILESIZE, map),
                 isEnabled,
                 message,
-                Position
+                Position,
+                tile
             );
         }
 
@@ -311,10 +317,10 @@ namespace Juegazo.CustomTiledTypesImplementation
             // No additional properties needed from objects
         }
 
-        public override Block createBlock(TileObject obj, int TILESIZE, DotTiled.Map map)
+        public override Block createBlock(TileObject obj, int TILESIZE, DotTiled.Map map, Tile tile)
         {
             var rect = GetRect(obj, TILESIZE, map);
-            return new Map.Blocks.Key(obj.ID, rect);
+            return new Map.Blocks.Key(obj.ID, rect, tile);
         }
 
 
@@ -335,9 +341,9 @@ namespace Juegazo.CustomTiledTypesImplementation
             isOpen = block.isOpen;
             key = block.key;
         }
-        public override Block createBlock(TileObject obj, int TILESIZE, DotTiled.Map map)
+        public override Block createBlock(TileObject obj, int TILESIZE, DotTiled.Map map, Tile tile)
         {
-            return new Map.Blocks.DoorBlock(GetRect(obj, TILESIZE, map), key, isOpen);
+            return new Map.Blocks.DoorBlock(GetRect(obj, TILESIZE, map), key, isOpen, tile);
         }
 
         public override void getNeededObjectPropeties(DotTiled.Object obj, int TILESIZE, DotTiled.Map map)
@@ -356,10 +362,10 @@ namespace Juegazo.CustomTiledTypesImplementation
         {
             canCollide = cBlock.canCollide;
         }
-        public override Block createBlock(TileObject obj, int TILESIZE, DotTiled.Map map)
+        public override Block createBlock(TileObject obj, int TILESIZE, DotTiled.Map map, Tile tile)
         {
             if (!canCollide) return null; // this causes some issues with a lot of things, its best to create a Collision block instead for now
-            return new Map.Blocks.CollisionBlock(GetRect(obj, TILESIZE, map), canCollide);
+            return new Map.Blocks.CollisionBlock(GetRect(obj, TILESIZE, map), canCollide, tile);
         }
 
         public override void getNeededObjectPropeties(DotTiled.Object obj, int TILESIZE, DotTiled.Map map)

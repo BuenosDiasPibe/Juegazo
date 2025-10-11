@@ -14,10 +14,10 @@ namespace Juegazo
         public string type = "";
         public Tile tile;
         public Rectangle collider = new();
+        public List<BlockComponent> components = new();
 
         public bool EnableUpdate { get; protected set; } = false; //by default no object needs an update method
         public bool EnableCollisions { get; protected set; } = true;
-        public bool EnableDifferentDraw { get; protected set; } = true; //probably i need to wrap all the bool variables on a struct, 'casuse this is a nightmare
 
         protected Block() { }
         protected Block(Rectangle collider)
@@ -25,21 +25,17 @@ namespace Juegazo
             this.collider = collider;
         }
         protected Block(Tile tile) { this.tile = tile; }
-        protected Block(Tile tile, Rectangle collider)
-        {
-            this.tile = tile;
-            this.collider = collider;
-        }
-
+        public virtual void Start() { }
         public virtual void Update(GameTime gameTime) { }
         public abstract void horizontalActions(Entity entity, Rectangle collision);
         public abstract void verticalActions(Entity entity, Rectangle collision);
         public virtual void Draw(SpriteBatch spriteBatch, Texture2D texture, Rectangle sourceRectangle)
         {
-            if (!EnableDifferentDraw)
+            foreach (var component in components)
             {
-                return;
+                component.Draw(spriteBatch, texture, sourceRectangle);
             }
+
             spriteBatch.Draw(texture, collider, sourceRectangle, Microsoft.Xna.Framework.Color.White);
         }
     }

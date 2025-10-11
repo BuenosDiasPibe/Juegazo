@@ -19,8 +19,9 @@ namespace Juegazo.Map.Blocks
         {
             type = "DoorBlock";
         }
-        public DoorBlock(Rectangle collider, uint key, bool isOpen) : base(collider)
+        public DoorBlock(Rectangle collider, uint key, bool isOpen, DotTiled.Tile tile) : base(collider)
         {
+            this.tile = tile;
             type = "DoorBlock";
             Console.WriteLine($"DoorBlock key {key}");
             this.key = key;
