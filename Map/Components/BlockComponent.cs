@@ -15,7 +15,7 @@ namespace Juegazo.Map
         public virtual void Start()
         { }
         public abstract void Update(GameTime gameTime);
-        public abstract void Draw(SpriteBatch spriteBatch, Texture2D texture, Rectangle sourceRectangle);
+        public abstract void Draw(GameTime gameTime, SpriteBatch spriteBatch, Texture2D texture, Rectangle sourceRectangle);
         public abstract void Destroy();
     }
 }

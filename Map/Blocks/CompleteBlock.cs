@@ -40,7 +40,7 @@ namespace Juegazo.Map.Blocks
         {
             changeScene = true;
         }
-        public override void Draw(SpriteBatch spriteBatch, Texture2D texture, Rectangle sourceRectangle)
+        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch, Texture2D texture, Rectangle sourceRectangle)
         {
             spriteBatch.Draw(texture, collider, sourceRectangle, color);
         }

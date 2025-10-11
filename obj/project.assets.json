@@ -684,11 +684,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/clumpl/Documentos/Programacion/Juegazo/MarinMol.csproj",
+      "projectUniqueName": "/home/clumpl/Documentos/Juegazo/MarinMol.csproj",
       "projectName": "MarinMol",
-      "projectPath": "/home/clumpl/Documentos/Programacion/Juegazo/MarinMol.csproj",
+      "projectPath": "/home/clumpl/Documentos/Juegazo/MarinMol.csproj",
       "packagesPath": "/home/clumpl/.nuget/packages/",
-      "outputPath": "/home/clumpl/Documentos/Programacion/Juegazo/obj/",
+      "outputPath": "/home/clumpl/Documentos/Juegazo/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/clumpl/.nuget/NuGet/NuGet.Config"

@@ -58,11 +58,11 @@ namespace Juegazo.Map.Blocks
             entity.baseVelocity = new();
             entity.health-=damageAmmount;
         }
-        public override void Draw(SpriteBatch spriteBatch, Texture2D texture, Rectangle sourceRectangle)
+        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch, Texture2D texture, Rectangle sourceRectangle)
         {
             foreach(var component in components)
             {
-                component.Draw(spriteBatch, texture, sourceRectangle);
+                component.Draw(gameTime, spriteBatch, texture, sourceRectangle);
             }
         }
     }

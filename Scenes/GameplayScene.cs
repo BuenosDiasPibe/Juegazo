@@ -235,7 +235,7 @@ namespace Juegazo
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            tilemap.Draw(spriteBatch);
+            tilemap.Draw(gameTime, spriteBatch);
             foreach (var entity in entities)
             {
                 entity.Draw(gameTime, spriteBatch);

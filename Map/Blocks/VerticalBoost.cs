@@ -29,6 +29,7 @@ namespace Juegazo.Map.Blocks
         }
         public override void horizontalActions(Entity entity, Rectangle collision)
         {
+            entity.baseVelocity = new();
             verticalActions(entity, collision);
         }
         public override void verticalActions(Entity entity, Rectangle collision)

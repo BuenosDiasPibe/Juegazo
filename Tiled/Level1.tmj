@@ -431,13 +431,13 @@
                         {
                          "name":"velocity",
                          "type":"float",
-                         "value":5
+                         "value":100
                         }],
                  "rotation":0,
                  "type":"MovementBlock",
                  "visible":true,
-                 "width":48,
-                 "x":600,
+                 "width":72,
+                 "x":576,
                  "y":112
                 }, 
                 {

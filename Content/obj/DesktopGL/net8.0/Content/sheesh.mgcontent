@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <SourceFile>/home/clumpl/Documentos/Programacion/Juegazo/Content/sheesh.spritefont</SourceFile>
-  <SourceTime>2025-07-06T19:42:15.5826642-03:00</SourceTime>
-  <DestFile>/home/clumpl/Documentos/Programacion/Juegazo/Content/bin/DesktopGL/Content/sheesh.xnb</DestFile>
-  <DestTime>2025-09-28T16:04:02.7961302-03:00</DestTime>
+  <SourceFile>/home/clumpl/Documentos/Juegazo/Content/sheesh.spritefont</SourceFile>
+  <SourceTime>2025-07-13T21:07:03.7426827-03:00</SourceTime>
+  <DestFile>/home/clumpl/Documentos/Juegazo/Content/bin/DesktopGL/Content/sheesh.xnb</DestFile>
+  <DestTime>2025-10-11T14:55:37.0152343-03:00</DestTime>
   <Importer>FontDescriptionImporter</Importer>
   <ImporterTime>2024-08-16T14:05:56-03:00</ImporterTime>
   <Processor>FontDescriptionProcessor</Processor>

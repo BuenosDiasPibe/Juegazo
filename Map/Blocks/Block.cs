@@ -29,11 +29,11 @@ namespace Juegazo
         public virtual void Update(GameTime gameTime) { }
         public abstract void horizontalActions(Entity entity, Rectangle collision);
         public abstract void verticalActions(Entity entity, Rectangle collision);
-        public virtual void Draw(SpriteBatch spriteBatch, Texture2D texture, Rectangle sourceRectangle)
+        public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch, Texture2D texture, Rectangle sourceRectangle)
         {
             foreach (var component in components)
             {
-                component.Draw(spriteBatch, texture, sourceRectangle);
+                component.Draw(gameTime, spriteBatch, texture, sourceRectangle);
             }
 
             spriteBatch.Draw(texture, collider, sourceRectangle, Microsoft.Xna.Framework.Color.White);

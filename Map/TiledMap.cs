@@ -382,7 +382,7 @@ namespace Juegazo.Map
             }
         }
 
-        public void drawTileLayer(SpriteBatch spriteBatch, TileLayer tileLayer)
+        public void drawTileLayer(GameTime gameTime,SpriteBatch spriteBatch, TileLayer tileLayer)
         {
             uint[] data = tileLayer.Data.Value.GlobalTileIDs; //get the csv
             for (int i = 0; i < data.Length; i++)
@@ -396,17 +396,18 @@ namespace Juegazo.Map
                 Tileset atlasImage = TilesetsByGID[value]; //get the atlas image from dictionary
                 if (atlasImage == null)
                 {
-                    Console.WriteLine($"tile value missing tileset: {value}");
+                    Console.WriteLine($"tile {value} missing tileset");
+                    continue;
                 }
                 if (atlasImage.Image.HasValue)
                 {
-                    DrawTile(spriteBatch, value, position, atlasImage);
+                    DrawTile(gameTime, spriteBatch, value, position, atlasImage);
                 }
             }
         }
 
 
-        private void DrawTile(SpriteBatch spriteBatch, uint value, Vector2 position, Tileset atlasImage)
+        private void DrawTile(GameTime gameTime, SpriteBatch spriteBatch, uint value, Vector2 position, Tileset atlasImage)
         {
             Rectangle desRectangle = getDestinationRectangle(position);
             if (!IsVisible(desRectangle)) return;
@@ -495,7 +496,7 @@ namespace Juegazo.Map
                 }
             }
         }
-        public void DrawLayerGroup(SpriteBatch spriteBatch, List<BaseLayer> layers)
+        public void DrawLayerGroup(GameTime gameTime, SpriteBatch spriteBatch, List<BaseLayer> layers)
         {
             foreach (BaseLayer layer in layers)
             {
@@ -503,22 +504,22 @@ namespace Juegazo.Map
                 switch (layer)
                 {
                     case Group group:
-                        DrawLayerGroup(spriteBatch, group.Layers);
+                        DrawLayerGroup(gameTime, spriteBatch, group.Layers);
                         break;
                     case TileLayer tileLayer:
                         if (tileLayer.Class == "Collision Tile Layer")
                         {
-                            DrawTileCollisionLayer(spriteBatch, tileLayer);
+                            DrawTileCollisionLayer(gameTime, spriteBatch, tileLayer);
                             break;
                         }
-                        drawTileLayer(spriteBatch, tileLayer);
+                        drawTileLayer(gameTime, spriteBatch, tileLayer);
                         break;
                     case ObjectLayer objectLayer:
                         if (objectLayer.Class == "Entity Spawner") continue;
-                        DrawObjectLayer(spriteBatch, objectLayer);
+                        DrawObjectLayer(gameTime, spriteBatch, objectLayer);
                         break;
                     case ImageLayer imageLayer:
-                        DrawImageLayer(spriteBatch, imageLayer);
+                        DrawImageLayer(gameTime, spriteBatch, imageLayer);
                         break;
                     default:
                         Console.WriteLine($"layer type {layer.GetType()} not implemented");
@@ -526,7 +527,7 @@ namespace Juegazo.Map
                 }
             }
         }
-        private void DrawImageLayer(SpriteBatch spriteBatch, ImageLayer imageLayer)
+        private void DrawImageLayer(GameTime gameTime,SpriteBatch spriteBatch, ImageLayer imageLayer)
         {
             if (!imageLayer.Image.HasValue) return; //TODO: add an error image
             Texture2D texture = ImageLayerTexture[imageLayer];
@@ -567,7 +568,7 @@ namespace Juegazo.Map
             spriteBatch.Draw(texture, destRect, srcRect, Color.White);
         }
 
-        private void DrawTileCollisionLayer(SpriteBatch spriteBatch, TileLayer tileLayer)
+        private void DrawTileCollisionLayer(GameTime gameTime,SpriteBatch spriteBatch, TileLayer tileLayer)
         {
             uint[] data = tileLayer.Data.Value.GlobalTileIDs; //get the csv
             for (int i = 0; i < data.Length; i++)
@@ -587,12 +588,12 @@ namespace Juegazo.Map
                     Texture2D texture = TilemapTextures[atlasImage];
                     Rectangle srcRectangle = GetSourceRect(value, atlasImage);
                     // spriteBatch.Draw(texture, srcRectangle, srcRectangle, Color.White); //why do i have this here????????
-                    block.Draw(spriteBatch, texture, srcRectangle);
+                    block.Draw(gameTime, spriteBatch, texture, srcRectangle);
                 } //this image will always be a tile layer with an atlasImage with value
             }
         }
 
-        private void DrawObjectLayer(SpriteBatch spriteBatch, ObjectLayer objectLayer)
+        private void DrawObjectLayer(GameTime gameTime,SpriteBatch spriteBatch, ObjectLayer objectLayer)
         {
             if (!objectLayer.Visible) return;
             foreach (var obj in objectLayer.Objects)
@@ -600,7 +601,7 @@ namespace Juegazo.Map
                 switch (obj)
                 {
                     case TileObject tileObject:
-                        DrawTileObject(spriteBatch, tileObject, objectLayer);
+                        DrawTileObject(gameTime, spriteBatch, tileObject, objectLayer);
                         break;
                     default:
                         // Console.WriteLine("My fault gang"); //TODO: create object Draw for debugging
@@ -609,7 +610,7 @@ namespace Juegazo.Map
             }
         }
 
-        private void DrawTileObject(SpriteBatch spriteBatch, TileObject tileObject, ObjectLayer objectLayer)
+        private void DrawTileObject(GameTime gameTime, SpriteBatch spriteBatch, TileObject tileObject, ObjectLayer objectLayer)
         {
             Rectangle destRect = GetObjectDestinationRectangle(tileObject);
             if (!IsVisible(destRect)) return;
@@ -622,13 +623,13 @@ namespace Juegazo.Map
 
                 if (dynamicBlocks.TryGetValue(tileObject, out var dynBlock))
                 {
-                    dynBlock.Draw(spriteBatch, texture, srcRect);
+                    dynBlock.Draw(gameTime, spriteBatch, texture, srcRect);
                 }
                 else if (collisionLayer.TryGetValue(
                     new Vector2((int)(tileObject.X / TileWidth), (int)(tileObject.Y / TileHeight) - (int)(tileObject.Height / TileHeight)),
                     out var colBlock))
                 {
-                    colBlock.Draw(spriteBatch, texture, srcRect);
+                    colBlock.Draw(gameTime, spriteBatch, texture, srcRect);
                 }
                 else
                 {
@@ -669,9 +670,9 @@ namespace Juegazo.Map
             path = Path.Combine(projectDirectory, path);
             return Texture2D.FromFile(graphicsDevice, path, DefaultColorProcessors.PremultiplyAlpha);
         }
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            DrawLayerGroup(spriteBatch, Map.Layers);
+            DrawLayerGroup(gameTime, spriteBatch, Map.Layers);
         }
     }
 }
