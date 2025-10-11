@@ -21,7 +21,7 @@
          "parallaxy":0,
          "repeatx":true,
          "type":"imagelayer",
-         "visible":true,
+         "visible":false,
          "x":0,
          "y":0
         }, 
@@ -84,6 +84,18 @@
                  "width":0,
                  "x":48,
                  "y":256
+                }, 
+                {
+                 "gid":33,
+                 "height":16,
+                 "id":2,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":160,
+                 "y":272
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -92,7 +104,7 @@
          "y":0
         }],
  "nextlayerid":8,
- "nextobjectid":2,
+ "nextobjectid":3,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.2",

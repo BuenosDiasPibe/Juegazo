@@ -36,5 +36,9 @@ namespace Juegazo.Map.Blocks
         {
             entity.velocity.Y = -vertBoost;
         }
+        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch, Texture2D texture, Rectangle sourceRectangle)
+        {
+            base.Draw(gameTime, spriteBatch, texture, sourceRectangle);
+        }
     }
 }

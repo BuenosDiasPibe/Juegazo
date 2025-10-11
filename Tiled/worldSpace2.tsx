@@ -3,12 +3,23 @@
  <image source="worldSprites.png" width="128" height="256"/>
  <tile id="1" type="JumpWallBlock"/>
  <tile id="5" type="speedUp"/>
- <tile id="8" type="VerticalBoostBlock"/>
+ <tile id="8" type="VerticalBoostBlock">
+  <animation>
+   <frame tileid="8" duration="150"/>
+   <frame tileid="14" duration="150"/>
+  </animation>
+ </tile>
  <tile id="10" type="SlowDownBlock"/>
  <tile id="11" type="Collision Block"/>
  <tile id="12" type="OneWayBlock"/>
  <tile id="15" type="CompleteLevelBlock"/>
- <tile id="16" type="MovementBlock"/>
+ <tile id="16" type="MovementBlock">
+  <animation>
+   <frame tileid="16" duration="150"/>
+   <frame tileid="26" duration="150"/>
+   <frame tileid="18" duration="150"/>
+  </animation>
+ </tile>
  <tile id="17" type="CheckPointBlock"/>
  <tile id="18" type="DamageBlock">
   <properties>

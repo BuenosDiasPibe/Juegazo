@@ -19,7 +19,6 @@ namespace Juegazo.Map.Components
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch, Texture2D texture, Rectangle sourceRectangle)
         {
-            Console.WriteLine("holy shit lois");
             double totalDuration = Owner.tile.Animation.Sum(a => a.Duration);
             double currentTime = gameTime.TotalGameTime.TotalMilliseconds % totalDuration;
             int frame = 0;

@@ -587,7 +587,7 @@ namespace Juegazo.Map
                 {
                     Texture2D texture = TilemapTextures[atlasImage];
                     Rectangle srcRectangle = GetSourceRect(value, atlasImage);
-                    // spriteBatch.Draw(texture, srcRectangle, srcRectangle, Color.White); //why do i have this here????????
+
                     block.Draw(gameTime, spriteBatch, texture, srcRectangle);
                 } //this image will always be a tile layer with an atlasImage with value
             }

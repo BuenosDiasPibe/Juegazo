@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Juegazo.Components;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Juegazo.Map.Blocks
 {
@@ -11,6 +12,7 @@ namespace Juegazo.Map.Blocks
     {
         public uint KeyID { get; set; }
         public Rectangle keyCollider { get; set; }
+        private bool visible = true;
         public Key()
         {
             KeyID = 0;
@@ -41,11 +43,17 @@ namespace Juegazo.Map.Blocks
             entityComponent = (KeysIDHolderComponent)entity.getComponent(entityComponent.GetType());
             entityComponent.keyHolder.Add(this.KeyID);
             this.EnableCollisions = false;
+            visible = false;
         }
 
         public override void verticalActions(Entity entity, Rectangle collision)
         {
             horizontalActions(entity, collision);
+        }
+        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch, Texture2D texture, Rectangle sourceRectangle)
+        {
+            if(visible)
+                base.Draw(gameTime, spriteBatch, texture, sourceRectangle);
         }
     }
 }

@@ -21,21 +21,6 @@ namespace Juegazo.Map.Blocks
             AddComponent(new BlockAnimationComponent());
         }
         //when using this, it always has a collider and a tile
-        public override void Start()
-        {
-            AddComponent(new BlockAnimationComponent());
-        }
-        public BlockComponent AddComponent(BlockComponent component)
-        {
-            if (component.Owner != null)
-            {
-                throw new Exception("Component " + component + " already has an owner");
-            }
-            component.Owner = this; 
-            component.Start(); 
-            this.components.Add(component);
-            return component;
-        }
         public KillBlock(Rectangle collider) : base(collider){ type = "DamageBlock";}
         public KillBlock()
         {
@@ -57,13 +42,6 @@ namespace Juegazo.Map.Blocks
         {
             entity.baseVelocity = new();
             entity.health-=damageAmmount;
-        }
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch, Texture2D texture, Rectangle sourceRectangle)
-        {
-            foreach(var component in components)
-            {
-                component.Draw(gameTime, spriteBatch, texture, sourceRectangle);
-            }
         }
     }
 }

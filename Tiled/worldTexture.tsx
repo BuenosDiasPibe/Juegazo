@@ -13,7 +13,14 @@
    <property name="nextLevel" type="int" value="0"/>
   </properties>
  </tile>
- <tile id="16" type="MovementBlock"/>
+ <tile id="16" type="MovementBlock">
+  <animation>
+   <frame tileid="11" duration="150"/>
+   <frame tileid="18" duration="150"/>
+   <frame tileid="16" duration="150"/>
+   <frame tileid="24" duration="150"/>
+  </animation>
+ </tile>
  <tile id="17" type="CheckPointBlock"/>
  <tile id="18" type="DamageBlock">
   <properties>

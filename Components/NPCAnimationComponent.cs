@@ -50,7 +50,6 @@ namespace Juegazo.Components
             var currentFrame = tile.Animation[frame];
             sourceRectangle.X = (int)(currentFrame.TileID % (Owner.texture.Width / Owner.sourceRectangle.Width) * Owner.sourceRectangle.Width);
             sourceRectangle.Y = (int)(currentFrame.TileID / (Owner.texture.Width / Owner.sourceRectangle.Width) * Owner.sourceRectangle.Height);
-            Console.WriteLine($"frame {frame} of entity {c.name} / sourceRect: {sourceRectangle} / tileID: {currentFrame.TileID}");
 
             spriteBatch.Draw(Owner.texture, Owner.Destinationrectangle, sourceRectangle, Microsoft.Xna.Framework.Color.White);
         }

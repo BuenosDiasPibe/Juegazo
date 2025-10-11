@@ -41,8 +41,8 @@
             "scale": 3,
             "selectedLayer": 5,
             "viewCenter": {
-                "x": 203.33333333333331,
-                "y": 78.99999999999999
+                "x": 700.3333333333333,
+                "y": 98.99999999999999
             }
         },
         "Level1.tmx": {
@@ -58,8 +58,8 @@
         },
         "Level10.tmj": {
             "expandedObjectLayers": [
-                2,
-                3
+                3,
+                2
             ],
             "scale": 1.5,
             "selectedLayer": 1,
@@ -87,7 +87,7 @@
             "scale": 3,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 280,
+                "x": 264.6666666666667,
                 "y": 160.33333333333331
             }
         },
@@ -103,7 +103,7 @@
             "scale": 1.5378124999999998,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 160.29262345051825,
+                "x": 160.61776061776067,
                 "y": 96.2406015037594
             }
         },
@@ -119,7 +119,7 @@
             "scale": 3.0756249999999996,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 80.14631172525912,
+                "x": 65.35257061572854,
                 "y": 48.1203007518797
             }
         },
@@ -138,15 +138,15 @@
             "scale": 3,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 141.33333333333334,
-                "y": 121.33333333333331
+                "x": 219.99999999999997,
+                "y": 120.66666666666669
             }
         },
         "Level6.tmj": {
             "scale": 3.07,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 79.96742671009773,
+                "x": 79.80456026058633,
                 "y": 47.8827361563518
             }
         },
@@ -162,7 +162,7 @@
             "scale": 3.0756249999999996,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 99.97967892704737,
+                "x": 100.1422475106686,
                 "y": 48.1203007518797
             }
         },
@@ -175,11 +175,11 @@
             }
         },
         "Level8.tmj": {
-            "scale": 1,
-            "selectedLayer": 0,
+            "scale": 2,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 458,
-                "y": 161
+                "x": 254.5,
+                "y": 231
             }
         },
         "Level8.tmx": {
@@ -219,7 +219,7 @@
             "scale": 1.5,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 160.66666666666669,
+                "x": 160.66666666666663,
                 "y": 11.333333333333314
             }
         },
@@ -337,18 +337,18 @@
     "project": "untitled.tiled-project",
     "property.type": "bool",
     "recentFiles": [
+        "Level4.tmj",
+        "Level3.tmj",
+        "Level5.tmj",
+        "Level2.tmj",
         "Level10.tmj",
         "Level9.tmj",
-        "Main.tmj",
-        "worldTexture.tsx",
-        "Level2.tmj",
+        "Level7.tmj",
         "Level1.tmj",
         "worldSpace2.tsx",
-        "Level7.tmj",
+        "worldTexture.tsx",
         "Level6.tmj",
-        "Level8.tmj",
-        "Level4.tmj",
-        "Level3.tmj"
+        "Level8.tmj"
     ],
     "tileset.lastUsedFilter": "Archivos de conjuntos de patrones Tiled (*.tsx *.xml)",
     "tileset.lastUsedFormat": "tsx",
