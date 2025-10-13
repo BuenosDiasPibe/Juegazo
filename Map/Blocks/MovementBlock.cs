@@ -11,7 +11,6 @@ namespace Juegazo.Map.Blocks
 {
     public class MovementBlock : Block
     {
-        private bool toEndPosition = false;
         public Rectangle initialBlockPosition = new();
         public Rectangle endBlockPosition = new();
         private float velocityToEntity { set; get; } = 1;
@@ -72,7 +71,7 @@ namespace Juegazo.Map.Blocks
             if (lerpAmount >= 0.99)
             {
                 movingLeft = true;
-            }if (lerpAmount <= 0.01)
+            } if (lerpAmount <= 0.01)
             {
                 movingLeft = false;
             }
@@ -89,6 +88,10 @@ namespace Juegazo.Map.Blocks
             // float f = 0.6f;
 
             entity.baseVelocity.X = velocityToEntity;
+        }
+        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch, Texture2D texture, Rectangle sourceRectangle)
+        {
+            base.Draw(gameTime, spriteBatch, texture, sourceRectangle);
         }
     }
 }

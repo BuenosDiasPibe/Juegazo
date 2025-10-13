@@ -18,7 +18,7 @@ namespace Juegazo
         public List<BlockComponent> components = new();
         public bool draw = true;
 
-        public bool EnableUpdate { get; protected set; } = false; //by default no object needs an update method
+        public bool EnableUpdate { get; protected set; } = false;
         public bool EnableCollisions { get; protected set; } = true;
 
         protected Block() { }
@@ -27,13 +27,15 @@ namespace Juegazo
             this.collider = collider;
         }
         protected Block(Tile tile) { this.tile = tile; }
+        /// <summary> 
+        /// for now only used to add AnimartionComponent
+        /// </summary>
         public virtual void Start()
         {
             if (tile.Animation.Count != 0)
             {
                 draw = false;
                 AddComponent(new BlockAnimationComponent());
-                Console.WriteLine("added animation");
             }
         }
         public virtual void Update(GameTime gameTime) { }

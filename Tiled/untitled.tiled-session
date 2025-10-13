@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "Level1.tmj",
+    "activeFile": "worldSpace2.tsx",
     "expandedProjectPaths": [
         "."
     ],
@@ -41,7 +41,7 @@
             "scale": 3,
             "selectedLayer": 5,
             "viewCenter": {
-                "x": 700.3333333333333,
+                "x": 700.5,
                 "y": 98.99999999999999
             }
         },
@@ -58,14 +58,14 @@
         },
         "Level10.tmj": {
             "expandedObjectLayers": [
-                3,
-                2
+                2,
+                3
             ],
             "scale": 1.5,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 320.3333333333333,
-                "y": 192
+                "x": 320.33333333333337,
+                "y": 191.99999999999997
             }
         },
         "Level10.tmx": {
@@ -103,7 +103,7 @@
             "scale": 1.5378124999999998,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 160.61776061776067,
+                "x": 160.94289778500308,
                 "y": 96.2406015037594
             }
         },
@@ -119,7 +119,7 @@
             "scale": 3.0756249999999996,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 65.35257061572854,
+                "x": 65.51513919934975,
                 "y": 48.1203007518797
             }
         },
@@ -138,15 +138,15 @@
             "scale": 3,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 219.99999999999997,
-                "y": 120.66666666666669
+                "x": 170.16666666666669,
+                "y": 133.99999999999997
             }
         },
         "Level6.tmj": {
             "scale": 3.07,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 79.80456026058633,
+                "x": 79.96742671009773,
                 "y": 47.8827361563518
             }
         },
@@ -175,11 +175,14 @@
             }
         },
         "Level8.tmj": {
+            "expandedObjectLayers": [
+                2
+            ],
             "scale": 2,
-            "selectedLayer": 1,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": 254.5,
-                "y": 231
+                "x": 230.75,
+                "y": 239.5
             }
         },
         "Level8.tmx": {
@@ -197,7 +200,7 @@
             "scale": 2,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 203.5,
+                "x": 203.25,
                 "y": 108
             }
         },
@@ -219,7 +222,7 @@
             "scale": 1.5,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 160.66666666666663,
+                "x": 160.33333333333331,
                 "y": 11.333333333333314
             }
         },
@@ -304,7 +307,7 @@
         },
         "worldTexture.tsx": {
             "scaleInDock": 4,
-            "scaleInEditor": 8
+            "scaleInEditor": 3
         }
     },
     "frame.defaultDuration": 150,
@@ -321,34 +324,26 @@
     "map.width": 40,
     "openFiles": [
         "worldSpace2.tsx",
-        "Level7.tmj",
-        "Level9.tmj",
-        "Level10.tmj",
         "worldTexture.tsx",
-        "Level1.tmj",
-        "Level2.tmj",
         "Main.tmj",
-        "Level5.tmj",
-        "Level3.tmj",
-        "Level4.tmj",
         "Level8.tmj",
         "Level6.tmj"
     ],
     "project": "untitled.tiled-project",
     "property.type": "bool",
     "recentFiles": [
+        "Level6.tmj",
+        "Level8.tmj",
+        "Main.tmj",
+        "worldTexture.tsx",
+        "worldSpace2.tsx",
         "Level4.tmj",
         "Level3.tmj",
         "Level5.tmj",
         "Level2.tmj",
         "Level10.tmj",
         "Level9.tmj",
-        "Level7.tmj",
-        "Level1.tmj",
-        "worldSpace2.tsx",
-        "worldTexture.tsx",
-        "Level6.tmj",
-        "Level8.tmj"
+        "Level7.tmj"
     ],
     "tileset.lastUsedFilter": "Archivos de conjuntos de patrones Tiled (*.tsx *.xml)",
     "tileset.lastUsedFormat": "tsx",

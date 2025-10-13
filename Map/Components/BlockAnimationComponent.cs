@@ -14,7 +14,6 @@ namespace Juegazo.Map.Components
         }
         public override void Start()
         {
-            Console.WriteLine("aaaaaaaaaaaaaaaaaaa");
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch, Texture2D texture, Rectangle sourceRectangle)

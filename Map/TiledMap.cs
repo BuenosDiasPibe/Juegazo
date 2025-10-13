@@ -146,7 +146,6 @@ namespace Juegazo.Map
             {
                 uint value = data[i];
                 if (value == 0) continue;
-                // value--; // for some reason this made it so some values were missing
                 int x = (int)(i % tileLayer.Width);
                 int y = (int)(i / tileLayer.Width);
                 Vector2 position = new(x, y);
@@ -181,14 +180,17 @@ namespace Juegazo.Map
                 foreach (var tileObject in layer.Objects.OfType<TileObject>())
                 {
                     if (!MapObjectToType.TryGetValue(tileObject, out var tiledType)) continue;
+                    Tile tile = MapTileObjectToTile[tileObject];
 
-                    Block block = tiledType.createBlock(tileObject, TILESIZE, Map, MapTileObjectToTile[tileObject]);
-                    
+                    Block block = tiledType.createBlock(tileObject, TILESIZE, Map, tile);
+
                     if (block == null)
                     {
                         Console.WriteLine("not block created");
                         continue;
                     }
+
+                    block.Start(); //i always forget to add this here...
 
                     Vector2 position = new((int)(tileObject.X / TileWidth), (int)(tileObject.Y / TileHeight) - (int)(tileObject.Height / TileHeight));
                     if (objectLayerClass.canOverrideCollisionLayer)
@@ -633,6 +635,7 @@ namespace Juegazo.Map
                 }
                 else
                 {
+                    Console.WriteLine("not texture");
                     destRect = new((int)(tileObject.X / TileWidth * TILESIZE),
                                    (int)(((tileObject.Y / TileHeight) - (int)(tileObject.Height / TileHeight)) * TILESIZE),
                                    (int)(tileObject.Width / TileWidth * TILESIZE),

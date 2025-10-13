@@ -274,14 +274,14 @@ namespace Juegazo
                 }
 
                 spriteBatch.DrawString(font,
-                    $"FPS: {Math.Round(1 / gameTime.ElapsedGameTime.TotalSeconds)}\nposition: X:{entity.Destinationrectangle.X} Y:{entity.Destinationrectangle.Y}\nvelocity: {entity.velocity}\nbaseVelocity: {entity.baseVelocity}\nhealth: {entity.health}",
+                    $"Level: {Path.GetFileNameWithoutExtension(levelPath)}\nFPS: {Math.Round(1 / gameTime.ElapsedGameTime.TotalSeconds)}\nposition: X:{entity.Destinationrectangle.X} Y:{entity.Destinationrectangle.Y}\nvelocity: {entity.velocity}\nbaseVelocity: {entity.baseVelocity}\nhealth: {entity.health}",
                     new Vector2(camera.Left, camera.Top),
                         Color.White);
             }
-            spriteBatch.DrawString(font,
-                                    $"exit game: {"Escape"}\nReload: {"R"}\nMain Menu: {"M"}", //TODO: add the keys to variables so i dont need to change this every time
-                                    new Vector2(camera.Right - 200, camera.Top),
-                                    Color.White);
+            // spriteBatch.DrawString(font,
+            //                         $"exit game: {"Escape"}\nReload: {"R"}\nMain Menu: {"M"}", //TODO: add the keys to variables so i dont need to change this every time
+            //                         new Vector2(camera.Right - 200, camera.Top),
+            //                         Color.White);
             spriteBatch.DrawString(font, camera.ToString(), new(camera.Left, camera.Top + 300), Color.White, 0f, Vector2.Zero, 0.7f, SpriteEffects.None, 0f);
         }
     }

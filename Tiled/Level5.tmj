@@ -65,39 +65,6 @@
          "name":"Capa de Objetos 1",
          "objects":[
                 {
-                 "gid":17,
-                 "height":8,
-                 "id":1,
-                 "name":"",
-                 "properties":[
-                        {
-                         "name":"EndBlockPosition",
-                         "type":"object",
-                         "value":4
-                        }, 
-                        {
-                         "name":"canMove",
-                         "type":"bool",
-                         "value":true
-                        }, 
-                        {
-                         "name":"initialBlockPosition",
-                         "type":"object",
-                         "value":6
-                        }, 
-                        {
-                         "name":"velocity",
-                         "type":"float",
-                         "value":240
-                        }],
-                 "rotation":0,
-                 "type":"MovementBlock",
-                 "visible":true,
-                 "width":8,
-                 "x":152,
-                 "y":128
-                }, 
-                {
                  "height":8,
                  "id":4,
                  "name":"",
@@ -118,6 +85,34 @@
                  "width":8,
                  "x":248,
                  "y":120
+                }, 
+                {
+                 "gid":17,
+                 "height":8,
+                 "id":8,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"EndBlockPosition",
+                         "type":"object",
+                         "value":4
+                        }, 
+                        {
+                         "name":"canMove",
+                         "type":"bool",
+                         "value":true
+                        }, 
+                        {
+                         "name":"initialBlockPosition",
+                         "type":"object",
+                         "value":6
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":8,
+                 "x":160,
+                 "y":128
                 }],
          "opacity":1,
          "properties":[
@@ -162,7 +157,7 @@
          "y":0
         }],
  "nextlayerid":4,
- "nextobjectid":8,
+ "nextobjectid":9,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.2",
