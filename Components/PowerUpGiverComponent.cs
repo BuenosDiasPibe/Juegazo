@@ -45,7 +45,7 @@ namespace Juegazo.Map.Components
         }
 
         private async Task DelayedTouch()
-        {
+        { //make this a component and fuck me i guess
             await Task.Delay(5000);
             touchedBefore = false;
             Owner.color = Color.White;

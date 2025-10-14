@@ -14,8 +14,8 @@
          "class":"Collision Tile Layer",
          "data":[12, 12, 12, 12, 12, 12, 12, 12, 16, 16, 16, 16, 16, 12, 12, 12, 12, 12, 12, 12,
             12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, 12,
-            12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12,
-            2, 0, 0, 13, 13, 13, 13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12,
+            12, 0, 0, 0, 14, 14, 0, 0, 0, 14, 14, 14, 0, 0, 0, 0, 0, 0, 0, 12,
+            2, 0, 0, 13, 13, 13, 13, 0, 0, 0, 0, 0, 0, 0, 0, 14, 14, 0, 0, 12,
             2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 13, 13, 13, 13, 0, 2,
             2, 0, 0, 11, 0, 0, 0, 12, 12, 9, 9, 9, 12, 12, 0, 0, 0, 0, 0, 2,
             2, 0, 0, 11, 0, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 2,
@@ -31,6 +31,36 @@
          "type":"tilelayer",
          "visible":true,
          "width":20,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "class":"Collision Blocks Object Layer",
+         "draworder":"topdown",
+         "id":4,
+         "name":"Capa de Objetos 1",
+         "objects":[
+                {
+                 "gid":6,
+                 "height":8,
+                 "id":1,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"SpeedAmmount",
+                         "type":"int",
+                         "value":30
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":8,
+                 "x":80,
+                 "y":72
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
          "x":0,
          "y":0
         }, 
@@ -75,13 +105,13 @@
          "name":"Capa de patrones 2",
          "opacity":1,
          "type":"tilelayer",
-         "visible":true,
+         "visible":false,
          "width":20,
          "x":0,
          "y":0
         }],
- "nextlayerid":4,
- "nextobjectid":1,
+ "nextlayerid":5,
+ "nextobjectid":2,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.2",

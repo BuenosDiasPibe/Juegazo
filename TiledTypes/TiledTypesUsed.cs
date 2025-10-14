@@ -71,6 +71,10 @@ namespace Juegazo.CustomTiledTypes
     {
         public int numberOfJumps { get; set; } = 5;
     }
+    public class SpeedUp
+    {
+        public int SpeedAmmount { get; set; } = 5;
+    }
 }
 namespace Juegazo.CustomTiledTypesImplementation
 {
@@ -380,5 +384,23 @@ namespace Juegazo.CustomTiledTypesImplementation
         {
             return new();
         }
+    }
+    public class SpeedUp : TiledTypesUsed
+    {
+        public int speedAmmount = 5;
+        public SpeedUp(CustomTiledTypes.SpeedUp sppeedUp)
+        {
+            speedAmmount = sppeedUp.SpeedAmmount;
+        }
+        public override Block createBlock(TileObject obj, int TILESIZE, DotTiled.Map map, Tile tile)
+        {
+            return new SpeedUpBlock(GetRect(obj, TILESIZE, map), speedAmmount);
+        }
+
+        public override void getNeededObjectPropeties(DotTiled.Object obj, int TILESIZE, DotTiled.Map map)
+        { }
+
+        public override List<uint> neededObjects()
+        { return new(); }
     }
 }

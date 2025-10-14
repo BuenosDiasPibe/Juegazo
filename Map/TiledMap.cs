@@ -2,6 +2,8 @@
     Most of the implementation is inspired of the NuTiled implementation of DotTiled
     source: https://github.com/differenceclouds/NuTiled
     he's really cool and awesome!
+
+    TODO: REWRITE LOTS OF STUFF THERE'S A LOT OF REPETITION WHAT ARE YOU DOING?????
 */
 using System;
 using System.Collections.Generic;
@@ -109,7 +111,7 @@ namespace Juegazo.Map
             InitObjectLayers(Map.Layers);
             InitLayerGroup(Map.Layers); //dont know dont care fuck it
         }
-        private void InitLayers(List<BaseLayer> layers)
+        private void InitLayers(List<BaseLayer> layers) //TODO: a lot of the collision type shit is basically the same, and you can place entities on the wrong layers and you excpect at least a warning, change this shi
         {
             foreach (var layer in layers)
             {
@@ -131,7 +133,7 @@ namespace Juegazo.Map
                         InitObjectLayer(objectLayer1);
                         break;
                     case "":
-                        Console.WriteLine("not a class, ignored");
+                        Console.WriteLine("Layer is not a class, ignored");
                         break;
                     default:
                         Console.WriteLine("not Implemented");
@@ -145,15 +147,15 @@ namespace Juegazo.Map
             uint[] data = tileLayer.Data.Value.GlobalTileIDs;
             for (int i = 0; i < data.Length; i++)
             {
-                uint value = data[i];
-                if (value == 0) continue;
+                uint TileID = data[i];
+                if (TileID == 0) continue;
                 int x = (int)(i % tileLayer.Width);
                 int y = (int)(i / tileLayer.Width);
                 Vector2 position = new(x, y);
-                var (tileset, tile) = GetTilesetFromGID(value, true);
+                var (tileset, tile) = GetTilesetFromGID(TileID, true);
                 if (tile == null)
                 {
-                    Console.WriteLine($"value = {value}");
+                    Console.WriteLine($"Not possible to create an object. Tile.ID = {TileID}");
                     continue;
                 }
                 bool blockPlaced = false;
@@ -175,8 +177,7 @@ namespace Juegazo.Map
                 }
                 if (!blockPlaced)
                 {
-                    DoubleJump j = new();
-                    CreateDoubleJump(getDestinationRectangle(position), tileset, tile, j);
+                    CreatePowerUpEntity(getDestinationRectangle(position), tileset, tile);
                     // Console.WriteLine($"Warning: No block placed for tile type '{tile.Type}' at position {position}");
                 }
             }
@@ -193,6 +194,7 @@ namespace Juegazo.Map
                     Tile tile = MapTileObjectToTile[tileObject];
 
                     Block block = tiledType.createBlock(tileObject, TILESIZE, Map, tile);
+                    block.tile = tile; //added if i forget to do this
 
                     if (block == null)
                     {
@@ -242,6 +244,10 @@ namespace Juegazo.Map
                 MapTileObjectToTile[tobj] = tileData;
                 switch (obj.Type)
                 {
+                    case "SpeedUp":
+                        var pap = obj.MapPropertiesTo<CustomTiledTypes.SpeedUp>();
+                        MapObjectToType[tobj] = new CustomTiledTypesImplementation.SpeedUp(pap);
+                        break;
                     case "Collision Block":
                         Console.WriteLine($"layer {objectLayer.Name} tries to add a {obj.Type}");
                         var paap = obj.MapPropertiesTo<CustomTiledTypes.CollisionBlock>();
@@ -263,7 +269,6 @@ namespace Juegazo.Map
                     case "DamageBlock":
                         var damage = obj.MapPropertiesTo<CustomTiledTypes.DamageBlock>();
                         MapObjectToType[tobj] = new CustomTiledTypesImplementation.DamageBlock(damage);
-                        Console.WriteLine($"damage: {damage}, mapped? {MapObjectToType[tobj]}");
                         break;
 
                     case "CheckPointBlock":
@@ -358,18 +363,18 @@ namespace Juegazo.Map
                     c.componentGived = new DoubleJumpComponent(jumpData);
                     break;
                 default:
-                    Console.WriteLine("type not added, skipped");
+                    Console.WriteLine("type not added, skipped1 ");
                     break;
             }
             if (c.componentGived == null) return false;
             c.Start();
             entity.AddComponent(c.GetType(), c);
-            Console.WriteLine("Created entity");
+            Console.WriteLine("Created power up");
 
             entities.Add(entity);
             return true;
         }
-        private void CreateDoubleJump(Rectangle destRect, Tileset tileset, Tile tileData, DoubleJump data)
+        private void CreatePowerUpEntity(Rectangle destRect, Tileset tileset, Tile tileData)
         {
             Entity entity = new Entity(TilemapTextures[tileset], GetSourceRect(tileData.ID, tileset),destRect, 1, Color.White);
             PowerUpGiverComponent c = new();
@@ -379,13 +384,13 @@ namespace Juegazo.Map
                     c.componentGived = new DoubleJumpComponent(tileData.MapPropertiesTo<DoubleJump>());
                     break;
                 default:
-                    Console.WriteLine("type not added, skipped");
+                    Console.WriteLine($"not case on collisionLayer, tile: {tileData.ID}");
                     break;
             }
             if (c.componentGived == null) return;
             c.Start();
             entity.AddComponent(c.GetType(), c);
-            Console.WriteLine("Created entity");
+            Console.WriteLine("Created power up");
 
             entities.Add(entity);
         }
@@ -545,7 +550,7 @@ namespace Juegazo.Map
                         ImageLayerTexture[imageLayer] = texture;
                         break;
                     default:
-                        Console.WriteLine("not important for now");
+                        // Console.WriteLine("not important for now");
                         break;
                 }
             }

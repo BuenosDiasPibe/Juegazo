@@ -14,18 +14,15 @@ namespace Juegazo.Components
         public bool JumpPressed { get; private set; } = false;
         public int timesJumped = 0;
         public int numJumps = 5;
-        public int initialJumps = 5;
         private KeyboardState prevState = new KeyboardState();
         public DoubleJumpComponent(int numJumps)
         {
-            initialJumps = numJumps;
             this.numJumps = numJumps;
             this.EnableDraw = false;
         }
         public DoubleJumpComponent(DoubleJump data)
         {
             numJumps = data.numberOfJumps;
-            initialJumps = data.numberOfJumps;
             this.EnableDraw = false;
         }
         public void JumpingVertical(float jumpAmmount)
@@ -47,7 +44,7 @@ namespace Juegazo.Components
         }
         public override void Destroy()
         {
-            numJumps = 0;
+            timesJumped = 0;
             Owner.color = Color.White;
             Console.WriteLine("deleting doubleJump...");
         }

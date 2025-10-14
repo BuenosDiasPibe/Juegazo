@@ -16,7 +16,7 @@ namespace Juegazo
         public Tile tile;
         public Rectangle collider = new();
         public List<BlockComponent> components = new();
-        public bool draw = true;
+        public bool enableDraw = true;
 
         public bool EnableUpdate { get; protected set; } = false;
         public bool EnableCollisions { get; protected set; } = true;
@@ -34,7 +34,6 @@ namespace Juegazo
         {
             if (tile.Animation.Count != 0)
             {
-                draw = false;
                 AddComponent(new BlockAnimationComponent());
             }
         }
@@ -43,15 +42,18 @@ namespace Juegazo
         public abstract void verticalActions(Entity entity, Rectangle collision);
         public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch, Texture2D texture, Rectangle sourceRectangle)
         {
-            if (draw)
-            {
-                spriteBatch.Draw(texture, collider, sourceRectangle, Microsoft.Xna.Framework.Color.White);
-                return;
-            }
+            if (!enableDraw) return;
+            bool chuco = false;
             foreach (var component in components)
             {
-                component.Draw(gameTime, spriteBatch, texture, sourceRectangle);
+                if (component.EnableDraw)
+                {
+                    component.Draw(gameTime, spriteBatch, texture, sourceRectangle);
+                    chuco = true;
+                }
             }
+            if(!chuco)
+                spriteBatch.Draw(texture, collider, sourceRectangle, Microsoft.Xna.Framework.Color.White);
         }
         public BlockComponent AddComponent(BlockComponent component)
         {

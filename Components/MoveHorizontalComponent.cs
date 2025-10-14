@@ -16,6 +16,8 @@ namespace Juegazo.Components
         public bool movingLeft = false;
         public bool movingRight = false;
         public bool dash = false;
+        private float colorTransitioned = 0;
+        private Color colorOnDash = Color.Coral;
         public override void Destroy()
         { }
 
@@ -29,7 +31,7 @@ namespace Juegazo.Components
             {
                 movingLeft = c.btnLeft;
                 movingRight = c.btnRight;
-                dash = c.btnSpecial1;
+                dash = c.btnpSpecial2;
             }
 
             // Horizontal movement
@@ -54,10 +56,11 @@ namespace Juegazo.Components
                 Owner.velocity.X = 0;
             }
             // Dash (sprint)
-            if (dashCounter > 0 && dash)
+            if (dash)
             {
-                int basedOnDirection = Owner.directionLeft ? -7 : 7;
-                Owner.velocity.X += basedOnDirection;
+                float basedOnDirection = Owner.directionLeft ? -30 : 30;
+                //colorTransitioned = 1;
+                Owner.velocity.X = basedOnDirection;
                 dashCounter--;
             }
 
@@ -72,8 +75,11 @@ namespace Juegazo.Components
                     Owner.velocity.X = 0;
                 }
             }
-            //max speed limit
             Owner.velocity.X = Math.Min(Math.Max(Owner.velocity.X, -MAX_SPEED), MAX_SPEED);
+
+            //this should go on a separate event handler or something, but its funny for me rn
+            //Owner.color = Color.Lerp(Color.White, colorOnDash, colorTransitioned);
+            //colorTransitioned = Math.Max(0, colorTransitioned - 0.05f);
         }
     }
 }

@@ -454,7 +454,7 @@
                 "value": 5
             }
         ],
-        "name": "speedUp",
+        "name": "SpeedUp",
         "type": "class",
         "useAs": [
             "property",

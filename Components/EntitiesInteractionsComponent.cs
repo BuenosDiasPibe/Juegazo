@@ -32,9 +32,9 @@ namespace Juegazo.Components
                 {
                     n.Collisions(Owner);
                 }
-                if (entity.TryGetComponent(out PowerUpGiverComponent doubleJumpComponent))
+                if (entity.TryGetComponent(out PowerUpGiverComponent powerUp))
                 {
-                    doubleJumpComponent.Collision(Owner);
+                    powerUp.Collision(Owner);
                 }
             }
         }

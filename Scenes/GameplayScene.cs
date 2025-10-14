@@ -194,7 +194,7 @@ namespace Juegazo
                 string testPath = Path.Combine(projectDirectory, "Level" + nextScene + ".tmj");
                 if (!File.Exists(testPath))
                 {
-                    Console.WriteLine("level does not exist, changing to Main.tmj");
+                    Console.WriteLine("----- Level does not exist, changing to Main.tmj -----");
                     nextScene = 0;
                 }
                 UnloadContent();
@@ -205,7 +205,7 @@ namespace Juegazo
                     return;
                 }
                 levelPath = "Level" + nextScene + ".tmj";
-                Console.WriteLine("changing to " + levelPath);
+                Console.WriteLine($"------------ Changing To {levelPath} ------------");
                 LoadContent();
             }
 

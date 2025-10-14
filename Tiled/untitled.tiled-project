@@ -460,12 +460,12 @@
             "id": 6,
             "members": [
                 {
-                    "name": "speedAmount",
+                    "name": "SpeedAmmount",
                     "type": "int",
                     "value": 5
                 }
             ],
-            "name": "speedUp",
+            "name": "SpeedUp",
             "type": "class",
             "useAs": [
                 "property",

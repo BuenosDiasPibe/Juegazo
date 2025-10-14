@@ -17,7 +17,7 @@ namespace Juegazo.Components
         {
             JumpPressed = false;
         }
-        public void JumpingVertical(float jumpAmmount) //make this a component and fuck me i guess
+        public void JumpingVertical(float jumpAmmount)
         {
             if (Owner.onGround && JumpPressed)
             {
@@ -35,10 +35,10 @@ namespace Juegazo.Components
             {
                 JumpPressed = c.btnpUp;
                 jumpCheat = c.btnpSpecial1;
-                fastFall = c.btnSpecial2;
+                // fastFall = c.btnSpecial2;
             }
             if (jumpCheat) Owner.velocity.Y = -20;
-            if (fastFall) Owner.velocity.Y += 2;
+            // if (fastFall) Owner.velocity.Y += 2;
             JumpingVertical(10);
         }
     }
