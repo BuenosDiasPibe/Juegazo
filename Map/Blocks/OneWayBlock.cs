@@ -32,10 +32,6 @@ namespace Juegazo
                 entity.Destinationrectangle.Y = collision.Top - entity.Destinationrectangle.Height;
                 entity.velocity.Y = 1f;
                 entity.onGround = true;
-                if (entity.hasComponent(typeof(MoveVerticalComponent)))
-                {
-                    ((MoveVerticalComponent)entity.GetComponent(typeof(MoveVerticalComponent))).jumpCounter = 0;
-                }
             }
         }
     }

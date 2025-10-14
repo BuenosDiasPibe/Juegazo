@@ -29,9 +29,8 @@ namespace Juegazo.Components
                 Owner.health = 1;
                 Owner.velocity = new();
                 //doing this because i hate the smooth transition when i die, im trying to get rid of it, and it almost worked
-                if (Owner.TryGetComponent<CameraToEntityComponent>(out var camComp))
+                if (Owner.TryGetComponent<CameraToEntityComponent>(out var c))
                 {
-                    CameraToEntityComponent c = (CameraToEntityComponent)camComp;
                     var pa = new Vector2(initialPosition.X + c.lookAhead, initialPosition.Y);
                     c.cameraHorizontal = (int)pa.X;
                     c.cameraVertical = (int)pa.Y;

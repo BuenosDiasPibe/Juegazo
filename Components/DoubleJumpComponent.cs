@@ -14,71 +14,67 @@ namespace Juegazo.Components
         public bool JumpPressed { get; private set; } = false;
         public int timesJumped = 0;
         public int numJumps = 5;
+        public int initialJumps = 5;
         private KeyboardState prevState = new KeyboardState();
         public DoubleJumpComponent(int numJumps)
         {
+            initialJumps = numJumps;
             this.numJumps = numJumps;
-            this.EnableDraw = true;
+            this.EnableDraw = false;
         }
         public DoubleJumpComponent(DoubleJump data)
         {
             numJumps = data.numberOfJumps;
-            this.EnableDraw = true;
+            initialJumps = data.numberOfJumps;
+            this.EnableDraw = false;
         }
         public void JumpingVertical(float jumpAmmount)
         {
-            if ((Owner.onGround  || numJumps > timesJumped) && JumpPressed)
+            if (JumpPressed)
             {
+                timesJumped += Owner.onGround ? 0 : 1;
                 Owner.velocity.Y = -jumpAmmount;
                 Owner.onGround = false;
-                timesJumped++;
             }
+        }
+        public override void Start()
+        {
+            if(Owner.TryGetComponent(out MoveVerticalComponent mv))
+            {
+                mv.EnableUpdate = false;
+            }
+            Owner.color = Color.Red;
         }
         public override void Destroy()
         {
+            numJumps = 0;
             Owner.color = Color.White;
             Console.WriteLine("deleting doubleJump...");
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
-        {
-            spriteBatch.Draw(Owner.texture, Owner.Destinationrectangle, Owner.sourceRectangle, Owner.color);
-        }
+        { }
 
         public override void Update(GameTime gameTime)
         {
-            JumpPressed = Owner.hasComponent(typeof(KeyboardInputComponent)) && ((KeyboardInputComponent)Owner.GetComponent(typeof(KeyboardInputComponent))).keyUp;
+            if(Owner.TryGetComponent(out KeyboardInputComponent c))
+            {
+                JumpPressed = c.btnpUp;
+            }
 
             JumpingVertical(10);
 
             prevState = Keyboard.GetState();
-            if (numJumps == timesJumped)
+            if (timesJumped >= numJumps)
             {
-                if (Owner.hasComponent(typeof(MoveVerticalComponent)) && Owner.GetComponent(typeof(MoveVerticalComponent)) is MoveVerticalComponent vir)
+                if(Owner.TryGetComponent(out MoveVerticalComponent vir))
                 {
                     vir.EnableUpdate = true;
                 }
                 Owner.RemoveComponent(this.GetType());
             }
         }
-        private bool firstTime = false;
         public void Collisions(Entity entity)
-        {
-            if (Owner.collider.Intersects(entity.Destinationrectangle) && !firstTime && !entity.hasComponent(GetType()))
-            {
-                if (entity.hasComponent(typeof(MoveVerticalComponent)) && entity.GetComponent(typeof(MoveVerticalComponent)) is MoveVerticalComponent vir &&
-                        vir.EnableUpdate)
-                {
-                    vir.EnableUpdate = false;
-                }
-
-                Type thisComponent = this.GetType();
-                Owner.Visible = false;
-                entity.AddComponent(thisComponent, Owner.RemoveComponent(thisComponent));
-                Owner.color = Color.Red;
-                Console.WriteLine("if this crashes im goin to kill myself");
-                firstTime = true;
-            }
-        }
+        { }
     }
 }

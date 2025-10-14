@@ -11,12 +11,8 @@ namespace Juegazo.Components
 {
     public class KeyboardInputComponent : Component
     {
-        public bool keyLeft = false;
-        public bool keyRight = false;
-        public bool keyUp = false;
-        public bool keyDown = false;
-        public bool special1 = false;
-        public bool special2 = false;
+        public bool btnLeft, btnRight, btnUp, btnDown, btnSpecial1, btnSpecial2;
+        public bool btnpLeft, btnpRight, btnpUp, btnpDown, btnpSpecial1, btnpSpecial2;
 
         public List<Keys> keysUp = new() { Keys.Up, Keys.W, Keys.Space };
         public List<Keys> keysDown = new() { Keys.S, Keys.Down };
@@ -37,18 +33,25 @@ namespace Juegazo.Components
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
-        {
-        }
+        { }
 
         public override void Update(GameTime gameTime)
         {
             KeyboardState currentState = Keyboard.GetState();
-            keyUp = keysUp.Any(key => currentState.IsKeyDown(key) && !prevState.IsKeyDown(key));
-            keyDown = keysDown.Any(key => currentState.IsKeyDown(key));
-            keyLeft = keysLeft.Any(key => currentState.IsKeyDown(key));
-            keyRight = keysRight.Any(key => currentState.IsKeyDown(key));
-            special1 = special1Keys.Any(key => currentState.IsKeyDown(key) && prevState.IsKeyDown(key));
-            special2 = special2Keys.Any(key => currentState.IsKeyDown(key) && prevState.IsKeyDown(key));
+            btnUp = keysUp.Any(key => currentState.IsKeyDown(key));
+            btnDown = keysDown.Any(key => currentState.IsKeyDown(key));
+            btnLeft = keysLeft.Any(key => currentState.IsKeyDown(key));
+            btnRight = keysRight.Any(key => currentState.IsKeyDown(key));
+            btnSpecial1 = special1Keys.Any(key => currentState.IsKeyDown(key));
+            btnSpecial2 = special2Keys.Any(key => currentState.IsKeyDown(key));
+
+            btnpUp = keysUp.Any(key => currentState.IsKeyDown(key) && !prevState.IsKeyDown(key));
+            btnpDown = keysDown.Any(key => currentState.IsKeyDown(key) && !prevState.IsKeyDown(key));
+            btnpLeft = keysLeft.Any(key => currentState.IsKeyDown(key) && !prevState.IsKeyDown(key));
+            btnpRight = keysRight.Any(key => currentState.IsKeyDown(key) && !prevState.IsKeyDown(key));
+            btnpSpecial1 = special1Keys.Any(key => currentState.IsKeyDown(key) && !prevState.IsKeyDown(key));
+            btnpSpecial2 = special2Keys.Any(key => currentState.IsKeyDown(key) && !prevState.IsKeyDown(key));
+
             prevState = currentState;
         }
     }

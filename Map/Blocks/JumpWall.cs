@@ -13,7 +13,7 @@ namespace Juegazo.Map.Blocks
     {
         private float jumpStrength = 11;
         public bool canJump = true;
-        private float recoilVelocity = 25;
+        private float recoilVelocity = 20;
         public JumpWall(Rectangle collider) : base(collider)
         {
             type = "JumpWallBlock";
@@ -40,22 +40,22 @@ namespace Juegazo.Map.Blocks
                 return;
             }
             entity.onGround = true;
-            MoveVerticalComponent verticalMovement = (MoveVerticalComponent)entity.GetComponent(typeof(MoveVerticalComponent));
+            if (!entity.TryGetComponent(out MoveVerticalComponent component)) return;
             if (entity.velocity.X > 0)
             {
                 entity.Destinationrectangle.X = collision.Left - entity.Destinationrectangle.Width;
-                if (verticalMovement.JumpPressed)
+                if (component.JumpPressed)
                 {
-                    verticalMovement.JumpingVertical(jumpStrength);
+                    component.JumpingVertical(jumpStrength);
                     entity.velocity.X = -recoilVelocity;
                 }
             }
             else if (entity.velocity.X < 0)
             {
                 entity.Destinationrectangle.X = collision.Right;
-                if (verticalMovement.JumpPressed)
+                if (component.JumpPressed)
                 {
-                    verticalMovement.JumpingVertical(jumpStrength);
+                    component.JumpingVertical(jumpStrength);
                     entity.velocity.X = recoilVelocity;
                 }
             }

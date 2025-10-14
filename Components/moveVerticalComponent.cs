@@ -10,12 +10,11 @@ namespace Juegazo.Components
 {
     public class MoveVerticalComponent : Component
     {
-        public bool JumpPressed { get; private set; } = false;
-        public int jumpCounter = 0;
-        private KeyboardState prevState = new KeyboardState();
+        public bool JumpPressed = false;
+        private bool fastFall = false;
+        private bool jumpCheat = false;
         public MoveVerticalComponent()
         {
-            jumpCounter = 0;
             JumpPressed = false;
         }
         public void JumpingVertical(float jumpAmmount) //make this a component and fuck me i guess
@@ -26,25 +25,21 @@ namespace Juegazo.Components
                 Owner.onGround = false;
             }
         }
-
-        public override void Destroy()
-        { }
-
+        public override void Destroy() {}
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         { }
 
         public override void Update(GameTime gameTime)
-        {//this method is fucking stupid
-
-            JumpPressed = (Keyboard.GetState().IsKeyDown(Keys.Up) && !prevState.IsKeyDown(Keys.Up)) || (Keyboard.GetState().IsKeyDown(Keys.W) && !prevState.IsKeyDown(Keys.W));
-
-            //jumpCheat
-            if (Keyboard.GetState().IsKeyDown(Keys.T) && !prevState.IsKeyDown(Keys.T)) Owner.velocity.Y = -20;
-
-            //Fast fall
-            if (Keyboard.GetState().IsKeyDown(Keys.S) || Keyboard.GetState().IsKeyDown(Keys.Down)) Owner.velocity.Y = 10;
+        {
+            if(Owner.TryGetComponent(out KeyboardInputComponent c))
+            {
+                JumpPressed = c.btnpUp;
+                jumpCheat = c.btnpSpecial1;
+                fastFall = c.btnSpecial2;
+            }
+            if (jumpCheat) Owner.velocity.Y = -20;
+            if (fastFall) Owner.velocity.Y += 2;
             JumpingVertical(10);
-            prevState = Keyboard.GetState();
         }
     }
 }

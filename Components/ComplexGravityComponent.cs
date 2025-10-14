@@ -24,6 +24,7 @@ namespace Juegazo.Components
             switch (cardinalPoint)
             {
                 case CardinalPoint.North:
+                    if (Owner.velocity.Y > FALLING_VELOCITY*10) break;
                     Owner.velocity.Y += FALLING_VELOCITY;
                     break;
                 case CardinalPoint.South:
@@ -33,8 +34,7 @@ namespace Juegazo.Components
                 case CardinalPoint.West:
                     break;
             }
-
-            Owner.velocity.Y = Math.Min(MAX_FALLING, Owner.velocity.Y);
+            //Owner.velocity.Y = Math.Min(MAX_FALLING, Owner.velocity.Y);
         }
     }
 }

@@ -14,6 +14,7 @@ using Juegazo.Components;
 using Juegazo.CustomTiledTypes;
 using Juegazo.CustomTiledTypesImplementation;
 using Juegazo.Map.Blocks;
+using Juegazo.Map.Components;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameGum;
@@ -324,14 +325,9 @@ namespace Juegazo.Map
                         var doorBlock = obj.MapPropertiesTo<CustomTiledTypes.DoorBlock>();
                         MapObjectToType[tobj] = new CustomTiledTypesImplementation.DoorBlock(doorBlock);
                         break;
-                    //this is weird but it should work... i think
-                    case "DoubleJump":
-                        var data = obj.MapPropertiesTo<DoubleJump>();
-
-                        CreateDoubleJump(obj, tileset, tileData, data);
-                        break;
                     default:
-                        Console.WriteLine("not a class or not implemented");
+                        if(!CreatePowerUpEntity(obj, tileset, tileData))
+                            Console.WriteLine("not a class or not implemented");
                         break;
                 }
             }
@@ -351,19 +347,43 @@ namespace Juegazo.Map
             }
         }
 
-        private void CreateDoubleJump(DotTiled.Object obj, Tileset tileset, Tile tileData, DoubleJump data)
+        private bool CreatePowerUpEntity(DotTiled.Object obj, Tileset tileset, Tile tileData)
         {
             Entity entity = new Entity(TilemapTextures[tileset], GetSourceRect(tileData.ID, tileset), GetObjectDestinationRectangle(obj), 1, Color.White);
-            DoubleJumpComponent c = new(data);
+            PowerUpGiverComponent c = new();
+            switch (tileData.Type)
+            {
+                case "DoubleJump":
+                    var jumpData = obj.MapPropertiesTo<DoubleJump>() ?? new DoubleJump();
+                    c.componentGived = new DoubleJumpComponent(jumpData);
+                    break;
+                default:
+                    Console.WriteLine("type not added, skipped");
+                    break;
+            }
+            if (c.componentGived == null) return false;
+            c.Start();
             entity.AddComponent(c.GetType(), c);
             Console.WriteLine("Created entity");
 
             entities.Add(entity);
+            return true;
         }
         private void CreateDoubleJump(Rectangle destRect, Tileset tileset, Tile tileData, DoubleJump data)
         {
             Entity entity = new Entity(TilemapTextures[tileset], GetSourceRect(tileData.ID, tileset),destRect, 1, Color.White);
-            DoubleJumpComponent c = new(data);
+            PowerUpGiverComponent c = new();
+            switch (tileData.Type)
+            {
+                case "DoubleJump":
+                    c.componentGived = new DoubleJumpComponent(tileData.MapPropertiesTo<DoubleJump>());
+                    break;
+                default:
+                    Console.WriteLine("type not added, skipped");
+                    break;
+            }
+            if (c.componentGived == null) return;
+            c.Start();
             entity.AddComponent(c.GetType(), c);
             Console.WriteLine("Created entity");
 
@@ -411,7 +431,7 @@ namespace Juegazo.Map
                     entities.Add(entity);
                 }else if(tile.Type == "DoubleJump" || tileData.Type == "DoubleJump")
                 {
-                    CreateDoubleJump(obj, tileset, tileData, new());
+                    CreatePowerUpEntity(obj, tileset, tileData);
                 }
             }
         }
@@ -612,7 +632,13 @@ namespace Juegazo.Map
                 value--;
                 int x = (int)(i % tileLayer.Width);
                 int y = (int)(i / tileLayer.Width);
-                var (atlasImage, tile) = GetTilesetFromGID(value+1, true);
+                var (atlasImage, tile) = GetTilesetFromGID(value + 1, true);
+                if (tile == null)
+                {
+                    DrawTile(gameTime, spriteBatch, value, new(x, y), atlasImage);
+                    continue;
+                }
+                
 
                 collisionLayer.TryGetValue(new(x, y), out var block);
                 if (block == null)

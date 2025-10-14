@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Juegazo.Map.Components;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -27,18 +28,13 @@ namespace Juegazo.Components
         {
             foreach (var entity in entities)
             {
-                if (entity.hasComponent(typeof(NPCComponent))) {
-                    if (entity.GetComponent(typeof(NPCComponent)) is NPCComponent component)
-                    {
-                        component.Collisions(Owner);
-                    }
-                }
-                if (entity.hasComponent(typeof(DoubleJumpComponent)))
+                if (entity.TryGetComponent(out NPCComponent n))
                 {
-                    if (entity.GetComponent(typeof(DoubleJumpComponent)) is DoubleJumpComponent doubleJumpComponent)
-                    {
-                        doubleJumpComponent.Collisions(Owner);
-                    }
+                    n.Collisions(Owner);
+                }
+                if (entity.TryGetComponent(out PowerUpGiverComponent doubleJumpComponent))
+                {
+                    doubleJumpComponent.Collision(Owner);
                 }
             }
         }

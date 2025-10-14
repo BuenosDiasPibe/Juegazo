@@ -27,9 +27,9 @@ namespace Juegazo.Components
         {
             if(Owner.TryGetComponent(out KeyboardInputComponent c))
             {
-                movingLeft = c.keyLeft;
-                movingRight = c.keyRight;
-                dash = c.special1;
+                movingLeft = c.btnLeft;
+                movingRight = c.btnRight;
+                dash = c.btnSpecial1;
             }
 
             // Horizontal movement
