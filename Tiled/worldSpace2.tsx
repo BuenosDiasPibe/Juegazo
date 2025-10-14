@@ -12,6 +12,7 @@
  <tile id="10" type="SlowDownBlock"/>
  <tile id="11" type="Collision Block"/>
  <tile id="12" type="OneWayBlock"/>
+ <tile id="13" type="DoubleJump"/>
  <tile id="15" type="CompleteLevelBlock"/>
  <tile id="16" type="MovementBlock">
   <animation>

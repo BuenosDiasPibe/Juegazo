@@ -14,7 +14,6 @@ namespace Juegazo.Components
         private int totalFrames = 2; // adjust based on your sprite sheet
         private int frameWidth = 16;
         int frameHeight = 16;
-        public Rectangle sourceRectangle { get; protected set; } = new();
         public AnimationComponent()
         {
             this.EnableDraw = true;
@@ -38,7 +37,7 @@ namespace Juegazo.Components
         {
             // if (Owner.hasComponent(typeof(NPCComponent))) Console.WriteLine("this owner has a component");
             var effects = !Owner.directionLeft ? SpriteEffects.None  : SpriteEffects.FlipHorizontally ;
-            spriteBatch.Draw(Owner.texture, Owner.Destinationrectangle, sourceRectangle, Color.White, 0f, Vector2.Zero, effects, 0f);
+            spriteBatch.Draw(Owner.texture, Owner.Destinationrectangle, Owner.sourceRectangle, Owner.color, 0f, Vector2.Zero, effects, 0f);
         }
 
         public override void Update(GameTime gameTime)
@@ -54,7 +53,7 @@ namespace Juegazo.Components
                 if (Owner.hasComponent(typeof(NPCComponent)))
                     currentFrame = (currentFrame + 1) % totalFrames;
             }
-            sourceRectangle = new Rectangle(currentFrame * frameWidth, Owner.sourceRectangle.Y, frameWidth, frameHeight);
+            Owner.sourceRectangle = new Rectangle(currentFrame * frameWidth, Owner.sourceRectangle.Y, frameWidth, frameHeight);
         }
     }
 }

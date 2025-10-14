@@ -187,6 +187,31 @@
     {
         "color": "#ffa0a0a4",
         "drawFill": true,
+        "id": 21,
+        "members": [
+            {
+                "name": "numberOfJumps",
+                "type": "int",
+                "value": 5
+            }
+        ],
+        "name": "DoubleJump",
+        "type": "class",
+        "useAs": [
+            "property",
+            "map",
+            "layer",
+            "object",
+            "tile",
+            "tileset",
+            "wangcolor",
+            "wangset",
+            "project"
+        ]
+    },
+    {
+        "color": "#ffa0a0a4",
+        "drawFill": true,
         "id": 17,
         "members": [
         ],

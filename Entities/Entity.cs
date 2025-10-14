@@ -11,15 +11,16 @@ namespace Juegazo
 {
     public class Entity : Sprite
     {
+        public bool isPlayer = false;
         public bool Destroyed { get; private set; }
         public bool Enable = true;
         public bool Visible = true;
-        private List<Component> componentList = new();
+        public List<Component> componentList { get; private set; } = new();
         private Dictionary<Type, Component> componentDictionary = new();
         public Vector2 velocity; //only variable that makes sense right now, and that's debatable.
         public Vector2 baseVelocity = new();
         public Rectangle collider;
-        public bool onGround;
+        public bool onGround = false;
         public int health;
         public int maxHealth;
         public bool directionLeft = false;
@@ -71,23 +72,31 @@ namespace Juegazo
         public void UpdateColliderFromDest()
         {
             //Put the collider in the center of the DestinationRectangle (sprite)
-            collider.X = Destinationrectangle.Center.X - collider.Width/2;
-            collider.Y = Destinationrectangle.Center.Y - collider.Height/2;
+            collider.X = Destinationrectangle.Center.X - collider.Width / 2;
+            collider.Y = Destinationrectangle.Center.Y - collider.Height / 2;
         }
         public virtual void Update(GameTime gameTime)
         {
-            foreach (var component in componentList)
+            foreach (var component in componentList.ToList()) // Create temporary copy for iteration //this is a copilot comment, fuck you c#, it took me a shit lot of time and writing to get this shit right fuck you
             {
                 if (component.EnableUpdate) component.Update(gameTime);
             }
         }
+
         public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            foreach (var component in componentList)
+            if (!Visible) return;
+            bool componentDrew = false;
+            foreach (var component in componentList.ToList())
             {
                 if (component.EnableDraw)
+                {
                     component.Draw(gameTime, spriteBatch);
+                    componentDrew = true;
+                }
             }
+            if (!componentDrew) //i swear to god it took a long time for trial and error, fuck this shit
+                spriteBatch.Draw(texture, Destinationrectangle, sourceRectangle, color);
         }
         
         public Component AddComponent(Type type, Component component)
@@ -96,11 +105,27 @@ namespace Juegazo
             {
                 throw new Exception("Component " + component + " already has an owner");
             }
-            component.Owner = this; //I FUCKING FORFOT TO ADD THIS COMPONENT IM GOING TO KMS
-            component.Start(); //i need this if i have to make some rectangles or shit
+            
+            component.Owner = this;
+            component.Start();
+            
             componentList.Add(component);
             componentDictionary.Add(type, component);
-            return component; //why? because fuck it why not
+            
+            return component;
+        }
+
+        public Component RemoveComponent(Type type)
+        {
+            if (componentDictionary.TryGetValue(type, out Component component))
+            {
+                component.Destroy();
+                component.Owner = null;
+                componentList.Remove(component);
+                componentDictionary.Remove(type);
+                return component;
+            }
+            return null;
         }
         public List<Component> AddComponents(List<Component> components)
         {
@@ -110,36 +135,18 @@ namespace Juegazo
             }
             return components;
         }
-        public Component getComponent(Type type) => componentDictionary[type];
-        public T getComponent<T>() where T : Component => (T)componentDictionary[typeof(T)];
+        public Component GetComponent(Type type) => componentDictionary.TryGetValue(type, out Component component) ? component : null;
+        public Component GetComponent<T>() where T : Component => componentDictionary.TryGetValue(typeof(T), out Component component) ? component : null;
         public bool hasComponent(Type type) => componentDictionary.ContainsKey(type);
         public bool hasComponent<T>() where T : Component => componentDictionary.ContainsKey(typeof(T));
-        public Component RemoveComponent(Type type)
-        {
-            if (componentDictionary.TryGetValue(type, out Component component))
-            {
-                component.Destroy();
-                componentDictionary.Remove(type);
-                componentList.Remove(component);
-                component.Owner = null;
-                return component;
-            }
-            return null;
-        }
+
         public Component RemoveComponent<T>() where T : Component => RemoveComponent(typeof(T));
 
-        internal bool TryGetComponent<T>(out Component component)
+        public bool TryGetComponent<T>(out T component) where T : Component
         {
-            if (componentDictionary.TryGetValue(typeof(T), out Component cmp))
-            {
-                component = cmp;
-                return true;
-            }
-            else
-            {
-                component = null;
-                return false;
-            }
+            var result = componentDictionary.TryGetValue(typeof(T), out Component c);
+            component = (T)c;
+            return result;
         }
     }
 }

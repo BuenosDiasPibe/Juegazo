@@ -34,7 +34,7 @@ namespace Juegazo
                 entity.onGround = true;
                 if (entity.hasComponent(typeof(MoveVerticalComponent)))
                 {
-                    ((MoveVerticalComponent)entity.getComponent(typeof(MoveVerticalComponent))).jumpCounter = 0;
+                    ((MoveVerticalComponent)entity.GetComponent(typeof(MoveVerticalComponent))).jumpCounter = 0;
                 }
             }
         }

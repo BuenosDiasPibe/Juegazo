@@ -27,10 +27,18 @@ namespace Juegazo.Components
         {
             foreach (var entity in entities)
             {
-                if (!entity.hasComponent(typeof(NPCComponent))) continue;
-                if (entity.getComponent(typeof(NPCComponent)) is NPCComponent component)
+                if (entity.hasComponent(typeof(NPCComponent))) {
+                    if (entity.GetComponent(typeof(NPCComponent)) is NPCComponent component)
+                    {
+                        component.Collisions(Owner);
+                    }
+                }
+                if (entity.hasComponent(typeof(DoubleJumpComponent)))
                 {
-                    component.Collisions(Owner);
+                    if (entity.GetComponent(typeof(DoubleJumpComponent)) is DoubleJumpComponent doubleJumpComponent)
+                    {
+                        doubleJumpComponent.Collisions(Owner);
+                    }
                 }
             }
         }

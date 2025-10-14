@@ -71,6 +71,7 @@ namespace Juegazo
             entities.AddRange(tilemap.entities);
 
             var componentsOnEntity = new List<Component> {
+                new KeyboardInputComponent(),
                 new CameraToEntityComponent(camera),
                 new MoveVerticalComponent(),
                 new MoveHorizontalComponent(),
@@ -85,8 +86,10 @@ namespace Juegazo
                 camera.Position = new(position.X, position.Y);
             }
             componentsOnEntity.Add(new CanDieComponent(new(playerPosition.X, playerPosition.Y)));
+            Entity player = new Entity(playerTexture, new Rectangle(0, 0, playerTexture.Width, playerTexture.Height), playerPosition, componentsOnEntity, collider: 0.7f, Color.White);
+            player.isPlayer = true;
 
-            entities.Add(new Entity(playerTexture, new Rectangle(0, 0, playerTexture.Width, playerTexture.Height), playerPosition, componentsOnEntity, collider: 0.7f, Color.White));
+            entities.Add(player);
             // get all the entities from Tiled
 
             font = contentManager.Load<SpriteFont>("sheesh");
@@ -110,7 +113,7 @@ namespace Juegazo
                 entities.Clear();
                 entities.Add(playerEntity);
                 entities.AddRange(tilemap.entities);
-                var interactions = playerEntity.getComponent<EntitiesInteractionsComponent>();
+                var interactions = (EntitiesInteractionsComponent)playerEntity.GetComponent<EntitiesInteractionsComponent>();
                 interactions.entities = entities;
                 List<ICustomTypeDefinition> typeDefinitions = new();
                 tilemap = new(graphicsDevice, projectDirectory, levelPath, TILESIZE, typeDefinitions, camera, gum);
@@ -135,9 +138,14 @@ namespace Juegazo
                 block.Update(gameTime);
             }
 
-            foreach (var entity in entities)
+            foreach (var entity in entities.ToList())
             {
                 entity.Update(gameTime);
+                if (entity.componentList.Count == 0)
+                {
+                    entities.Remove(entity);
+                    Console.WriteLine("deleted entity");
+                }
                 entity.Destinationrectangle.X += (int)entity.velocity.X;
                 entity.Destinationrectangle.X += (int)entity.baseVelocity.X;
 
@@ -147,21 +155,14 @@ namespace Juegazo
                 {
                     if (block.collider.Intersects(entity.Destinationrectangle))
                         block.horizontalActions(entity, block.collider);
-                    if (block is CompleteBlock papu && papu.changeScene == true && !changeScene)
-                    {
-                        changeScene = true;
-                        nextScene = papu.nextSceneID;
-                    }
+                    nextScene = changeSScne(nextScene, block);
                 }
                 foreach (Block block in dynamicBlocks)
                 {
                     if (block.collider.Intersects(entity.Destinationrectangle))
                         block.horizontalActions(entity, block.collider);
-                    if (block is CompleteBlock papu && papu.changeScene == true && !changeScene)
-                    {
-                        changeScene = true;
-                        nextScene = papu.nextSceneID;
-                    }
+                    
+                    nextScene = changeSScne(nextScene, block);
                 }
 
                 entity.Destinationrectangle.Y += (int)entity.velocity.Y;
@@ -170,38 +171,32 @@ namespace Juegazo
                 {
                     if (block.collider.Intersects(entity.Destinationrectangle))
                         block.verticalActions(entity, block.collider);
-                    if (block is CompleteBlock papu && papu.changeScene == true && !changeScene)
-                    {
-                        changeScene = true;
-                        nextScene = papu.nextSceneID;
-                    }
+                    nextScene = changeSScne(nextScene, block);
                 }
 
                 foreach (Block block in dynamicBlocks)
                 {
                     if (block.collider.Intersects(entity.Destinationrectangle))
                         block.horizontalActions(entity, block.collider);
-                    if (block is CompleteBlock papu && papu.changeScene && !changeScene)
-                    {
-                        changeScene = true;
-                        nextScene = papu.nextSceneID;
-                    }
+                    nextScene = changeSScne(nextScene, block);
                 }
                 foreach (Block block in tilemap.dynamicBlocks.Values)
                 {
                     if (block.collider.Intersects(entity.Destinationrectangle))
                         block.verticalActions(entity, block.collider);
-                    if (block is CompleteBlock papu && papu.changeScene && !changeScene)
-                    {
-                        changeScene = true;
-                        nextScene = papu.nextSceneID;
-                    }
+                    nextScene = changeSScne(nextScene, block);
                 }
                 entity.UpdateColliderFromDest();
             }
 
             if (changeScene)
             {
+                string testPath = Path.Combine(projectDirectory, "Level" + nextScene + ".tmj");
+                if (!File.Exists(testPath))
+                {
+                    Console.WriteLine("level does not exist, changing to Main.tmj");
+                    nextScene = 0;
+                }
                 UnloadContent();
                 if (nextScene == 0)
                 {
@@ -209,10 +204,11 @@ namespace Juegazo
                     LoadContent();
                     return;
                 }
-                Console.WriteLine("changing to " + levelPath);
                 levelPath = "Level" + nextScene + ".tmj";
+                Console.WriteLine("changing to " + levelPath);
                 LoadContent();
             }
+
             //killing entity if out of boundries
             foreach (var entity in entities)
             {
@@ -231,6 +227,17 @@ namespace Juegazo
                 tilemap.Height * TILESIZE - camera.ViewPortRectangle.Height / 2);
 
             pastKey = Keyboard.GetState();
+        }
+
+        private int changeSScne(int nextScene, Block block)
+        {
+            if (block is CompleteBlock papu && papu.changeScene && !changeScene)
+            {
+                changeScene = true;
+                nextScene = papu.nextSceneID;
+            }
+
+            return nextScene;
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -267,21 +274,17 @@ namespace Juegazo
         {
             foreach (var entity in entities)
             {
-                if (entity.hasComponent(typeof(NPCComponent)) && entity.getComponent(typeof(NPCComponent)) is NPCComponent comp)
+                if (entity.hasComponent(typeof(NPCComponent)) && entity.GetComponent(typeof(NPCComponent)) is NPCComponent comp)
                 {
                     comp.DrawUI(gameTime, spriteBatch);
                     continue;
                 }
-
-                spriteBatch.DrawString(font,
-                    $"Level: {Path.GetFileNameWithoutExtension(levelPath)}\nFPS: {Math.Round(1 / gameTime.ElapsedGameTime.TotalSeconds)}\nposition: X:{entity.Destinationrectangle.X} Y:{entity.Destinationrectangle.Y}\nvelocity: {entity.velocity}\nbaseVelocity: {entity.baseVelocity}\nhealth: {entity.health}",
-                    new Vector2(camera.Left, camera.Top),
-                        Color.White);
+                if(entity.isPlayer)
+                    spriteBatch.DrawString(font,
+                        $"Level: {Path.GetFileNameWithoutExtension(levelPath)}\nFPS: {Math.Round(1 / gameTime.ElapsedGameTime.TotalSeconds)}\nposition: X:{entity.Destinationrectangle.X} Y:{entity.Destinationrectangle.Y}\nvelocity: {entity.velocity}\nbaseVelocity: {entity.baseVelocity}\nhealth: {entity.health}",
+                        new Vector2(camera.Left, camera.Top),
+                            Color.White);
             }
-            // spriteBatch.DrawString(font,
-            //                         $"exit game: {"Escape"}\nReload: {"R"}\nMain Menu: {"M"}", //TODO: add the keys to variables so i dont need to change this every time
-            //                         new Vector2(camera.Right - 200, camera.Top),
-            //                         Color.White);
             spriteBatch.DrawString(font, camera.ToString(), new(camera.Left, camera.Top + 300), Color.White, 0f, Vector2.Zero, 0.7f, SpriteEffects.None, 0f);
         }
     }

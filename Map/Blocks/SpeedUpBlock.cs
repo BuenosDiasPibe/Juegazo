@@ -25,7 +25,7 @@ namespace Juegazo
         }
         public override void horizontalActions(Entity entity, Rectangle collision)
         {
-            var moveComponent = entity.getComponent<MoveHorizontalComponent>();
+            var moveComponent = entity.TryGetComponent(out MoveHorizontalComponent c);
             if (entity.velocity.X != 0)
             {
                 entity.velocity.X += entity.directionLeft ? -velocitySpeed : velocitySpeed;

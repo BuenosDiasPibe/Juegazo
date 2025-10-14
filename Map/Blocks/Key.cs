@@ -40,7 +40,7 @@ namespace Juegazo.Map.Blocks
                 entity.AddComponent(entityComponent.GetType(), entityComponent);
                 Console.WriteLine($"added new key {this.KeyID} to entity");
             }
-            entityComponent = (KeysIDHolderComponent)entity.getComponent(entityComponent.GetType());
+            entityComponent = (KeysIDHolderComponent)entity.GetComponent(entityComponent.GetType());
             entityComponent.keyHolder.Add(this.KeyID);
             this.EnableCollisions = false;
             visible = false;

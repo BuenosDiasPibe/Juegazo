@@ -149,12 +149,13 @@ namespace Juegazo.Map
                 int x = (int)(i % tileLayer.Width);
                 int y = (int)(i / tileLayer.Width);
                 Vector2 position = new(x, y);
-                TilesetTileByGID.TryGetValue(value, out Tile tile);
+                var (tileset, tile) = GetTilesetFromGID(value, true);
                 if (tile == null)
                 {
                     Console.WriteLine($"value = {value}");
                     continue;
                 }
+                bool blockPlaced = false;
                 foreach (Block block in blocks)
                 {
                     if (block.type == tile.Type)
@@ -167,7 +168,15 @@ namespace Juegazo.Map
                         blockk.tile = tile;
                         blockk.Start();
                         collisionLayer[position] = blockk;
+                        blockPlaced = true;
+                        break;
                     }
+                }
+                if (!blockPlaced)
+                {
+                    DoubleJump j = new();
+                    CreateDoubleJump(getDestinationRectangle(position), tileset, tile, j);
+                    // Console.WriteLine($"Warning: No block placed for tile type '{tile.Type}' at position {position}");
                 }
             }
         }
@@ -214,8 +223,7 @@ namespace Juegazo.Map
                 if (!(obj is TileObject)) continue;
 
                 var tobj = (TileObject)obj;
-                TilesetTileByGID.TryGetValue(tobj.GID, out Tile tileData);
-
+                var (tileset, tileData) = GetTilesetFromGID(tobj.GID, true);
                 if (tileData != null)
                 {
                     if (string.IsNullOrEmpty(tobj.Type))
@@ -231,7 +239,6 @@ namespace Juegazo.Map
                     }
                 }
                 MapTileObjectToTile[tobj] = tileData;
-
                 switch (obj.Type)
                 {
                     case "Collision Block":
@@ -317,7 +324,12 @@ namespace Juegazo.Map
                         var doorBlock = obj.MapPropertiesTo<CustomTiledTypes.DoorBlock>();
                         MapObjectToType[tobj] = new CustomTiledTypesImplementation.DoorBlock(doorBlock);
                         break;
+                    //this is weird but it should work... i think
+                    case "DoubleJump":
+                        var data = obj.MapPropertiesTo<DoubleJump>();
 
+                        CreateDoubleJump(obj, tileset, tileData, data);
+                        break;
                     default:
                         Console.WriteLine("not a class or not implemented");
                         break;
@@ -337,6 +349,25 @@ namespace Juegazo.Map
                     }
                 }
             }
+        }
+
+        private void CreateDoubleJump(DotTiled.Object obj, Tileset tileset, Tile tileData, DoubleJump data)
+        {
+            Entity entity = new Entity(TilemapTextures[tileset], GetSourceRect(tileData.ID, tileset), GetObjectDestinationRectangle(obj), 1, Color.White);
+            DoubleJumpComponent c = new(data);
+            entity.AddComponent(c.GetType(), c);
+            Console.WriteLine("Created entity");
+
+            entities.Add(entity);
+        }
+        private void CreateDoubleJump(Rectangle destRect, Tileset tileset, Tile tileData, DoubleJump data)
+        {
+            Entity entity = new Entity(TilemapTextures[tileset], GetSourceRect(tileData.ID, tileset),destRect, 1, Color.White);
+            DoubleJumpComponent c = new(data);
+            entity.AddComponent(c.GetType(), c);
+            Console.WriteLine("Created entity");
+
+            entities.Add(entity);
         }
 
         private void AddImportantPositions(ObjectLayer objectLayer)
@@ -369,8 +400,6 @@ namespace Juegazo.Map
                 {
                     var papu = tile.MapPropertiesTo<NPC>();
 
-                    Console.WriteLine($"Found tile data for GID {tile.GID}");
-                    Console.WriteLine($"tileData: {tileData.Animation.Count}");
                     Texture2D atlasImage = TilemapTextures[tileset]; //this looks like shit but idk
 
                     Entity entity = new Entity(atlasImage, GetSourceRect(tile.GID, tileset), GetObjectDestinationRectangle(tile), 1, Color.White);
@@ -380,6 +409,9 @@ namespace Juegazo.Map
                         new NPCComponent(camera, papu.name, papu.dialogStart, papu.dialogEnd, gum)
                     });
                     entities.Add(entity);
+                }else if(tile.Type == "DoubleJump" || tileData.Type == "DoubleJump")
+                {
+                    CreateDoubleJump(obj, tileset, tileData, new());
                 }
             }
         }
@@ -580,18 +612,24 @@ namespace Juegazo.Map
                 value--;
                 int x = (int)(i % tileLayer.Width);
                 int y = (int)(i / tileLayer.Width);
+                var (atlasImage, tile) = GetTilesetFromGID(value+1, true);
 
                 collisionLayer.TryGetValue(new(x, y), out var block);
-                if (block == null) continue;
+                if (block == null)
+                {
+                    if (tile.Type == "DoubleJump") continue;
+                    DrawTile(gameTime, spriteBatch, value, new(x, y), atlasImage); //if its not a block, show the tile anyway
+                    continue;
+                }
                 if (!IsVisible(block.collider)) continue; //skips if block is not visible
-                Tileset atlasImage = TilesetsByGID[value]; //get the atlas image from dictionary
+
                 if (atlasImage.Image.HasValue)
                 {
                     Texture2D texture = TilemapTextures[atlasImage];
                     Rectangle srcRectangle = GetSourceRect(value, atlasImage);
 
                     block.Draw(gameTime, spriteBatch, texture, srcRectangle);
-                } //this image will always be a tile layer with an atlasImage with value
+                } //TODO: add case when blocks have a different tileset
             }
         }
 
@@ -635,12 +673,11 @@ namespace Juegazo.Map
                 }
                 else
                 {
-                    Console.WriteLine("not texture");
                     destRect = new((int)(tileObject.X / TileWidth * TILESIZE),
                                    (int)(((tileObject.Y / TileHeight) - (int)(tileObject.Height / TileHeight)) * TILESIZE),
                                    (int)(tileObject.Width / TileWidth * TILESIZE),
                                    (int)(tileObject.Height / TileHeight * TILESIZE));
-                    spriteBatch.Draw(texture, destRect, srcRect, Color.White);
+                    //spriteBatch.Draw(texture, destRect, srcRect, Color.White);
                 }
             }
         }

@@ -13,6 +13,9 @@ namespace Juegazo.Components
         private const float MOVEMENT_SPEED = 8f;
         private const float MAX_SPEED = 100f;
         private float dashCounter;
+        public bool movingLeft = false;
+        public bool movingRight = false;
+        public bool dash = false;
         public override void Destroy()
         { }
 
@@ -22,8 +25,13 @@ namespace Juegazo.Components
 
         public override void Update(GameTime gameTime)
         {
-            bool movingLeft = Keyboard.GetState().IsKeyDown(Keys.A) || Keyboard.GetState().IsKeyDown(Keys.Left);
-            bool movingRight = Keyboard.GetState().IsKeyDown(Keys.D) || Keyboard.GetState().IsKeyDown(Keys.Right);
+            if(Owner.TryGetComponent(out KeyboardInputComponent c))
+            {
+                movingLeft = c.keyLeft;
+                movingRight = c.keyRight;
+                dash = c.special1;
+            }
+
             // Horizontal movement
             if (movingLeft)
             {
@@ -46,7 +54,7 @@ namespace Juegazo.Components
                 Owner.velocity.X = 0;
             }
             // Dash (sprint)
-            if (dashCounter > 0 && Keyboard.GetState().IsKeyDown(Keys.LeftShift))
+            if (dashCounter > 0 && dash)
             {
                 int basedOnDirection = Owner.directionLeft ? -7 : 7;
                 Owner.velocity.X += basedOnDirection;

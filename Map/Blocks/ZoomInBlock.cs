@@ -19,16 +19,19 @@ namespace Juegazo.Map.Blocks
         {
             if (entity.hasComponent<CameraToEntityComponent>())
             {
-                var cameraComponent = entity.getComponent<CameraToEntityComponent>();
-                cameraComponent.Camera.Zoom = MathHelper.Lerp(cameraComponent.Camera.Zoom, cameraComponent.Camera.Zoom + 1, 0.1f); ;
+                if (entity.TryGetComponent(out CameraToEntityComponent cameraComponent)) {
+                    cameraComponent.Camera.Zoom = MathHelper.Lerp(cameraComponent.Camera.Zoom, cameraComponent.Camera.Zoom + 1, 0.1f); ;
+                }
             }
         }
         public override void verticalActions(Entity entity, Rectangle collision)
         {
             if (entity.hasComponent<CameraToEntityComponent>())
             {
-                var cameraComponent = entity.getComponent<CameraToEntityComponent>();
-                cameraComponent.Camera.Zoom = MathHelper.Lerp(cameraComponent.Camera.Zoom, cameraComponent.Camera.Zoom + 1, 0.1f); ;
+                if (entity.TryGetComponent(out CameraToEntityComponent cameraComponent))
+                {
+                    cameraComponent.Camera.Zoom = MathHelper.Lerp(cameraComponent.Camera.Zoom, cameraComponent.Camera.Zoom + 1, 0.1f);
+                }
             }
         }
     }

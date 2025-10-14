@@ -64,8 +64,12 @@ namespace Juegazo.CustomTiledTypes
     {
         public DotTiled.Color color { get; set; }
         public bool isOpen { get; set; } = false;
-        public uint key {get; set; } = 0;
+        public uint key { get; set; } = 0;
 
+    }
+    public class DoubleJump
+    {
+        public int numberOfJumps { get; set; } = 5;
     }
 }
 namespace Juegazo.CustomTiledTypesImplementation

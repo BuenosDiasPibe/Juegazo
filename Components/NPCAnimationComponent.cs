@@ -46,7 +46,7 @@ namespace Juegazo.Components
                     break;
                 }
             }
-            NPCComponent c = (NPCComponent)Owner.getComponent(typeof(NPCComponent));
+            NPCComponent c = (NPCComponent)Owner.GetComponent(typeof(NPCComponent));
             var currentFrame = tile.Animation[frame];
             sourceRectangle.X = (int)(currentFrame.TileID % (Owner.texture.Width / Owner.sourceRectangle.Width) * Owner.sourceRectangle.Width);
             sourceRectangle.Y = (int)(currentFrame.TileID / (Owner.texture.Width / Owner.sourceRectangle.Width) * Owner.sourceRectangle.Height);

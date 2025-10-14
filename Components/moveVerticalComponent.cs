@@ -12,7 +12,6 @@ namespace Juegazo.Components
     {
         public bool JumpPressed { get; private set; } = false;
         public int jumpCounter = 0;
-        public int numJumps = 5;
         private KeyboardState prevState = new KeyboardState();
         public MoveVerticalComponent()
         {
@@ -21,7 +20,7 @@ namespace Juegazo.Components
         }
         public void JumpingVertical(float jumpAmmount) //make this a component and fuck me i guess
         {
-            if (Owner.onGround && JumpPressed && jumpCounter < numJumps)
+            if (Owner.onGround && JumpPressed)
             {
                 Owner.velocity.Y = -jumpAmmount;
                 Owner.onGround = false;

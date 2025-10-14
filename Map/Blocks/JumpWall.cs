@@ -40,7 +40,7 @@ namespace Juegazo.Map.Blocks
                 return;
             }
             entity.onGround = true;
-            MoveVerticalComponent verticalMovement = (MoveVerticalComponent)entity.getComponent(typeof(MoveVerticalComponent));
+            MoveVerticalComponent verticalMovement = (MoveVerticalComponent)entity.GetComponent(typeof(MoveVerticalComponent));
             if (entity.velocity.X > 0)
             {
                 entity.Destinationrectangle.X = collision.Left - entity.Destinationrectangle.Width;

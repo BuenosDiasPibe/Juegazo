@@ -37,8 +37,10 @@ namespace Juegazo.Map.Blocks
             }
             if (entity.hasComponent<CanDieComponent>())
             {
-                var canDieComponent = entity.getComponent<CanDieComponent>();
-                canDieComponent.initialPosition = position;
+                if(entity.TryGetComponent(out CanDieComponent canDieComponent))
+                {
+                    canDieComponent.initialPosition = position;
+                }
             }
         }
 

@@ -31,7 +31,7 @@ namespace Juegazo.Map.Blocks
         {
             if (entity.hasComponent(typeof(KeysIDHolderComponent)))
             {
-                KeysIDHolderComponent c = (KeysIDHolderComponent)entity.getComponent(typeof(KeysIDHolderComponent));
+                KeysIDHolderComponent c = (KeysIDHolderComponent)entity.GetComponent(typeof(KeysIDHolderComponent));
                 if (c.isKeyOnPlayer(key))
                 {
                     return;
@@ -45,7 +45,7 @@ namespace Juegazo.Map.Blocks
         {
             if (entity.hasComponent(typeof(KeysIDHolderComponent)))
             {
-                KeysIDHolderComponent c = (KeysIDHolderComponent)entity.getComponent(typeof(KeysIDHolderComponent));
+                KeysIDHolderComponent c = (KeysIDHolderComponent)entity.GetComponent(typeof(KeysIDHolderComponent));
                 if (c.isKeyOnPlayer(key))
                 {
                     return;
