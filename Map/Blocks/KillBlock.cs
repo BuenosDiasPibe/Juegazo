@@ -11,13 +11,17 @@ namespace Juegazo.Map.Blocks
 {
     public class KillBlock : Block
     {
+        public override string ToString()
+        {
+            return $"KillBlock: Collider={collider}, DamageAmount={damageAmmount}";
+        }
         private int damageAmmount = 1;
-        public KillBlock(Rectangle collider, int damageAmmount, DotTiled.Tile tile) : base(collider)
+        public KillBlock(Rectangle collider, int damageAmmount, bool canDamage) : base(collider)
         {
             type = "DamageBlock";
             this.damageAmmount = damageAmmount;
             EnableUpdate = true;
-            this.tile = tile;
+            EnableCollisions = canDamage;
             AddComponent(new BlockAnimationComponent());
         }
         //when using this, it always has a collider and a tile

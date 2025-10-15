@@ -21,9 +21,8 @@ namespace Juegazo.Map.Blocks
         {
             type = "CheckPointBlock";
         }
-        public CheckPointBlock(Rectangle collision, bool isEnabled, int message, Vector2 position, DotTiled.Tile tile) : base(collision)
+        public CheckPointBlock(Rectangle collision, bool isEnabled, int message, Vector2 position) : base(collision)
         {
-            this.tile = tile;
             EnableCollisions = isEnabled;
             this.message = message;
             this.position = position;

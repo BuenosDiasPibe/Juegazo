@@ -9,6 +9,10 @@ namespace Juegazo.Map.Components
 {
     public class BlockAnimationComponent : BlockComponent
     {
+        public BlockAnimationComponent()
+        {
+            EnableDraw = true;
+        }
         public override void Destroy()
         {
         }
@@ -36,7 +40,7 @@ namespace Juegazo.Map.Components
             sourceRectangle.X = (int)(currentFrame.TileID % (texture.Width / sourceRectangle.Width) * sourceRectangle.Width);
             sourceRectangle.Y = (int)(currentFrame.TileID / (texture.Width / sourceRectangle.Width) * sourceRectangle.Height);
 
-            spriteBatch.Draw(texture, Owner.collider, sourceRectangle, Microsoft.Xna.Framework.Color.White);
+            spriteBatch.Draw(texture, Owner.collider, sourceRectangle, Color.White);
         }
 
         public override void Update(GameTime gameTime)

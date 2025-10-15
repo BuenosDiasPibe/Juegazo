@@ -21,9 +21,8 @@ namespace Juegazo.Map.Blocks
             type ="CompleteLevelBlock";
         }
         public CompleteBlock() { type="CompleteLevelBlock"; }
-        public CompleteBlock(Rectangle collider, bool isEnabled, int nextLevel, DotTiled.Tile tile) : base(collider)
+        public CompleteBlock(Rectangle collider, bool isEnabled, int nextLevel) : base(collider)
         {
-            this.tile = tile;
             type ="CompleteLevelBlock";
             EnableCollisions = isEnabled;
             nextSceneID = nextLevel;

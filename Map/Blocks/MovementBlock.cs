@@ -20,9 +20,8 @@ namespace Juegazo.Map.Blocks
         private Vector2 newPosition = new();
         public bool movingLeft = false;
 
-        public MovementBlock(Rectangle collider, Rectangle initialBlockPosition, Rectangle endBlockPosition, float velocity, bool canMove, Tile tile) : base(collider)
+        public MovementBlock(Rectangle collider, Rectangle initialBlockPosition, Rectangle endBlockPosition, float velocity, bool canMove) : base(collider)
         {
-            this.tile = tile;
             type = "MovementBlock";
             EnableUpdate = true;
             this.initialBlockPosition = new(initialBlockPosition.X / initialBlockPosition.Width * 32,

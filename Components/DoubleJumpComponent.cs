@@ -15,6 +15,7 @@ namespace Juegazo.Components
         public int timesJumped = 0;
         public int numJumps = 5;
         private KeyboardState prevState = new KeyboardState();
+        private Color prevOwnerColor;
         public DoubleJumpComponent(int numJumps)
         {
             this.numJumps = numJumps;
@@ -36,16 +37,17 @@ namespace Juegazo.Components
         }
         public override void Start()
         {
-            if(Owner.TryGetComponent(out MoveVerticalComponent mv))
+            if (Owner.TryGetComponent(out MoveVerticalComponent mv))
             {
                 mv.EnableUpdate = false;
             }
+            prevOwnerColor = Owner.color;
             Owner.color = Color.Red;
         }
         public override void Destroy()
         {
             timesJumped = 0;
-            Owner.color = Color.White;
+            Owner.color = prevOwnerColor;
             Console.WriteLine("deleting doubleJump...");
         }
 
@@ -71,7 +73,5 @@ namespace Juegazo.Components
                 Owner.RemoveComponent(this.GetType());
             }
         }
-        public void Collisions(Entity entity)
-        { }
     }
 }

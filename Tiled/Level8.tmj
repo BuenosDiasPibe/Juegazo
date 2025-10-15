@@ -21,7 +21,7 @@
          "parallaxy":0,
          "repeatx":true,
          "type":"imagelayer",
-         "visible":false,
+         "visible":true,
          "x":0,
          "y":0
         }, 

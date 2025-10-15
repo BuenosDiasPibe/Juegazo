@@ -9,6 +9,13 @@
    <frame tileid="14" duration="150"/>
   </animation>
  </tile>
+ <tile id="9" type="DamageBlock">
+  <animation>
+   <frame tileid="20" duration="150"/>
+   <frame tileid="32" duration="150"/>
+   <frame tileid="34" duration="150"/>
+  </animation>
+ </tile>
  <tile id="10" type="SlowDownBlock"/>
  <tile id="11" type="Collision Block"/>
  <tile id="12" type="OneWayBlock"/>

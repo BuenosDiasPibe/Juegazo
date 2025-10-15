@@ -32,6 +32,12 @@ namespace Juegazo
         /// </summary>
         public virtual void Start()
         {
+            if (tile == null)
+            {
+                System.Diagnostics.Debug.WriteLine("Warning: No tile given to block");
+                Console.WriteLine($"no tile given to block {this.GetType()}");
+                return;
+            }
             if (tile.Animation.Count != 0)
             {
                 AddComponent(new BlockAnimationComponent());
@@ -44,16 +50,15 @@ namespace Juegazo
         {
             if (!enableDraw) return;
             bool chuco = false;
-            foreach (var component in components)
+            foreach (var component in components.Where(component => component.EnableDraw))
             {
-                if (component.EnableDraw)
-                {
-                    component.Draw(gameTime, spriteBatch, texture, sourceRectangle);
-                    chuco = true;
-                }
+                component.Draw(gameTime, spriteBatch, texture, sourceRectangle);
+                chuco = true;
             }
-            if(!chuco)
+            if (!chuco)
+            {
                 spriteBatch.Draw(texture, collider, sourceRectangle, Microsoft.Xna.Framework.Color.White);
+            }
         }
         public BlockComponent AddComponent(BlockComponent component)
         {

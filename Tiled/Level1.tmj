@@ -471,7 +471,7 @@
                         {
                          "name":"EndBlockPosition",
                          "type":"object",
-                         "value":96
+                         "value":97
                         }, 
                         {
                          "name":"canMove",
@@ -481,12 +481,12 @@
                         {
                          "name":"initialBlockPosition",
                          "type":"object",
-                         "value":97
+                         "value":96
                         }, 
                         {
                          "name":"velocity",
                          "type":"float",
-                         "value":0.5
+                         "value":10
                         }],
                  "rotation":0,
                  "type":"MovementBlock",
@@ -519,14 +519,14 @@
                         {
                          "name":"velocity",
                          "type":"float",
-                         "value":0.9
+                         "value":10
                         }],
                  "rotation":0,
                  "type":"MovementBlock",
                  "visible":true,
                  "width":8,
                  "x":360,
-                 "y":32
+                 "y":48
                 }, 
                 {
                  "gid":17,
@@ -573,6 +573,11 @@
                          "value":104
                         }, 
                         {
+                         "name":"canMove",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"initialBlockPosition",
                          "type":"object",
                          "value":102
@@ -580,14 +585,14 @@
                         {
                          "name":"velocity",
                          "type":"float",
-                         "value":1
+                         "value":10
                         }],
                  "rotation":0,
                  "type":"MovementBlock",
                  "visible":true,
                  "width":8,
                  "x":376,
-                 "y":40
+                 "y":48
                 }, 
                 {
                  "height":8,
@@ -631,7 +636,7 @@
                  "visible":true,
                  "width":8,
                  "x":352,
-                 "y":16
+                 "y":8
                 }, 
                 {
                  "height":8,
@@ -642,7 +647,7 @@
                  "visible":true,
                  "width":8,
                  "x":360,
-                 "y":48
+                 "y":56
                 }, 
                 {
                  "height":8,
@@ -719,13 +724,18 @@
                          "name":"initialBlockPosition",
                          "type":"object",
                          "value":95
+                        }, 
+                        {
+                         "name":"velocity",
+                         "type":"float",
+                         "value":10
                         }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":8,
                  "x":336,
-                 "y":40
+                 "y":48
                 }],
          "opacity":1,
          "properties":[

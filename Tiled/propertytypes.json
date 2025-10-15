@@ -22,6 +22,17 @@
     },
     {
         "color": "#ffa0a0a4",
+        "name": "Collision Block",
+        "properties": [
+            {
+                "name": "canCollide",
+                "type": "bool",
+                "value": true
+            }
+        ]
+    },
+    {
+        "color": "#ffa0a0a4",
         "name": "Collision Blocks Object Layer",
         "properties": [
             {
@@ -60,12 +71,7 @@
             {
                 "name": "canDamage",
                 "type": "bool",
-                "value": true
-            },
-            {
-                "name": "collisionHitbox",
-                "type": "object",
-                "value": 0
+                "value": false
             },
             {
                 "name": "damageAmount",
@@ -81,7 +87,7 @@
             {
                 "name": "color",
                 "type": "color",
-                "value": "#ffffffff"
+                "value": ""
             },
             {
                 "name": "isOpen",
@@ -92,6 +98,17 @@
                 "name": "key",
                 "type": "object",
                 "value": 0
+            }
+        ]
+    },
+    {
+        "color": "#ffa0a0a4",
+        "name": "DoubleJump",
+        "properties": [
+            {
+                "name": "numberOfJumps",
+                "type": "int",
+                "value": 5
             }
         ]
     },
@@ -122,6 +139,11 @@
         "name": "Key",
         "properties": [
             {
+                "name": "color",
+                "type": "color",
+                "value": ""
+            },
+            {
                 "name": "isColected",
                 "type": "bool",
                 "value": false
@@ -151,6 +173,27 @@
                 "name": "velocity",
                 "type": "float",
                 "value": 1
+            }
+        ]
+    },
+    {
+        "color": "#ffa0a0a4",
+        "name": "NPC",
+        "properties": [
+            {
+                "name": "dialogEnd",
+                "type": "int",
+                "value": 1
+            },
+            {
+                "name": "dialogStart",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "name",
+                "type": "string",
+                "value": ""
             }
         ]
     },
@@ -190,10 +233,10 @@
     },
     {
         "color": "#ffa0a0a4",
-        "name": "speedUp",
+        "name": "SpeedUp",
         "properties": [
             {
-                "name": "speedAmount",
+                "name": "SpeedAmmount",
                 "type": "int",
                 "value": 5
             }

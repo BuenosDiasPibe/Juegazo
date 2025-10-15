@@ -18,9 +18,8 @@ namespace Juegazo.Map.Blocks
         {
             type = "JumpWallBlock";
         }
-        public JumpWall(Rectangle collider, int jumpSptrength, bool canJump, float recoilVelocity, Tile tile) : base(collider)
+        public JumpWall(Rectangle collider, int jumpSptrength, bool canJump, float recoilVelocity) : base(collider)
         {
-            this.tile = tile;
             type = "JumpWallBlock";
             jumpStrength = jumpSptrength;
             this.recoilVelocity = recoilVelocity;
