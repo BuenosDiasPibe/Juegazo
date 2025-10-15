@@ -190,6 +190,11 @@
         "id": 21,
         "members": [
             {
+                "name": "image",
+                "type": "file",
+                "value": "/home/clumpl/Documentos/Programacion/Juegazo/Tiled/player_doubleJump.png"
+            },
+            {
                 "name": "numberOfJumps",
                 "type": "int",
                 "value": 5
@@ -241,6 +246,41 @@
             "RIGHT"
         ],
         "valuesAsFlags": false
+    },
+    {
+        "color": "#ffa0a0a4",
+        "drawFill": true,
+        "id": 22,
+        "members": [
+            {
+                "name": "DistanceInTiles",
+                "type": "int",
+                "value": 5
+            },
+            {
+                "name": "ShotTimeSeconds",
+                "type": "float",
+                "value": 5
+            },
+            {
+                "name": "canShoot",
+                "type": "bool",
+                "value": false
+            }
+        ],
+        "name": "Gunner",
+        "type": "class",
+        "useAs": [
+            "property",
+            "map",
+            "layer",
+            "object",
+            "tile",
+            "tileset",
+            "wangcolor",
+            "wangset",
+            "project"
+        ]
     },
     {
         "color": "#fff8e45c",

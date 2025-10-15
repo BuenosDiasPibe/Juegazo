@@ -31,6 +31,11 @@
   <objectgroup draworder="index" id="2">
    <object id="1" x="2" y="2" width="4" height="4"/>
   </objectgroup>
+  <animation>
+   <frame tileid="14" duration="150"/>
+   <frame tileid="18" duration="150"/>
+   <frame tileid="11" duration="150"/>
+  </animation>
  </tile>
  <tile id="22" type="DamageBlock"/>
  <tile id="27" type="DoorBlock"/>

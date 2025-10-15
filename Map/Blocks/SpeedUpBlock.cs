@@ -33,7 +33,7 @@ namespace Juegazo
             var moveComponent = entity.TryGetComponent(out MoveHorizontalComponent c);
             if (entity.velocity.X != 0)
             {
-                entity.velocity.X = entity.directionLeft ? -velocitySpeed : velocitySpeed;
+                entity.velocity.X += entity.directionLeft ? -velocitySpeed : velocitySpeed;
             }
         }
 

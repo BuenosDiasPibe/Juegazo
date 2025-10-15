@@ -72,7 +72,7 @@ namespace Juegazo
 
             var componentsOnEntity = new List<Component> {
                 new KeyboardInputComponent(),
-                new CameraToEntityComponent(camera),
+                new CameraToEntitySimpleComponent(camera),
                 new MoveVerticalComponent(),
                 new MoveHorizontalComponent(),
                 new ComplexGravityComponent(),

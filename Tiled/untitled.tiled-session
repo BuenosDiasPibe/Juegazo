@@ -35,14 +35,14 @@
         },
         "Level1.tmj": {
             "expandedObjectLayers": [
-                4,
-                10
+                10,
+                4
             ],
-            "scale": 8,
-            "selectedLayer": 5,
+            "scale": 2,
+            "selectedLayer": 0,
             "viewCenter": {
-                "x": 374.125,
-                "y": 47.25
+                "x": 58.5,
+                "y": 106.25
             }
         },
         "Level1.tmx": {
@@ -84,11 +84,11 @@
             "expandedObjectLayers": [
                 6
             ],
-            "scale": 11,
+            "scale": 5.5,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 88,
-                "y": 264.45454545454544
+                "x": 77.27272727272728,
+                "y": 254.8181818181818
             }
         },
         "Level2.tmx": {
@@ -119,8 +119,8 @@
             "scale": 3.0756249999999996,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 63.23917902865273,
-                "y": 54.62304409672831
+                "x": 63.40174761227394,
+                "y": 54.46047551310711
             }
         },
         "Level4.tmx": {
@@ -138,16 +138,16 @@
             "scale": 1.5,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 100.99999999999997,
-                "y": 101.99999999999997
+                "x": 100.66666666666664,
+                "y": 101.66666666666666
             }
         },
         "Level6.tmj": {
             "scale": 3.07,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 79.96742671009774,
-                "y": 47.8827361563518
+                "x": 80.13029315960912,
+                "y": 47.71986970684039
             }
         },
         "Level6.tmx": {
@@ -181,8 +181,8 @@
             "scale": 2,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 195.75,
-                "y": 213.5
+                "x": 196,
+                "y": 213.75
             }
         },
         "Level8.tmx": {
@@ -219,11 +219,11 @@
             "expandedObjectLayers": [
                 4
             ],
-            "scale": 1.5,
+            "scale": 3,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": 146.33333333333331,
-                "y": 114.66666666666663
+                "x": 127.33333333333333,
+                "y": 39.499999999999986
             }
         },
         "Main.tmx": {
@@ -247,6 +247,9 @@
                 "x": 2796.125,
                 "y": 79.875
             }
+        },
+        "coso.tsx": {
+            "dynamicWrapping": true
         },
         "goodOne.tmx": {
             "scale": 2,
@@ -307,14 +310,14 @@
         },
         "worldTexture.tsx": {
             "scaleInDock": 4,
-            "scaleInEditor": 11
+            "scaleInEditor": 3
         }
     },
     "frame.defaultDuration": 150,
     "last.exportedFilePath": "/home/clumpl/Documentos/Programacion/Juegazo/Data",
     "last.externalTilesetPath": "/home/clumpl/Documentos/Programacion/Juegazo/Tiled",
     "last.imagePath": "/home/clumpl/Imágenes/tux one-liners",
-    "last.objectTypesPath": "/home/clumpl/Documentos/Juegazo/Tiled/propertytypes.json",
+    "last.objectTypesPath": "/home/clumpl/Documentos/Programacion/Juegazo/Tiled/PropietyFiles.json",
     "lastUsedTilesetExportFilter": "JSON tileset files (*.tsj *.json)",
     "map.height": 24,
     "map.lastUsedExportFilter": "Todos los archivos (*)",
@@ -332,20 +335,20 @@
         "Level10.tmj"
     ],
     "project": "untitled.tiled-project",
-    "property.type": "float",
+    "property.type": "int",
     "recentFiles": [
+        "worldTexture.tsx",
+        "worldSpace2.tsx",
+        "Level9.tmj",
         "Level4.tmj",
+        "Main.tmj",
         "Level5.tmj",
         "Level6.tmj",
         "Level8.tmj",
-        "Main.tmj",
         "Level7.tmj",
         "Level1.tmj",
-        "worldSpace2.tsx",
-        "worldTexture.tsx",
         "Level10.tmj",
-        "Level3.tmj",
-        "Level2.tmj"
+        "Level3.tmj"
     ],
     "tileset.lastUsedFilter": "Archivos de conjuntos de patrones Tiled (*.tsx *.xml)",
     "tileset.lastUsedFormat": "tsx",

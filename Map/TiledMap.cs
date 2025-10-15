@@ -55,6 +55,7 @@ namespace Juegazo.Map
         public Dictionary<TileObject, Tile> MapTileObjectToTile = new();
 
         public Dictionary<uint, Tileset> TilesetsByGID { get; } = new();
+        public Dictionary<(uint gid, Tileset tileset), Tile> TilesByGIDAndTileset { get; } = new(); 
         public Dictionary<Tileset, Texture2D> TilemapTextures { get; } = new();
         public Dictionary<string, ImageLayer> imageLayerByName { get; } = new();
         public Dictionary<ImageLayer, Texture2D> ImageLayerTexture { get; } = new();
@@ -94,6 +95,7 @@ namespace Juegazo.Map
             foreach (var layer in layers)
             {
                 AllLayersByName[layer.Name] = layer;
+
                 switch (layer)
                 {
                     case ImageLayer imageLayer:
@@ -137,7 +139,8 @@ namespace Juegazo.Map
                 int x = (int)(i % tileLayer.Width);
                 int y = (int)(i / tileLayer.Width);
                 Vector2 position = new(x, y);
-                var (tileset, tile) = GetTilesetFromGID(TileID, true);
+                var tileset = TilesetsByGID[TileID];
+                var tile = TilesByGIDAndTileset[(TileID, tileset)];
                 if (tile == null)
                 {
                     Console.WriteLine($"Not possible to create an object. Tile.ID = {TileID}");
@@ -203,7 +206,8 @@ namespace Juegazo.Map
                 if (!(obj is TileObject)) continue;
 
                 var tobj = (TileObject)obj;
-                var (tileset, tileData) = GetTilesetFromGID(tobj.GID, true);
+                var tileset = TilesetsByGID[tobj.GID];
+                var tileData = TilesByGIDAndTileset[(tobj.GID, tileset)];
                 if (tileData != null)
                 {
                     if (string.IsNullOrEmpty(tobj.Type))
@@ -306,6 +310,10 @@ namespace Juegazo.Map
                         MapObjectToType[tobj] = new CustomTiledTypesImplementation.DoorBlock(doorBlock);
                         break;
                     default:
+                        if (obj.Type == "") {
+                            Console.WriteLine($"{tileset.Name} nothing here...");
+                            break;
+                        }
                         if(!CreatePowerUpEntity(obj, tileset, tileData))
                             Console.WriteLine("not a class or not implemented");
                         break;
@@ -379,8 +387,8 @@ namespace Juegazo.Map
                 EntityPositionerByName[obj.Type] = new Vector2(x, y); //get all entities positions even if they are not a tileObject (if player is a rectangle for example)
 
                 if (!(obj is TileObject tile)) continue;
-
-                var (tileset, tileData) = GetTilesetFromGID(tile.GID);
+                var tileset = TilesetsByGID[tile.GID];
+                var tileData = TilesByGIDAndTileset[(tile.GID, tileset)];
                 if (tileData == null) continue;
 
                 if (obj.Properties.Count == 0 && tileData.Properties.Count > 0)
@@ -474,14 +482,16 @@ namespace Juegazo.Map
             for (uint gid = 1; gid < GID_Count; gid++)
             {
                 var (tileset, tile) = GetTilesetFromGID(gid, true);
+                
                 TilesetsByGID.Add(gid, tileset);
+                TilesByGIDAndTileset.Add((gid, tileset), tile);
             }
-
         }
         public (Tileset tileset, Tile tile) GetTilesetFromGID(uint gid, bool safe = false)
         {
-            foreach (Tileset tileset in Map.Tilesets)
-            {
+            foreach (Tileset tileset in Map.Tilesets) {
+                if (gid > tileset.TileCount+tileset.FirstGID)
+                    continue;
                 foreach (Tile tile in tileset.Tiles)
                 {
                     if (tile.ID == gid - tileset.FirstGID)
@@ -585,7 +595,8 @@ namespace Juegazo.Map
                 value--;
                 int x = (int)(i % tileLayer.Width);
                 int y = (int)(i / tileLayer.Width);
-                var (atlasImage, tile) = GetTilesetFromGID(value + 1, true);
+                var atlasImage = TilesetsByGID[value];
+                var tile = TilesByGIDAndTileset[(value, atlasImage)];
                 if (tile == null)
                 {
                     DrawTile(gameTime, spriteBatch, value, new(x, y), atlasImage);

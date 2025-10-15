@@ -42,16 +42,18 @@ namespace Juegazo.Components
 
         public override void Update(GameTime gameTime)
         {
-            frameCounter++;
-            if (frameCounter % 5 == 0)
+            frameCounter += gameTime.ElapsedGameTime.Milliseconds;
+            if (frameCounter >= 83) // 83ms is roughly equivalent to 12 frames per second
             {
-                if (Owner.velocity.X != 0)
-                {
-                    currentFrame = (currentFrame + 1) % totalFrames;
-                }
+            if (Owner.velocity.X != 0)
+            {
+                currentFrame = (currentFrame + 1) % totalFrames;
+            }
 
-                if (Owner.hasComponent(typeof(NPCComponent)))
-                    currentFrame = (currentFrame + 1) % totalFrames;
+            if (Owner.hasComponent(typeof(NPCComponent)))
+                currentFrame = (currentFrame + 1) % totalFrames;
+                
+            frameCounter = 0;
             }
             Owner.sourceRectangle = new Rectangle(currentFrame * frameWidth, Owner.sourceRectangle.Y, frameWidth, frameHeight);
         }

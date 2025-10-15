@@ -10,10 +10,16 @@
   </animation>
  </tile>
  <tile id="9" type="DamageBlock">
+  <properties>
+   <property name="canDamage" type="bool" value="true"/>
+   <property name="damageAmount" type="int" value="1"/>
+  </properties>
   <animation>
-   <frame tileid="20" duration="150"/>
+   <frame tileid="17" duration="150"/>
+   <frame tileid="17" duration="150"/>
+   <frame tileid="25" duration="150"/>
    <frame tileid="32" duration="150"/>
-   <frame tileid="34" duration="150"/>
+   <frame tileid="42" duration="150"/>
   </animation>
  </tile>
  <tile id="10" type="SlowDownBlock"/>
@@ -60,6 +66,19 @@
    <frame tileid="20" duration="150"/>
    <frame tileid="18" duration="150"/>
    <frame tileid="19" duration="150"/>
+  </animation>
+ </tile>
+ <tile id="21" type="Gunner">
+  <animation>
+   <frame tileid="21" duration="150"/>
+   <frame tileid="22" duration="150"/>
+   <frame tileid="20" duration="150"/>
+  </animation>
+ </tile>
+ <tile id="22" type="Gunner">
+  <animation>
+   <frame tileid="22" duration="150"/>
+   <frame tileid="21" duration="150"/>
   </animation>
  </tile>
  <tile id="27" type="DoorBlock"/>

@@ -22,7 +22,6 @@ namespace Juegazo.Map.Blocks
             this.damageAmmount = damageAmmount;
             EnableUpdate = true;
             EnableCollisions = canDamage;
-            AddComponent(new BlockAnimationComponent());
         }
         //when using this, it always has a collider and a tile
         public KillBlock(Rectangle collider) : base(collider){ type = "DamageBlock";}

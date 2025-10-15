@@ -83,9 +83,9 @@ namespace Juegazo.Components
         private KeyboardState prevState;
         public void Collisions(Entity entity)
         {
-            if (interactiveArea.Intersects(entity.Destinationrectangle))
+            if (interactiveArea.Intersects(entity.Destinationrectangle) && entity.TryGetComponent(out KeyboardInputComponent coso) )
             {
-                if (Keyboard.GetState().IsKeyDown(Keys.X) && prevState.IsKeyUp(Keys.X))
+                if (coso.btnpSpecial2)
                 {
                     displayBox = !displayBox;
                 }
