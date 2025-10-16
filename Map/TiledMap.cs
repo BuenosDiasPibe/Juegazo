@@ -560,7 +560,7 @@ namespace Juegazo.Map
                 case (false, false):
                     {
                         srcRect = texture.Bounds;
-                        destRect = new Rectangle((int)(imageLayer.X + imageLayer.ParallaxX * camera.ViewPortRectangle.X), (int)(imageLayer.Y.Value + imageLayer.ParallaxY * camera.ViewPortRectangle.Y), texture.Width, texture.Height);
+                        destRect = new Rectangle((int)(imageLayer.X + imageLayer.ParallaxX), (int)(imageLayer.Y.Value + imageLayer.ParallaxY), texture.Width, texture.Height);
                         break;
                     }
                 case (true, true):

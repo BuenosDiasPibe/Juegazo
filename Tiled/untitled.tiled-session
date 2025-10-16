@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "Main.tmj",
+    "activeFile": "Level11.tmj",
     "expandedProjectPaths": [
         "."
     ],
@@ -31,6 +31,9 @@
             }
         },
         "/home/clumpl/Documentos/other-projects/NuTiled/Content/tiled/tilemap.tsx": {
+            "scaleInDock": 1
+        },
+        ":/automap-tiles.tsx": {
             "scaleInDock": 1
         },
         "Level1.tmj": {
@@ -78,6 +81,14 @@
             "viewCenter": {
                 "x": 169.33333333333331,
                 "y": 272.66666666666663
+            }
+        },
+        "Level11.tmj": {
+            "scale": 3,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 832.1666666666666,
+                "y": 581.6666666666666
             }
         },
         "Level2.tmj": {
@@ -138,16 +149,16 @@
             "scale": 1.5,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 100.66666666666664,
-                "y": 101.66666666666666
+                "x": 712.3333333333333,
+                "y": -200
             }
         },
         "Level6.tmj": {
             "scale": 3.07,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 80.13029315960912,
-                "y": 47.71986970684039
+                "x": 79.96742671009773,
+                "y": 47.8827361563518
             }
         },
         "Level6.tmx": {
@@ -178,11 +189,11 @@
             "expandedObjectLayers": [
                 2
             ],
-            "scale": 2,
+            "scale": 4,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 196,
-                "y": 213.75
+                "x": 720.125,
+                "y": 540
             }
         },
         "Level8.tmx": {
@@ -222,8 +233,8 @@
             "scale": 3,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": 127.33333333333333,
-                "y": 39.499999999999986
+                "x": 340.5,
+                "y": 192
             }
         },
         "Main.tmx": {
@@ -319,12 +330,12 @@
     "last.imagePath": "/home/clumpl/Imágenes/tux one-liners",
     "last.objectTypesPath": "/home/clumpl/Documentos/Programacion/Juegazo/Tiled/PropietyFiles.json",
     "lastUsedTilesetExportFilter": "JSON tileset files (*.tsj *.json)",
-    "map.height": 24,
+    "map.height": 135,
     "map.lastUsedExportFilter": "Todos los archivos (*)",
     "map.lastUsedFormat": "json",
-    "map.tileHeight": 16,
-    "map.tileWidth": 16,
-    "map.width": 40,
+    "map.tileHeight": 8,
+    "map.tileWidth": 8,
+    "map.width": 240,
     "openFiles": [
         "worldSpace2.tsx",
         "worldTexture.tsx",
@@ -332,23 +343,23 @@
         "Level8.tmj",
         "Level6.tmj",
         "Level5.tmj",
-        "Level10.tmj"
+        "Level11.tmj"
     ],
     "project": "untitled.tiled-project",
     "property.type": "int",
     "recentFiles": [
-        "worldTexture.tsx",
         "worldSpace2.tsx",
+        "worldTexture.tsx",
+        "Main.tmj",
+        "Level8.tmj",
+        "Level6.tmj",
+        "Level5.tmj",
+        "Level11.tmj",
         "Level9.tmj",
         "Level4.tmj",
-        "Main.tmj",
-        "Level5.tmj",
-        "Level6.tmj",
-        "Level8.tmj",
         "Level7.tmj",
         "Level1.tmj",
-        "Level10.tmj",
-        "Level3.tmj"
+        "Level10.tmj"
     ],
     "tileset.lastUsedFilter": "Archivos de conjuntos de patrones Tiled (*.tsx *.xml)",
     "tileset.lastUsedFormat": "tsx",

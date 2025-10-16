@@ -32,9 +32,10 @@
    <object id="1" x="2" y="2" width="4" height="4"/>
   </objectgroup>
   <animation>
-   <frame tileid="14" duration="150"/>
    <frame tileid="18" duration="150"/>
-   <frame tileid="11" duration="150"/>
+   <frame tileid="2" duration="500"/>
+   <frame tileid="3" duration="150"/>
+   <frame tileid="4" duration="150"/>
   </animation>
  </tile>
  <tile id="22" type="DamageBlock"/>

@@ -24,7 +24,7 @@ namespace Juegazo
         private readonly ContentManager contentManager;
         private readonly GraphicsDevice graphicsDevice;
         private SceneManager sceneManager;
-        private const int TILESIZE = 32;
+        private const int TILESIZE = 8;
         private List<Entity> entities = new();
         GumService gum;
         private SpriteFont font;
@@ -42,12 +42,13 @@ namespace Juegazo
             string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
             return Path.Combine(baseDirectory, v);
         }
+        public bool intersectingWithCamera = false;
 
         public GameplayScene(ContentManager contentManager,
-        GraphicsDevice graphicsDevice,
-        GumService gum,
-        SceneManager sceneManager,
-        Camera camera)
+                            GraphicsDevice graphicsDevice,
+                            GumService gum,
+                            SceneManager sceneManager,
+                            Camera camera)
         {
             this.contentManager = contentManager ?? throw new ArgumentNullException(nameof(contentManager));
             this.graphicsDevice = graphicsDevice ?? throw new ArgumentNullException(nameof(graphicsDevice));
@@ -63,7 +64,7 @@ namespace Juegazo
             playerTexture = contentManager.Load<Texture2D>("second_player_sprite");
             if (levelPath == null)
             {
-                levelPath = "Main.tmj";
+                levelPath = "Level11.tmj";
             }
 
             List<ICustomTypeDefinition> typeDefinitions = new();
@@ -72,18 +73,19 @@ namespace Juegazo
 
             var componentsOnEntity = new List<Component> {
                 new KeyboardInputComponent(),
-                new CameraToEntitySimpleComponent(camera),
-                new MoveVerticalComponent(),
+                //new CameraToEntitySimpleComponent(camera),
+                new GodMovementVerticalComponent(),
+                //new MoveVerticalComponent(),
                 new MoveHorizontalComponent(),
-                new ComplexGravityComponent(),
+                //new ComplexGravityComponent(),
                 new AnimationComponent(),
                 new EntitiesInteractionsComponent(entities),
             };
-            Rectangle playerPosition = new(TILESIZE * 12, TILESIZE * 2, TILESIZE, TILESIZE); // random position in the map, if it spawns there, something went wrong
+            Rectangle playerPosition = new(TILESIZE * 12, TILESIZE * 2, TILESIZE * 5, TILESIZE * 5); // random position in the map, if it spawns there, something went wrong
             if (tilemap.EntityPositionerByName.TryGetValue("PlayerSpawner", out Vector2 position))
             {
-                playerPosition = new((int)position.X, (int)position.Y, TILESIZE, TILESIZE);
-                camera.Position = new(position.X, position.Y);
+                playerPosition.Location = new((int)position.X, (int)position.Y);
+                camera.Position = new(964, 1085);
             }
             componentsOnEntity.Add(new CanDieComponent(new(playerPosition.X, playerPosition.Y)));
             Entity player = new Entity(playerTexture, new Rectangle(0, 0, playerTexture.Width, playerTexture.Height), playerPosition, componentsOnEntity, collider: 0.7f, Color.White);
@@ -93,8 +95,7 @@ namespace Juegazo
             // get all the entities from Tiled
 
             font = contentManager.Load<SpriteFont>("sheesh");
-            camera.Origin = new Vector2(camera.Viewport.Width / 2, camera.Viewport.Height / 2);
-            camera.Zoom = 1.5f;
+            camera.Zoom = 2f;
         }
 
         public void UnloadContent()
@@ -212,19 +213,36 @@ namespace Juegazo
             //killing entity if out of boundries
             foreach (var entity in entities)
             {
-                if (entity.Destinationrectangle.X > tilemap.Width * TILESIZE || entity.Destinationrectangle.X < 0 || entity.Destinationrectangle.Y > tilemap.Height * TILESIZE || entity.Destinationrectangle.Y < 0)
+                if (entity.Destinationrectangle.Top <= camera.ViewPortRectangle.Top)
                 {
-                    entity.health = 0;
+                    camera.Y -= 540;
                 }
+                if (entity.Destinationrectangle.Bottom >= camera.ViewPortRectangle.Bottom)
+                {
+                    camera.Y += 540;
+                }
+                if (entity.Destinationrectangle.Left < camera.ViewPortRectangle.Left)
+                {
+                    camera.X -= 950;
+                }
+                if (entity.Destinationrectangle.Right > camera.ViewPortRectangle.Right)
+                {
+                    camera.X += 950;
+                }
+                // if (entity.Destinationrectangle.X > tilemap.Width * TILESIZE || entity.Destinationrectangle.X < 0 || entity.Destinationrectangle.Y > tilemap.Height * TILESIZE || entity.Destinationrectangle.Y < 0)
+                // {
+                //     entity.health = 0;
+                // }
             }
+
             // Clamp camera position within map bounds, copilot made this 
             // i dont know how math works im really sorry :(
-            camera.X = MathHelper.Clamp(camera.X, 
-                camera.ViewPortRectangle.Width / 2, 
-                tilemap.Width * TILESIZE - camera.ViewPortRectangle.Width / 2);
-            camera.Y = MathHelper.Clamp(camera.Y,
-                camera.ViewPortRectangle.Height / 2,
-                tilemap.Height * TILESIZE - camera.ViewPortRectangle.Height / 2);
+            // camera.X = MathHelper.Clamp(camera.X, 
+            //     camera.ViewPortRectangle.Width / 2, 
+            //     tilemap.Width * TILESIZE - camera.ViewPortRectangle.Width / 2);
+            // camera.Y = MathHelper.Clamp(camera.Y,
+            //     camera.ViewPortRectangle.Height / 2,
+            //     tilemap.Height * TILESIZE - camera.ViewPortRectangle.Height / 2);
 
             pastKey = Keyboard.GetState();
         }

@@ -58,6 +58,7 @@ public class Game1 : Game
     protected override void LoadContent()
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
+        //principalCamera.Origin = new Vector2(principalCamera.Viewport.Width / 2, principalCamera.Viewport.Height / 2); //TODO: uncomment this
         sceneManager.GetScene().LoadContent();
         Console.WriteLine(sceneManager.GetScene()); 
     }
