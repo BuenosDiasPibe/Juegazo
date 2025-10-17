@@ -54,5 +54,10 @@ namespace Juegazo.Components
 
             prevState = currentState;
         }
+        public void disablePlayerInput()
+        {
+            btnLeft = btnRight = btnUp = btnDown = btnSpecial1 = btnSpecial2 = false;
+            btnpLeft = btnpRight = btnpUp = btnpDown = btnpSpecial1 = btnpSpecial2 = false;
+        }
     }
 }

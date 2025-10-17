@@ -59,7 +59,6 @@ namespace Juegazo.Map
         public Dictionary<Tileset, Texture2D> TilemapTextures { get; } = new();
         public Dictionary<string, ImageLayer> imageLayerByName { get; } = new();
         public Dictionary<ImageLayer, Texture2D> ImageLayerTexture { get; } = new();
-        public Camera camera { get; protected set; }
 
         public uint GID_Count
         {
@@ -69,7 +68,7 @@ namespace Juegazo.Map
                 return last_tileset.FirstGID + last_tileset.TileCount;
             }
         }
-        public TiledMap(GraphicsDevice graphicsDevice, string projectDirectory, string mapFilePath, int TILESIZE, List<ICustomTypeDefinition> typeDefinitions, Camera camera, GumService gum)
+        public TiledMap(GraphicsDevice graphicsDevice, string projectDirectory, string mapFilePath, int TILESIZE, List<ICustomTypeDefinition> typeDefinitions, GumService gum)
         {
             this.graphicsDevice = graphicsDevice;
             foreach (var t in typeDefinitions)
@@ -77,7 +76,6 @@ namespace Juegazo.Map
                 CustomTypeDefinitions.Add(t);
             }
             this.graphicsDevice = graphicsDevice;
-            this.camera = camera;
             this.gum = gum;
             TiledProjectDirectory = projectDirectory;
             MapFilePath = mapFilePath;
@@ -177,7 +175,7 @@ namespace Juegazo.Map
 
                     Block block = tiledType.createBlock(tileObject, TILESIZE, Map);
                     block.tile = tile;
-                    if (tile == null) Console.WriteLine($"block: {block.ToString()}");
+                    if (tile == null) Console.WriteLine($"block: {block.ToString()} with no tile");
                     if (block == null)
                     {
                         Console.WriteLine("not block created");
@@ -214,7 +212,7 @@ namespace Juegazo.Map
                     {
                         tobj.Type = tileData.Type;
                     }
-                    if (tobj.Properties.Count == 0 && tileData.Properties.Count > 0)
+                    if (tobj.Properties.Count == 0 && tileData.Properties.Count > 0 )
                     {
                         foreach (var prop in tileData.Properties)
                         {
@@ -226,8 +224,9 @@ namespace Juegazo.Map
                 switch (obj.Type)
                 {
                     case "SpeedUp":
-                        var pap = obj.MapPropertiesTo<CustomTiledTypes.SpeedUp>();
-                        MapObjectToType[tobj] = new CustomTiledTypesImplementation.SpeedUp(pap);
+                        CustomTiledTypes.SpeedUp speedUp;
+                        speedUp = obj.MapPropertiesTo<CustomTiledTypes.SpeedUp>();
+                        MapObjectToType[tobj] = new CustomTiledTypesImplementation.SpeedUp(speedUp);
                         break;
                     case "Collision Block":
                         var paap = obj.MapPropertiesTo<CustomTiledTypes.CollisionBlock>();
@@ -243,6 +242,17 @@ namespace Juegazo.Map
                         unimplementedThings.AddRange(objectProperties);
 
                         MapObjectToType[tobj] = new CustomTiledTypesImplementation.MovementBlock(papu);
+                        break;
+                    case "MoveOneDirection":
+                        var a = obj.MapPropertiesTo<CustomTiledTypes.MoveOneDirection>();
+
+                        objectProperties = obj.Properties
+                            .Where(p => p.Type == PropertyType.Object)
+                            .Cast<ObjectProperty>()
+                            .Select(op => op.Value);
+                        unimplementedThings.AddRange(objectProperties);
+
+                        MapObjectToType[tobj] = new CustomTiledTypesImplementation.MoveOneDirection(a);
                         break;
 
                     case "DamageBlock":
@@ -315,7 +325,7 @@ namespace Juegazo.Map
                             break;
                         }
                         if(!CreatePowerUpEntity(obj, tileset, tileData))
-                            Console.WriteLine("not a class or not implemented");
+                            Console.WriteLine($"class \"{obj.Type}\" not implemented");
                         break;
                 }
             }
@@ -409,7 +419,7 @@ namespace Juegazo.Map
                     entity.AddComponents(new List<Component>
                     {
                         new NPCAnimationComponent(tileData),
-                        new NPCComponent(camera, papu.name, papu.dialogStart, papu.dialogEnd, gum)
+                        new NPCComponent(papu.name, papu.dialogStart, papu.dialogEnd, gum)
                     });
                     entities.Add(entity);
                 }else if(tile.Type == "DoubleJump" || tileData.Type == "DoubleJump")
@@ -419,7 +429,7 @@ namespace Juegazo.Map
             }
         }
 
-        public void drawTileLayer(GameTime gameTime,SpriteBatch spriteBatch, TileLayer tileLayer)
+        public void drawTileLayer(GameTime gameTime,SpriteBatch spriteBatch, TileLayer tileLayer, Camera camera)
         {
             uint[] data = tileLayer.Data.Value.GlobalTileIDs; //get the csv
             for (int i = 0; i < data.Length; i++)
@@ -438,16 +448,16 @@ namespace Juegazo.Map
                 }
                 if (atlasImage.Image.HasValue)
                 {
-                    DrawTile(gameTime, spriteBatch, value, position, atlasImage);
+                    DrawTile(gameTime, spriteBatch, value, position, atlasImage, camera);
                 }
             }
         }
 
 
-        private void DrawTile(GameTime gameTime, SpriteBatch spriteBatch, uint value, Vector2 position, Tileset atlasImage)
+        private void DrawTile(GameTime gameTime, SpriteBatch spriteBatch, uint value, Vector2 position, Tileset atlasImage, Camera camera)
         {
             Rectangle desRectangle = getDestinationRectangle(position);
-            if (!IsVisible(desRectangle)) return;
+            if (!IsVisible(desRectangle, camera)) return;
             Texture2D texture = TilemapTextures[atlasImage];
             Rectangle srcRectangle = GetSourceRect(value, atlasImage);
             spriteBatch.Draw(texture, desRectangle, srcRectangle, Color.White);
@@ -513,7 +523,7 @@ namespace Juegazo.Map
                 return (null, null);
             }
         }
-        public void DrawLayerGroup(GameTime gameTime, SpriteBatch spriteBatch, List<BaseLayer> layers)
+        public void DrawLayerGroup(GameTime gameTime, SpriteBatch spriteBatch, List<BaseLayer> layers, Camera camera)
         {
             foreach (BaseLayer layer in layers)
             {
@@ -521,22 +531,22 @@ namespace Juegazo.Map
                 switch (layer)
                 {
                     case Group group:
-                        DrawLayerGroup(gameTime, spriteBatch, group.Layers);
+                        DrawLayerGroup(gameTime, spriteBatch, group.Layers, camera);
                         break;
                     case TileLayer tileLayer:
                         if (tileLayer.Class == "Collision Tile Layer")
                         {
-                            DrawTileCollisionLayer(gameTime, spriteBatch, tileLayer);
+                            DrawTileCollisionLayer(gameTime, spriteBatch, tileLayer, camera);
                             break;
                         }
-                        drawTileLayer(gameTime, spriteBatch, tileLayer);
+                        drawTileLayer(gameTime, spriteBatch, tileLayer, camera);
                         break;
                     case ObjectLayer objectLayer:
                         if (objectLayer.Class == "Entity Spawner") continue;
-                        DrawObjectLayer(gameTime, spriteBatch, objectLayer);
+                        DrawObjectLayer(gameTime, spriteBatch, objectLayer, camera);
                         break;
                     case ImageLayer imageLayer:
-                        DrawImageLayer(gameTime, spriteBatch, imageLayer);
+                        DrawImageLayer(gameTime, spriteBatch, imageLayer, camera);
                         break;
                     default:
                         Console.WriteLine($"layer type {layer.GetType()} not implemented");
@@ -544,7 +554,7 @@ namespace Juegazo.Map
                 }
             }
         }
-        private void DrawImageLayer(GameTime gameTime,SpriteBatch spriteBatch, ImageLayer imageLayer)
+        private void DrawImageLayer(GameTime gameTime,SpriteBatch spriteBatch, ImageLayer imageLayer, Camera camera)
         {
             if (!imageLayer.Image.HasValue) return; //TODO: add an error image
             Texture2D texture = ImageLayerTexture[imageLayer];
@@ -585,7 +595,7 @@ namespace Juegazo.Map
             spriteBatch.Draw(texture, destRect, srcRect, Color.White);
         }
 
-        private void DrawTileCollisionLayer(GameTime gameTime,SpriteBatch spriteBatch, TileLayer tileLayer)
+        private void DrawTileCollisionLayer(GameTime gameTime,SpriteBatch spriteBatch, TileLayer tileLayer, Camera camera)
         {
             uint[] data = tileLayer.Data.Value.GlobalTileIDs; //get the csv
             for (int i = 0; i < data.Length; i++)
@@ -599,7 +609,7 @@ namespace Juegazo.Map
                 var tile = TilesByGIDAndTileset[(value, atlasImage)];
                 if (tile == null)
                 {
-                    DrawTile(gameTime, spriteBatch, value, new(x, y), atlasImage);
+                    DrawTile(gameTime, spriteBatch, value, new(x, y), atlasImage, camera);
                     continue;
                 }
                 
@@ -608,10 +618,10 @@ namespace Juegazo.Map
                 if (block == null)
                 {
                     if (tile.Type == "DoubleJump") continue;
-                    DrawTile(gameTime, spriteBatch, value, new(x, y), atlasImage); //if its not a block, show the tile anyway
+                    DrawTile(gameTime, spriteBatch, value, new(x, y), atlasImage, camera); //if its not a block, show the tile anyway
                     continue;
                 }
-                if (!IsVisible(block.collider)) continue; //skips if block is not visible
+                if (!IsVisible(block.collider, camera)) continue; //skips if block is not visible
 
                 if (atlasImage.Image.HasValue)
                 {
@@ -623,7 +633,7 @@ namespace Juegazo.Map
             }
         }
 
-        private void DrawObjectLayer(GameTime gameTime,SpriteBatch spriteBatch, ObjectLayer objectLayer)
+        private void DrawObjectLayer(GameTime gameTime,SpriteBatch spriteBatch, ObjectLayer objectLayer, Camera camera)
         {
             if (!objectLayer.Visible) return;
             foreach (var obj in objectLayer.Objects)
@@ -631,7 +641,7 @@ namespace Juegazo.Map
                 switch (obj)
                 {
                     case TileObject tileObject:
-                        DrawTileObject(gameTime, spriteBatch, tileObject, objectLayer);
+                        DrawTileObject(gameTime, spriteBatch, tileObject, objectLayer, camera);
                         break;
                     default:
                         // Console.WriteLine("My fault gang"); //TODO: create object Draw for debugging
@@ -640,10 +650,10 @@ namespace Juegazo.Map
             }
         }
 
-        private void DrawTileObject(GameTime gameTime, SpriteBatch spriteBatch, TileObject tileObject, ObjectLayer objectLayer)
+        private void DrawTileObject(GameTime gameTime, SpriteBatch spriteBatch, TileObject tileObject, ObjectLayer objectLayer, Camera camera)
         {
             Rectangle destRect = GetObjectDestinationRectangle(tileObject);
-            if (!IsVisible(destRect)) return;
+            if (!IsVisible(destRect, camera)) return;
             Tileset tileset = TilesetsByGID[tileObject.GID];
             uint id = tileObject.GID - tileset.FirstGID;
             if (tileset.Image.HasValue)
@@ -673,7 +683,7 @@ namespace Juegazo.Map
         }
 
         // Helper method to determine if the destination rectangle is visible in the viewport.
-        private bool IsVisible(Rectangle destRect)
+        private bool IsVisible(Rectangle destRect, Camera camera)
         {
             return camera.IsRectangleVisible(destRect);
         }
@@ -700,9 +710,9 @@ namespace Juegazo.Map
             path = Path.Combine(projectDirectory, path);
             return Texture2D.FromFile(graphicsDevice, path, DefaultColorProcessors.PremultiplyAlpha);
         }
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public void Draw(GameTime gameTime, SpriteBatch spriteBatch, Camera camera)
         {
-            DrawLayerGroup(gameTime, spriteBatch, Map.Layers);
+            DrawLayerGroup(gameTime, spriteBatch, Map.Layers, camera);
         }
     }
 }

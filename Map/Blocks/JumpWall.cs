@@ -24,7 +24,6 @@ namespace Juegazo.Map.Blocks
             jumpStrength = jumpSptrength;
             this.recoilVelocity = recoilVelocity;
             this.canJump = canJump;
-            Console.WriteLine("shit was called");
         }
         public JumpWall()
         {
@@ -32,6 +31,7 @@ namespace Juegazo.Map.Blocks
         }
         public override void horizontalActions(Entity entity, Rectangle collision)
         {
+            //TODO: add checking for other Jump components the player would have
             entity.baseVelocity = new();
             if (!canJump)
             {

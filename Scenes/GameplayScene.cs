@@ -67,12 +67,12 @@ namespace Juegazo
             }
 
             List<ICustomTypeDefinition> typeDefinitions = new();
-            tilemap = new(graphicsDevice, projectDirectory, levelPath, TILESIZE, typeDefinitions, camera, gum);
+            tilemap = new(graphicsDevice, projectDirectory, levelPath, TILESIZE, typeDefinitions, gum);
             entities.AddRange(tilemap.entities);
 
             var componentsOnEntity = new List<Component> {
                 new KeyboardInputComponent(),
-                new CameraToEntitySimpleComponent(camera),
+                new CameraToEntityComponent(camera),
                 new MoveVerticalComponent(),
                 new MoveHorizontalComponent(),
                 new ComplexGravityComponent(),
@@ -116,7 +116,7 @@ namespace Juegazo
                 var interactions = (EntitiesInteractionsComponent)playerEntity.GetComponent<EntitiesInteractionsComponent>();
                 interactions.entities = entities;
                 List<ICustomTypeDefinition> typeDefinitions = new();
-                tilemap = new(graphicsDevice, projectDirectory, levelPath, TILESIZE, typeDefinitions, camera, gum);
+                tilemap = new(graphicsDevice, projectDirectory, levelPath, TILESIZE, typeDefinitions, gum);
                 entities.AddRange(tilemap.entities);
             }
             if (Keyboard.GetState().IsKeyDown(Keys.M) && pastKey.IsKeyDown(Keys.M))
@@ -242,7 +242,7 @@ namespace Juegazo
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            tilemap.Draw(gameTime, spriteBatch);
+            tilemap.Draw(gameTime, spriteBatch, camera);
             foreach (var entity in entities)
             {
                 entity.Draw(gameTime, spriteBatch);

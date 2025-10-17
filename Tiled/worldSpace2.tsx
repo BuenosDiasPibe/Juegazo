@@ -153,4 +153,20 @@
    <frame tileid="41" duration="150"/>
   </animation>
  </tile>
+ <tile id="48" type="MoveOneDirection">
+  <properties>
+   <property name="canMove" type="bool" value="false"/>
+   <property name="velocity" type="int" value="0"/>
+  </properties>
+  <animation>
+   <frame tileid="48" duration="150"/>
+   <frame tileid="49" duration="150"/>
+  </animation>
+ </tile>
+ <tile id="49" type="MoveOneDirection">
+  <properties>
+   <property name="canMove" type="bool" value="false"/>
+   <property name="velocity" type="int" value="0"/>
+  </properties>
+ </tile>
 </tileset>

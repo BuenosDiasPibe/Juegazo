@@ -15,7 +15,6 @@ namespace Juegazo.Components
 {
     public class NPCComponent : Component
     {
-        private Camera camera;
         private Rectangle collisionArea = new();
         private int dialogStart = 0;
         private int dialogEnd = 1;
@@ -25,9 +24,8 @@ namespace Juegazo.Components
         public bool displayBox = false;
         private ColoredRectangleRuntime background;
         private bool displayCreature;
-        public NPCComponent(Camera camera, string name, int dialogStart, int dialogEnd, GumService gum)
+        public NPCComponent(string name, int dialogStart, int dialogEnd, GumService gum)
         {
-            this.camera = camera;
             this.EnableUpdate = true;
             this.name = name;
             this.dialogStart = dialogStart;
@@ -43,14 +41,14 @@ namespace Juegazo.Components
                     Owner.collider.Width * 3, Owner.collider.Height * 3);
 
             GumService.Default.Root.Children.Clear();
-            background = CreateDialogBox(camera.Viewport.Bounds);
+            background = CreateDialogBox(new(0,0,500,600));
             background.AddToRoot();
         }
         private ColoredRectangleRuntime CreateDialogBox(Rectangle rec)
         {
             var background = new ColoredRectangleRuntime();
             background.X = 0;
-            background.Y = camera.Viewport.Height / 2;
+            background.Y = rec.Height / 2;
             background.Width = rec.Width;
             background.Height = rec.Height / 2;
             background.Color = Color.Black;

@@ -13,8 +13,7 @@ namespace Juegazo.Map.Blocks
     {
         public Rectangle initialBlockPosition = new();
         public Rectangle endBlockPosition = new();
-        private float velocityToEntity { set; get; } = 1;
-        private float lerpAmount = 0;
+        private Vector2 velocityToEntity = new();
         public float velocity = 0;
         private Vector2 lastBlockPosition = new();
         private Vector2 newPosition = new();
@@ -24,14 +23,8 @@ namespace Juegazo.Map.Blocks
         {
             type = "MovementBlock";
             EnableUpdate = true;
-            this.initialBlockPosition = new(initialBlockPosition.X / initialBlockPosition.Width * 32,
-                                            (initialBlockPosition.Y / initialBlockPosition.Height * 32) - 1,
-                                            32,
-                                            32);
-            this.endBlockPosition = new(endBlockPosition.X / endBlockPosition.Width * 32,
-                                        (endBlockPosition.Y / endBlockPosition.Height * 32) - 1,
-                                        32,
-                                        32);
+            this.initialBlockPosition = initialBlockPosition;
+            this.endBlockPosition = endBlockPosition;
             this.velocity = velocity;
             EnableUpdate = canMove;
         }
@@ -60,11 +53,11 @@ namespace Juegazo.Map.Blocks
 
         public override void Update(GameTime gameTime)
         {
-            Vector2 current = new Vector2(endBlockPosition.X, endBlockPosition.Y);
-            Vector2 target = new(initialBlockPosition.X, initialBlockPosition.Y);
+            Vector2 current = initialBlockPosition.Location.ToVector2();
+            Vector2 target = endBlockPosition.Location.ToVector2();
             float distance = Vector2.Distance(current, target);
             float time = (float)(gameTime.TotalGameTime.TotalSeconds * velocity / distance);
-            lerpAmount = 2 * Math.Abs(time % 1 - 0.5f);
+            float lerpAmount = 2 * Math.Abs(time % 1 - 0.5f);
 
             newPosition = Vector2.Lerp(current, target, lerpAmount);
             if (lerpAmount >= 0.99)
@@ -75,9 +68,9 @@ namespace Juegazo.Map.Blocks
                 movingLeft = false;
             }
 
-            collider = new Rectangle((int)newPosition.X, (int)newPosition.Y, collider.Width, collider.Height);
+            collider.Location = newPosition.ToPoint();
 
-            velocityToEntity = collider.X - lastBlockPosition.X;
+            velocityToEntity = collider.Location.ToVector2() - lastBlockPosition;
             lastBlockPosition = new(collider.X, collider.Y);
         }
 
@@ -86,7 +79,7 @@ namespace Juegazo.Map.Blocks
             new CollisionBlock().verticalActions(entity, collision);
             // float f = 0.6f;
 
-            entity.baseVelocity.X = velocityToEntity;
+            entity.baseVelocity = velocityToEntity;
         }
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch, Texture2D texture, Rectangle sourceRectangle)
         {

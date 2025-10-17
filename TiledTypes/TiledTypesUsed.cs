@@ -36,6 +36,7 @@ namespace Juegazo.CustomTiledTypes
     public class JumpWallBlock
     {
         public bool canJump { get; set; } = true;
+        public int jumpIntensity { get; set; } = 10;
         public int recoilIntensity { get; set; } = 11;
     }
     public class VerticalBoostBlock
@@ -75,13 +76,20 @@ namespace Juegazo.CustomTiledTypes
     {
         public int SpeedAmmount { get; set; } = 5;
     }
+    public class MoveOneDirection
+    {
+        public bool canMove { get; set; } = false;
+        public uint initialPosition { get; set; } = 0;
+        public uint lastPosition { get; set; } = 0;
+        public int velocity { get; set; } = 0;
+    }
 }
 namespace Juegazo.CustomTiledTypesImplementation
 {
 
     public abstract class TiledTypesUsed
     {
-        public abstract Block createBlock(TileObject obj, int TILESIZE, DotTiled.Map map); //TODO: i should better add "Map" to this more than just TILESIZE
+        public abstract Block createBlock(TileObject obj, int TILESIZE, DotTiled.Map map); 
         public abstract void getNeededObjectPropeties(DotTiled.Object obj, int TILESIZE, DotTiled.Map map);
         public abstract List<uint> neededObjects();
         protected Rectangle GetRect(DotTiled.Object obj, int TILESIZE, DotTiled.Map map)
@@ -121,9 +129,9 @@ namespace Juegazo.CustomTiledTypesImplementation
             if (obj is RectangleObject rObject)
             {
                 if (obj.ID == initialBlockPosition)
-                    InitialBlockPosition = new((int)rObject.X, (int)rObject.Y, (int)rObject.Width, (int)rObject.Height);
+                    InitialBlockPosition = GetRect(obj, TILESIZE, map);
                 if (obj.ID == EndBlockPosition)
-                    endBlockPosition = new((int)rObject.X, (int)rObject.Y, (int)rObject.Width, (int)rObject.Height);
+                    endBlockPosition = GetRect(obj, TILESIZE, map);
             }
         }
         public override Block createBlock(TileObject obj, int TILESIZE, DotTiled.Map map)
@@ -180,11 +188,13 @@ namespace Juegazo.CustomTiledTypesImplementation
         }
         public bool canJump { get; } = true;
         public int recoilIntensity { get; } = 11;
+        public int jumpIntensity { get; } = 10;
 
         public JumpWallBlock(CustomTiledTypes.JumpWallBlock jblock)
         {
             canJump = jblock.canJump;
             recoilIntensity = jblock.recoilIntensity;
+            jumpIntensity = jblock.jumpIntensity;
         }
 
         public override void getNeededObjectPropeties(DotTiled.Object obj, int TILESIZE, DotTiled.Map map)
@@ -196,7 +206,7 @@ namespace Juegazo.CustomTiledTypesImplementation
         {
             return new JumpWall(
                 GetRect(obj, TILESIZE, map),
-                15, //TODO: fuck i forgot to add that
+                jumpIntensity,
                 canJump,
                 recoilIntensity
             );
@@ -396,5 +406,50 @@ namespace Juegazo.CustomTiledTypesImplementation
 
         public override List<uint> neededObjects()
         { return new(); }
+    }
+    public class MoveOneDirection : TiledTypesUsed
+    {
+        public override string ToString()
+        {
+            return $"MoveOneDirectionBlock: \tEndBlockPosition: {EndBlockPosition}\n\tCanMove: {canMove}\n\tInitialBlockPosition: {initialBlockPosition}\n\tSpeed: {speed}\n\tInitialBlock: {initialPos}\n\tEndBlock: {endPos}";
+        }
+        public uint EndBlockPosition { get; } = 0;
+        public bool canMove { get; } = false;
+        public uint initialBlockPosition { get; } = 0;
+        public int speed { get; } = 1;
+        public Rectangle initialPos { get; set; } = new();
+        public Rectangle endPos { get; set; } = new();
+        public MoveOneDirection(CustomTiledTypes.MoveOneDirection mblock)
+        {
+            EndBlockPosition = mblock.lastPosition;
+            canMove = mblock.canMove;
+            initialBlockPosition = mblock.initialPosition;
+            speed = mblock.velocity;
+        }
+        public override void getNeededObjectPropeties(DotTiled.Object obj, int TILESIZE, DotTiled.Map map)
+        {
+            if (obj is RectangleObject rObject)
+            {
+                if (obj.ID == initialBlockPosition)
+                    initialPos = GetRect(obj, TILESIZE, map);
+                if (obj.ID == EndBlockPosition)
+                    endPos = GetRect(obj, TILESIZE, map);
+            }
+        }
+        public override Block createBlock(TileObject obj, int TILESIZE, DotTiled.Map map)
+        {
+            return new Map.Blocks.MoveOneDirection(
+                GetRect(obj, TILESIZE, map),
+                initialPos,
+                endPos,
+                speed,
+                canMove
+            );
+        }
+
+        public override List<uint> neededObjects()
+        {
+            return new([initialBlockPosition, EndBlockPosition]);
+        }
     }
 }

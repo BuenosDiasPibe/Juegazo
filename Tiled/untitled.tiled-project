@@ -304,6 +304,11 @@
                     "value": true
                 },
                 {
+                    "name": "jumpIntensity",
+                    "type": "int",
+                    "value": 10
+                },
+                {
                     "name": "recoilIntensity",
                     "type": "int",
                     "value": 11
@@ -385,6 +390,44 @@
                 "property",
                 "map",
                 "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset",
+                "project"
+            ]
+        },
+        {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 23,
+            "members": [
+                {
+                    "name": "canMove",
+                    "type": "bool",
+                    "value": false
+                },
+                {
+                    "name": "initialPosition",
+                    "type": "object",
+                    "value": 0
+                },
+                {
+                    "name": "lastPosition",
+                    "type": "object",
+                    "value": 0
+                },
+                {
+                    "name": "velocity",
+                    "type": "int",
+                    "value": 0
+                }
+            ],
+            "name": "MoveOneDirection",
+            "type": "class",
+            "useAs": [
+                "property",
                 "object",
                 "tile",
                 "tileset",

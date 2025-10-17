@@ -244,24 +244,6 @@
                  "y":16
                 }, 
                 {
-                 "gid":19,
-                 "height":8,
-                 "id":114,
-                 "name":"",
-                 "properties":[
-                        {
-                         "name":"damageAmount",
-                         "type":"int",
-                         "value":2
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":8,
-                 "x":184,
-                 "y":112
-                }, 
-                {
                  "gid":12,
                  "height":8,
                  "id":115,
@@ -750,7 +732,7 @@
          "y":0
         }],
  "nextlayerid":11,
- "nextobjectid":118,
+ "nextobjectid":119,
  "orientation":"orthogonal",
  "properties":[
         {

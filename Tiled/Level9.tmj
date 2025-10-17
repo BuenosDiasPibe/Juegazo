@@ -246,7 +246,97 @@
          "draworder":"topdown",
          "id":4,
          "name":"Capa de Objetos 2",
-         "objects":[],
+         "objects":[
+                {
+                 "gid":2,
+                 "height":16,
+                 "id":41,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"jumpIntensity",
+                         "type":"int",
+                         "value":90
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":336,
+                 "y":128
+                }, 
+                {
+                 "gid":2,
+                 "height":16,
+                 "id":42,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"jumpIntensity",
+                         "type":"int",
+                         "value":90
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":336,
+                 "y":112
+                }, 
+                {
+                 "gid":2,
+                 "height":16,
+                 "id":43,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"jumpIntensity",
+                         "type":"int",
+                         "value":90
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":336,
+                 "y":96
+                }, 
+                {
+                 "gid":2,
+                 "height":16,
+                 "id":44,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"jumpIntensity",
+                         "type":"int",
+                         "value":90
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":336,
+                 "y":80
+                }, 
+                {
+                 "gid":2,
+                 "height":16,
+                 "id":45,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"jumpIntensity",
+                         "type":"int",
+                         "value":90
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":336,
+                 "y":64
+                }],
          "opacity":1,
          "properties":[
                 {
@@ -260,7 +350,7 @@
          "y":0
         }],
  "nextlayerid":5,
- "nextobjectid":41,
+ "nextobjectid":46,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.2",
