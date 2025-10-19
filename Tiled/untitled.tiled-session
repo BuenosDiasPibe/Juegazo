@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "Level11.tmj",
+    "activeFile": "Main.tmj",
     "expandedProjectPaths": [
         "."
     ],
@@ -87,8 +87,8 @@
             "scale": 1.5,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 4860.666666666666,
-                "y": 3093
+                "x": 5020.333333333333,
+                "y": 3072.6666666666665
             }
         },
         "Level2.tmj": {
@@ -99,11 +99,11 @@
                 6,
                 3
             ],
-            "scale": 1.5,
-            "selectedLayer": 2,
+            "scale": 5.5,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 50,
-                "y": 255.66666666666666
+                "x": 474.2727272727273,
+                "y": 82.18181818181819
             }
         },
         "Level2.tmx": {
@@ -196,8 +196,8 @@
             "scale": 1,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 293,
-                "y": 171.5
+                "x": 720.5,
+                "y": 400
             }
         },
         "Level8.tmx": {
@@ -238,8 +238,8 @@
             "scale": 3,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 334.3333333333333,
-                "y": 192.16666666666669
+                "x": 196.16666666666669,
+                "y": 108.66666666666669
             }
         },
         "Main.tmx": {
@@ -256,7 +256,7 @@
         "OtherEntities.tsx": {
             "dynamicWrapping": true,
             "scaleInDock": 0.03125,
-            "scaleInEditor": 3
+            "scaleInEditor": 0.25
         },
         "betterTest.tmx": {
             "expandedObjectLayers": [
@@ -360,11 +360,11 @@
     "property.type": "float",
     "recentFiles": [
         "worldSpace2.tsx",
-        "Main.tmj",
-        "Level8.tmj",
-        "Level2.tmj",
-        "OtherEntities.tsx",
         "Level11.tmj",
+        "OtherEntities.tsx",
+        "Level2.tmj",
+        "Level8.tmj",
+        "Main.tmj",
         "worldTexture.tsx",
         "Level1.tmj",
         "Level6.tmj",

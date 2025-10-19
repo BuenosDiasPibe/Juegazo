@@ -82,12 +82,10 @@ namespace Juegazo.Components
         {
             if (interactiveArea.Intersects(entity.Destinationrectangle) && entity.TryGetComponent(out KeyboardInputComponent coso) )
             {
-                if (coso.btnpSpecial2)
+                if (coso.btnpSpecial1)
                 {
                     displayBox = !displayBox;
                 }
-                if (Keyboard.GetState().IsKeyDown(Keys.C) && prevState.IsKeyUp(Keys.C))
-                    displayCreature = !displayCreature;
                 prevState = Keyboard.GetState();
             }
             else

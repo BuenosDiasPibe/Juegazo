@@ -30,8 +30,6 @@ namespace Juegazo.Components
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            if (tile.Width != 0) Console.WriteLine("Special case!!");
-
             double totalDuration = tile.Animation.Sum(a => a.Duration);
             double currentTime = gameTime.TotalGameTime.TotalMilliseconds % totalDuration;
             int frame = 0;

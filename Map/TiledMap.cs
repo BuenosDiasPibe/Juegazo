@@ -211,6 +211,10 @@ namespace Juegazo.Map
                 }
             }
         }
+        /// <summary>
+        /// Checks if any tile.Type is a block, entity or is null, change the switch statement to make this work for you, im sorry
+        /// </summary>
+        /// <param name="objectLayer"></param>
         private void InitObjectLayer(ObjectLayer objectLayer)
         {
             List<uint> unimplementedThings = new();
@@ -237,113 +241,11 @@ namespace Juegazo.Map
                     }
                 }
                 MapTileObjectToTile[tobj] = tileData;
-                switch (obj.Type)
+
+                (bool flowControl, objectProperties) = MapObjectToPropieties(unimplementedThings, obj, tobj, tileset, tileData);
+                if (!flowControl)
                 {
-                    case "SpeedUp":
-                        CustomTiledTypes.SpeedUp speedUp;
-                        speedUp = obj.MapPropertiesTo<CustomTiledTypes.SpeedUp>();
-                        MapObjectToType[tobj] = new CustomTiledTypesImplementation.SpeedUp(speedUp);
-                        break;
-                    case "Collision Block":
-                        var paap = obj.MapPropertiesTo<CustomTiledTypes.CollisionBlock>();
-                        MapObjectToType[tobj] = new CustomTiledTypesImplementation.CollisionBlock(paap);
-                        break;
-                    case "MovementBlock":
-                        var papu = obj.MapPropertiesTo<CustomTiledTypes.MovementBlock>();
-
-                        objectProperties = obj.Properties
-                            .Where(p => p.Type == PropertyType.Object)
-                            .Cast<ObjectProperty>()
-                            .Select(op => op.Value);
-                        unimplementedThings.AddRange(objectProperties);
-
-                        MapObjectToType[tobj] = new CustomTiledTypesImplementation.MovementBlock(papu);
-                        break;
-                    case "MoveOneDirection":
-                        var a = obj.MapPropertiesTo<CustomTiledTypes.MoveOneDirection>();
-
-                        objectProperties = obj.Properties
-                            .Where(p => p.Type == PropertyType.Object)
-                            .Cast<ObjectProperty>()
-                            .Select(op => op.Value);
-                        unimplementedThings.AddRange(objectProperties);
-
-                        MapObjectToType[tobj] = new CustomTiledTypesImplementation.MoveOneDirection(a);
-                        break;
-
-                    case "DamageBlock":
-                        Console.WriteLine($"damageBlock tile data: {tileData}");
-                        var damage = obj.MapPropertiesTo<CustomTiledTypes.DamageBlock>();
-                        MapObjectToType[tobj] = new CustomTiledTypesImplementation.DamageBlock(damage);
-                        break;
-                    case "CheckPointBlock":
-                        objectProperties = obj.Properties
-                            .Where(p => p.Type == PropertyType.Object)
-                            .Cast<ObjectProperty>()
-                            .Select(op => op.Value);
-                        unimplementedThings.AddRange(objectProperties);
-
-                        var checkPoint = obj.MapPropertiesTo<CustomTiledTypes.CheckPointBlock>();
-                        MapObjectToType[tobj] = new CustomTiledTypesImplementation.CheckPointBlock(checkPoint);
-                        break;
-
-                    case "CompleteLevelBlock":
-                        objectProperties = obj.Properties
-                            .Where(p => p.Type == PropertyType.Object)
-                            .Cast<ObjectProperty>()
-                            .Select(op => op.Value);
-                        unimplementedThings.AddRange(objectProperties);
-
-                        var complete = obj.MapPropertiesTo<CustomTiledTypes.CompleteLevelBlock>();
-                        MapObjectToType[tobj] = new CustomTiledTypesImplementation.CompleteLevelBlock(complete);
-                        break;
-
-                    case "VerticalBoostBlock":
-                        objectProperties = obj.Properties
-                            .Where(p => p.Type == PropertyType.Object)
-                            .Cast<ObjectProperty>()
-                            .Select(op => op.Value);
-                        unimplementedThings.AddRange(objectProperties);
-
-                        var boost = obj.MapPropertiesTo<CustomTiledTypes.VerticalBoostBlock>();
-                        MapObjectToType[tobj] = new CustomTiledTypesImplementation.VerticalBoostBlock(boost);
-                        break;
-
-                    case "JumpWallBlock":
-                        objectProperties = obj.Properties
-                            .Where(p => p.Type == PropertyType.Object)
-                            .Cast<ObjectProperty>()
-                            .Select(op => op.Value);
-                        unimplementedThings.AddRange(objectProperties);
-
-                        var jblock = obj.MapPropertiesTo<CustomTiledTypes.JumpWallBlock>();
-                        MapObjectToType[tobj] = new CustomTiledTypesImplementation.JumpWallBlock(jblock);
-                        break;
-
-                    case "Key":
-                        var key = obj.MapPropertiesTo<CustomTiledTypes.Key>();
-                        MapObjectToType[tobj] = new CustomTiledTypesImplementation.Key(key);
-                        break;
-
-                    case "DoorBlock":
-                        objectProperties = obj.Properties
-                            .Where(p => p.Type == PropertyType.Object)
-                            .Cast<ObjectProperty>()
-                            .Select(op => op.Value);
-                        unimplementedThings.AddRange(objectProperties);
-
-                        var doorBlock = obj.MapPropertiesTo<CustomTiledTypes.DoorBlock>();
-                        MapObjectToType[tobj] = new CustomTiledTypesImplementation.DoorBlock(doorBlock);
-                        break;
-                    default:
-                        if (obj.Type == "")
-                        {
-                            Console.WriteLine($"{tileset.Name} nothing here...");
-                            break;
-                        }
-                        if (!CreatePowerUpEntity(obj, tileset, tileData))
-                            Console.WriteLine($"class \"{obj.Type}\" not implemented");
-                        break;
+                    continue;
                 }
             }
 
@@ -362,6 +264,124 @@ namespace Juegazo.Map
             }
 
             InitCollisionObjectLayer(objectLayer);
+        }
+
+        // THOU SHALL NOT SEE WHAT'S INSIDE THIS DISGUSTING GARBAGE, it still works tho
+        private (bool flowControl, IEnumerable<uint> value) MapObjectToPropieties(List<uint> unimplementedThings, DotTiled.Object obj, TileObject tobj, Tileset tileset, Tile tileData)
+        {
+            IEnumerable<uint> objectProperties;
+            // dynamic mapping: look for types in CustomTiledTypes and implementations in CustomTiledTypesImplementation
+            string typeName = obj.Type;
+            if (string.IsNullOrEmpty(typeName))
+            {
+                Console.WriteLine($"{tileset?.Name} nothing here...");
+                return (flowControl: false, value: null);
+            }
+
+            // collect any object property references (some types need them)
+            objectProperties = obj.Properties
+                .Where(p => p.Type == PropertyType.Object)
+                .Cast<ObjectProperty>()
+                .Select(op => op.Value);
+            if (objectProperties.Any())
+            {
+                unimplementedThings.AddRange(objectProperties);
+            }
+
+            // find the property type (Juegazo.CustomTiledTypes.<typeName>)
+            Type propType = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(a =>
+                {
+                    try { return a.GetTypes(); }
+                    catch { return Array.Empty<Type>(); }
+                })
+                .FirstOrDefault(t => t.Name == typeName && t.Namespace != null && t.Namespace.EndsWith("CustomTiledTypes"));
+
+            object mappedProps = null;
+            if (propType != null)
+            {
+                // invoke MapPropertiesTo<T>() dynamically
+                var mapMethod = obj.GetType()
+                    .GetMethods(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.FlattenHierarchy)
+                    .FirstOrDefault(m => m.Name == "MapPropertiesTo" && m.IsGenericMethodDefinition && m.GetParameters().Length == 0)
+                    ?.MakeGenericMethod(propType);
+                if (mapMethod != null)
+                {
+                    mappedProps = mapMethod.Invoke(obj, null);
+                }
+                // ensure we have an instance (fallback)
+                if (mappedProps == null)
+                {
+                    try { mappedProps = Activator.CreateInstance(propType); }
+                    catch { mappedProps = null; }
+                }
+            }
+
+            // find the implementation type (Juegazo.CustomTiledTypesImplementation.<typeName>)
+            Type implType = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(a =>
+                {
+                    try { return a.GetTypes(); }
+                    catch { return Array.Empty<Type>(); }
+                })
+                .FirstOrDefault(t => t.Name == typeName && t.Namespace != null && t.Namespace.EndsWith("CustomTiledTypesImplementation"));
+
+            if (implType != null)
+            {
+                object implInstance = null;
+
+                // prefer a ctor that accepts the mapped props type
+                if (mappedProps != null)
+                {
+                    var preferredCtor = implType.GetConstructors()
+                        .FirstOrDefault(c =>
+                        {
+                            var ps = c.GetParameters();
+                            return ps.Length == 1 && ps[0].ParameterType.IsAssignableFrom(mappedProps.GetType());
+                        });
+                    if (preferredCtor != null)
+                    {
+                        implInstance = preferredCtor.Invoke(new[] { mappedProps });
+                    }
+                }
+
+                // try parameterless ctor
+                if (implInstance == null)
+                {
+                    var defaultCtor = implType.GetConstructor(Type.EmptyTypes);
+                    if (defaultCtor != null)
+                        implInstance = defaultCtor.Invoke(null);
+                }
+
+                // last resort: try first ctor with whatever we have
+                if (implInstance == null)
+                {
+                    var anyCtor = implType.GetConstructors().FirstOrDefault();
+                    if (anyCtor != null)
+                    {
+                        var parms = anyCtor.GetParameters();
+                        var args = parms.Select(p => p.ParameterType.IsInstanceOfType(mappedProps) ? mappedProps : (p.HasDefaultValue ? p.DefaultValue : null)).ToArray();
+                        try { implInstance = anyCtor.Invoke(args); } catch { implInstance = null; }
+                    }
+                }
+
+                if (implInstance is TiledTypesUsed tiledImpl)
+                {
+                    MapObjectToType[tobj] = tiledImpl;
+                }
+                else
+                {
+                    Console.WriteLine($"implementation for \"{typeName}\" does not implement TiledTypesUsed");
+                }
+            }
+            else
+            {
+                // fallback to previous behaviour for unknown types: try creating powerup or log
+                if (!CreatePowerUpEntity(obj, tileset, tileData))
+                    Console.WriteLine($"class \"{obj.Type}\" not implemented");
+            }
+
+            return (flowControl: true, value: null);
         }
 
         private bool CreatePowerUpEntity(object source, Tileset tileset, Tile tileData)
@@ -412,12 +432,12 @@ namespace Juegazo.Map
             {
                 float x = obj.X / Map.TileWidth * TILESIZE;
                 float y = obj.Y / Map.TileHeight * TILESIZE;
-                EntityPositionerByName[obj.Type] = new Vector2(x, y); //get all entities positions even if they are not a tileObject (if player is a rectangle for example)
+                EntityPositionerByName[obj.Type] = new Vector2(x, y);
 
-                if (!(obj is TileObject tile)) continue;
+                if (obj is not TileObject tile) continue;
                 var tileset = TilesetsByGID[tile.GID];
                 var tileData = TilesByGID[tile.GID];
-                if (tileData == null) continue;
+                if (tileData == null || tileset == null) continue;
 
                 if (obj.Properties.Count == 0 && tileData.Properties.Count > 0)
                 {
@@ -430,16 +450,25 @@ namespace Juegazo.Map
                 if (tile.Type == "NPC" || tileData.Type == "NPC")
                 {
                     var papu = tile.MapPropertiesTo<NPC>();
+                    Entity entity;
+                    if(tileset.Image.HasValue)
+                    {
+                        Texture2D atlasImage = TilemapTextures[tileset];
+                        entity = new Entity(atlasImage, GetSourceRect(tile.GID, tileset), GetObjectDestinationRectangle(tile), 1, Color.White);
+                    }
+                    else
+                    {
+                        Texture2D atlasImage = TileCollectionTextures[tileData];
+                        entity = new Entity(atlasImage, TileSourceBounds(tileData), GetObjectDestinationRectangle(tile), 1, Color.White);
+                    }
 
-                    Texture2D atlasImage = TilemapTextures[tileset]; //this looks like shit but idk
-
-                    Entity entity = new Entity(atlasImage, GetSourceRect(tile.GID, tileset), GetObjectDestinationRectangle(tile), 1, Color.White);
                     entity.AddComponents(new List<Component>
                     {
                         new NPCAnimationComponent(tileData),
                         new NPCComponent(papu.name, papu.dialogStart, papu.dialogEnd, gum)
                     });
                     entities.Add(entity);
+                    Console.WriteLine($"added entiity {papu.name} with tileset {tileset.Name} in position {entity.Destinationrectangle}");
                 }
                 else if (tile.Type == "DoubleJump" || tileData.Type == "DoubleJump")
                 {
@@ -645,36 +674,23 @@ namespace Juegazo.Map
             uint[] data = tileLayer.Data.Value.GlobalTileIDs; //get the csv
             for (int i = 0; i < data.Length; i++)
             {
-                uint valval = data[i];
-                if (valval == 0) continue; //air data
-                uint gid = valval;
-                valval--;
+                uint gid = data[i];
+                if (gid == 0) continue;
+
                 int x = (int)(i % tileLayer.Width);
                 int y = (int)(i / tileLayer.Width);
-                var atlasImage = TilesetsByGID[gid];
-                var tile = TilesByGID[gid];
+                var pos = new Vector2(x, y);
 
-                collisionLayer.TryGetValue(new(x, y), out var block);
-                if (block == null || tile == null)
-                {
-                    Console.WriteLine($"x, y: {{{x}, {y}}}");
+                if (!collisionLayer.TryGetValue(pos, out var block) ||
+                    !TilesByGID.TryGetValue(gid, out var tile) ||
+                    !IsVisible(block.collider, camera))
                     continue;
-                }
-                if (!IsVisible(block.collider, camera)) continue; //skips if block is not visible
 
-                if (atlasImage.Image.HasValue)
-                {
-                    Texture2D texture = TilemapTextures[atlasImage];
-                    Rectangle srcRectangle = GetSourceRect(valval, atlasImage);
-
-                    block.Draw(gameTime, spriteBatch, texture, srcRectangle);
-                }
+                var atlas = TilesetsByGID[gid];
+                if (atlas.Image.HasValue)
+                    block.Draw(gameTime, spriteBatch, TilemapTextures[atlas], GetSourceRect(gid - atlas.FirstGID, atlas));
                 else
-                {
-                    Texture2D t = TileCollectionTextures[tile];
-                    Rectangle src = TileSourceBounds(tile);
-                    block.Draw(gameTime, spriteBatch, t, src);
-                }
+                    block.Draw(gameTime, spriteBatch, TileCollectionTextures[tile], TileSourceBounds(tile));
             }
         }
 
@@ -697,55 +713,43 @@ namespace Juegazo.Map
 
         private void DrawTileObject(GameTime gameTime, SpriteBatch spriteBatch, TileObject tileObject, ObjectLayer objectLayer, Camera camera)
         {
-            Rectangle destRect = GetObjectDestinationRectangle(tileObject);
+            var destRect = GetObjectDestinationRectangle(tileObject);
             if (!IsVisible(destRect, camera)) return;
-            Tileset tileset = TilesetsByGID[tileObject.GID];
-            var tile = TilesByGID[tileObject.GID];
-            uint id = tileObject.GID - tileset.FirstGID;
-            Texture2D texture;
-            Rectangle srcRect;
-            if (tileset.Image.HasValue)
-            {
-                texture = TilemapTextures[tileset];
-                srcRect = GetSourceRect(id, tileset);
-            }
-            else
-            {
-                texture = TileCollectionTextures[tile];
-                srcRect = TileSourceBounds(tile);
-           }
 
-            if (dynamicBlocks.TryGetValue(tileObject, out var dynBlock))
+            var tileset = TilesetsByGID[tileObject.GID];
+            var tile = TilesByGID[tileObject.GID];
+
+            var texture = tileset.Image.HasValue ?
+                        TilemapTextures[tileset] : TileCollectionTextures[tile];
+            var sourceRectangle = tileset.Image.HasValue ?
+                        GetSourceRect(tileObject.GID - tileset.FirstGID, tileset) : TileSourceBounds(tile);
+
+            if (dynamicBlocks.TryGetValue(tileObject, out var dyn))
             {
-                dynBlock.Draw(gameTime, spriteBatch, texture, srcRect);
+                dyn.Draw(gameTime, spriteBatch, texture, sourceRectangle);
+                return; 
             }
-            else if (collisionLayer.TryGetValue(
-                new Vector2((int)(tileObject.X / TileWidth), (int)(tileObject.Y / TileHeight) - (int)(tileObject.Height / TileHeight)),
-                out var colBlock))
+
+            var tileCoordinate = new Vector2((int)(tileObject.X / TileWidth), (int)(tileObject.Y / TileHeight) - (int)(tileObject.Height / TileHeight));
+            if (collisionLayer.TryGetValue(tileCoordinate, out var col))
             {
-                colBlock.Draw(gameTime, spriteBatch, texture, srcRect);
+                col.Draw(gameTime, spriteBatch, texture, sourceRectangle);
+                return;
             }
-            else
-            {
-                destRect = new((int)(tileObject.X / TileWidth * TILESIZE),
-                               (int)(((tileObject.Y / TileHeight) - (int)(tileObject.Height / TileHeight)) * TILESIZE),
-                               (int)(tileObject.Width / TileWidth * TILESIZE),
-                               (int)(tileObject.Height / TileHeight * TILESIZE));
-                //spriteBatch.Draw(texture, destRect, srcRect, Color.White);
-            }
+            spriteBatch.Draw(texture, destRect, sourceRectangle, Color.White);
         }
-        // Helper method to determine if the destination rectangle is visible in the viewport.
         private bool IsVisible(Rectangle destRect, Camera camera)
         {
             return camera.IsRectangleVisible(destRect);
         }
 
-        private Rectangle GetObjectDestinationRectangle(DotTiled.Object tileObject)
+        private Rectangle GetObjectDestinationRectangle(DotTiled.Object obj)
         {
-            int x = (int)(tileObject.X / TileWidth * TILESIZE);
-            int y = (int)(((tileObject.Y / TileHeight) - (int)(tileObject.Height / TileHeight)) * TILESIZE);
-            Rectangle destRect = new(x, y, TILESIZE, TILESIZE);
-            return destRect;
+            return new Rectangle(
+                            (int)(obj.X / TileWidth * TILESIZE),
+                            (int)(((obj.Y / TileHeight) - (obj.Height / TileHeight)) * TILESIZE), //objects anchor are in the bottom left corner
+                            (int)(obj.Width / TileWidth * TILESIZE),
+                            (int)(obj.Height / TileHeight * TILESIZE));
         }
 
         public static Texture2D LoadImage(GraphicsDevice graphicsDevice, string caller_directory, Image image)

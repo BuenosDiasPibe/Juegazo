@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <SourceFile>/home/clumpl/Documentos/Programacion/Juegazo/Content/worldTexture.png</SourceFile>
-  <SourceTime>2025-09-06T14:58:06.2462512-03:00</SourceTime>
-  <DestFile>/home/clumpl/Documentos/Programacion/Juegazo/Content/bin/DesktopGL/Content/worldTexture.xnb</DestFile>
-  <DestTime>2025-10-15T12:40:38.4986939-03:00</DestTime>
+  <SourceFile>/home/clumpl/Documentos/Juegazo/Content/worldTexture.png</SourceFile>
+  <SourceTime>2025-10-19T10:28:22.8319081-03:00</SourceTime>
+  <DestFile>/home/clumpl/Documentos/Juegazo/Content/bin/DesktopGL/Content/worldTexture.xnb</DestFile>
+  <DestTime>2025-10-19T10:28:47.6146412-03:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2024-08-16T14:05:56-03:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

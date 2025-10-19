@@ -105,6 +105,7 @@ namespace Juegazo.CustomTiledTypesImplementation
     }
     public class MovementBlock : TiledTypesUsed
     {
+        public MovementBlock() { }
         public override string ToString()
         {
             return $"MovementBlock: \tEndBlockPosition: {EndBlockPosition}\n\tCanMove: {canMove}\n\tInitialBlockPosition: {initialBlockPosition}\n\tSpeed: {speed}\n\tInitialBlock: {InitialBlockPosition}\n\tEndBlock: {endBlockPosition}";
@@ -153,6 +154,7 @@ namespace Juegazo.CustomTiledTypesImplementation
     }
     public class DamageBlock : TiledTypesUsed
     {
+        public DamageBlock() { }
         public override string ToString()
         {
             return $"CanDamage: {canDamage}, DamageAmount: {damageAmmount}";
@@ -183,6 +185,7 @@ namespace Juegazo.CustomTiledTypesImplementation
 
     public class JumpWallBlock : TiledTypesUsed
     {
+        public JumpWallBlock() { }
         public override string ToString()
         {
             return $"CanJump: {canJump}, RecoilIntensity: {recoilIntensity}";
@@ -221,6 +224,7 @@ namespace Juegazo.CustomTiledTypesImplementation
 
     public class VerticalBoostBlock : TiledTypesUsed
     {
+        public VerticalBoostBlock() { }
         public override string ToString()
         {
             return $"Amount: {Ammount}, IsCompleteBlock: {isCompleteBlock}, ToUp: {toUp}";
@@ -258,6 +262,7 @@ namespace Juegazo.CustomTiledTypesImplementation
     }
     public class CompleteLevelBlock : TiledTypesUsed
     {
+        public CompleteLevelBlock() { }
         public bool isEnabled { get; set; } = false;
         public int nextLevel = 0;
         public CompleteLevelBlock(CustomTiledTypes.CompleteLevelBlock coso)
@@ -284,6 +289,7 @@ namespace Juegazo.CustomTiledTypesImplementation
     }
     public class CheckPointBlock : TiledTypesUsed
     {
+        public CheckPointBlock() { }
         public bool isEnabled { get; set; } = true;
         public int message { get; set; } = 0;
         public uint position = 0;
@@ -318,6 +324,7 @@ namespace Juegazo.CustomTiledTypesImplementation
     }
     public class Key : TiledTypesUsed
     {
+        public Key() { }
         public bool isCollected { get; } = true;
 
         public Key(CustomTiledTypes.Key key)
@@ -347,6 +354,7 @@ namespace Juegazo.CustomTiledTypesImplementation
     }
     public class DoorBlock : TiledTypesUsed
     {
+        public DoorBlock() { }
         public bool isOpen = false;
         public uint key = 0;
         public DoorBlock(CustomTiledTypes.DoorBlock block)
@@ -370,6 +378,7 @@ namespace Juegazo.CustomTiledTypesImplementation
     }
     public class CollisionBlock : TiledTypesUsed
     {
+        public CollisionBlock() { }
         public bool canCollide = true;
         public CollisionBlock(CustomTiledTypes.CollisionBlock cBlock)
         {
@@ -392,6 +401,7 @@ namespace Juegazo.CustomTiledTypesImplementation
     }
     public class SpeedUp : TiledTypesUsed
     {
+        public SpeedUp() { }
         public int speedAmmount = 5;
         public SpeedUp(CustomTiledTypes.SpeedUp sppeedUp)
         {
@@ -410,6 +420,7 @@ namespace Juegazo.CustomTiledTypesImplementation
     }
     public class MoveOneDirection : TiledTypesUsed
     {
+        public MoveOneDirection() { }
         public override string ToString()
         {
             return $"MoveOneDirectionBlock: \tEndBlockPosition: {EndBlockPosition}\n\tCanMove: {canMove}\n\tInitialBlockPosition: {initialBlockPosition}\n\tSpeed: {speed}\n\tInitialBlock: {initialPos}\n\tEndBlock: {endPos}";
