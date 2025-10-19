@@ -468,7 +468,7 @@
                         {
                          "name":"velocity",
                          "type":"float",
-                         "value":10
+                         "value":100
                         }],
                  "rotation":0,
                  "type":"MovementBlock",
@@ -501,7 +501,7 @@
                         {
                          "name":"velocity",
                          "type":"float",
-                         "value":10
+                         "value":100
                         }],
                  "rotation":0,
                  "type":"MovementBlock",
@@ -579,7 +579,7 @@
                 {
                  "height":8,
                  "id":94,
-                 "name":"",
+                 "name":"end",
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -596,7 +596,7 @@
                  "visible":true,
                  "width":8,
                  "x":336,
-                 "y":56
+                 "y":64
                 }, 
                 {
                  "height":8,
@@ -607,7 +607,7 @@
                  "visible":true,
                  "width":8,
                  "x":352,
-                 "y":56
+                 "y":64
                 }, 
                 {
                  "height":8,
@@ -629,7 +629,7 @@
                  "visible":true,
                  "width":8,
                  "x":360,
-                 "y":56
+                 "y":64
                 }, 
                 {
                  "height":8,
@@ -710,7 +710,7 @@
                         {
                          "name":"velocity",
                          "type":"float",
-                         "value":10
+                         "value":100
                         }],
                  "rotation":0,
                  "type":"",

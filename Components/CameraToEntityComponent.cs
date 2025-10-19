@@ -28,8 +28,15 @@ namespace Juegazo.Components
         {
             if (Owner.directionLeft) lookAhead = -200;
             else lookAhead = 200;
-            
-            cameraHorizontal = (int)MathHelper.Lerp(cameraHorizontal, Owner.Destinationrectangle.X + lookAhead + Owner.Destinationrectangle.Width / 2, 0.05f * (float)gameTime.ElapsedGameTime.TotalSeconds * 60);
+            if(Math.Abs(Owner.velocity.X + Owner.baseVelocity.X) > 20f) //TODO: add a enum or something to hold all limits of the player
+            {
+                if (Owner.directionLeft) lookAhead = -600;
+                else lookAhead = 600;
+            }
+            cameraHorizontal = (int)MathHelper.Lerp(
+                                    cameraHorizontal,
+                                    Owner.Destinationrectangle.X + lookAhead + Owner.Destinationrectangle.Width / 2,
+                                    0.5f * (float)gameTime.ElapsedGameTime.TotalSeconds * 60);
 
             cameraVertical = Owner.Destinationrectangle.Y + Owner.Destinationrectangle.Height / 2;
 

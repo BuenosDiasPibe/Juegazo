@@ -23,6 +23,7 @@ namespace Juegazo.Map.Blocks
         {
             type = "Collision Block";
             this.canCollide = canCollide;
+            this.EnableCollisions = canCollide;
         }
         public override void horizontalActions(Entity entity, Rectangle collision)
         {

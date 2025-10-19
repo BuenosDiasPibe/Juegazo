@@ -24,7 +24,7 @@ namespace Juegazo.Components
             switch (cardinalPoint)
             {
                 case CardinalPoint.North:
-                    if (Owner.velocity.Y > FALLING_VELOCITY*10) break;
+                    if (Owner.velocity.Y > MAX_FALLING) break;
                     Owner.velocity.Y += FALLING_VELOCITY;
                     break;
                 case CardinalPoint.South:

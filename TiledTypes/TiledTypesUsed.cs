@@ -124,14 +124,15 @@ namespace Juegazo.CustomTiledTypesImplementation
         }
         public override void getNeededObjectPropeties(DotTiled.Object obj, int TILESIZE, DotTiled.Map map)
         {
-            if (obj.Width == 4)
-                Console.WriteLine($"is too tiny :((");
             if (obj is RectangleObject rObject)
             {
                 if (obj.ID == initialBlockPosition)
                     InitialBlockPosition = GetRect(obj, TILESIZE, map);
                 if (obj.ID == EndBlockPosition)
+                {
+                    rObject.Y += rObject.Height;
                     endBlockPosition = GetRect(obj, TILESIZE, map);
+                }
             }
         }
         public override Block createBlock(TileObject obj, int TILESIZE, DotTiled.Map map)

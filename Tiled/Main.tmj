@@ -367,6 +367,24 @@
                  "width":8,
                  "x":16,
                  "y":128
+                }, 
+                {
+                 "gid":16,
+                 "height":8,
+                 "id":19,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"nextLevel",
+                         "type":"int",
+                         "value":11
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":8,
+                 "x":304,
+                 "y":144
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -434,7 +452,7 @@
          "y":0
         }],
  "nextlayerid":6,
- "nextobjectid":19,
+ "nextobjectid":20,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.2",

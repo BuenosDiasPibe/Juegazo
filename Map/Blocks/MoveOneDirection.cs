@@ -35,10 +35,7 @@ namespace Juegazo.Map.Blocks
             Vector2 newPosition = Vector2.Lerp(current, target, time);
 
             collider.Location = newPosition.ToPoint();
-            if (time >= 0.99f)
-            {
-                collider.Location = current.ToPoint();
-            }
+            
             velToEntity = collider.Location.ToVector2() - lastBlockPosition;
             lastBlockPosition = collider.Location.ToVector2();
         }

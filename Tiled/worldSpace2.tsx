@@ -123,6 +123,16 @@
    <frame tileid="34" duration="150"/>
   </animation>
  </tile>
+ <tile id="37">
+  <animation>
+   <frame tileid="50" duration="150"/>
+   <frame tileid="51" duration="150"/>
+   <frame tileid="52" duration="150"/>
+   <frame tileid="53" duration="150"/>
+   <frame tileid="54" duration="150"/>
+   <frame tileid="55" duration="150"/>
+  </animation>
+ </tile>
  <tile id="40" type="NPC">
   <properties>
    <property name="name" value="Grandma"/>
@@ -169,4 +179,118 @@
    <property name="velocity" type="int" value="0"/>
   </properties>
  </tile>
+ <tile id="50" type="Portal">
+  <properties>
+   <property name="portalAttached" type="object" value="0"/>
+  </properties>
+  <animation>
+   <frame tileid="50" duration="150"/>
+   <frame tileid="51" duration="150"/>
+   <frame tileid="52" duration="150"/>
+   <frame tileid="53" duration="150"/>
+   <frame tileid="54" duration="150"/>
+   <frame tileid="55" duration="150"/>
+  </animation>
+ </tile>
+ <tile id="51" type="Portal">
+  <animation>
+   <frame tileid="50" duration="150"/>
+   <frame tileid="51" duration="150"/>
+   <frame tileid="52" duration="150"/>
+   <frame tileid="53" duration="150"/>
+   <frame tileid="54" duration="150"/>
+   <frame tileid="55" duration="150"/>
+  </animation>
+ </tile>
+ <tile id="52" type="Portal">
+  <animation>
+   <frame tileid="50" duration="150"/>
+   <frame tileid="51" duration="150"/>
+   <frame tileid="52" duration="150"/>
+   <frame tileid="53" duration="150"/>
+   <frame tileid="54" duration="150"/>
+   <frame tileid="55" duration="150"/>
+  </animation>
+ </tile>
+ <tile id="53" type="Portal">
+  <animation>
+   <frame tileid="50" duration="150"/>
+   <frame tileid="51" duration="150"/>
+   <frame tileid="52" duration="150"/>
+   <frame tileid="53" duration="150"/>
+   <frame tileid="54" duration="150"/>
+   <frame tileid="55" duration="150"/>
+  </animation>
+ </tile>
+ <tile id="54" type="Portal">
+  <animation>
+   <frame tileid="50" duration="150"/>
+   <frame tileid="51" duration="150"/>
+   <frame tileid="52" duration="150"/>
+   <frame tileid="53" duration="150"/>
+   <frame tileid="54" duration="150"/>
+   <frame tileid="55" duration="150"/>
+  </animation>
+ </tile>
+ <tile id="55" type="Portal">
+  <animation>
+   <frame tileid="50" duration="150"/>
+   <frame tileid="51" duration="150"/>
+   <frame tileid="52" duration="150"/>
+   <frame tileid="53" duration="150"/>
+   <frame tileid="54" duration="150"/>
+   <frame tileid="55" duration="150"/>
+  </animation>
+ </tile>
+ <tile id="56" type="Portal">
+  <animation>
+   <frame tileid="58" duration="150"/>
+   <frame tileid="56" duration="150"/>
+   <frame tileid="57" duration="150"/>
+   <frame tileid="59" duration="150"/>
+   <frame tileid="60" duration="150"/>
+   <frame tileid="61" duration="150"/>
+  </animation>
+ </tile>
+ <tile id="57" type="Portal">
+  <animation>
+   <frame tileid="58" duration="150"/>
+   <frame tileid="56" duration="150"/>
+   <frame tileid="57" duration="150"/>
+   <frame tileid="59" duration="150"/>
+   <frame tileid="60" duration="150"/>
+   <frame tileid="61" duration="150"/>
+  </animation>
+ </tile>
+ <tile id="58" type="Portal">
+  <animation>
+   <frame tileid="56" duration="150"/>
+   <frame tileid="57" duration="150"/>
+   <frame tileid="58" duration="150"/>
+   <frame tileid="59" duration="150"/>
+   <frame tileid="60" duration="150"/>
+   <frame tileid="61" duration="150"/>
+  </animation>
+ </tile>
+ <tile id="59" type="Portal">
+  <animation>
+   <frame tileid="56" duration="150"/>
+   <frame tileid="57" duration="150"/>
+   <frame tileid="58" duration="150"/>
+   <frame tileid="59" duration="150"/>
+   <frame tileid="60" duration="150"/>
+   <frame tileid="61" duration="150"/>
+  </animation>
+ </tile>
+ <tile id="60" type="Portal">
+  <animation>
+   <frame tileid="56" duration="150"/>
+   <frame tileid="57" duration="150"/>
+   <frame tileid="58" duration="150"/>
+   <frame tileid="59" duration="150"/>
+   <frame tileid="60" duration="150"/>
+   <frame tileid="61" duration="150"/>
+  </animation>
+ </tile>
+ <tile id="61" type="Portal"/>
 </tileset>

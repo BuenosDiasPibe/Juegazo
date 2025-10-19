@@ -15,9 +15,13 @@ namespace Juegazo.Components
         private float dashCounter;
         public bool movingLeft = false;
         public bool movingRight = false;
+        public bool movingUp = false;
+        public bool movingDown = false;
         public bool dash = false;
-        private float colorTransitioned = 0;
-        private Color colorOnDash = Color.Coral;
+        public bool dashed = false;
+        public const float dashV = 15f;
+        public const float dashH = 15f;
+        public const int FLOAT_DASH_LIMIT = 20;
         public override void Destroy()
         { }
 
@@ -31,23 +35,27 @@ namespace Juegazo.Components
             {
                 movingLeft = c.btnLeft;
                 movingRight = c.btnRight;
+                movingUp = c.btnUp;
+                movingDown = c.btnDown;
                 dash = c.btnpSpecial2;
             }
 
             // Horizontal movement
             if (movingLeft)
             {
-                if (!(Owner.velocity.X <= -5))
+                if (!(Owner.velocity.X <= -MOVEMENT_SPEED))
                 {
-                    Owner.velocity.X += -MOVEMENT_SPEED; //TODO: velocity is not always checked, you can exceed the max velocity if you press the same key multiple times (fuck)
+                    float acceleration = MOVEMENT_SPEED * (float)gameTime.ElapsedGameTime.TotalSeconds * 10f;
+                    Owner.velocity.X -= acceleration;
                 }
                 Owner.directionLeft = true;
             }
             if (movingRight)
             {
-                if (!(Owner.velocity.X >= 5))
+                if (!(Owner.velocity.X >= MOVEMENT_SPEED))
                 {
-                    Owner.velocity.X += MOVEMENT_SPEED;
+                    float acceleration = MOVEMENT_SPEED * (float)gameTime.ElapsedGameTime.TotalSeconds * 10f;
+                    Owner.velocity.X += acceleration;
                 }
                 Owner.directionLeft = false;
             }
@@ -55,31 +63,52 @@ namespace Juegazo.Components
             {
                 Owner.velocity.X = 0;
             }
-            // Dash (sprint)
-            if (dash)
+            // Dash
+            if (dash && !dashed)
             {
-                float basedOnDirection = Owner.directionLeft ? -30 : 30;
-                //colorTransitioned = 1;
-                Owner.velocity.X = basedOnDirection;
-                dashCounter--;
+                if (!(movingUp || movingDown || movingRight || movingLeft))
+                {
+                    Owner.velocity.X += Owner.directionLeft ? -dashH : dashH;
+                }
+                else
+                {
+                    if (movingUp || movingDown && !(movingUp && movingDown))
+                    {
+                        Owner.velocity.Y = movingUp ? -dashV : dashV;
+                    }
+                    if (movingLeft || movingRight)
+                    {
+                        Owner.velocity.X += movingLeft ? -dashH : dashH;
+                    }
+                }
+                dashed = true;
             }
 
+
+            if (Math.Abs(Owner.velocity.X) > MOVEMENT_SPEED)
+            {
+                Owner.velocity.X += Owner.velocity.X > 0 ?
+                    -0.05f : 0.05f;
+            }
             if (!movingLeft && !movingRight)
             {
                 if (Math.Abs(Owner.velocity.X) > 1)
                 {
-                    Owner.velocity.X += Owner.velocity.X > 0 ? -1 : 1;
+                    Owner.velocity.X += Owner.velocity.X > 0 ? 
+                        -1 : 1;
                 }
                 else
                 {
                     Owner.velocity.X = 0;
                 }
             }
-            Owner.velocity.X = Math.Min(Math.Max(Owner.velocity.X, -MAX_SPEED), MAX_SPEED);
 
-            //this should go on a separate event handler or something, but its funny for me rn
-            //Owner.color = Color.Lerp(Color.White, colorOnDash, colorTransitioned);
-            //colorTransitioned = Math.Max(0, colorTransitioned - 0.05f);
+            // Reset dash when speed is low enough
+            if (Math.Abs(Owner.velocity.X) < FLOAT_DASH_LIMIT && Owner.onGround)
+            {
+                dashed = false;
+            }
+            Owner.velocity.X = Math.Min(Math.Max(Owner.velocity.X, -MAX_SPEED), MAX_SPEED);
         }
     }
 }

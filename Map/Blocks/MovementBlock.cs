@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using DotTiled;
 using Juegazo.Components;
@@ -35,20 +36,6 @@ namespace Juegazo.Map.Blocks
         public MovementBlock(Rectangle collider) : base(collider) { type = "MovementBlock"; }
         public override void horizontalActions(Entity entity, Rectangle collision)
         {
-            //new CollisionBlock().horizontalActions(entity, collision);
-            // int direction = toEndPosition ? -1 : 1;
-            // if (entity.velocity.X > 0.0f)
-            // {
-            //     entity.Destinationrectangle.X = collision.Left - entity.Destinationrectangle.Width;
-            //     if (entity.velocity.X > 10) entity.velocity.X *= 0.1f;
-            // }
-            // else if (entity.velocity.X < 0.0f)
-            // {
-            //     if (entity.velocity.X < -10) entity.velocity.X *= 0.1f;
-            //     entity.Destinationrectangle.X = collision.Right;
-            // }
-            // else if (entity.Destinationrectangle.Right > collision.Right) entity.velocity.X += velocityToEntity * direction;
-            // else if (entity.Destinationrectangle.Left < collision.Left) entity.velocity.X -= velocityToEntity * direction; //those two lines cause the game to fucking die????
         }
 
         public override void Update(GameTime gameTime)

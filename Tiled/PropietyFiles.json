@@ -80,13 +80,7 @@
         "type": "class",
         "useAs": [
             "property",
-            "map",
             "layer",
-            "object",
-            "tile",
-            "tileset",
-            "wangcolor",
-            "wangset",
             "project"
         ]
     },
@@ -498,6 +492,41 @@
         "useAs": [
             "property",
             "object",
+            "project"
+        ]
+    },
+    {
+        "color": "#ffa0a0a4",
+        "drawFill": true,
+        "id": 24,
+        "members": [
+            {
+                "name": "canTeleport",
+                "type": "bool",
+                "value": false
+            },
+            {
+                "name": "delayTimeSeconds",
+                "type": "float",
+                "value": 0
+            },
+            {
+                "name": "portalAttached",
+                "type": "object",
+                "value": 0
+            }
+        ],
+        "name": "Portal",
+        "type": "class",
+        "useAs": [
+            "property",
+            "map",
+            "layer",
+            "object",
+            "tile",
+            "tileset",
+            "wangcolor",
+            "wangset",
             "project"
         ]
     },

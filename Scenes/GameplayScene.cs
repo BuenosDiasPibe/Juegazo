@@ -177,12 +177,6 @@ namespace Juegazo
                 foreach (Block block in dynamicBlocks)
                 {
                     if (block.collider.Intersects(entity.Destinationrectangle))
-                        block.horizontalActions(entity, block.collider);
-                    nextScene = changeSScne(nextScene, block);
-                }
-                foreach (Block block in tilemap.dynamicBlocks.Values)
-                {
-                    if (block.collider.Intersects(entity.Destinationrectangle))
                         block.verticalActions(entity, block.collider);
                     nextScene = changeSScne(nextScene, block);
                 }

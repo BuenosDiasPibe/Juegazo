@@ -15,7 +15,6 @@ namespace Juegazo.Components
 {
     public class NPCComponent : Component
     {
-        private Rectangle collisionArea = new();
         private int dialogStart = 0;
         private int dialogEnd = 1;
         public string name { get; protected set; }

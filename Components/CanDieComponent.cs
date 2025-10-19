@@ -58,7 +58,6 @@ namespace Juegazo.Components
             Owner.color = originalColor;
             Owner.Destinationrectangle.Location = initialPosition.ToPoint();
             Owner.health = 1;
-            Owner.velocity = new();
 
             // Re-enable player input
             if (Owner.TryGetComponent<KeyboardInputComponent>(out var input))

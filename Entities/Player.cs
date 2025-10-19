@@ -232,11 +232,11 @@ namespace Juegazo
         {
             foreach (Entity entity in entities)
             {
-                if (entity is Collectable collectable && collectable.Destinationrectangle.Intersects(Destinationrectangle))
-                {
-                    collectable.changeThings(this);
-                    deleteCollectables.Add(collectable);
-                }
+                // if (entity is Collectable collectable && collectable.Destinationrectangle.Intersects(Destinationrectangle))
+                // {
+                //     collectable.changeThings(this);
+                //     deleteCollectables.Add(collectable);
+                // }
             }
         }
     }
