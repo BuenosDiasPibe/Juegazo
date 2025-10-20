@@ -236,10 +236,13 @@ namespace Juegazo
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            tilemap.Draw(gameTime, spriteBatch, camera);
+            tilemap.Draw(gameTime, spriteBatch, camera, entities);
             foreach (var entity in entities)
             {
-                entity.Draw(gameTime, spriteBatch);
+                // if there's no Entity Spawner in the level, show the entities anyway
+                if (tilemap.EntityPositionerByName.Count == 0)
+                    entity.Draw(gameTime, spriteBatch);
+
                 if (enableDebugger)
                 {
                     debugger.DrawRectHollow(spriteBatch, entity.collider, 2, Color.Red);

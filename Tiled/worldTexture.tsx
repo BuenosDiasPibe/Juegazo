@@ -5,7 +5,7 @@
  <tile id="5" type="SpeedUp"/>
  <tile id="8" type="VerticalBoostBlock"/>
  <tile id="10" type="SlowDownBlock"/>
- <tile id="11" type="Collision Block"/>
+ <tile id="11" type="CollisionBlock"/>
  <tile id="12" type="OneWayBlock"/>
  <tile id="13" type="DoubleJump"/>
  <tile id="15" type="CompleteLevelBlock">

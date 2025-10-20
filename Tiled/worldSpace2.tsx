@@ -23,7 +23,7 @@
   </animation>
  </tile>
  <tile id="10" type="SlowDownBlock"/>
- <tile id="11" type="Collision Block"/>
+ <tile id="11" type="CollisionBlock"/>
  <tile id="12" type="OneWayBlock"/>
  <tile id="13" type="DoubleJump"/>
  <tile id="15" type="CompleteLevelBlock"/>
@@ -121,16 +121,6 @@
   <animation>
    <frame tileid="35" duration="150"/>
    <frame tileid="34" duration="150"/>
-  </animation>
- </tile>
- <tile id="37">
-  <animation>
-   <frame tileid="50" duration="150"/>
-   <frame tileid="51" duration="150"/>
-   <frame tileid="52" duration="150"/>
-   <frame tileid="53" duration="150"/>
-   <frame tileid="54" duration="150"/>
-   <frame tileid="55" duration="150"/>
   </animation>
  </tile>
  <tile id="40" type="NPC">

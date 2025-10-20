@@ -26,8 +26,11 @@ namespace Juegazo.Map.Blocks
             type ="CompleteLevelBlock";
             EnableCollisions = isEnabled;
             nextSceneID = nextLevel;
-            a = new ColorProvider().GetColorByNumber(nextLevel);
-            color = new Color(a);
+            if (nextLevel != 0)
+            {
+                a = new ColorProvider().GetColorByNumber(nextLevel);
+                color = new Color(a);
+            }
         }
         public override void horizontalActions(Entity entity, Rectangle collision)
         {

@@ -312,7 +312,7 @@
                  "visible":true,
                  "width":8,
                  "x":24,
-                 "y":184
+                 "y":151.666666666667
                 }, 
                 {
                  "gid":16,
@@ -446,7 +446,7 @@
          "name":"Capa de patrones 2",
          "opacity":1,
          "type":"tilelayer",
-         "visible":true,
+         "visible":false,
          "width":80,
          "x":0,
          "y":0

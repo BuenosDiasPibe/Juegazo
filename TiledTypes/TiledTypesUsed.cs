@@ -83,13 +83,25 @@ namespace Juegazo.CustomTiledTypes
         public uint lastPosition { get; set; } = 0;
         public int velocity { get; set; } = 0;
     }
+    public class OneWayBlock
+    {
+        public FACES face { get; set; } = FACES.TOP;
+    }
+    public enum FACES
+    {
+        TOP, BOTTOM, LEFT, RIGHT
+    }
+    public class SlowDownBlock
+    {
+        public int slowAmount { get; set; } = 5;
+    }
 }
 namespace Juegazo.CustomTiledTypesImplementation
 {
 
     public abstract class TiledTypesUsed
     {
-        public abstract Block createBlock(TileObject obj, int TILESIZE, DotTiled.Map map); 
+        public abstract Block createBlock(TileObject obj, int TILESIZE, DotTiled.Map map);
         public abstract void getNeededObjectPropeties(DotTiled.Object obj, int TILESIZE, DotTiled.Map map);
         public abstract List<uint> neededObjects();
         protected Rectangle GetRect(DotTiled.Object obj, int TILESIZE, DotTiled.Map map)
@@ -128,10 +140,13 @@ namespace Juegazo.CustomTiledTypesImplementation
             if (obj is RectangleObject rObject)
             {
                 if (obj.ID == initialBlockPosition)
+                {
+                    obj.Y += obj.Height;
                     InitialBlockPosition = GetRect(obj, TILESIZE, map);
+                }
                 if (obj.ID == EndBlockPosition)
                 {
-                    rObject.Y += rObject.Height;
+                    obj.Y += obj.Height;
                     endBlockPosition = GetRect(obj, TILESIZE, map);
                 }
             }
@@ -443,9 +458,15 @@ namespace Juegazo.CustomTiledTypesImplementation
             if (obj is RectangleObject rObject)
             {
                 if (obj.ID == initialBlockPosition)
+                {
+                    obj.Y += obj.Height;
                     initialPos = GetRect(obj, TILESIZE, map);
+                }
                 if (obj.ID == EndBlockPosition)
+                {
+                    obj.Y += obj.Height;
                     endPos = GetRect(obj, TILESIZE, map);
+                }
             }
         }
         public override Block createBlock(TileObject obj, int TILESIZE, DotTiled.Map map)
@@ -462,6 +483,50 @@ namespace Juegazo.CustomTiledTypesImplementation
         public override List<uint> neededObjects()
         {
             return new([initialBlockPosition, EndBlockPosition]);
+        }
+    }
+    public class OneWayBlock : TiledTypesUsed
+    {
+        public FACES face { get; set; } = FACES.TOP;
+        public OneWayBlock() { }
+        public OneWayBlock(CustomTiledTypes.OneWayBlock o)
+        {
+            face = o.face;
+        }
+        public override Block createBlock(TileObject obj, int TILESIZE, DotTiled.Map map)
+        {
+            return new Map.Blocks.OneWayBlock(GetRect(obj, TILESIZE, map), face);
+        }
+
+        public override void getNeededObjectPropeties(DotTiled.Object obj, int TILESIZE, DotTiled.Map map)
+        {
+        }
+
+        public override List<uint> neededObjects()
+        {
+            return new();
+        }
+    }
+    public class SlowDownBlock : TiledTypesUsed
+    {
+        public int slowDownAmmount = 5;
+        public SlowDownBlock() { }
+        public SlowDownBlock(CustomTiledTypes.SlowDownBlock o)
+        {
+            slowDownAmmount = o.slowAmount;
+        }
+        public override Block createBlock(TileObject obj, int TILESIZE, DotTiled.Map map)
+        {
+            return new Map.Blocks.SlowDownBlock(GetRect(obj, TILESIZE, map), slowDownAmmount);
+        }
+
+        public override void getNeededObjectPropeties(DotTiled.Object obj, int TILESIZE, DotTiled.Map map)
+        {
+        }
+
+        public override List<uint> neededObjects()
+        {
+            return new();
         }
     }
 }

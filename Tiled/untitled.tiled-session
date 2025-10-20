@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "Main.tmj",
+    "activeFile": "Level7.tmj",
     "expandedProjectPaths": [
         "."
     ],
@@ -35,14 +35,14 @@
         },
         "Level1.tmj": {
             "expandedObjectLayers": [
-                10,
-                4
+                4,
+                10
             ],
-            "scale": 4,
-            "selectedLayer": 5,
+            "scale": 8,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 366.5,
-                "y": 47.625
+                "x": 2796.0625,
+                "y": 80
             }
         },
         "Level1.tmx": {
@@ -60,11 +60,11 @@
             "expandedObjectLayers": [
                 3
             ],
-            "scale": 1.5,
-            "selectedLayer": 0,
+            "scale": 2,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 320,
-                "y": 192.33333333333331
+                "x": 248.5,
+                "y": 141.5
             }
         },
         "Level10.tmx": {
@@ -81,14 +81,14 @@
         },
         "Level11.tmj": {
             "expandedObjectLayers": [
-                2,
-                3
+                3,
+                2
             ],
             "scale": 1.5,
-            "selectedLayer": 0,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 5020.333333333333,
-                "y": 3072.6666666666665
+                "x": 4900,
+                "y": 3059.333333333333
             }
         },
         "Level2.tmj": {
@@ -96,14 +96,14 @@
                 7
             ],
             "expandedObjectLayers": [
-                6,
-                3
+                3,
+                6
             ],
             "scale": 5.5,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 474.2727272727273,
-                "y": 82.18181818181819
+                "x": 280.0909090909091,
+                "y": 160
             }
         },
         "Level2.tmx": {
@@ -150,11 +150,11 @@
             "expandedObjectLayers": [
                 2
             ],
-            "scale": 1.5,
+            "scale": 4,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 712,
-                "y": -200.33333333333334
+                "x": 127,
+                "y": 122
             }
         },
         "Level6.tmj": {
@@ -174,11 +174,15 @@
             }
         },
         "Level7.tmj": {
-            "scale": 3.0756249999999996,
-            "selectedLayer": 0,
+            "expandedObjectLayers": [
+                3,
+                2
+            ],
+            "scale": 8,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 100.3048160942898,
-                "y": 48.1203007518797
+                "x": 39.625,
+                "y": 167.625
             }
         },
         "Level7.tmx": {
@@ -210,14 +214,14 @@
         },
         "Level9.tmj": {
             "expandedObjectLayers": [
-                2,
-                4
+                4,
+                2
             ],
             "scale": 2,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": 320,
-                "y": 192.25
+                "x": 240,
+                "y": 145.5
             }
         },
         "Level9.tmx": {
@@ -236,10 +240,10 @@
                 4
             ],
             "scale": 3,
-            "selectedLayer": 2,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 196.16666666666669,
-                "y": 108.66666666666669
+                "x": 111.99999999999999,
+                "y": 100.99999999999999
             }
         },
         "Main.tmx": {
@@ -332,6 +336,7 @@
             "scaleInEditor": 3
         },
         "worldTexture.tsx": {
+            "dynamicWrapping": false,
             "scaleInDock": 4,
             "scaleInEditor": 3
         }
@@ -340,7 +345,7 @@
     "last.exportedFilePath": "/home/clumpl/Documentos/Programacion/Juegazo/Data",
     "last.externalTilesetPath": "/home/clumpl/Documentos/Programacion/Juegazo/Tiled",
     "last.imagePath": "/home/clumpl/Documentos/Programacion/Juegazo/Tiled",
-    "last.objectTypesPath": "/home/clumpl/Documentos/Programacion/Juegazo/Tiled/PropietyFiles.json",
+    "last.objectTypesPath": "/home/clumpl/Documentos/Juegazo/Tiled/propertytypes.json",
     "lastUsedTilesetExportFilter": "JSON tileset files (*.tsj *.json)",
     "map.height": 400,
     "map.lastUsedExportFilter": "Todos los archivos (*)",
@@ -349,28 +354,31 @@
     "map.tileWidth": 16,
     "map.width": 600,
     "openFiles": [
-        "worldSpace2.tsx",
         "Main.tmj",
         "Level8.tmj",
         "Level2.tmj",
         "OtherEntities.tsx",
-        "Level11.tmj"
+        "Level11.tmj",
+        "Level1.tmj",
+        "Level7.tmj",
+        "worldSpace2.tsx",
+        "worldTexture.tsx"
     ],
     "project": "untitled.tiled-project",
     "property.type": "float",
     "recentFiles": [
-        "worldSpace2.tsx",
-        "Level11.tmj",
-        "OtherEntities.tsx",
-        "Level2.tmj",
-        "Level8.tmj",
+        "Level10.tmj",
         "Main.tmj",
-        "worldTexture.tsx",
+        "Level8.tmj",
+        "Level2.tmj",
+        "OtherEntities.tsx",
+        "Level11.tmj",
         "Level1.tmj",
+        "worldTexture.tsx",
+        "worldSpace2.tsx",
+        "Level7.tmj",
         "Level6.tmj",
-        "Level9.tmj",
-        "Level5.tmj",
-        "Level10.tmj"
+        "Level9.tmj"
     ],
     "tileset.lastUsedFilter": "Archivos de conjuntos de patrones Tiled (*.tsx *.xml)",
     "tileset.lastUsedFormat": "tsx",
