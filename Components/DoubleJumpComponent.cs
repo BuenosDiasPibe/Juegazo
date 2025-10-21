@@ -30,7 +30,15 @@ namespace Juegazo.Components
         {
             if (JumpPressed)
             {
-                timesJumped += Owner.onGround ? 0 : 1;
+                if(Owner.onGround)
+                {
+                    Owner.entityState = EntityState.JUMPING;
+                }
+                else
+                {
+                    Owner.entityState = EntityState.JUMPING_ON_AIR;
+                    timesJumped += 1;
+                }
                 Owner.velocity.Y = -jumpAmmount;
                 Owner.onGround = false;
             }
@@ -42,7 +50,7 @@ namespace Juegazo.Components
                 mv.EnableUpdate = false;
             }
             prevOwnerColor = Owner.color;
-            Owner.color = Color.Red;
+            Owner.color = Color.Gold;
         }
         public override void Destroy()
         {

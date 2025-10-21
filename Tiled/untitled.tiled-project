@@ -353,6 +353,66 @@
             ]
         },
         {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 26,
+            "members": [
+                {
+                    "name": "TimeShownSeconds",
+                    "type": "float",
+                    "value": 5
+                },
+                {
+                    "name": "damage",
+                    "type": "int",
+                    "value": 1
+                }
+            ],
+            "name": "Laser",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset",
+                "project"
+            ]
+        },
+        {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 27,
+            "members": [
+                {
+                    "name": "ClampCameraToBoundries",
+                    "type": "bool",
+                    "value": true
+                },
+                {
+                    "name": "zoom",
+                    "type": "float",
+                    "value": 1
+                }
+            ],
+            "name": "LevelPropieties",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset",
+                "project"
+            ]
+        },
+        {
             "color": "#ff3584e4",
             "drawFill": true,
             "id": 11,
@@ -613,6 +673,31 @@
                 }
             ],
             "name": "VerticalBoostBlock",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset",
+                "project"
+            ]
+        },
+        {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 25,
+            "members": [
+                {
+                    "name": "canLoadComponent",
+                    "type": "bool",
+                    "value": true
+                }
+            ],
+            "name": "WaterBlock",
             "type": "class",
             "useAs": [
                 "property",

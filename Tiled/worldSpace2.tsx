@@ -40,6 +40,9 @@
    <property name="canDamage" type="bool" value="true"/>
    <property name="damageAmount" type="int" value="1"/>
   </properties>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="4.72727" y="3.27273" width="7.36364" height="10.5455"/>
+  </objectgroup>
   <animation>
    <frame tileid="18" duration="150"/>
    <frame tileid="19" duration="150"/>
@@ -51,6 +54,9 @@
    <property name="canDamage" type="bool" value="true"/>
    <property name="damageAmount" type="int" value="1"/>
   </properties>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="3.18182" y="4.27273" width="8.27273" height="9.27273"/>
+  </objectgroup>
   <animation>
    <frame tileid="20" duration="150"/>
    <frame tileid="18" duration="150"/>
@@ -62,6 +68,9 @@
    <property name="canDamage" type="bool" value="true"/>
    <property name="damageAmount" type="int" value="1"/>
   </properties>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="7.09091" y="3.72727" width="4.72727" height="10.4545"/>
+  </objectgroup>
   <animation>
    <frame tileid="20" duration="150"/>
    <frame tileid="18" duration="150"/>
@@ -283,4 +292,34 @@
   </animation>
  </tile>
  <tile id="61" type="Portal"/>
+ <tile id="64" type="WaterBlock">
+  <animation>
+   <frame tileid="66" duration="150"/>
+   <frame tileid="65" duration="150"/>
+   <frame tileid="64" duration="150"/>
+  </animation>
+ </tile>
+ <tile id="65" type="WaterBlock">
+  <animation>
+   <frame tileid="66" duration="150"/>
+   <frame tileid="65" duration="150"/>
+   <frame tileid="64" duration="150"/>
+  </animation>
+ </tile>
+ <tile id="66" type="WaterBlock">
+  <animation>
+   <frame tileid="64" duration="150"/>
+   <frame tileid="65" duration="150"/>
+   <frame tileid="66" duration="150"/>
+  </animation>
+ </tile>
+ <tile id="67" type="Laser"/>
+ <tile id="68" type="Laser"/>
+ <tile id="69" type="Laser"/>
+ <tile id="75" type="Laser"/>
+ <tile id="76" type="Laser"/>
+ <tile id="77" type="Laser"/>
+ <tile id="83" type="Laser"/>
+ <tile id="84" type="Laser"/>
+ <tile id="85" type="Laser"/>
 </tileset>

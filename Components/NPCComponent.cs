@@ -85,6 +85,7 @@ namespace Juegazo.Components
                 if (coso.btnpSpecial1)
                 {
                     displayBox = !displayBox;
+                    entity.entityState = EntityState.TALKING;
                 }
                 prevState = Keyboard.GetState();
             }

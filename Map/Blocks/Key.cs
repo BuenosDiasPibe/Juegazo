@@ -40,6 +40,7 @@ namespace Juegazo.Map.Blocks
             }
             entityComponent = (KeysIDHolderComponent)entity.GetComponent(entityComponent.GetType());
             entityComponent.keyHolder.Add(this.KeyID);
+            entity.entityState = EntityState.GOT_KEY;
 
             this.EnableCollisions = false;
             this.enableDraw = false;

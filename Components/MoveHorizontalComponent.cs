@@ -66,6 +66,7 @@ namespace Juegazo.Components
             // Dash
             if (dash && !dashed)
             {
+                Owner.entityState = EntityState.DASHING;
                 if (!(movingUp || movingDown || movingRight || movingLeft))
                 {
                     Owner.velocity.X += Owner.directionLeft ? -dashH : dashH;

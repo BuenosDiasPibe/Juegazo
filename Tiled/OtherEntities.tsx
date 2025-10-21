@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.10" tiledversion="1.11.2" name="OtherEntities" tilewidth="1920" tileheight="1080" tilecount="3" columns="0">
+<tileset version="1.10" tiledversion="1.11.2" name="OtherEntities" tilewidth="1920" tileheight="1080" tilecount="4" columns="0">
  <grid orientation="orthogonal" width="1" height="1"/>
  <tile id="3" type="NPC">
   <properties>
@@ -18,5 +18,17 @@
    <property name="name" value="silson"/>
   </properties>
   <image source="el silson.png" width="64" height="64"/>
+  <animation>
+   <frame tileid="6" duration="150"/>
+  </animation>
+ </tile>
+ <tile id="7" type="NPC">
+  <properties>
+   <property name="name" value="dar veide"/>
+  </properties>
+  <image source="dar veide.png" width="128" height="128"/>
+  <animation>
+   <frame tileid="7" duration="150"/>
+  </animation>
  </tile>
 </tileset>

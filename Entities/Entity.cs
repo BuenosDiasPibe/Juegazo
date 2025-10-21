@@ -9,6 +9,23 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Juegazo
 {
+    public enum EntityState
+    {
+        FALLING,
+        ON_GROUND,
+        JUMPING,
+        WALKING,
+        ON_JUMP_WALL,
+        SWIMMING,
+        ON_JUMPING_PAD,
+        POWERUP,
+        JUMPING_ON_AIR,
+        DYING,
+        TALKING,
+        DASHING,
+        GOT_KEY,
+        UP_MOVING_BLOCK,
+    }
     public class Entity : Sprite
     {
         public bool isPlayer = false;
@@ -24,7 +41,8 @@ namespace Juegazo
         public int health;
         public int maxHealth;
         public bool directionLeft = false;
-
+        public EntityState entityState = new(); //TODO: should this be added to another component?
+        public bool touchingWaterBlock = false; //TODO: find a bettwe way to check this
         public Entity(Texture2D texture, Rectangle sourceRectangle, Rectangle Destrectangle, Rectangle collider, Color color) : base(texture, sourceRectangle, Destrectangle, color)
         {
             velocity = new();

@@ -7,6 +7,11 @@ using Microsoft.Xna.Framework;
 
 namespace Juegazo.CustomTiledTypes
 {
+    public class LevelPropieties
+    {
+        public bool ClampCameraToBoundries { get; set; } = true;
+        public float zoom { get; set; } = 1f;
+    }
     public class NPC
     {
         public int dialogEnd { get; set; } = 0;
@@ -94,6 +99,10 @@ namespace Juegazo.CustomTiledTypes
     public class SlowDownBlock
     {
         public int slowAmount { get; set; } = 5;
+    }
+    public class WaterBlock
+    {
+        public bool canLoadComponent { get; set; } = true;
     }
 }
 namespace Juegazo.CustomTiledTypesImplementation
@@ -518,6 +527,28 @@ namespace Juegazo.CustomTiledTypesImplementation
         public override Block createBlock(TileObject obj, int TILESIZE, DotTiled.Map map)
         {
             return new Map.Blocks.SlowDownBlock(GetRect(obj, TILESIZE, map), slowDownAmmount);
+        }
+
+        public override void getNeededObjectPropeties(DotTiled.Object obj, int TILESIZE, DotTiled.Map map)
+        {
+        }
+
+        public override List<uint> neededObjects()
+        {
+            return new();
+        }
+    }
+    public class WaterBlock : TiledTypesUsed
+    {
+        public bool canLoadComponent = true;
+        public WaterBlock() { }
+        public WaterBlock(CustomTiledTypes.WaterBlock a)
+        {
+            canLoadComponent = a.canLoadComponent;
+        }
+        public override Block createBlock(TileObject obj, int TILESIZE, DotTiled.Map map)
+        {
+            return new Map.Blocks.WaterBlock(GetRect(obj, TILESIZE, map), canLoadComponent);
         }
 
         public override void getNeededObjectPropeties(DotTiled.Object obj, int TILESIZE, DotTiled.Map map)

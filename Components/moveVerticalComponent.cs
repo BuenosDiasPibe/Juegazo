@@ -21,6 +21,7 @@ namespace Juegazo.Components
         {
             if (Owner.onGround && JumpPressed)
             {
+                Owner.entityState = EntityState.JUMPING;
                 Owner.velocity.Y = -jumpAmmount;
                 Owner.onGround = false;
             }

@@ -79,6 +79,9 @@ namespace Juegazo.Map
                 return last_tileset.FirstGID + last_tileset.TileCount;
             }
         }
+
+        public float cameraZoom = 1f;
+        public bool levelBoundries = true;
         public TiledMap(GraphicsDevice graphicsDevice, string projectDirectory, string mapFilePath, int TILESIZE, List<ICustomTypeDefinition> typeDefinitions, GumService gum)
         {
             this.graphicsDevice = graphicsDevice;
@@ -93,7 +96,12 @@ namespace Juegazo.Map
 
             var loader = Loader.DefaultWith(customTypeDefinitions: typeDefinitions);
             Map = loader.LoadMap(Path.Combine(TiledProjectDirectory, MapFilePath)); //this can throw an exception if a layer is not visible, because tiled puts that as 0, and its only on .tmx files
-
+            if(Map.Class == "LevelPropieties")
+            {
+                var c = Map.MapPropertiesTo<LevelPropieties>();
+                cameraZoom = c.zoom;
+                levelBoundries = c.ClampCameraToBoundries;
+            }
             this.TILESIZE = TILESIZE;
             InitTilesets(Map.Tilesets, TiledProjectDirectory);
             InitLayerGroup(Map.Layers);

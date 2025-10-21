@@ -15,6 +15,7 @@ namespace Juegazo
         public string type = "";
         public Tile tile;
         public Rectangle collider = new();
+        public Rectangle DestinationRectangle = new();
         public List<BlockComponent> components = new();
         public bool enableDraw = true;
 
@@ -26,7 +27,11 @@ namespace Juegazo
         {
             this.collider = collider;
         }
-        protected Block(Tile tile) { this.tile = tile; }
+        protected Block(Rectangle collider, Rectangle DestinationRectangle)
+        {
+            this.collider = collider;
+            this.DestinationRectangle = DestinationRectangle;
+        }
         /// <summary> 
         /// for now only used to add AnimartionComponent
         /// </summary>

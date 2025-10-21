@@ -37,6 +37,7 @@ namespace Juegazo
         private Debugger debugger;
         private bool enableDebugger;
         private bool changeScene = false;
+        public bool cameraBoundries = true;
         private static string GetExecutingDir(string v)
         {
             string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
@@ -72,12 +73,13 @@ namespace Juegazo
 
             var componentsOnEntity = new List<Component> {
                 new KeyboardInputComponent(),
-                new CameraToEntityComponent(camera),
+                new CameraToEntitySimpleComponent(camera),
                 new MoveVerticalComponent(),
                 new MoveHorizontalComponent(),
                 new ComplexGravityComponent(),
                 new AnimationComponent(),
                 new EntitiesInteractionsComponent(entities),
+                new StateManagerComponent()
             };
             Rectangle playerPosition = new(TILESIZE * 12, TILESIZE * 2, TILESIZE, TILESIZE); // random position in the map, if it spawns there, something went wrong
             if (tilemap.EntityPositionerByName.TryGetValue("PlayerSpawner", out Vector2 position))
@@ -94,7 +96,8 @@ namespace Juegazo
 
             font = contentManager.Load<SpriteFont>("sheesh");
             camera.Origin = new Vector2(camera.Viewport.Width / 2, camera.Viewport.Height / 2);
-            camera.Zoom = 1.5f;
+            camera.Zoom = tilemap.cameraZoom;
+            cameraBoundries = tilemap.levelBoundries;
         }
 
         public void UnloadContent()
@@ -109,7 +112,7 @@ namespace Juegazo
 
             if (Keyboard.GetState().IsKeyDown(Keys.R) && pastKey.IsKeyDown(Keys.R))
             {
-                var playerEntity = entities.First(e => e.hasComponent(typeof(CanDieComponent)));
+                var playerEntity = entities.First(e => e.isPlayer);
                 entities.Clear();
                 entities.Add(playerEntity);
                 entities.AddRange(tilemap.entities);
@@ -118,6 +121,8 @@ namespace Juegazo
                 List<ICustomTypeDefinition> typeDefinitions = new();
                 tilemap = new(graphicsDevice, projectDirectory, levelPath, TILESIZE, typeDefinitions, gum);
                 entities.AddRange(tilemap.entities);
+                camera.Zoom = tilemap.cameraZoom;
+                cameraBoundries = tilemap.levelBoundries;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.M) && pastKey.IsKeyDown(Keys.M))
             {
@@ -137,10 +142,13 @@ namespace Juegazo
             {
                 block.Update(gameTime);
             }
+            var collisionBlocks = tilemap.collisionLayer.Values.Where(b => b.EnableCollisions);
+            var dynamicBlocks = tilemap.dynamicBlocks.Values.Where(b => b.EnableCollisions);
 
             foreach (var entity in entities.ToList())
             {
                 entity.Update(gameTime);
+                entity.touchingWaterBlock = false;
                 if (entity.componentList.Count == 0)
                 {
                     entities.Remove(entity);
@@ -149,8 +157,6 @@ namespace Juegazo
                 entity.Destinationrectangle.X += (int)entity.velocity.X;
                 entity.Destinationrectangle.X += (int)entity.baseVelocity.X;
 
-                var collisionBlocks = tilemap.collisionLayer.Values.Where(b => b.EnableCollisions);
-                var dynamicBlocks = tilemap.dynamicBlocks.Values.Where(b => b.EnableCollisions);
                 foreach (Block block in collisionBlocks)
                 {
                     if (block.collider.Intersects(entity.Destinationrectangle))
@@ -213,12 +219,15 @@ namespace Juegazo
             }
             // Clamp camera position within map bounds, copilot made this 
             // i dont know how math works im really sorry :(
-            camera.X = MathHelper.Clamp(camera.X, 
-                camera.ViewPortRectangle.Width / 2, 
-                tilemap.Width * TILESIZE - camera.ViewPortRectangle.Width / 2);
-            camera.Y = MathHelper.Clamp(camera.Y,
-                camera.ViewPortRectangle.Height / 2,
-                tilemap.Height * TILESIZE - camera.ViewPortRectangle.Height / 2);
+            if (cameraBoundries)
+            {
+                camera.X = MathHelper.Clamp(camera.X, 
+                    camera.ViewPortRectangle.Width / 2, 
+                    tilemap.Width * TILESIZE - camera.ViewPortRectangle.Width / 2);
+                camera.Y = MathHelper.Clamp(camera.Y,
+                    camera.ViewPortRectangle.Height / 2,
+                    tilemap.Height * TILESIZE - camera.ViewPortRectangle.Height / 2);
+            }
 
             pastKey = Keyboard.GetState();
         }
@@ -278,7 +287,7 @@ namespace Juegazo
                 }
                 if(entity.isPlayer)
                     spriteBatch.DrawString(font,
-                        $"Level: {Path.GetFileNameWithoutExtension(levelPath)}\nFPS: {Math.Round(1 / gameTime.ElapsedGameTime.TotalSeconds)}\nposition: X:{entity.Destinationrectangle.X} Y:{entity.Destinationrectangle.Y}\nvelocity: {entity.velocity}\nbaseVelocity: {entity.baseVelocity}\nhealth: {entity.health}",
+                        $"Level: {Path.GetFileNameWithoutExtension(levelPath)}\nFPS: {Math.Round(1 / gameTime.ElapsedGameTime.TotalSeconds)}\nposition: X:{entity.Destinationrectangle.X} Y:{entity.Destinationrectangle.Y}\nvelocity: {entity.velocity}\nbaseVelocity: {entity.baseVelocity}\nhealth: {entity.health}\nstate: {entity.entityState}",
                         new Vector2(camera.Left, camera.Top),
                             Color.White);
             }

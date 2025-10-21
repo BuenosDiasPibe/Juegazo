@@ -56,6 +56,7 @@ namespace Juegazo.Map.Components
             {
                 entity.AddComponent(componentGived.GetType(), componentGived);
                 touchedBefore = true;
+                entity.entityState = EntityState.POWERUP;
             }
         }
     }

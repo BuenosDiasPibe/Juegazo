@@ -34,9 +34,9 @@
   <animation>
    <frame tileid="18" duration="150"/>
    <frame tileid="2" duration="150"/>
-   <frame tileid="4" duration="150"/>
+   <frame tileid="2" duration="150"/>
    <frame tileid="3" duration="150"/>
-   <frame tileid="6" duration="150"/>
+   <frame tileid="4" duration="150"/>
   </animation>
  </tile>
  <tile id="22" type="DamageBlock"/>
