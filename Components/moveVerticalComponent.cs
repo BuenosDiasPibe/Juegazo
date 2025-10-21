@@ -21,7 +21,6 @@ namespace Juegazo.Components
         {
             if (Owner.onGround && JumpPressed)
             {
-                Owner.entityState = EntityState.JUMPING;
                 Owner.velocity.Y = -jumpAmmount;
                 Owner.onGround = false;
             }
@@ -39,6 +38,10 @@ namespace Juegazo.Components
                 // fastFall = c.btnSpecial2;
             }
             if (jumpCheat) Owner.velocity.Y = -20;
+            if(Owner.velocity.Y < 0)
+            {
+                Owner.entityState = EntityState.JUMPING;
+            }
             // if (fastFall) Owner.velocity.Y += 2;
             JumpingVertical(10);
         }

@@ -32,6 +32,7 @@ namespace Juegazo.Map.Blocks
         public override void horizontalActions(Entity entity, Rectangle collision)
         {
             //TODO: add checking for other Jump components the player would have
+            entity.entityState = EntityState.ON_JUMP_WALL;
             entity.baseVelocity = new();
             if (!canJump)
             {

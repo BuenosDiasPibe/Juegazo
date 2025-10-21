@@ -22,7 +22,6 @@ namespace Juegazo.Components
         {
             if (Owner.velocity.Y > 0) Owner.entityState = EntityState.FALLING;
             if (Owner.onGround) Owner.entityState = EntityState.ON_GROUND;
-            if (Owner.velocity.Y < 0 && Owner.onGround) Owner.entityState = EntityState.JUMPING; //TODO: delete this and add it to another component
             if (Owner.velocity.X != 0 && Owner.onGround) Owner.entityState = EntityState.WALKING;
             if (Owner.baseVelocity != Vector2.Zero) Owner.entityState = EntityState.UP_MOVING_BLOCK;
         }

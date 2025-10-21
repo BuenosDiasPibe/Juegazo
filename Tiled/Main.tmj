@@ -1,4 +1,5 @@
-{ "compressionlevel":-1,
+{ "class":"LevelPropieties",
+ "compressionlevel":-1,
  "height":48,
  "infinite":false,
  "layers":[
@@ -472,6 +473,12 @@
  "nextlayerid":6,
  "nextobjectid":21,
  "orientation":"orthogonal",
+ "properties":[
+        {
+         "name":"zoom",
+         "type":"float",
+         "value":1.5
+        }],
  "renderorder":"right-down",
  "tiledversion":"1.11.2",
  "tileheight":8,

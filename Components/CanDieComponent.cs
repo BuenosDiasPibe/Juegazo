@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Juegazo.Components
@@ -13,10 +14,19 @@ namespace Juegazo.Components
         private float deathTimerSeconds = 0;
         private bool isDying = false;
         private Color originalColor;
-        
+        // private SoundEffect thingie; //testing audio stuff
+
         public CanDieComponent(Vector2 initialPosition)
         {
             this.initialPosition = initialPosition;
+        }
+        public override void Start()
+        {
+            base.Start();
+            // using (var stream = System.IO.File.OpenRead("Content/Sounds/song.wav"))
+            // {
+            //     thingie = SoundEffect.FromStream(stream);
+            // }
         }
 
         public override void Update(GameTime gameTime)
@@ -24,9 +34,11 @@ namespace Juegazo.Components
             if (Owner.health <= 0 && !isDying)
             {
                 StartDeathSequence();
+                // thingie.Play();
             }
             if (isDying)
             {
+                Owner.entityState = EntityState.DYING;
                 deathTimerSeconds += (float)gameTime.ElapsedGameTime.TotalSeconds;
                 
                 Owner.color = Color.Red * ((float)(1 + Math.Sin(deathTimerSeconds * 10))/2);

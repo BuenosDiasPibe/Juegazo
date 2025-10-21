@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Juegazo.Components;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Juegazo.Map.Blocks
@@ -12,6 +13,7 @@ namespace Juegazo.Map.Blocks
     {
         public Vector2 position = new();
         public int message = 0;
+        SoundEffect thingie;
         public CheckPointBlock(Rectangle collisionRectangle) : base(collisionRectangle)
         {
             type = "CheckPointBlock";
@@ -21,6 +23,14 @@ namespace Juegazo.Map.Blocks
         {
             type = "CheckPointBlock";
         }
+        public override void Start()
+        {
+            base.Start();
+            if (position == Vector2.Zero)
+                position = collider.Location.ToVector2();
+            // Provide a valid Stream containing the sound data
+            // Example: Load from file (update the path as needed)
+        }
         public CheckPointBlock(Rectangle collision, bool isEnabled, int message, Vector2 position) : base(collision)
         {
             EnableCollisions = isEnabled;
@@ -29,11 +39,6 @@ namespace Juegazo.Map.Blocks
         }
         public override void horizontalActions(Entity entity, Rectangle collision)
         {
-            if (position == Vector2.Zero)
-            {
-                Console.WriteLine("how am i supposed to know this??'"); //shit i cant fix this unless i do a giant ass switch statement
-                position = collider.Location.ToVector2();
-            }
             if (entity.hasComponent<CanDieComponent>())
             {
                 if(entity.TryGetComponent(out CanDieComponent canDieComponent))
@@ -45,11 +50,6 @@ namespace Juegazo.Map.Blocks
 
         public override void verticalActions(Entity entity, Rectangle collision)
         {
-            if (position == Vector2.Zero)
-            {
-                Console.WriteLine("how am i supposed to know this?? in vert");
-                position = collider.Location.ToVector2();
-            }
             horizontalActions(entity, collision);
         }
     }

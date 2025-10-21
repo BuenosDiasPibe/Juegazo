@@ -33,7 +33,7 @@ namespace Juegazo
             this.DestinationRectangle = DestinationRectangle;
         }
         /// <summary> 
-        /// for now only used to add AnimartionComponent
+        /// Checker for blocks if they dont have some variable setted up
         /// </summary>
         public virtual void Start()
         {

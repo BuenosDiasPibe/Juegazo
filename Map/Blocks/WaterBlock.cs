@@ -22,6 +22,7 @@ namespace Juegazo.Map.Blocks
         }
         public override void horizontalActions(Entity entity, Rectangle collision)
         {
+            entity.baseVelocity = new();
             if (!entity.hasComponent(waterComponent.GetType()))
             {
                 entity.AddComponent(waterComponent.GetType(), new WaterComponent());

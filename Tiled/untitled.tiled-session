@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "Main.tmj",
+    "activeFile": "Level12.tmj",
     "expandedProjectPaths": [
         "."
     ],
@@ -35,8 +35,8 @@
         },
         "Level1.tmj": {
             "expandedObjectLayers": [
-                10,
-                4
+                4,
+                10
             ],
             "scale": 1.5,
             "selectedLayer": 3,
@@ -60,11 +60,11 @@
             "expandedObjectLayers": [
                 3
             ],
-            "scale": 2,
-            "selectedLayer": 1,
+            "scale": 1,
+            "selectedLayer": 0,
             "viewCenter": {
-                "x": 248.5,
-                "y": 141.5
+                "x": 241,
+                "y": 194.5
             }
         },
         "Level10.tmx": {
@@ -93,7 +93,8 @@
         },
         "Level12.tmj": {
             "expandedObjectLayers": [
-                2
+                2,
+                3
             ],
             "scale": 1.5,
             "selectedLayer": 0,
@@ -107,8 +108,8 @@
                 7
             ],
             "expandedObjectLayers": [
-                3,
-                6
+                6,
+                3
             ],
             "scale": 5.5,
             "selectedLayer": 1,
@@ -253,7 +254,7 @@
             "scale": 3,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 363,
+                "x": 312,
                 "y": 146.5
             }
         },
@@ -373,23 +374,24 @@
         "Level1.tmj",
         "Level7.tmj",
         "worldSpace2.tsx",
-        "worldTexture.tsx"
+        "worldTexture.tsx",
+        "Level12.tmj"
     ],
     "project": "untitled.tiled-project",
     "property.type": "bool",
     "recentFiles": [
-        "worldTexture.tsx",
-        "worldSpace2.tsx",
-        "Level7.tmj",
-        "Level1.tmj",
-        "Level11.tmj",
-        "OtherEntities.tsx",
-        "Level2.tmj",
-        "Level8.tmj",
         "Main.tmj",
+        "Level8.tmj",
+        "Level2.tmj",
+        "OtherEntities.tsx",
+        "Level11.tmj",
+        "Level1.tmj",
+        "Level7.tmj",
+        "worldSpace2.tsx",
+        "worldTexture.tsx",
+        "Level12.tmj",
         "Level10.tmj",
-        "Level6.tmj",
-        "Level9.tmj"
+        "Level6.tmj"
     ],
     "tileset.lastUsedFilter": "Archivos de conjuntos de patrones Tiled (*.tsx *.xml)",
     "tileset.lastUsedFormat": "tsx",

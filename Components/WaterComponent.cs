@@ -18,20 +18,19 @@ namespace Juegazo.Components
         public override void Start()
         {
             base.Start();
-            Owner.entityState = EntityState.SWIMMING;
         }
         public override void Destroy()
         {
         }
-
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
         }
 
         public override void Update(GameTime gameTime)
         {
-            if (Owner.entityState == EntityState.SWIMMING || Owner.touchingWaterBlock)
+            if (Owner.touchingWaterBlock)
             {
+                Owner.onGround = false;
                 if (Owner.TryGetComponent(out MoveHorizontalComponent hz))
                 {
                     hz.EnableUpdate = false;
