@@ -229,6 +229,31 @@
         ]
     },
     {
+        "color": "#ffa0a0a4",
+        "drawFill": true,
+        "id": 28,
+        "members": [
+            {
+                "name": "idk",
+                "type": "int",
+                "value": 0
+            }
+        ],
+        "name": "EntityChanger",
+        "type": "class",
+        "useAs": [
+            "property",
+            "map",
+            "layer",
+            "object",
+            "tile",
+            "tileset",
+            "wangcolor",
+            "wangset",
+            "project"
+        ]
+    },
+    {
         "id": 5,
         "name": "FACES",
         "storageType": "int",
@@ -537,12 +562,44 @@
         ]
     },
     {
+        "color": "#ffa0a0a4",
+        "drawFill": true,
+        "id": 29,
+        "members": [
+            {
+                "name": "JumpAmmount",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "isUsable",
+                "type": "bool",
+                "value": false
+            }
+        ],
+        "name": "Orb",
+        "type": "class",
+        "useAs": [
+            "property",
+            "layer",
+            "object",
+            "tile",
+            "tileset",
+            "project"
+        ]
+    },
+    {
         "color": "#ffe01b24",
         "drawFill": true,
         "id": 1,
         "members": [
             {
-                "name": "isVisible",
+                "name": "isPlayable",
+                "type": "bool",
+                "value": false
+            },
+            {
+                "name": "isPlayer",
                 "type": "bool",
                 "value": false
             }

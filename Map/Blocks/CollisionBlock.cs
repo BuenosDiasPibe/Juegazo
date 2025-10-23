@@ -11,17 +11,10 @@ namespace Juegazo.Map.Blocks
     public class CollisionBlock : Block
     {
         public bool canCollide { get; protected set; } = true;
-        public CollisionBlock(Rectangle collisionRectangle) : base(collisionRectangle)
-        {
-            type = "CollisionBlock";
-        }
-        public CollisionBlock()
-        {
-            type = "CollisionBlock";
-        }
+        public CollisionBlock(Rectangle collisionRectangle) : base(collisionRectangle) { }
+        public CollisionBlock() { }
         public CollisionBlock(Rectangle collision, bool canCollide) : base(collision)
         {
-            type = "CollisionBlock";
             this.canCollide = canCollide;
             this.EnableCollisions = canCollide;
         }

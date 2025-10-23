@@ -15,18 +15,15 @@ namespace Juegazo.Map.Blocks
         public Key()
         {
             KeyID = 0;
-            type = "Key";
             keyCollider = new();
         }
         public Key(uint gotKey, Rectangle keyCollider) : base(keyCollider)
         {
-            type = "Key";
             this.KeyID = gotKey;
             this.keyCollider = keyCollider;
         }
         public Key(Rectangle keyCollider) : base(keyCollider)
         {
-            type = "Key";
             this.keyCollider = keyCollider;
         }
 

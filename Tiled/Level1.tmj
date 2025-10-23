@@ -109,6 +109,11 @@
                  "point":true,
                  "properties":[
                         {
+                         "name":"isPlayer",
+                         "type":"bool",
+                         "value":true
+                        }, 
+                        {
                          "name":"isVisible",
                          "type":"bool",
                          "value":true
@@ -117,8 +122,8 @@
                  "type":"PlayerSpawner",
                  "visible":true,
                  "width":0,
-                 "x":248,
-                 "y":24
+                 "x":24,
+                 "y":144
                 }],
          "opacity":1,
          "type":"objectgroup",

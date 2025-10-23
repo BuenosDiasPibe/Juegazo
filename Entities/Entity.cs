@@ -28,13 +28,14 @@ namespace Juegazo
     }
     public class Entity : Sprite
     {
-        public bool isPlayer = false;
+        public bool isPlayer = false; // temp
+        public bool isPlayable = false; // temp
         public bool Destroyed { get; private set; }
         public bool Enable = true;
         public bool Visible = true;
         public List<Component> componentList { get; private set; } = new();
         private Dictionary<Type, Component> componentDictionary = new();
-        public Vector2 velocity; //only variable that makes sense right now, and that's debatable.
+        public Vector2 velocity;
         public Vector2 baseVelocity = new();
         public Rectangle collider;
         public bool onGround = false;

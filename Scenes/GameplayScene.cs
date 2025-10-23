@@ -69,30 +69,30 @@ namespace Juegazo
 
             List<ICustomTypeDefinition> typeDefinitions = new();
             tilemap = new(graphicsDevice, projectDirectory, levelPath, TILESIZE, typeDefinitions, gum);
-            entities.AddRange(tilemap.entities);
-
-            var componentsOnEntity = new List<Component> {
-                new KeyboardInputComponent(),
-                new CameraToEntitySimpleComponent(camera),
-                new MoveVerticalComponent(),
-                new MoveHorizontalComponent(),
-                new ComplexGravityComponent(),
-                new AnimationComponent(),
-                new EntitiesInteractionsComponent(entities),
-                new StateManagerComponent()
-            };
-            Rectangle playerPosition = new(TILESIZE * 12, TILESIZE * 2, TILESIZE, TILESIZE); // random position in the map, if it spawns there, something went wrong
-            if (tilemap.EntityPositionerByName.TryGetValue("PlayerSpawner", out Vector2 position))
+            // get all playable entities from the tilemap
+            var playableEntities = tilemap.entities
+                .Where(e => e.isPlayable);
+            foreach (var t in playableEntities)
             {
-                playerPosition = new((int)position.X, (int)position.Y, TILESIZE, TILESIZE);
-                camera.Position = new(position.X, position.Y);
+                var componentsOnEntity = new List<Component> {
+                    new KeyboardInputComponent(),
+                    new MoveVerticalComponent(),
+                    new MoveHorizontalComponent(),
+                    new ComplexGravityComponent(),
+                    new EntitiesInteractionsComponent(entities),
+                    new StateManagerComponent()
+                };
+                t.AddComponents(componentsOnEntity);
+                t.AddComponent(typeof(CanDieComponent), new CanDieComponent(new(t.Destinationrectangle.X, t.Destinationrectangle.Y)));
+                if (t.isPlayer)
+                {
+                    t.AddComponent(typeof(CameraToEntitySimpleComponent), new CameraToEntitySimpleComponent(camera));
+                    camera.Position = new(t.collider.X, t.collider.Y);
+                    t.texture = playerTexture;
+                    t.AddComponent(typeof(AnimationComponent), new AnimationComponent());
+                }
             }
-            componentsOnEntity.Add(new CanDieComponent(new(playerPosition.X, playerPosition.Y)));
-            Entity player = new Entity(playerTexture, new Rectangle(0, 0, playerTexture.Width, playerTexture.Height), playerPosition, componentsOnEntity, collider: 0.7f, Color.White);
-            player.isPlayer = true;
-
-            entities.Add(player);
-            // get all the entities from Tiled
+            entities.AddRange(tilemap.entities);
 
             font = contentManager.Load<SpriteFont>("sheesh");
             camera.Origin = new Vector2(camera.Viewport.Width / 2, camera.Viewport.Height / 2);
@@ -234,7 +234,7 @@ namespace Juegazo
 
         private int changeSScne(int nextScene, Block block)
         {
-            if (block is CompleteBlock papu && papu.changeScene && !changeScene)
+            if (block is CompleteLevelBlock papu && papu.changeScene && !changeScene)
             {
                 changeScene = true;
                 nextScene = papu.nextSceneID;

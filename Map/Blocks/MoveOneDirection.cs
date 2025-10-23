@@ -16,16 +16,12 @@ namespace Juegazo.Map.Blocks
         private float time;
         public MoveOneDirection(Rectangle collider, Rectangle initialPos, Rectangle endPos, int vel, bool canMove) : base(collider)
         {
-            this.type = "MoveOneDirection";
             initialPosition = initialPos;
             EndPosition = endPos;
             velocity = vel;
             this.EnableUpdate = canMove;
         }
-        public MoveOneDirection()
-        {
-            this.type = "MoveOneDirection";
-        }
+        public MoveOneDirection() { }
         public override void Update(GameTime gameTime)
         {
             Vector2 current = initialPosition.Location.ToVector2();

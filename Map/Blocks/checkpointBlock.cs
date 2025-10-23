@@ -16,12 +16,10 @@ namespace Juegazo.Map.Blocks
         SoundEffect thingie;
         public CheckPointBlock(Rectangle collisionRectangle) : base(collisionRectangle)
         {
-            type = "CheckPointBlock";
             position = new(collider.X, collider.Y);
         }
         public CheckPointBlock()
         {
-            type = "CheckPointBlock";
         }
         public override void Start()
         {

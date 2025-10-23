@@ -13,6 +13,12 @@
                  "id":1,
                  "name":"",
                  "point":true,
+                 "properties":[
+                        {
+                         "name":"isPlayer",
+                         "type":"bool",
+                         "value":true
+                        }],
                  "rotation":0,
                  "type":"PlayerSpawner",
                  "visible":true,

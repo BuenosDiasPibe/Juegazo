@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Threading.Tasks;
 using DotTiled;
 using DotTiled.Serialization;
@@ -171,9 +172,20 @@ namespace Juegazo.Map
                 bool blockPlaced = false;
                 foreach (Block block in blocks)
                 {
-                    if (block.type == tile.Type)
+                    if (block.GetType().Name == tile.Type)
                     {
-                        Block blockk = (Block)Activator.CreateInstance(block.GetType());
+                        Block blockk;
+                        var propieties = MapObjectToPropieties(tileset, tile);
+                        var type = block.GetType();
+                        if (propieties != null)
+                        {
+                            blockk = propieties.createBlock(tile, TILESIZE, Map);
+                        }
+                        else
+                        {
+                            // fallback to parameterless ctor
+                            blockk = (Block)Activator.CreateInstance(type);
+                        }
                         blockk.collider = getDestinationRectangle(position, tileset);
                         blockk.tile = tile;
                         blockk.Start();
@@ -388,6 +400,107 @@ namespace Juegazo.Map
 
             return (flowControl: true, value: null);
         }
+        private TiledTypesUsed MapObjectToPropieties(Tileset tileset, Tile tileData)
+        {
+            string typeName = tileData.Type;
+            if (string.IsNullOrEmpty(typeName))
+            {
+                Console.WriteLine($"{tileset?.Name} nothing here...");
+                return null;
+            }
+            Type propType = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(a =>
+                {
+                    try { return a.GetTypes(); }
+                    catch { return Array.Empty<Type>(); }
+                })
+                .FirstOrDefault(t => t.Name == typeName && t.Namespace != null && t.Namespace.EndsWith("CustomTiledTypes"));
+
+            object mappedProps = null;
+            if (propType != null)
+            {
+                // invoke MapPropertiesTo<T>() dynamically
+                var mapMethod = tileData.GetType()
+                    .GetMethods(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.FlattenHierarchy)
+                    .FirstOrDefault(m => m.Name == "MapPropertiesTo" && m.IsGenericMethodDefinition && m.GetParameters().Length == 0)
+                    ?.MakeGenericMethod(propType);
+                if (mapMethod != null)
+                {
+                    mappedProps = mapMethod.Invoke(tileData, null);
+                }
+                // ensure we have an instance (fallback)
+                if (mappedProps == null)
+                {
+                    try { mappedProps = Activator.CreateInstance(propType); }
+                    catch { mappedProps = null; }
+                }
+            }
+
+            // find the implementation type (Juegazo.CustomTiledTypesImplementation.<typeName>)
+            Type implType = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(a =>
+                {
+                    try { return a.GetTypes(); }
+                    catch { return Array.Empty<Type>(); }
+                })
+                .FirstOrDefault(t => t.Name == typeName && t.Namespace != null && t.Namespace.EndsWith("CustomTiledTypesImplementation"));
+
+            if (implType != null)
+            {
+                object implInstance = null;
+
+                // prefer a ctor that accepts the mapped props type
+                if (mappedProps != null)
+                {
+                    var preferredCtor = implType.GetConstructors()
+                        .FirstOrDefault(c =>
+                        {
+                            var ps = c.GetParameters();
+                            return ps.Length == 1 && ps[0].ParameterType.IsAssignableFrom(mappedProps.GetType());
+                        });
+                    if (preferredCtor != null)
+                    {
+                        implInstance = preferredCtor.Invoke(new[] { mappedProps });
+                    }
+                }
+
+                // try parameterless ctor
+                if (implInstance == null)
+                {
+                    var defaultCtor = implType.GetConstructor(Type.EmptyTypes);
+                    if (defaultCtor != null)
+                        implInstance = defaultCtor.Invoke(null);
+                }
+
+                // last resort: try first ctor with whatever we have
+                if (implInstance == null)
+                {
+                    var anyCtor = implType.GetConstructors().FirstOrDefault();
+                    if (anyCtor != null)
+                    {
+                        var parms = anyCtor.GetParameters();
+                        var args = parms.Select(p => p.ParameterType.IsInstanceOfType(mappedProps) ? mappedProps : (p.HasDefaultValue ? p.DefaultValue : null)).ToArray();
+                        try { implInstance = anyCtor.Invoke(args); } catch { implInstance = null; }
+                    }
+                }
+
+                if (implInstance is TiledTypesUsed tiledImpl)
+                {
+                    return tiledImpl;
+                }
+                else
+                {
+                    Console.WriteLine($"implementation for \"{typeName}\" does not implement TiledTypesUsed");
+                }
+            }
+            else
+            {
+                // fallback to previous behaviour for unknown types: try creating powerup or log
+                if (!CreatePowerUpEntity(getDestinationRectangle(new(tileData.X/tileset.TileWidth, tileData.Y / tileset.TileHeight), tileset), tileset, tileData))
+                    Console.WriteLine($"class \"{tileData.Type}\" not implemented");
+            }
+            return null;
+        }
 
         private bool CreatePowerUpEntity(object source, Tileset tileset, Tile tileData)
         {
@@ -438,8 +551,23 @@ namespace Juegazo.Map
                 float x = obj.X / Map.TileWidth * TILESIZE;
                 float y = obj.Y / Map.TileHeight * TILESIZE;
                 EntityPositionerByName[obj.Type] = new Vector2(x, y);
+                //TODO: make this work better, its a really bad implementation. Use TileObjects or something to add new players
 
-                if (obj is not TileObject tile) continue;
+                if (obj is not TileObject tile)
+                {
+                    if (obj.Type == "PlayerSpawner")
+                    {
+                        var playable = obj.MapPropertiesTo<PlayerSpawner>();
+                        uint ra = (uint)new Random().Next(1, 10);
+                        var tilesett = TilesetsByGID[ra];
+                        var text2d = TilemapTextures[tilesett];
+                        Entity entity = new(text2d, GetSourceRect(ra, tilesett), new((int)x, (int)y, TILESIZE, TILESIZE), 0.5f, Color.White);
+                        entity.isPlayable = playable.isPlayable;
+                        entity.isPlayer = playable.isPlayer;
+                        entities.Add(entity);
+                    } 
+                continue;
+                }
                 var tileset = TilesetsByGID[tile.GID];
                 var tileData = TilesByGID[tile.GID];
                 if (tileData == null || tileset == null) continue;
@@ -475,7 +603,7 @@ namespace Juegazo.Map
                     entities.Add(entity);
                     Console.WriteLine($"added entiity {papu.name} with tileset {tileset.Name} in position {entity.Destinationrectangle}");
                 }
-                else if (tile.Type == "DoubleJump" || tileData.Type == "DoubleJump")
+                if (tile.Type == "DoubleJump" || tileData.Type == "DoubleJump")
                 {
                     CreatePowerUpEntity(obj, tileset, tileData);
                 }

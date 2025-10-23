@@ -158,6 +158,16 @@
                  "point":true,
                  "properties":[
                         {
+                         "name":"isPlayable",
+                         "type":"bool",
+                         "value":true
+                        }, 
+                        {
+                         "name":"isPlayer",
+                         "type":"bool",
+                         "value":true
+                        }, 
+                        {
                          "name":"isVisible",
                          "type":"bool",
                          "value":true

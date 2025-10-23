@@ -1,4 +1,5 @@
-{ "compressionlevel":-1,
+{ "class":"LevelPropieties",
+ "compressionlevel":-1,
  "height":12,
  "infinite":false,
  "layers":[
@@ -25,10 +26,51 @@
          "width":20,
          "x":0,
          "y":0
+        }, 
+        {
+         "class":"Entity Spawner",
+         "draworder":"topdown",
+         "id":2,
+         "name":"Capa de Objetos 1",
+         "objects":[
+                {
+                 "height":0,
+                 "id":1,
+                 "name":"",
+                 "point":true,
+                 "properties":[
+                        {
+                         "name":"isPlayable",
+                         "type":"bool",
+                         "value":true
+                        }, 
+                        {
+                         "name":"isPlayer",
+                         "type":"bool",
+                         "value":true
+                        }],
+                 "rotation":0,
+                 "type":"PlayerSpawner",
+                 "visible":true,
+                 "width":0,
+                 "x":75.5700325732899,
+                 "y":69.3811074918567
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
         }],
- "nextlayerid":2,
- "nextobjectid":1,
+ "nextlayerid":3,
+ "nextobjectid":2,
  "orientation":"orthogonal",
+ "properties":[
+        {
+         "name":"zoom",
+         "type":"float",
+         "value":3
+        }],
  "renderorder":"right-down",
  "tiledversion":"1.11.2",
  "tileheight":8,

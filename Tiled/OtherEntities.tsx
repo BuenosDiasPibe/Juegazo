@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.10" tiledversion="1.11.2" name="OtherEntities" tilewidth="1920" tileheight="1080" tilecount="4" columns="0">
+<tileset version="1.10" tiledversion="1.11.2" name="OtherEntities" tilewidth="1920" tileheight="1080" tilecount="5" columns="0">
  <grid orientation="orthogonal" width="1" height="1"/>
  <tile id="3" type="NPC">
   <properties>
@@ -30,5 +30,8 @@
   <animation>
    <frame tileid="7" duration="150"/>
   </animation>
+ </tile>
+ <tile id="8" type="CollisionBlock">
+  <image source="live leak.png" width="128" height="32"/>
  </tile>
 </tileset>

@@ -11,13 +11,9 @@ namespace Juegazo.Map.Blocks
     {
         private WaterComponent waterComponent = new();
         private bool canLoad = true;
-        public WaterBlock() 
-        {
-            type = "WaterBlock"; 
-        }
+        public WaterBlock() { }
         public WaterBlock(Rectangle Collider,bool canLoad) : base(Collider)
         {
-            type = "WaterBlock";
             this.canLoad = canLoad;
         }
         public override void horizontalActions(Entity entity, Rectangle collision)

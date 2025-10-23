@@ -12,7 +12,6 @@ namespace Juegazo
 {
     public abstract class Block
     {
-        public string type = "";
         public Tile tile;
         public Rectangle collider = new();
         public Rectangle DestinationRectangle = new();

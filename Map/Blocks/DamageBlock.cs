@@ -9,31 +9,36 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Juegazo.Map.Blocks
 {
-    public class KillBlock : Block
+    public class DamageBlock : Block
     {
         public override string ToString()
         {
-            return $"KillBlock: Collider={collider}, DamageAmount={damageAmmount}";
+            return $"DamageBlock: Collider={collider}, DamageAmount={damageAmmount}";
+        }
+        public override void Start()
+        {
+            base.Start();
         }
         private int damageAmmount = 1;
-        public KillBlock(Rectangle collider, int damageAmmount, bool canDamage) : base(collider)
+        public DamageBlock(Rectangle collider, int damageAmmount, bool canDamage) : base(collider)
         {
-            type = "DamageBlock";
             this.damageAmmount = damageAmmount;
             EnableUpdate = true;
             EnableCollisions = canDamage;
         }
         //when using this, it always has a collider and a tile
-        public KillBlock(Rectangle collider) : base(collider){ type = "DamageBlock";}
-        public KillBlock()
+        public DamageBlock(Rectangle collider) : base(collider){}
+        public DamageBlock()
         {
-            type = "DamageBlock";
             EnableUpdate = true;
         }
         public override void horizontalActions(Entity entity, Rectangle collision)
         {
-            entity.baseVelocity = new();
-            entity.health-=damageAmmount;
+            if(collision.Intersects(entity.collider))
+            {
+                entity.baseVelocity = new();
+                entity.health-=damageAmmount;
+            }
         }
 
         public override void Update(GameTime gameTime)
@@ -43,8 +48,11 @@ namespace Juegazo.Map.Blocks
 
         public override void verticalActions(Entity entity, Rectangle collision)
         {
-            entity.baseVelocity = new();
-            entity.health-=damageAmmount;
+            if(collision.Intersects(entity.collider))
+            {
+                entity.baseVelocity = new();
+                entity.health-=damageAmmount;
+            }
         }
     }
 }

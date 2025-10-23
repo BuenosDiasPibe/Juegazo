@@ -9,26 +9,19 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Juegazo.Map.Blocks
 {
-    public class JumpWall : Block
+    public class JumpWallBlock : Block
     {
         private float jumpStrength = 11;
         public bool canJump = true;
         private float recoilVelocity = 10;
-        public JumpWall(Rectangle collider) : base(collider)
+        public JumpWallBlock(Rectangle collider) : base(collider) { }
+        public JumpWallBlock(Rectangle collider, int jumpSptrength, bool canJump, float recoilVelocity) : base(collider)
         {
-            type = "JumpWallBlock";
-        }
-        public JumpWall(Rectangle collider, int jumpSptrength, bool canJump, float recoilVelocity) : base(collider)
-        {
-            type = "JumpWallBlock";
             jumpStrength = jumpSptrength;
             this.recoilVelocity = recoilVelocity;
             this.canJump = canJump;
         }
-        public JumpWall()
-        {
-            type = "JumpWallBlock";
-        }
+        public JumpWallBlock() { }
         public override void horizontalActions(Entity entity, Rectangle collision)
         {
             //TODO: add checking for other Jump components the player would have

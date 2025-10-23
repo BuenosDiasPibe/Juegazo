@@ -22,7 +22,6 @@ namespace Juegazo.Map.Blocks
 
         public MovementBlock(Rectangle collider, Rectangle initialBlockPosition, Rectangle endBlockPosition, float velocity, bool canMove) : base(collider)
         {
-            type = "MovementBlock";
             EnableUpdate = true;
             this.initialBlockPosition = initialBlockPosition;
             this.endBlockPosition = endBlockPosition;
@@ -33,7 +32,7 @@ namespace Juegazo.Map.Blocks
         {
             EnableUpdate = true;
         }
-        public MovementBlock(Rectangle collider) : base(collider) { type = "MovementBlock"; }
+        public MovementBlock(Rectangle collider) : base(collider) { }
         public override void horizontalActions(Entity entity, Rectangle collision)
         {
         }

@@ -11,17 +11,10 @@ namespace Juegazo.Map.Blocks
     {
         public bool isOpen = false;
         public uint key { get; protected set; }
-        public DoorBlock()
-        {
-            type = "DoorBlock";
-        }
-        public DoorBlock(Rectangle collider) : base(collider)
-        {
-            type = "DoorBlock";
-        }
+        public DoorBlock() { }
+        public DoorBlock(Rectangle collider) : base(collider) { }
         public DoorBlock(Rectangle collider, uint key, bool isOpen) : base(collider)
         {
-            type = "DoorBlock";
             Console.WriteLine($"DoorBlock key {key}");
             this.key = key;
             this.isOpen = isOpen;

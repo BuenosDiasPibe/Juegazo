@@ -71,12 +71,17 @@
          "objects":[
                 {
                  "height":0,
-                 "id":1,
+                 "id":21,
                  "name":"",
                  "point":true,
                  "properties":[
                         {
-                         "name":"isVisible",
+                         "name":"isPlayable",
+                         "type":"bool",
+                         "value":true
+                        }, 
+                        {
+                         "name":"isPlayer",
                          "type":"bool",
                          "value":true
                         }],
@@ -404,6 +409,24 @@
                  "width":8,
                  "x":368,
                  "y":168
+                }, 
+                {
+                 "gid":16,
+                 "height":8,
+                 "id":22,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"nextLevel",
+                         "type":"int",
+                         "value":13
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":8,
+                 "x":312,
+                 "y":168
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -471,7 +494,7 @@
          "y":0
         }],
  "nextlayerid":6,
- "nextobjectid":21,
+ "nextobjectid":23,
  "orientation":"orthogonal",
  "properties":[
         {

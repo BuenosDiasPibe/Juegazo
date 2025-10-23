@@ -9,21 +9,19 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Juegazo.Map.Blocks
 {
-    public class CompleteBlock : Block
+    public class CompleteLevelBlock : Block
     {
         public bool changeScene;
         public int nextSceneID { get; protected set; } = 0;
         uint a;
         Color color = Color.White;
-        public CompleteBlock(Rectangle collider) : base(collider)
+        public CompleteLevelBlock(Rectangle collider) : base(collider)
         {
             changeScene = false;
-            type ="CompleteLevelBlock";
         }
-        public CompleteBlock() { type="CompleteLevelBlock"; }
-        public CompleteBlock(Rectangle collider, bool isEnabled, int nextLevel) : base(collider)
+        public CompleteLevelBlock() {}
+        public CompleteLevelBlock(Rectangle collider, bool isEnabled, int nextLevel) : base(collider)
         {
-            type ="CompleteLevelBlock";
             EnableCollisions = isEnabled;
             nextSceneID = nextLevel;
             if (nextLevel != 0)

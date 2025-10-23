@@ -13,21 +13,13 @@ namespace Juegazo.Map.Blocks
     {
         //TODO: add enum with orientation
         public FACES face = FACES.TOP;
-        public OneWayBlock(Rectangle collider)
-            : base(collider)
-        {
-            type = "OneWayBlock";
-        }
+        public OneWayBlock(Rectangle collider) : base(collider) { }
         public OneWayBlock(Rectangle collider, FACES face)
             : base(collider)
         {
-            type = "OneWayBlock";
             this.face = face;
         }
-        public OneWayBlock()
-        {
-            type = "OneWayBlock";
-        }
+        public OneWayBlock() { }
         public override void horizontalActions(Entity entity, Rectangle collision)
         { }
 

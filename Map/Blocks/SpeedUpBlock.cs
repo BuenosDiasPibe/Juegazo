@@ -11,21 +11,12 @@ namespace Juegazo
 {
     public class SpeedUpBlock : Block
     {
-        private int velocitySpeed;
-        public SpeedUpBlock(Rectangle collider) : base(collider)
-        {
-            type = "SpeedUp";
-            velocitySpeed = 3;
-        }
+        private int velocitySpeed = 3;
+        public SpeedUpBlock(Rectangle collider) : base(collider) { }
 
-        public SpeedUpBlock()
-        {
-            type = "SpeedUp";
-            velocitySpeed = 3;
-        }
+        public SpeedUpBlock() { }
         public SpeedUpBlock(Rectangle collider, int velocitySpeed) : base(collider)
         {
-            type = "SpeedUp";
             this.velocitySpeed = velocitySpeed;
         }
         public override void horizontalActions(Entity entity, Rectangle collision)

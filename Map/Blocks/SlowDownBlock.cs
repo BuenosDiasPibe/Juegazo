@@ -10,21 +10,13 @@ namespace Juegazo.Map.Blocks
 {
     public class SlowDownBlock : Block
     {
-        public int slowingSpeed;
-        public SlowDownBlock(Rectangle collider) : base(collider)
-        {
-            type = "SlowDownBlock";
-            slowingSpeed = 1;
-        }
+        public int slowingSpeed = 1;
+        public SlowDownBlock(Rectangle collider) : base(collider) { }
         public SlowDownBlock(Rectangle collider, int slowingSpeed) : base(collider)
         {
-            type = "SlowDownBlock";
             this.slowingSpeed = slowingSpeed;
         }
-        public SlowDownBlock()
-        {
-            type = "SlowDownBlock";
-        }
+        public SlowDownBlock() { }
         public override void horizontalActions(Entity entity, Rectangle collision)
         {
             if (entity.velocity.X != 0)

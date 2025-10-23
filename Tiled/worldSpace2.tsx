@@ -2,11 +2,13 @@
 <tileset version="1.10" tiledversion="1.11.2" name="worldSpace2" tilewidth="16" tileheight="16" tilecount="128" columns="8">
  <image source="worldSprites.png" width="128" height="256"/>
  <tile id="1" type="JumpWallBlock"/>
- <tile id="5" type="speedUp"/>
+ <tile id="5" type="SpeedUpBlock"/>
  <tile id="8" type="VerticalBoostBlock">
   <animation>
    <frame tileid="8" duration="150"/>
-   <frame tileid="14" duration="150"/>
+   <frame tileid="53" duration="150"/>
+   <frame tileid="18" duration="150"/>
+   <frame tileid="20" duration="150"/>
   </animation>
  </tile>
  <tile id="9" type="DamageBlock">
@@ -90,8 +92,19 @@
    <frame tileid="21" duration="150"/>
   </animation>
  </tile>
+ <tile id="23" type="EntityChanger">
+  <properties>
+   <property name="idk" type="int" value="1"/>
+  </properties>
+ </tile>
  <tile id="27" type="DoorBlock"/>
  <tile id="28" type="Key"/>
+ <tile id="29" type="Orb">
+  <properties>
+   <property name="JumpAmmount" type="int" value="10"/>
+   <property name="isUsable" type="bool" value="true"/>
+  </properties>
+ </tile>
  <tile id="32" type="NPC">
   <properties>
    <property name="name" value="Jose"/>
@@ -296,7 +309,7 @@
   <animation>
    <frame tileid="66" duration="150"/>
    <frame tileid="65" duration="150"/>
-   <frame tileid="64" duration="150"/>
+   <frame tileid="66" duration="150"/>
   </animation>
  </tile>
  <tile id="65" type="WaterBlock">
