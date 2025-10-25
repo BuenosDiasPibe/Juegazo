@@ -35,9 +35,37 @@ namespace Juegazo.Components
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            // if (Owner.hasComponent(typeof(NPCComponent))) Console.WriteLine("this owner has a component");
-            var effects = !Owner.directionLeft ? SpriteEffects.None  : SpriteEffects.FlipHorizontally ;
-            spriteBatch.Draw(Owner.texture, Owner.Destinationrectangle, Owner.sourceRectangle, Owner.color, 0f, Vector2.Zero, effects, 0f);
+            var src = Owner.sourceRectangle;
+            SpriteEffects effects = SpriteEffects.None;
+            float rotation = 0f;
+            var origin = new Vector2(0, 0);
+
+            switch (Owner.direction)
+            {
+                case FACES.BOTTOM:
+                    rotation = 0f;
+                    break;
+                case FACES.TOP:
+                    rotation = 0f;
+                    effects |= SpriteEffects.FlipVertically;
+                    break;
+                case FACES.LEFT:
+                    rotation = MathHelper.PiOver2;
+                    origin = new(0, Owner.sourceRectangle.Height);
+                    break;
+                case FACES.RIGHT:
+                    rotation = -MathHelper.PiOver2;
+                    origin = new(Owner.sourceRectangle.Width,0);
+                    break;
+                default:
+                    break;
+            }
+
+            if (Owner.directionLeft)
+            {
+                effects |= SpriteEffects.FlipHorizontally;
+            }
+            spriteBatch.Draw(Owner.texture, Owner.Destinationrectangle, src, Owner.color, rotation, origin, effects, 0f);
         }
 
         public override void Update(GameTime gameTime)

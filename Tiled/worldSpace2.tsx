@@ -105,6 +105,16 @@
    <property name="isUsable" type="bool" value="true"/>
   </properties>
  </tile>
+ <tile id="30" type="GravityChangerOrbBlock">
+  <properties>
+   <property name="changeVertical" type="bool" value="true"/>
+  </properties>
+ </tile>
+ <tile id="31" type="GravityChangerOrbBlock">
+  <properties>
+   <property name="changeVertical" type="bool" value="true"/>
+  </properties>
+ </tile>
  <tile id="32" type="NPC">
   <properties>
    <property name="name" value="Jose"/>
@@ -145,6 +155,16 @@
    <frame tileid="34" duration="150"/>
   </animation>
  </tile>
+ <tile id="36" type="GravityChangerOrbBlock">
+  <properties>
+   <property name="changeHorizontal" type="bool" value="true"/>
+  </properties>
+ </tile>
+ <tile id="37" type="GravityChangerOrbBlock">
+  <properties>
+   <property name="changeHorizontal" type="bool" value="true"/>
+  </properties>
+ </tile>
  <tile id="40" type="NPC">
   <properties>
    <property name="name" value="Grandma"/>
@@ -174,6 +194,22 @@
    <frame tileid="40" duration="150"/>
    <frame tileid="41" duration="150"/>
   </animation>
+ </tile>
+ <tile id="43" type="GravityChangerPadBlock"/>
+ <tile id="44" type="GravityChangerPadBlock">
+  <properties>
+   <property name="snapTo" type="int" propertytype="FACES" value="2"/>
+  </properties>
+ </tile>
+ <tile id="45" type="GravityChangerPadBlock">
+  <properties>
+   <property name="snapTo" type="int" propertytype="FACES" value="1"/>
+  </properties>
+ </tile>
+ <tile id="46" type="GravityChangerPadBlock">
+  <properties>
+   <property name="snapTo" type="int" propertytype="FACES" value="3"/>
+  </properties>
  </tile>
  <tile id="48" type="MoveOneDirection">
   <properties>

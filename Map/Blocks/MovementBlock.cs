@@ -12,27 +12,34 @@ namespace Juegazo.Map.Blocks
 {
     public class MovementBlock : Block
     {
+        public bool movingLeft = false;
+        public float velocity = 0;
         public Rectangle initialBlockPosition = new();
         public Rectangle endBlockPosition = new();
         private Vector2 velocityToEntity = new();
-        public float velocity = 0;
         private Vector2 lastBlockPosition = new();
         private Vector2 newPosition = new();
-        public bool movingLeft = false;
 
-        public MovementBlock(Rectangle collider, Rectangle initialBlockPosition, Rectangle endBlockPosition, float velocity, bool canMove) : base(collider)
+        public MovementBlock(Rectangle collider, Rectangle initialBlockPosition, Rectangle endBlockPosition, CustomTiledTypes.MovementBlock block) : base(collider)
         {
-            EnableUpdate = true;
+            EnableUpdate = block.canMove;
             this.initialBlockPosition = initialBlockPosition;
             this.endBlockPosition = endBlockPosition;
-            this.velocity = velocity;
-            EnableUpdate = canMove;
+            this.velocity = block.velocity;
         }
         public MovementBlock()
         {
-            EnableUpdate = true;
+            EnableUpdate = false;
         }
         public MovementBlock(Rectangle collider) : base(collider) { }
+        public override void Start()
+        {
+            if (initialBlockPosition.IsEmpty || endBlockPosition.IsEmpty || collider.IsEmpty)
+            {
+                throw new InvalidOperationException("MovementBlock not initialized: initialBlockPosition, encPositionBlock or collider is empty. Blocks with object references should not be added in tile layers");
+            }
+            base.Start();
+        }
         public override void horizontalActions(Entity entity, Rectangle collision)
         {
         }
@@ -63,8 +70,6 @@ namespace Juegazo.Map.Blocks
         public override void verticalActions(Entity entity, Rectangle collision)
         {
             new CollisionBlock().verticalActions(entity, collision);
-            // float f = 0.6f;
-
             entity.baseVelocity = velocityToEntity;
         }
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch, Texture2D texture, Rectangle sourceRectangle)

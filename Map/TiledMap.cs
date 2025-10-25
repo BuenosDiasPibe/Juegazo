@@ -7,6 +7,7 @@
 */
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection.Emit;
@@ -43,11 +44,14 @@ namespace Juegazo.Map
 
         public Dictionary<string, Vector2> EntityPositionerByName { get; } = new();
         public Dictionary<TileObject, TiledTypesUsed> MapObjectToType { get; } = new();
-        List<Block> blocks = AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(a => a.GetTypes())
+        Dictionary<string, Block> blocks = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(a =>
+                {
+                    return a.GetTypes();
+                })
                 .Where(t => t.IsSubclassOf(typeof(Block)) && !t.IsAbstract)
                 .Select(t => (Block)Activator.CreateInstance(t))
-                .ToList();
+                .ToDictionary(inst => inst.GetType().Name, inst => inst);
         public Dictionary<string, BaseLayer> AllLayersByName { get; } = new();
         public Dictionary<TileObject, Block> dynamicBlocks = new();
         public Dictionary<Vector2, Block> collisionLayer { get; } = new(); //maybe Vector2 should be changed to Point
@@ -104,8 +108,12 @@ namespace Juegazo.Map
                 levelBoundries = c.ClampCameraToBoundries;
             }
             this.TILESIZE = TILESIZE;
+            var sw = new Stopwatch();
+            sw.Start();
             InitTilesets(Map.Tilesets, TiledProjectDirectory);
             InitLayerGroup(Map.Layers);
+            sw.Stop();
+            Console.WriteLine($"{sw.ElapsedMilliseconds}ms to render all the level.");
         }
 
         public void InitLayerGroup(List<BaseLayer> layers)
@@ -126,12 +134,16 @@ namespace Juegazo.Map
                         ImageLayerTexture[imageLayer] = texture;
                         break;
                 }
+                var sw = new Stopwatch();
                 switch (layer.Class)
                 { 
                     case "Collision Tile Layer":
                         if (layer is not TileLayer tLayer)
                             throw new Exception($"layer \"{layer.Name}\" is using a TileLayer class when its a \"{layer.GetType()}\"");
+                        sw.Start();
                         CreateCollisionLayer(tLayer);
+                        sw.Stop();
+                        Console.WriteLine($"{sw.ElapsedMilliseconds}ms to finish CreateCollisionLayer");
                         break;
                     case "Entity Spawner":
                         if (layer is not ObjectLayer objectLayer)
@@ -141,7 +153,10 @@ namespace Juegazo.Map
                     case "Collision Blocks Object Layer":
                         if (layer is not ObjectLayer objectLayer1)
                             throw new Exception($"layer \"{layer.Name}\" is using a ObjectLayer class when its a \"{layer.GetType()}\"");
+                        sw.Start();
                         InitObjectLayer(objectLayer1);
+                        sw.Stop();
+                        Console.WriteLine($"{sw.ElapsedMilliseconds}ms to finish InitObjectLayer");
                         break;
                     default:
                         if (layer.Class != "")
@@ -152,47 +167,44 @@ namespace Juegazo.Map
                 }
             }
         }
+        //really expensive operation, should be pararellized
         private void CreateCollisionLayer(TileLayer tileLayer)
         {
             uint[] data = tileLayer.Data.Value.GlobalTileIDs;
+            Console.WriteLine($"data: {data.Length}");
             for (int i = 0; i < data.Length; i++)
             {
                 uint TileID = data[i];
                 if (TileID == 0) continue;
-                int x = (int)(i % tileLayer.Width);
-                int y = (int)(i / tileLayer.Width);
-                Vector2 position = new(x, y);
-                var tileset = TilesetsByGID[TileID];
                 var tile = TilesByGID[TileID];
                 if (tile == null)
                 {
                     Console.WriteLine($"Not possible to create an object. Tile.ID = {TileID}");
                     continue;
                 }
+                int x = (int)(i % tileLayer.Width);
+                int y = (int)(i / tileLayer.Width);
+                Vector2 position = new(x, y);
+                var tileset = TilesetsByGID[TileID];
                 bool blockPlaced = false;
-                foreach (Block block in blocks)
+                if(blocks.TryGetValue(tile.Type, out var block))
                 {
-                    if (block.GetType().Name == tile.Type)
+                    var propieties = MapObjectToPropieties(tile);
+                    var type = block.GetType();
+                    Block blockk;
+                    if (propieties != null)
                     {
-                        Block blockk;
-                        var propieties = MapObjectToPropieties(tileset, tile);
-                        var type = block.GetType();
-                        if (propieties != null)
-                        {
-                            blockk = propieties.createBlock(tile, TILESIZE, Map);
-                        }
-                        else
-                        {
-                            // fallback to parameterless ctor
-                            blockk = (Block)Activator.CreateInstance(type);
-                        }
-                        blockk.collider = getDestinationRectangle(position, tileset);
-                        blockk.tile = tile;
-                        blockk.Start();
-                        collisionLayer[position] = blockk;
-                        blockPlaced = true;
-                        break;
+                        blockk = propieties.createBlock(TILESIZE, Map);
                     }
+                    else
+                    {
+                        blockk = (Block)Activator.CreateInstance(type);
+                    }
+                    blockk.collider = getDestinationRectangle(position, tileset); //TODO: on TiledTypesUsed, add collider and/or position too.
+                    blockk.tile = tile;
+                    blockk.Start();
+                    collisionLayer[position] = blockk;
+                    blockPlaced = true;
                 }
                 if (!blockPlaced)
                     CreatePowerUpEntity(getDestinationRectangle(position, tileset), tileset, tile);
@@ -204,18 +216,16 @@ namespace Juegazo.Map
             foreach (var tileObject in layer.Objects.OfType<TileObject>())
             {
                 if (!MapObjectToType.TryGetValue(tileObject, out var tiledType)) continue;
-                Tile tile = MapTileObjectToTile[tileObject];
+                if (!MapTileObjectToTile.TryGetValue(tileObject, out var tile)) continue;
 
-                Block block = tiledType.createBlock(tileObject, TILESIZE, Map);
+                Block block = tiledType.createBlock(TILESIZE, Map, tileObject);
                 block.tile = tile;
-                if (tile == null) Console.WriteLine($"block: {block.ToString()} with no tile");
                 if (block == null)
                 {
                     Console.WriteLine("not block created");
                     continue;
                 }
-                block.Start(); //i always forget to add this here...
-
+                block.Start();
                 Vector2 position = new((int)(tileObject.X / TileWidth), (int)(tileObject.Y / TileHeight) - (int)(tileObject.Height / TileHeight));
 
                 if (objectLayerClass.canOverrideCollisionLayer)
@@ -400,12 +410,12 @@ namespace Juegazo.Map
 
             return (flowControl: true, value: null);
         }
-        private TiledTypesUsed MapObjectToPropieties(Tileset tileset, Tile tileData)
+        private TiledTypesUsed MapObjectToPropieties(Tile tileData)
         {
             string typeName = tileData.Type;
             if (string.IsNullOrEmpty(typeName))
             {
-                Console.WriteLine($"{tileset?.Name} nothing here...");
+                Console.WriteLine($"no data type added");
                 return null;
             }
             Type propType = AppDomain.CurrentDomain.GetAssemblies()
@@ -495,9 +505,7 @@ namespace Juegazo.Map
             }
             else
             {
-                // fallback to previous behaviour for unknown types: try creating powerup or log
-                if (!CreatePowerUpEntity(getDestinationRectangle(new(tileData.X/tileset.TileWidth, tileData.Y / tileset.TileHeight), tileset), tileset, tileData))
-                    Console.WriteLine($"class \"{tileData.Type}\" not implemented");
+                Console.WriteLine($"class \"{tileData.Type}\" not implemented");
             }
             return null;
         }

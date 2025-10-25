@@ -17,10 +17,25 @@ namespace Juegazo
         {
             get
             {
-                return new((int)Math.Floor(Left),
-                    (int)Math.Floor(Top),
-                    (int)Math.Ceiling(Right - Left),
-                    (int)Math.Floor(Bottom - Top));
+                if (changed)
+                    UpdateMatrices();
+
+                var tl = Vector2.Transform(Vector2.Zero, Inverse);
+                var tr = Vector2.Transform(new Vector2(Viewport.Width, 0), Inverse);
+                var bl = Vector2.Transform(new Vector2(0, Viewport.Height), Inverse);
+                var br = Vector2.Transform(new Vector2(Viewport.Width, Viewport.Height), Inverse);
+
+                float minX = Math.Min(Math.Min(tl.X, tr.X), Math.Min(bl.X, br.X));
+                float minY = Math.Min(Math.Min(tl.Y, tr.Y), Math.Min(bl.Y, br.Y));
+                float maxX = Math.Max(Math.Max(tl.X, tr.X), Math.Max(bl.X, br.X));
+                float maxY = Math.Max(Math.Max(tl.Y, tr.Y), Math.Max(bl.Y, br.Y));
+
+                int left = (int)Math.Floor(minX);
+                int top = (int)Math.Floor(minY);
+                int width = (int)Math.Ceiling(maxX - minX);
+                int height = (int)Math.Ceiling(Math.Abs(maxY - minY));
+
+                return new Rectangle(left, top, width, height);
             }
         }
         private Matrix matrix = Matrix.Identity;
@@ -143,7 +158,6 @@ namespace Juegazo
                 zoom.X = zoom.Y = value;
             }
         }
-
         public float Angle
         {
             get { return angle; }

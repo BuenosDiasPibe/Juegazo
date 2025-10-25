@@ -10,84 +10,51 @@ namespace Juegazo.Map.Blocks
 {
     public class CollisionBlock : Block
     {
-        public bool canCollide { get; protected set; } = true;
-        public CollisionBlock(Rectangle collisionRectangle) : base(collisionRectangle) { }
         public CollisionBlock() { }
-        public CollisionBlock(Rectangle collision, bool canCollide) : base(collision)
-        {
-            this.canCollide = canCollide;
-            this.EnableCollisions = canCollide;
-        }
+        public CollisionBlock(Rectangle collision) : base(collision) { }
         public override void horizontalActions(Entity entity, Rectangle collision)
         {
-            if (!canCollide) return;
             entity.baseVelocity = new();
-            if (entity is Player player) player.hasJumpedWall = false;
-
             int entityRight = entity.Destinationrectangle.Right;
             int entityLeft = entity.Destinationrectangle.Left;
             int blockRight = collision.Right;
             int blockLeft = collision.Left;
 
-            if (entity.velocity.X > 0.0f || entityRight >= blockLeft && entityLeft < blockLeft)
+            if (entityRight >= blockLeft && entityLeft < blockLeft)
             {
                 entity.Destinationrectangle.X = blockLeft - entity.Destinationrectangle.Width;
             }
-            else if (entity.velocity.X < 0.0f || entityLeft <= blockRight && entityRight > blockRight)
+            else if (entityLeft <= blockRight && entityRight > blockRight)
             {
                 entity.Destinationrectangle.X = blockRight;
             }
-            // If entity is cli            //isVisible = false;pping through, push them out
-            else if (entityLeft < blockRight && entityRight > blockLeft)
+            if (entity.direction == FACES.LEFT || entity.direction == FACES.RIGHT)
             {
-                float distanceToRight = Math.Abs(entityLeft - blockRight);
-                float distanceToLeft = Math.Abs(entityRight - blockLeft);
-                if (distanceToRight < distanceToLeft)
-                {
-                    entity.Destinationrectangle.X = blockRight;
-                }
-                else
-                {
-                    entity.Destinationrectangle.X = blockLeft - entity.Destinationrectangle.Width;
-                }
+                entity.onGround = true;
+                entity.velocity.Y = 0;
             }
         }
 
 
         public override void verticalActions(Entity entity, Rectangle collision)
         {
-            if (!canCollide) return;
             entity.baseVelocity = new();
             int entityBottom = entity.Destinationrectangle.Bottom;
             int entityTop = entity.Destinationrectangle.Top;
             int blockBottom = collision.Bottom;
             int blockTop = collision.Top;
-
-            if (entity.velocity.Y > 0.0f || entityBottom >= blockTop && entityTop < blockTop)
+            if (entityBottom >= blockTop && entityTop < blockTop)
             {
                 entity.Destinationrectangle.Y = blockTop - entity.Destinationrectangle.Height;
-                entity.velocity.Y = 0;
-                entity.onGround = true;
-                if (entity is Player player1) player1.jumpCounter = 0;
             }
-            else if (entity.velocity.Y < 0.0f || entityTop <= blockBottom && entityBottom > blockBottom)
+            else if(entityTop <= blockBottom && entityBottom > blockTop)
             {
                 entity.Destinationrectangle.Y = blockBottom;
-                entity.velocity.Y *= 0.1f;
             }
-            // If entity is clipping through, push them out
-            else if (entityTop < blockBottom && entityBottom > blockTop)
+            if (entity.direction == FACES.TOP || entity.direction == FACES.BOTTOM)
             {
-                float distanceToBottom = Math.Abs(entityTop - blockBottom);
-                float distanceToTop = Math.Abs(entityBottom - blockTop);
-                if (distanceToBottom < distanceToTop)
-                {
-                    entity.Destinationrectangle.Y = blockBottom;
-                }
-                else
-                {
-                    entity.Destinationrectangle.Y = blockTop - entity.Destinationrectangle.Height;
-                }
+                entity.onGround = true;
+                entity.velocity.Y = 0;
             }
         }
     }

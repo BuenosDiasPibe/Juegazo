@@ -128,6 +128,17 @@
                  "id":1,
                  "name":"",
                  "point":true,
+                 "properties":[
+                        {
+                         "name":"isPlayable",
+                         "type":"bool",
+                         "value":true
+                        }, 
+                        {
+                         "name":"isPlayer",
+                         "type":"bool",
+                         "value":true
+                        }],
                  "rotation":0,
                  "type":"PlayerSpawner",
                  "visible":true,

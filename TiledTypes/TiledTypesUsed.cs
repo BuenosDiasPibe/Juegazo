@@ -115,44 +115,34 @@ namespace Juegazo.CustomTiledTypes
         public int JumpAmmount { get; set; } = 0;
         public bool isUsable { get; set; } = false;
     }
+    public class GravityChangerOrbBlock
+    {
+        public bool changeHorizontal {get; set; } = false;
+        public bool changeVertical {get; set; } = false;
+    }
+    public class GravityChangerPadBlock
+    {
+        public FACES snapTo { get; set; } = FACES.TOP;
+    }
 }
 namespace Juegazo.CustomTiledTypesImplementation
 {
 
     public abstract class TiledTypesUsed
     {
-        /// <summary>
-        ///  creates a block, obj needs to be object or Tile
-        /// </summary>
-        /// <param name="obj">needs to be a object or a Tile, anything else would give a rectangle at {0,0,0,0}</param>
-        /// <param name="TILESIZE"></param>
-        /// <param name="map"></param>
-        /// <returns></returns>
-        public abstract Block createBlock(object obj, int TILESIZE, DotTiled.Map map);
+        public abstract Block createBlock(int TILESIZE, DotTiled.Map map, TileObject obj = null);
         public abstract void getNeededObjectPropeties(DotTiled.Object obj, int TILESIZE, DotTiled.Map map);
         public abstract List<uint> neededObjects();
-        protected Rectangle GetRect(object o, int TILESIZE, DotTiled.Map map)
+        protected Rectangle GetRect(int TILESIZE, DotTiled.Map map, DotTiled.Object obj = null)
         {
-            if (o is TileObject obj)
-            {
-                int what = -(int)(obj.Height / map.TileHeight); //what the actual fuck? why do i need to do this????
-                return new Rectangle(
-                                (int)(obj.X / map.TileWidth * TILESIZE),
-                                (int)(((obj.Y / map.TileHeight) + what) * TILESIZE),
-                                (int)(obj.Width / map.TileWidth * TILESIZE),
-                                (int)(obj.Height / map.TileHeight * TILESIZE)
-                            );
-            }
-            else if (o is Tile objj)
-            {
-                return new(
-                    (int)objj.X * TILESIZE,
-                    (int)objj.Y * TILESIZE,
-                    (int)objj.Width * TILESIZE,
-                    (int)objj.Height * TILESIZE
-                );
-            }
-            return new();
+            if (obj == null) return new();
+            int what = -(int)(obj.Height / map.TileHeight);
+            return new Rectangle(
+                            (int)(obj.X / map.TileWidth * TILESIZE),
+                            (int)(((obj.Y / map.TileHeight) + what) * TILESIZE),
+                            (int)(obj.Width / map.TileWidth * TILESIZE),
+                            (int)(obj.Height / map.TileHeight * TILESIZE)
+                        );
         }
     }
     public class MovementBlock : TiledTypesUsed
@@ -160,51 +150,41 @@ namespace Juegazo.CustomTiledTypesImplementation
         public MovementBlock() { }
         public override string ToString()
         {
-            return $"MovementBlock: \tEndBlockPosition: {EndBlockPosition}\n\tCanMove: {canMove}\n\tInitialBlockPosition: {initialBlockPosition}\n\tSpeed: {speed}\n\tInitialBlock: {InitialBlockPosition}\n\tEndBlock: {endBlockPosition}";
+            return $"MovementBlock: \tEndBlockPosition: {mblock.EndBlockPosition}\n\tCanMove: {mblock.canMove}\n\tInitialBlockPosition: {mblock.initialBlockPosition}\n\tSpeed: {mblock.velocity}\n\tInitialBlock: {InitialBlockPosition}\n\tEndBlock: {endBlockPosition}";
         }
-        public uint EndBlockPosition { get; } = 0;
-        public bool canMove { get; } = false;
-        public uint initialBlockPosition { get; } = 0;
-        public float speed { get; } = 1;
+        public CustomTiledTypes.MovementBlock mblock;
         public Rectangle InitialBlockPosition { get; set; } = new();
         public Rectangle endBlockPosition { get; set; } = new();
         public MovementBlock(CustomTiledTypes.MovementBlock mblock)
         {
-            EndBlockPosition = mblock.EndBlockPosition;
-            canMove = mblock.canMove;
-            initialBlockPosition = mblock.initialBlockPosition;
-            speed = mblock.velocity;
+            this.mblock = mblock;
         }
         public override void getNeededObjectPropeties(DotTiled.Object obj, int TILESIZE, DotTiled.Map map)
         {
-            if (obj is RectangleObject rObject)
+            if (obj.ID == mblock.initialBlockPosition)
             {
-                if (obj.ID == initialBlockPosition)
-                {
-                    obj.Y += obj.Height;
-                    InitialBlockPosition = GetRect(obj, TILESIZE, map);
-                }
-                if (obj.ID == EndBlockPosition)
-                {
-                    obj.Y += obj.Height;
-                    endBlockPosition = GetRect(obj, TILESIZE, map);
-                }
+                obj.Y += obj.Height;
+                InitialBlockPosition = GetRect(TILESIZE, map, obj);
+            }
+            if (obj.ID == mblock.EndBlockPosition)
+            {
+                obj.Y += obj.Height;
+                endBlockPosition = GetRect(TILESIZE, map, obj);
             }
         }
-        public override Block createBlock(object obj, int TILESIZE, DotTiled.Map map)
+        public override Block createBlock(int TILESIZE, DotTiled.Map map, TileObject obj = null)
         {
-            return new Map.Blocks.MovementBlock(
-                GetRect(obj, TILESIZE, map),
+            return new Map.Blocks.MovementBlock( //TODO: change it to get "this" instead of InitialBlockPos, endBlockPos, etc.
+                GetRect(TILESIZE, map, obj),
                 InitialBlockPosition,
                 endBlockPosition,
-                speed,
-                canMove
+                mblock
             );
         }
 
         public override List<uint> neededObjects()
         {
-            return new([initialBlockPosition, EndBlockPosition]);
+            return new([mblock.initialBlockPosition, mblock.EndBlockPosition]);
         }
 
     }
@@ -224,10 +204,10 @@ namespace Juegazo.CustomTiledTypesImplementation
             damageAmmount = dblock.damageAmount;
         }
 
-        public override Block createBlock(object obj, int TILESIZE, DotTiled.Map map)
+        public override Block createBlock(int TILESIZE, DotTiled.Map map, TileObject obj = null)
         {
             return new Map.Blocks.DamageBlock(
-                GetRect(obj, TILESIZE, map), damageAmmount, canDamage
+               GetRect(TILESIZE, map, obj), damageAmmount, canDamage
             );
         }
 
@@ -262,10 +242,10 @@ namespace Juegazo.CustomTiledTypesImplementation
             // No additional properties needed from objects
         }
 
-        public override Block createBlock(object obj, int TILESIZE, DotTiled.Map map)
+        public override Block createBlock(int TILESIZE, DotTiled.Map map, TileObject obj = null)
         {
             return new Map.Blocks.JumpWallBlock(
-                GetRect(obj, TILESIZE, map),
+                GetRect(TILESIZE, map, obj),
                 jumpIntensity,
                 canJump,
                 recoilIntensity
@@ -283,17 +263,13 @@ namespace Juegazo.CustomTiledTypesImplementation
         public VerticalBoostBlock() { }
         public override string ToString()
         {
-            return $"Amount: {Ammount}, IsCompleteBlock: {isCompleteBlock}, ToUp: {toUp}";
+            return $"Amount: {vblock.Ammount}, IsCompleteBlock: {vblock.isCompleteBlock}, ToUp: {vblock.toUp}";
         }
-        public int Ammount { get; } = 20;
-        public bool isCompleteBlock { get; } = false;
-        public bool toUp { get; } = true;
+        public CustomTiledTypes.VerticalBoostBlock vblock; //TODO: passing references is expensive, maybe change that when game finishes
 
         public VerticalBoostBlock(CustomTiledTypes.VerticalBoostBlock vblock)
         {
-            Ammount = vblock.Ammount;
-            isCompleteBlock = vblock.isCompleteBlock;
-            toUp = vblock.toUp;
+            this.vblock = vblock;
         }
 
         public override void getNeededObjectPropeties(DotTiled.Object obj, int TILESIZE, DotTiled.Map map)
@@ -301,13 +277,11 @@ namespace Juegazo.CustomTiledTypesImplementation
             // No additional properties needed from objects
         }
 
-        public override Block createBlock(object obj, int TILESIZE, DotTiled.Map map)
+        public override Block createBlock(int TILESIZE, DotTiled.Map map, TileObject obj = null)
         {
             return new Map.Blocks.VerticalBoostBlock(
-                GetRect(obj, TILESIZE, map),
-                Ammount,
-                isCompleteBlock,
-                toUp
+                GetRect(TILESIZE, map, obj),
+                vblock
             );
         }
 
@@ -319,19 +293,16 @@ namespace Juegazo.CustomTiledTypesImplementation
     public class CompleteLevelBlock : TiledTypesUsed
     {
         public CompleteLevelBlock() { }
-        public bool isEnabled { get; set; } = false;
-        public int nextLevel = 0;
+        public CustomTiledTypes.CompleteLevelBlock coso;
         public CompleteLevelBlock(CustomTiledTypes.CompleteLevelBlock coso)
         {
-            isEnabled = coso.isEnabled;
-            nextLevel = coso.nextLevel;
+            this.coso = coso;
         }
-        public override Block createBlock(object obj, int TILESIZE, DotTiled.Map map)
+        public override Block createBlock(int TILESIZE, DotTiled.Map map, TileObject obj = null)
         {
             return new Map.Blocks.CompleteLevelBlock(
-                GetRect(obj, TILESIZE, map),
-                isEnabled,
-                nextLevel
+                GetRect(TILESIZE, map, obj),
+                coso
             );
         }
 
@@ -346,36 +317,31 @@ namespace Juegazo.CustomTiledTypesImplementation
     public class CheckPointBlock : TiledTypesUsed
     {
         public CheckPointBlock() { }
-        public bool isEnabled { get; set; } = true;
-        public int message { get; set; } = 0;
-        public uint position = 0;
         public Vector2 Position = new();
+        public CustomTiledTypes.CheckPointBlock cpb;
         public CheckPointBlock(CustomTiledTypes.CheckPointBlock cpb)
         {
-            isEnabled = cpb.isEnabled;
-            message = cpb.message;
-            position = cpb.position;
+            this.cpb = cpb;
         }
-        public override Block createBlock(object obj, int TILESIZE, DotTiled.Map map)
+        public override Block createBlock(int TILESIZE, DotTiled.Map map, TileObject obj = null)
         {
             return new Map.Blocks.CheckPointBlock(
-                GetRect(obj, TILESIZE, map),
-                isEnabled,
-                message,
+                GetRect(TILESIZE, map, obj),
+                cpb,
                 Position
             );
         }
 
         public override void getNeededObjectPropeties(DotTiled.Object obj, int TILESIZE, DotTiled.Map map)
         {
-            if (obj.ID == position)
+            if (obj.ID == cpb.position)
                 Position = new(obj.X / map.TileWidth * TILESIZE, obj.Y / map.TileHeight * TILESIZE);
 
         }
 
         public override List<uint> neededObjects()
         {
-            return new([position]);
+            return new([cpb.position]);
         }
     }
     public class Key : TiledTypesUsed
@@ -393,9 +359,9 @@ namespace Juegazo.CustomTiledTypesImplementation
             // No additional properties needed from objects
         }
 
-        public override Block createBlock(object obj, int TILESIZE, DotTiled.Map map)
+        public override Block createBlock(int TILESIZE, DotTiled.Map map, TileObject obj = null)
         {
-            var rect = GetRect(obj, TILESIZE, map);
+            var rect = GetRect(TILESIZE, map, obj);
             if(obj is TileObject i)
             {
                 return new Map.Blocks.Key(i.ID, rect);
@@ -422,14 +388,16 @@ namespace Juegazo.CustomTiledTypesImplementation
             isOpen = block.isOpen;
             key = block.key;
         }
-        public override Block createBlock(object obj, int TILESIZE, DotTiled.Map map)
+        public override Block createBlock(int TILESIZE, DotTiled.Map map, TileObject obj = null)
         {
-            return new Map.Blocks.DoorBlock(GetRect(obj, TILESIZE, map), key, isOpen);
+            return new Map.Blocks.DoorBlock(
+                GetRect(TILESIZE, map, obj),
+                key,
+                isOpen);
         }
 
         public override void getNeededObjectPropeties(DotTiled.Object obj, int TILESIZE, DotTiled.Map map)
-        {
-        }
+        { }
 
         public override List<uint> neededObjects()
         {
@@ -444,32 +412,28 @@ namespace Juegazo.CustomTiledTypesImplementation
         {
             canCollide = cBlock.canCollide;
         }
-        public override Block createBlock(object obj, int TILESIZE, DotTiled.Map map)
+        public override Block createBlock(int TILESIZE, DotTiled.Map map, TileObject obj = null)
         {
             if (!canCollide) return null; // this causes some issues with a lot of things, its best to create a Collision block instead for now
-            return new Map.Blocks.CollisionBlock(GetRect(obj, TILESIZE, map), canCollide);
+            return new Map.Blocks.CollisionBlock(GetRect(TILESIZE, map, obj));
         }
 
-        public override void getNeededObjectPropeties(DotTiled.Object obj, int TILESIZE, DotTiled.Map map)
-        {
-        }
+        public override void getNeededObjectPropeties(DotTiled.Object obj, int TILESIZE, DotTiled.Map map) { }
 
         public override List<uint> neededObjects()
-        {
-            return new();
-        }
+        { return new(); }
     }
     public class SpeedUpBlock : TiledTypesUsed
     {
         public SpeedUpBlock() { }
-        public int speedAmmount = 5;
+        public CustomTiledTypes.SpeedUpBlock sppeedUp;
         public SpeedUpBlock(CustomTiledTypes.SpeedUpBlock sppeedUp)
         {
-            speedAmmount = sppeedUp.SpeedAmmount;
+            this.sppeedUp = sppeedUp;
         }
-        public override Block createBlock(object obj, int TILESIZE, DotTiled.Map map)
+        public override Block createBlock(int TILESIZE, DotTiled.Map map, TileObject obj = null)
         {
-            return new global::Juegazo.SpeedUpBlock(GetRect(obj, TILESIZE, map), speedAmmount);
+            return new Map.Blocks.SpeedUpBlock(GetRect(TILESIZE, map, obj),sppeedUp);
         }
 
         public override void getNeededObjectPropeties(DotTiled.Object obj, int TILESIZE, DotTiled.Map map)
@@ -483,64 +447,57 @@ namespace Juegazo.CustomTiledTypesImplementation
         public MoveOneDirection() { }
         public override string ToString()
         {
-            return $"MoveOneDirectionBlock: \tEndBlockPosition: {EndBlockPosition}\n\tCanMove: {canMove}\n\tInitialBlockPosition: {initialBlockPosition}\n\tSpeed: {speed}\n\tInitialBlock: {initialPos}\n\tEndBlock: {endPos}";
+            return $"MoveOneDirectionBlock: \tEndBlockPosition: {mblock.lastPosition}\n\tCanMove: {mblock.canMove}\n\tInitialBlockPosition: {mblock.initialPosition}\n\tSpeed: {mblock.velocity}\n\tInitialBlock: {initialPos}\n\tEndBlock: {endPos}";
         }
-        public uint EndBlockPosition { get; } = 0;
-        public bool canMove { get; } = false;
-        public uint initialBlockPosition { get; } = 0;
-        public int speed { get; } = 1;
+        public CustomTiledTypes.MoveOneDirection mblock;
         public Rectangle initialPos { get; set; } = new();
         public Rectangle endPos { get; set; } = new();
         public MoveOneDirection(CustomTiledTypes.MoveOneDirection mblock)
         {
-            EndBlockPosition = mblock.lastPosition;
-            canMove = mblock.canMove;
-            initialBlockPosition = mblock.initialPosition;
-            speed = mblock.velocity;
+            this.mblock = mblock;
         }
         public override void getNeededObjectPropeties(DotTiled.Object obj, int TILESIZE, DotTiled.Map map)
         {
             if (obj is RectangleObject rObject)
             {
-                if (obj.ID == initialBlockPosition)
+                if (obj.ID == mblock.initialPosition)
                 {
                     obj.Y += obj.Height;
-                    initialPos = GetRect(obj, TILESIZE, map);
+                    initialPos = GetRect(TILESIZE, map, obj);
                 }
-                if (obj.ID == EndBlockPosition)
+                if (obj.ID == mblock.lastPosition)
                 {
                     obj.Y += obj.Height;
-                    endPos = GetRect(obj, TILESIZE, map);
+                    endPos = GetRect(TILESIZE, map, obj);
                 }
             }
         }
-        public override Block createBlock(object obj, int TILESIZE, DotTiled.Map map)
+        public override Block createBlock(int TILESIZE, DotTiled.Map map, TileObject obj = null)
         {
-            return new Map.Blocks.MoveOneDirection(
-                GetRect(obj, TILESIZE, map),
+            return new Map.Blocks.MoveOneDirection( //TODO: change it to get "this" instead of InitialBlockPos, endBlockPos, etc.
+                GetRect(TILESIZE, map, obj),
                 initialPos,
                 endPos,
-                speed,
-                canMove
-            );
+                mblock
+                );
         }
 
         public override List<uint> neededObjects()
         {
-            return new([initialBlockPosition, EndBlockPosition]);
+            return new([mblock.initialPosition, mblock.lastPosition]);
         }
     }
     public class OneWayBlock : TiledTypesUsed
     {
-        public FACES face { get; set; } = FACES.TOP;
+        public CustomTiledTypes.FACES face { get; set; } = CustomTiledTypes.FACES.TOP;
         public OneWayBlock() { }
         public OneWayBlock(CustomTiledTypes.OneWayBlock o)
         {
             face = o.face;
         }
-        public override Block createBlock(object obj, int TILESIZE, DotTiled.Map map)
+        public override Block createBlock(int TILESIZE, DotTiled.Map map, TileObject obj = null)
         {
-            return new Map.Blocks.OneWayBlock(GetRect(obj, TILESIZE, map), face);
+            return new Map.Blocks.OneWayBlock(GetRect(TILESIZE, map, obj), face);
         }
 
         public override void getNeededObjectPropeties(DotTiled.Object obj, int TILESIZE, DotTiled.Map map)
@@ -560,9 +517,9 @@ namespace Juegazo.CustomTiledTypesImplementation
         {
             slowDownAmmount = o.slowAmount;
         }
-        public override Block createBlock(object obj, int TILESIZE, DotTiled.Map map)
+        public override Block createBlock(int TILESIZE, DotTiled.Map map, TileObject obj = null)
         {
-            return new Map.Blocks.SlowDownBlock(GetRect(obj, TILESIZE, map), slowDownAmmount);
+            return new Map.Blocks.SlowDownBlock(GetRect(TILESIZE, map, obj), slowDownAmmount);
         }
 
         public override void getNeededObjectPropeties(DotTiled.Object obj, int TILESIZE, DotTiled.Map map)
@@ -582,9 +539,9 @@ namespace Juegazo.CustomTiledTypesImplementation
         {
             canLoadComponent = a.canLoadComponent;
         }
-        public override Block createBlock(object obj, int TILESIZE, DotTiled.Map map)
+        public override Block createBlock(int TILESIZE, DotTiled.Map map, TileObject obj)
         {
-            return new Map.Blocks.WaterBlock(GetRect(obj, TILESIZE, map), canLoadComponent);
+            return new Map.Blocks.WaterBlock(GetRect(TILESIZE, map, obj), canLoadComponent);
         }
 
         public override void getNeededObjectPropeties(DotTiled.Object obj, int TILESIZE, DotTiled.Map map)
@@ -607,9 +564,62 @@ namespace Juegazo.CustomTiledTypesImplementation
             this.orb = orb;
             this.jumpAmmount = orb.JumpAmmount;
         }
-        public override Block createBlock(object obj, int TILESIZE, DotTiled.Map map)
+        public override Block createBlock(int TILESIZE, DotTiled.Map map, TileObject obj = null)
         {
-            return new Map.Blocks.Orb(GetRect(obj, TILESIZE, map), this);
+            return new Map.Blocks.Orb(GetRect(TILESIZE, map, obj), this);
+        }
+
+        public override void getNeededObjectPropeties(DotTiled.Object obj, int TILESIZE, DotTiled.Map map)
+        { }
+
+        public override List<uint> neededObjects()
+        {
+            return new();
+        }
+    }
+    public class GravityChangerOrbBlock : TiledTypesUsed
+    {
+        public CustomTiledTypes.GravityChangerOrbBlock c;
+        public GravityChangerOrbBlock() { }
+        public GravityChangerOrbBlock(CustomTiledTypes.GravityChangerOrbBlock c)
+        {
+            this.c = c;
+        }
+        public override Block createBlock(int TILESIZE, DotTiled.Map map, TileObject obj = null)
+        {
+            return new Map.Blocks.GravityChangerOrbBlock(
+                GetRect(TILESIZE, map, obj),
+                c.changeHorizontal,
+                c.changeVertical
+            );
+        }
+
+        public override void getNeededObjectPropeties(DotTiled.Object obj, int TILESIZE, DotTiled.Map map)
+        { }
+
+        public override List<uint> neededObjects()
+        {
+            return new();
+        }
+    }
+    public class GravityChangerPadBlock : TiledTypesUsed
+    {
+        public FACES faces;
+        public GravityChangerPadBlock() { }
+        public GravityChangerPadBlock(CustomTiledTypes.GravityChangerPadBlock c)
+        {
+            faces = c.snapTo switch
+            {
+                CustomTiledTypes.FACES.TOP => FACES.TOP,
+                CustomTiledTypes.FACES.BOTTOM =>FACES.BOTTOM,
+                CustomTiledTypes.FACES.LEFT => FACES.LEFT,
+                CustomTiledTypes.FACES.RIGHT => FACES.RIGHT,
+                _ => throw new NotImplementedException(),
+            };
+        }
+        public override Block createBlock(int TILESIZE, DotTiled.Map map, TileObject obj = null)
+        {
+            return new Map.Blocks.GravityChangerPadBlock(GetRect(TILESIZE, map, obj), faces);
         }
 
         public override void getNeededObjectPropeties(DotTiled.Object obj, int TILESIZE, DotTiled.Map map)

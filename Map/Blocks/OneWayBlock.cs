@@ -12,9 +12,9 @@ namespace Juegazo.Map.Blocks
     public class OneWayBlock : Block
     {
         //TODO: add enum with orientation
-        public FACES face = FACES.TOP;
+        public CustomTiledTypes.FACES face = CustomTiledTypes.FACES.TOP;
         public OneWayBlock(Rectangle collider) : base(collider) { }
-        public OneWayBlock(Rectangle collider, FACES face)
+        public OneWayBlock(Rectangle collider, CustomTiledTypes.FACES face)
             : base(collider)
         {
             this.face = face;

@@ -72,27 +72,30 @@ namespace Juegazo
             // get all playable entities from the tilemap
             var playableEntities = tilemap.entities
                 .Where(e => e.isPlayable);
-            foreach (var t in playableEntities)
+            if(entities.Count == 0)
             {
-                var componentsOnEntity = new List<Component> {
-                    new KeyboardInputComponent(),
-                    new MoveVerticalComponent(),
-                    new MoveHorizontalComponent(),
-                    new ComplexGravityComponent(),
-                    new EntitiesInteractionsComponent(entities),
-                    new StateManagerComponent()
-                };
-                t.AddComponents(componentsOnEntity);
-                t.AddComponent(typeof(CanDieComponent), new CanDieComponent(new(t.Destinationrectangle.X, t.Destinationrectangle.Y)));
-                if (t.isPlayer)
+                foreach (var t in playableEntities)
                 {
-                    t.AddComponent(typeof(CameraToEntitySimpleComponent), new CameraToEntitySimpleComponent(camera));
-                    camera.Position = new(t.collider.X, t.collider.Y);
-                    t.texture = playerTexture;
-                    t.AddComponent(typeof(AnimationComponent), new AnimationComponent());
+                    var componentsOnEntity = new List<Component> {
+                        new KeyboardInputComponent(),
+                        new MoveVerticalComponent(),
+                        new MoveHorizontalComponent(),
+                        new ComplexGravityComponent(),
+                        new EntitiesInteractionsComponent(entities),
+                        new StateManagerComponent()
+                    };
+                    t.AddComponents(componentsOnEntity);
+                    t.AddComponent(typeof(CanDieComponent), new CanDieComponent(new(t.Destinationrectangle.X, t.Destinationrectangle.Y)));
+                    if (t.isPlayer)
+                    {
+                        t.AddComponent(typeof(CameraToEntitySimpleComponent), new CameraToEntitySimpleComponent(camera));
+                        camera.Position = new(t.collider.X, t.collider.Y);
+                        t.texture = playerTexture;
+                        t.AddComponent(typeof(AnimationComponent), new AnimationComponent());
+                    }
                 }
+                entities.AddRange(tilemap.entities);
             }
-            entities.AddRange(tilemap.entities);
 
             font = contentManager.Load<SpriteFont>("sheesh");
             camera.Origin = new Vector2(camera.Viewport.Width / 2, camera.Viewport.Height / 2);
@@ -112,17 +115,10 @@ namespace Juegazo
 
             if (Keyboard.GetState().IsKeyDown(Keys.R) && pastKey.IsKeyDown(Keys.R))
             {
-                var playerEntity = entities.First(e => e.isPlayer);
-                entities.Clear();
-                entities.Add(playerEntity);
-                entities.AddRange(tilemap.entities);
-                var interactions = (EntitiesInteractionsComponent)playerEntity.GetComponent<EntitiesInteractionsComponent>();
-                interactions.entities = entities;
-                List<ICustomTypeDefinition> typeDefinitions = new();
-                tilemap = new(graphicsDevice, projectDirectory, levelPath, TILESIZE, typeDefinitions, gum);
-                entities.AddRange(tilemap.entities);
-                camera.Zoom = tilemap.cameraZoom;
-                cameraBoundries = tilemap.levelBoundries;
+                Console.WriteLine("-- reloading --");
+                tilemap = null;
+                UnloadContent();
+                LoadContent();
             }
             if (Keyboard.GetState().IsKeyDown(Keys.M) && pastKey.IsKeyDown(Keys.M))
             {
@@ -149,13 +145,25 @@ namespace Juegazo
             {
                 entity.Update(gameTime);
                 entity.touchingWaterBlock = false;
+                FACES entityDirection = entity.direction;
                 if (entity.componentList.Count == 0)
                 {
                     entities.Remove(entity);
                     Console.WriteLine("deleted entity");
                 }
-                entity.Destinationrectangle.X += (int)entity.velocity.X;
-                entity.Destinationrectangle.X += (int)entity.baseVelocity.X;
+
+                int horizDelta = 0;
+                if (entityDirection == FACES.LEFT)
+                    horizDelta -= (int)entity.velocity.Y + (int)entity.baseVelocity.Y;
+                else if (entityDirection == FACES.RIGHT)
+                    horizDelta += (int)entity.velocity.Y + (int)entity.baseVelocity.Y;
+                else 
+                    horizDelta += (int)entity.velocity.X + (int)entity.baseVelocity.X;
+
+                if(entityDirection == FACES.TOP)
+                    entity.Destinationrectangle.X -= horizDelta;
+                else
+                    entity.Destinationrectangle.X += horizDelta;
 
                 foreach (Block block in collisionBlocks)
                 {
@@ -171,8 +179,18 @@ namespace Juegazo
                     nextScene = changeSScne(nextScene, block);
                 }
 
-                entity.Destinationrectangle.Y += (int)entity.velocity.Y;
-                entity.Destinationrectangle.Y += (int)entity.baseVelocity.Y;
+                int vertDelta = 0;
+                if (entityDirection == FACES.BOTTOM)
+                    vertDelta += (int)entity.velocity.Y + (int)entity.baseVelocity.Y;
+                else if (entityDirection == FACES.TOP)
+                    vertDelta -= (int)entity.velocity.Y + (int)entity.baseVelocity.Y;
+                else
+                    vertDelta += (int)entity.velocity.X + (int)entity.baseVelocity.X;
+                if(entityDirection == FACES.RIGHT)
+                    entity.Destinationrectangle.Y -= vertDelta;
+                else
+                    entity.Destinationrectangle.Y += vertDelta;
+
                 foreach (Block block in collisionBlocks)
                 {
                     if (block.collider.Intersects(entity.Destinationrectangle))
@@ -237,9 +255,8 @@ namespace Juegazo
             if (block is CompleteLevelBlock papu && papu.changeScene && !changeScene)
             {
                 changeScene = true;
-                nextScene = papu.nextSceneID;
+                nextScene = papu.nextScene;
             }
-
             return nextScene;
         }
 
@@ -287,7 +304,7 @@ namespace Juegazo
                 }
                 if(entity.isPlayer)
                     spriteBatch.DrawString(font,
-                        $"Level: {Path.GetFileNameWithoutExtension(levelPath)}\nFPS: {Math.Round(1 / gameTime.ElapsedGameTime.TotalSeconds)}\nposition: X:{entity.Destinationrectangle.X} Y:{entity.Destinationrectangle.Y}\nvelocity: {entity.velocity}\nbaseVelocity: {entity.baseVelocity}\nhealth: {entity.health}\nstate: {entity.entityState}",
+                        $"Level: {Path.GetFileNameWithoutExtension(levelPath)}\nFPS: {Math.Round(1 / gameTime.ElapsedGameTime.TotalSeconds)}\nposition: (X:{entity.Destinationrectangle.X} Y:{entity.Destinationrectangle.Y})\nvelocity: {entity.velocity}\nbaseVelocity: {entity.baseVelocity}\nhealth: {entity.health}\nstate: {entity.entityState}\ngravity: {entity.direction}",
                         new Vector2(camera.Left, camera.Top),
                             Color.White);
             }

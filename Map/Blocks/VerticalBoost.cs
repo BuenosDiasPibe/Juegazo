@@ -10,12 +10,12 @@ namespace Juegazo.Map.Blocks
 {
     public class VerticalBoostBlock : Block
     {
-        public float vertBoost = 14;
+        public float vertBoost = 0;
         public VerticalBoostBlock(Rectangle collider) : base(collider) { }
         //TODO: añadir metodos que utilicen isCompleteBlock y toUP
-        public VerticalBoostBlock(Rectangle collider, int vertBoost, bool isCompleteBlock, bool toUp) : base(collider)
+        public VerticalBoostBlock(Rectangle collider, CustomTiledTypes.VerticalBoostBlock vblock) : base(collider)
         {
-            this.vertBoost = vertBoost;
+            vertBoost = vblock.Ammount;
         }
         public VerticalBoostBlock() { }
         public override void horizontalActions(Entity entity, Rectangle collision)
@@ -26,10 +26,6 @@ namespace Juegazo.Map.Blocks
         public override void verticalActions(Entity entity, Rectangle collision)
         {
             entity.velocity.Y = -vertBoost;
-        }
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch, Texture2D texture, Rectangle sourceRectangle)
-        {
-            base.Draw(gameTime, spriteBatch, texture, sourceRectangle);
         }
     }
 }

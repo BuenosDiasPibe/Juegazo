@@ -166,11 +166,6 @@
                          "name":"isPlayer",
                          "type":"bool",
                          "value":true
-                        }, 
-                        {
-                         "name":"isVisible",
-                         "type":"bool",
-                         "value":true
                         }],
                  "rotation":0,
                  "type":"PlayerSpawner",

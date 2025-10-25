@@ -12,27 +12,20 @@ namespace Juegazo.Map.Blocks
     public class CheckPointBlock : Block
     {
         public Vector2 position = new();
-        public int message = 0;
-        SoundEffect thingie;
+        public CustomTiledTypes.CheckPointBlock cpb;
         public CheckPointBlock(Rectangle collisionRectangle) : base(collisionRectangle)
-        {
-            position = new(collider.X, collider.Y);
-        }
-        public CheckPointBlock()
-        {
-        }
+        { position = new(collider.X, collider.Y); }
+        public CheckPointBlock() { }
         public override void Start()
         {
-            base.Start();
             if (position == Vector2.Zero)
                 position = collider.Location.ToVector2();
-            // Provide a valid Stream containing the sound data
-            // Example: Load from file (update the path as needed)
+            base.Start();
         }
-        public CheckPointBlock(Rectangle collision, bool isEnabled, int message, Vector2 position) : base(collision)
+        public CheckPointBlock(Rectangle collision, CustomTiledTypes.CheckPointBlock cpb, Vector2 position) : base(collision)
         {
-            EnableCollisions = isEnabled;
-            this.message = message;
+            this.cpb = cpb;
+            EnableCollisions = cpb.isEnabled;
             this.position = position;
         }
         public override void horizontalActions(Entity entity, Rectangle collision)
@@ -45,7 +38,6 @@ namespace Juegazo.Map.Blocks
                 }
             }
         }
-
         public override void verticalActions(Entity entity, Rectangle collision)
         {
             horizontalActions(entity, collision);

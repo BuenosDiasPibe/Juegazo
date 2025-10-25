@@ -21,12 +21,9 @@ namespace Juegazo.Map.Blocks
         }
         public override void horizontalActions(Entity entity, Rectangle collision)
         {
-            if(entity.TryGetComponent(out KeyboardInputComponent c))
+            if(entity.TryGetComponent(out KeyboardInputComponent c) && c.btnpUp)
             {
-                if(c.btnpUp)
-                {
-                    entity.velocity.Y = -jumpAmmount;
-                }
+                entity.velocity.Y = -jumpAmmount;
             }
         }
 

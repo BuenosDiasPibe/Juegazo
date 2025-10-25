@@ -12,15 +12,13 @@ namespace Juegazo
 {
     public abstract class Block
     {
-        public Tile tile;
-        public Rectangle collider = new();
-        public Rectangle DestinationRectangle = new();
-        public List<BlockComponent> components = new();
         public bool enableDraw = true;
-
         public bool EnableUpdate { get; protected set; } = false;
         public bool EnableCollisions { get; protected set; } = true;
-
+        public Rectangle collider = new();
+        public Rectangle DestinationRectangle = new();
+        public Tile tile;
+        public List<BlockComponent> components = new();
         protected Block() { }
         protected Block(Rectangle collider)
         {
@@ -47,9 +45,9 @@ namespace Juegazo
                 AddComponent(new BlockAnimationComponent());
             }
         }
-        public virtual void Update(GameTime gameTime) { }
         public abstract void horizontalActions(Entity entity, Rectangle collision);
         public abstract void verticalActions(Entity entity, Rectangle collision);
+        public virtual void Update(GameTime gameTime) { }
         public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch, Texture2D texture, Rectangle sourceRectangle)
         {
             if (!enableDraw) return;

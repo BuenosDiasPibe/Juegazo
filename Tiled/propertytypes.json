@@ -269,6 +269,62 @@
     {
         "color": "#ffa0a0a4",
         "drawFill": true,
+        "id": 30,
+        "members": [
+            {
+                "name": "changeHorizontal",
+                "type": "bool",
+                "value": false
+            },
+            {
+                "name": "changeVertical",
+                "type": "bool",
+                "value": false
+            }
+        ],
+        "name": "GravityChangerOrbBlock",
+        "type": "class",
+        "useAs": [
+            "property",
+            "map",
+            "layer",
+            "object",
+            "tile",
+            "tileset",
+            "wangcolor",
+            "wangset",
+            "project"
+        ]
+    },
+    {
+        "color": "#ffa0a0a4",
+        "drawFill": true,
+        "id": 31,
+        "members": [
+            {
+                "name": "snapTo",
+                "propertyType": "FACES",
+                "type": "int",
+                "value": 0
+            }
+        ],
+        "name": "GravityChangerPadBlock",
+        "type": "class",
+        "useAs": [
+            "property",
+            "map",
+            "layer",
+            "object",
+            "tile",
+            "tileset",
+            "wangcolor",
+            "wangset",
+            "project"
+        ]
+    },
+    {
+        "color": "#ffa0a0a4",
+        "drawFill": true,
         "id": 22,
         "members": [
             {
@@ -683,7 +739,7 @@
                 "value": 5
             }
         ],
-        "name": "SpeedUp",
+        "name": "SpeedUpBlock",
         "type": "class",
         "useAs": [
             "property",

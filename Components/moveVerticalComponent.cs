@@ -33,7 +33,7 @@ namespace Juegazo.Components
         {
             if(Owner.TryGetComponent(out KeyboardInputComponent c))
             {
-                JumpPressed = c.btnpUp;
+                JumpPressed = c.btnUp;
                 //jumpCheat = c.btnpSpecial1;
                 // fastFall = c.btnSpecial2;
             }

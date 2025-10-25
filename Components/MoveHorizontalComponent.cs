@@ -59,10 +59,6 @@ namespace Juegazo.Components
                 }
                 Owner.directionLeft = false;
             }
-            if (movingLeft && movingRight)
-            {
-                Owner.velocity.X = 0;
-            }
             // Dash
             if (dash && !dashed)
             {
@@ -83,6 +79,10 @@ namespace Juegazo.Components
                     }
                 }
                 dashed = true;
+            }
+            if (movingLeft && movingRight)
+            {
+                Owner.velocity.X = 0;
             }
 
 

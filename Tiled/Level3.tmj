@@ -86,7 +86,12 @@
                  "point":true,
                  "properties":[
                         {
-                         "name":"isVisible",
+                         "name":"isPlayable",
+                         "type":"bool",
+                         "value":true
+                        }, 
+                        {
+                         "name":"isPlayer",
                          "type":"bool",
                          "value":true
                         }],

@@ -52,8 +52,10 @@ namespace Juegazo.Components
                     // Apply input
                     if (kic.btnUp) Owner.velocity.Y = -velocity;
                     if (kic.btnDown) Owner.velocity.Y = velocity;
+                    if (kic.btnUp && kic.btnDown) Owner.velocity.Y = 0;
                     if (kic.btnLeft) Owner.velocity.X = -velocity;
                     if (kic.btnRight) Owner.velocity.X = velocity;
+                    if (kic.btnLeft && kic.btnRight) Owner.velocity.X = 0;
                 }
             }
             else

@@ -11,7 +11,6 @@ namespace Juegazo.Components
     {
         private const float MAX_FALLING = 10;
         private const float FALLING_VELOCITY = 0.6f;
-        public CardinalPoint cardinalPoint = CardinalPoint.North;
 
         public override void Destroy()
         { }
@@ -21,20 +20,8 @@ namespace Juegazo.Components
 
         public override void Update(GameTime gameTime)
         {
-            switch (cardinalPoint)
-            {
-                case CardinalPoint.North:
-                    if (Owner.velocity.Y > MAX_FALLING) break;
-                    Owner.velocity.Y += FALLING_VELOCITY;
-                    break;
-                case CardinalPoint.South:
-                    break;
-                case CardinalPoint.East:
-                    break;
-                case CardinalPoint.West:
-                    break;
-            }
-            //Owner.velocity.Y = Math.Min(MAX_FALLING, Owner.velocity.Y);
+            if (Owner.velocity.Y > MAX_FALLING) return;
+            Owner.velocity.Y += FALLING_VELOCITY;
         }
     }
 }

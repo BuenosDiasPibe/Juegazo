@@ -42,8 +42,9 @@ namespace Juegazo
         public int health;
         public int maxHealth;
         public bool directionLeft = false;
+        public FACES direction = FACES.BOTTOM; //this should be inside another component
         public EntityState entityState = new(); //TODO: should this be added to another component?
-        public bool touchingWaterBlock = false; //TODO: find a bettwe way to check this
+        public bool touchingWaterBlock = false; //TODO: find a better way to check this
         public Entity(Texture2D texture, Rectangle sourceRectangle, Rectangle Destrectangle, Rectangle collider, Color color) : base(texture, sourceRectangle, Destrectangle, color)
         {
             velocity = new();

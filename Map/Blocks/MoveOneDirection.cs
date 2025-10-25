@@ -10,16 +10,16 @@ namespace Juegazo.Map.Blocks
     {
         public Rectangle initialPosition = new();
         public Rectangle EndPosition = new();
-        public int velocity = 0;
+        public CustomTiledTypes.MoveOneDirection mblock;
         public Vector2 velToEntity = new();
         public Vector2 lastBlockPosition = new();
         private float time;
-        public MoveOneDirection(Rectangle collider, Rectangle initialPos, Rectangle endPos, int vel, bool canMove) : base(collider)
+        public MoveOneDirection(Rectangle collider, Rectangle initialPos, Rectangle endPos, CustomTiledTypes.MoveOneDirection mblock) : base(collider)
         {
             initialPosition = initialPos;
             EndPosition = endPos;
-            velocity = vel;
-            this.EnableUpdate = canMove;
+            this.mblock = mblock;
+            this.EnableUpdate = mblock.canMove;
         }
         public MoveOneDirection() { }
         public override void Update(GameTime gameTime)
@@ -27,7 +27,7 @@ namespace Juegazo.Map.Blocks
             Vector2 current = initialPosition.Location.ToVector2();
             Vector2 target = EndPosition.Location.ToVector2();
             float distance = Vector2.Distance(current, target);
-            time = (float)(gameTime.TotalGameTime.TotalSeconds * velocity / distance) % 1;
+            time = (float)(gameTime.TotalGameTime.TotalSeconds * mblock.velocity / distance) % 1;
             Vector2 newPosition = Vector2.Lerp(current, target, time);
 
             collider.Location = newPosition.ToPoint();

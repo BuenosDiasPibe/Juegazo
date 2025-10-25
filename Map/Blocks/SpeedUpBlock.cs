@@ -7,17 +7,17 @@ using Juegazo.Components;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Juegazo
+namespace Juegazo.Map.Blocks
 {
     public class SpeedUpBlock : Block
     {
-        private int velocitySpeed = 3;
+        private int velocitySpeed = 0;
         public SpeedUpBlock(Rectangle collider) : base(collider) { }
 
         public SpeedUpBlock() { }
-        public SpeedUpBlock(Rectangle collider, int velocitySpeed) : base(collider)
+        public SpeedUpBlock(Rectangle collider,CustomTiledTypes.SpeedUpBlock sppeedUp) : base(collider)
         {
-            this.velocitySpeed = velocitySpeed;
+            this.velocitySpeed = sppeedUp.SpeedAmmount;
         }
         public override void horizontalActions(Entity entity, Rectangle collision)
         {
