@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Juegazo.Components
 {
+    //For now this class is useless, maybe this could be used for other mechanics
     public class KeysIDHolderComponent : Component
     {
         public List<uint> keyHolder { get; protected set; } = new();

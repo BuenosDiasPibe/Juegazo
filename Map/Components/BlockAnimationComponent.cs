@@ -40,7 +40,7 @@ namespace Juegazo.Map.Components
             sourceRectangle.X = (int)(currentFrame.TileID % (texture.Width / sourceRectangle.Width) * sourceRectangle.Width);
             sourceRectangle.Y = (int)(currentFrame.TileID / (texture.Width / sourceRectangle.Width) * sourceRectangle.Height);
 
-            spriteBatch.Draw(texture, Owner.collider, sourceRectangle, Color.White);
+            spriteBatch.Draw(texture, Owner.collider, sourceRectangle, Owner.colorBlock);
         }
 
         public override void Update(GameTime gameTime)

@@ -265,7 +265,7 @@
         {
          "name":"zoom",
          "type":"float",
-         "value":1.2
+         "value":0
         }],
  "renderorder":"right-down",
  "tiledversion":"1.11.2",

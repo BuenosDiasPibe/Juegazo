@@ -338,12 +338,6 @@
                  "height":8,
                  "id":47,
                  "name":"",
-                 "properties":[
-                        {
-                         "name":"key",
-                         "type":"object",
-                         "value":48
-                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -356,6 +350,12 @@
                  "height":8,
                  "id":48,
                  "name":"",
+                 "properties":[
+                        {
+                         "name":"Door",
+                         "type":"object",
+                         "value":47
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -518,10 +518,10 @@
          "imageheight":32,
          "imagewidth":32,
          "name":"Capa de Imagen 1",
-         "offsetx":0,
-         "offsety":64,
+         "offsetx":200,
+         "offsety":48,
          "opacity":1,
-         "repeatx":true,
+         "repeaty":true,
          "type":"imagelayer",
          "visible":true,
          "x":0,

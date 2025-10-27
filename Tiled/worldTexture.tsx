@@ -5,7 +5,7 @@
  <tile id="5" type="SpeedUpBlock"/>
  <tile id="8" type="VerticalBoostBlock">
   <properties>
-   <property name="Ammount" type="int" value="10"/>
+   <property name="Ammount" type="int" value="20"/>
   </properties>
  </tile>
  <tile id="10" type="SlowDownBlock"/>

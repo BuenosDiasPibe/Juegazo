@@ -13,7 +13,6 @@ namespace Juegazo.Map.Blocks
     {
         public bool changeScene = false;
         public int nextScene = 0;
-        Color color = Color.White;
         public CompleteLevelBlock(Rectangle collider) : base(collider) { }
         public CompleteLevelBlock() {}
         public CompleteLevelBlock(Rectangle collider,CustomTiledTypes.CompleteLevelBlock coso) : base(collider)
@@ -22,7 +21,7 @@ namespace Juegazo.Map.Blocks
             nextScene = coso.nextLevel;
             if (nextScene != 0)
             {
-                color = new Color(new ColorProvider().GetColorByNumber(nextScene));
+                colorBlock = new Color(new ColorProvider().GetColorByNumber(nextScene));
             }
         }
         public override void horizontalActions(Entity entity, Rectangle collision)
@@ -33,10 +32,6 @@ namespace Juegazo.Map.Blocks
         public override void verticalActions(Entity entity, Rectangle collision)
         {
             changeScene = true;
-        }
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch, Texture2D texture, Rectangle sourceRectangle)
-        {
-            spriteBatch.Draw(texture, collider, sourceRectangle, color);
         }
     }
 }

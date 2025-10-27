@@ -1,9 +1,8 @@
 [
     {
         "color": "#ffa0a0a4",
-        "drawFill": true,
-        "id": 3,
-        "members": [
+        "name": "CheckPointBlock",
+        "properties": [
             {
                 "name": "isEnabled",
                 "type": "bool",
@@ -19,76 +18,40 @@
                 "type": "object",
                 "value": 0
             }
-        ],
-        "name": "CheckPointBlock",
-        "type": "class",
-        "useAs": [
-            "property",
-            "object",
-            "tile",
-            "tileset",
-            "project"
         ]
     },
     {
         "color": "#ffa0a0a4",
-        "drawFill": true,
-        "id": 14,
-        "members": [
+        "name": "Collision Blocks Object Layer",
+        "properties": [
             {
                 "name": "canOverrideCollisionLayer",
                 "type": "bool",
                 "value": true
             }
-        ],
-        "name": "Collision Blocks Object Layer",
-        "type": "class",
-        "useAs": [
-            "property",
-            "layer",
-            "project"
         ]
     },
     {
         "color": "#ffa0a0a4",
-        "drawFill": true,
-        "id": 15,
-        "members": [
-        ],
         "name": "Collision Tile Layer",
-        "type": "class",
-        "useAs": [
-            "property",
-            "layer",
-            "project"
+        "properties": [
         ]
     },
     {
         "color": "#ffa0a0a4",
-        "drawFill": true,
-        "id": 20,
-        "members": [
+        "name": "CollisionBlock",
+        "properties": [
             {
                 "name": "canCollide",
                 "type": "bool",
                 "value": true
             }
-        ],
-        "name": "CollisionBlock",
-        "type": "class",
-        "useAs": [
-            "property",
-            "object",
-            "tile",
-            "tileset",
-            "project"
         ]
     },
     {
         "color": "#fff6f5f4",
-        "drawFill": true,
-        "id": 12,
-        "members": [
+        "name": "CompleteLevelBlock",
+        "properties": [
             {
                 "name": "isEnabled",
                 "type": "bool",
@@ -99,26 +62,12 @@
                 "type": "int",
                 "value": 0
             }
-        ],
-        "name": "CompleteLevelBlock",
-        "type": "class",
-        "useAs": [
-            "property",
-            "map",
-            "layer",
-            "object",
-            "tile",
-            "tileset",
-            "wangcolor",
-            "wangset",
-            "project"
         ]
     },
     {
         "color": "#ffa0a0a4",
-        "drawFill": true,
-        "id": 10,
-        "members": [
+        "name": "DamageBlock",
+        "properties": [
             {
                 "name": "canDamage",
                 "type": "bool",
@@ -129,148 +78,56 @@
                 "type": "int",
                 "value": 0
             }
-        ],
-        "name": "DamageBlock",
-        "type": "class",
-        "useAs": [
-            "property",
-            "map",
-            "layer",
-            "object",
-            "tile",
-            "tileset",
-            "wangcolor",
-            "wangset",
-            "project"
         ]
     },
     {
         "color": "#ffa0a0a4",
-        "drawFill": true,
-        "id": 16,
-        "members": [
-            {
-                "name": "color",
-                "type": "color",
-                "value": ""
-            },
+        "name": "DoorBlock",
+        "properties": [
             {
                 "name": "isOpen",
                 "type": "bool",
                 "value": false
-            },
-            {
-                "name": "key",
-                "type": "object",
-                "value": 0
             }
-        ],
-        "name": "DoorBlock",
-        "type": "class",
-        "useAs": [
-            "property",
-            "layer",
-            "object",
-            "tile",
-            "tileset",
-            "wangcolor",
-            "wangset",
-            "project"
         ]
     },
     {
         "color": "#ffa0a0a4",
-        "drawFill": true,
-        "id": 21,
-        "members": [
+        "name": "DoubleJump",
+        "properties": [
             {
                 "name": "image",
                 "type": "file",
-                "value": "/home/clumpl/Documentos/Programacion/Juegazo/Tiled/player_doubleJump.png"
+                "value": "player_doubleJump.png"
             },
             {
                 "name": "numberOfJumps",
                 "type": "int",
                 "value": 5
             }
-        ],
-        "name": "DoubleJump",
-        "type": "class",
-        "useAs": [
-            "property",
-            "map",
-            "layer",
-            "object",
-            "tile",
-            "tileset",
-            "wangcolor",
-            "wangset",
-            "project"
         ]
     },
     {
         "color": "#ffa0a0a4",
-        "drawFill": true,
-        "id": 17,
-        "members": [
-        ],
         "name": "Entity Spawner",
-        "type": "class",
-        "useAs": [
-            "property",
-            "map",
-            "layer",
-            "object",
-            "tile",
-            "tileset",
-            "wangcolor",
-            "wangset",
-            "project"
+        "properties": [
         ]
     },
     {
         "color": "#ffa0a0a4",
-        "drawFill": true,
-        "id": 28,
-        "members": [
+        "name": "EntityChanger",
+        "properties": [
             {
                 "name": "idk",
                 "type": "int",
                 "value": 0
             }
-        ],
-        "name": "EntityChanger",
-        "type": "class",
-        "useAs": [
-            "property",
-            "map",
-            "layer",
-            "object",
-            "tile",
-            "tileset",
-            "wangcolor",
-            "wangset",
-            "project"
         ]
     },
     {
-        "id": 5,
-        "name": "FACES",
-        "storageType": "int",
-        "type": "enum",
-        "values": [
-            "TOP",
-            "BOTTOM",
-            "LEFT",
-            "RIGHT"
-        ],
-        "valuesAsFlags": false
-    },
-    {
         "color": "#ffa0a0a4",
-        "drawFill": true,
-        "id": 30,
-        "members": [
+        "name": "GravityChangerOrbBlock",
+        "properties": [
             {
                 "name": "changeHorizontal",
                 "type": "bool",
@@ -281,52 +138,24 @@
                 "type": "bool",
                 "value": false
             }
-        ],
-        "name": "GravityChangerOrbBlock",
-        "type": "class",
-        "useAs": [
-            "property",
-            "map",
-            "layer",
-            "object",
-            "tile",
-            "tileset",
-            "wangcolor",
-            "wangset",
-            "project"
         ]
     },
     {
         "color": "#ffa0a0a4",
-        "drawFill": true,
-        "id": 31,
-        "members": [
+        "name": "GravityChangerPadBlock",
+        "properties": [
             {
                 "name": "snapTo",
-                "propertyType": "FACES",
+                "propertytype": "FACES",
                 "type": "int",
                 "value": 0
             }
-        ],
-        "name": "GravityChangerPadBlock",
-        "type": "class",
-        "useAs": [
-            "property",
-            "map",
-            "layer",
-            "object",
-            "tile",
-            "tileset",
-            "wangcolor",
-            "wangset",
-            "project"
         ]
     },
     {
         "color": "#ffa0a0a4",
-        "drawFill": true,
-        "id": 22,
-        "members": [
+        "name": "Gunner",
+        "properties": [
             {
                 "name": "DistanceInTiles",
                 "type": "int",
@@ -342,26 +171,12 @@
                 "type": "bool",
                 "value": false
             }
-        ],
-        "name": "Gunner",
-        "type": "class",
-        "useAs": [
-            "property",
-            "map",
-            "layer",
-            "object",
-            "tile",
-            "tileset",
-            "wangcolor",
-            "wangset",
-            "project"
         ]
     },
     {
         "color": "#fff8e45c",
-        "drawFill": true,
-        "id": 13,
-        "members": [
+        "name": "JumpWallBlock",
+        "properties": [
             {
                 "name": "canJump",
                 "type": "bool",
@@ -377,56 +192,28 @@
                 "type": "int",
                 "value": 11
             }
-        ],
-        "name": "JumpWallBlock",
-        "type": "class",
-        "useAs": [
-            "property",
-            "map",
-            "layer",
-            "object",
-            "tile",
-            "tileset",
-            "wangcolor",
-            "wangset",
-            "project"
         ]
     },
     {
         "color": "#ffa0a0a4",
-        "drawFill": true,
-        "id": 18,
-        "members": [
+        "name": "Key",
+        "properties": [
             {
-                "name": "color",
-                "type": "color",
-                "value": ""
+                "name": "Door",
+                "type": "object",
+                "value": 0
             },
             {
                 "name": "isColected",
                 "type": "bool",
                 "value": false
             }
-        ],
-        "name": "Key",
-        "type": "class",
-        "useAs": [
-            "property",
-            "map",
-            "layer",
-            "object",
-            "tile",
-            "tileset",
-            "wangcolor",
-            "wangset",
-            "project"
         ]
     },
     {
         "color": "#ffa0a0a4",
-        "drawFill": true,
-        "id": 26,
-        "members": [
+        "name": "Laser",
+        "properties": [
             {
                 "name": "TimeShownSeconds",
                 "type": "float",
@@ -437,26 +224,12 @@
                 "type": "int",
                 "value": 1
             }
-        ],
-        "name": "Laser",
-        "type": "class",
-        "useAs": [
-            "property",
-            "map",
-            "layer",
-            "object",
-            "tile",
-            "tileset",
-            "wangcolor",
-            "wangset",
-            "project"
         ]
     },
     {
         "color": "#ffa0a0a4",
-        "drawFill": true,
-        "id": 27,
-        "members": [
+        "name": "LevelPropieties",
+        "properties": [
             {
                 "name": "ClampCameraToBoundries",
                 "type": "bool",
@@ -465,28 +238,14 @@
             {
                 "name": "zoom",
                 "type": "float",
-                "value": 1
+                "value": 0
             }
-        ],
-        "name": "LevelPropieties",
-        "type": "class",
-        "useAs": [
-            "property",
-            "map",
-            "layer",
-            "object",
-            "tile",
-            "tileset",
-            "wangcolor",
-            "wangset",
-            "project"
         ]
     },
     {
         "color": "#ff3584e4",
-        "drawFill": true,
-        "id": 11,
-        "members": [
+        "name": "MovementBlock",
+        "properties": [
             {
                 "name": "EndBlockPosition",
                 "type": "object",
@@ -507,26 +266,12 @@
                 "type": "float",
                 "value": 1
             }
-        ],
-        "name": "MovementBlock",
-        "type": "class",
-        "useAs": [
-            "property",
-            "map",
-            "layer",
-            "object",
-            "tile",
-            "tileset",
-            "wangcolor",
-            "wangset",
-            "project"
         ]
     },
     {
         "color": "#ffa0a0a4",
-        "drawFill": true,
-        "id": 23,
-        "members": [
+        "name": "MoveOneDirection",
+        "properties": [
             {
                 "name": "canMove",
                 "type": "bool",
@@ -547,24 +292,12 @@
                 "type": "int",
                 "value": 0
             }
-        ],
-        "name": "MoveOneDirection",
-        "type": "class",
-        "useAs": [
-            "property",
-            "object",
-            "tile",
-            "tileset",
-            "wangcolor",
-            "wangset",
-            "project"
         ]
     },
     {
         "color": "#ffa0a0a4",
-        "drawFill": true,
-        "id": 19,
-        "members": [
+        "name": "NPC",
+        "properties": [
             {
                 "name": "dialogEnd",
                 "type": "int",
@@ -580,48 +313,24 @@
                 "type": "string",
                 "value": ""
             }
-        ],
-        "name": "NPC",
-        "type": "class",
-        "useAs": [
-            "property",
-            "object",
-            "tile",
-            "tileset",
-            "project"
         ]
     },
     {
         "color": "#ffa0a0a4",
-        "drawFill": true,
-        "id": 4,
-        "members": [
+        "name": "OneWayBlock",
+        "properties": [
             {
                 "name": "face",
-                "propertyType": "FACES",
+                "propertytype": "FACES",
                 "type": "int",
                 "value": 0
             }
-        ],
-        "name": "OneWayBlock",
-        "type": "class",
-        "useAs": [
-            "property",
-            "map",
-            "layer",
-            "object",
-            "tile",
-            "tileset",
-            "wangcolor",
-            "wangset",
-            "project"
         ]
     },
     {
         "color": "#ffa0a0a4",
-        "drawFill": true,
-        "id": 29,
-        "members": [
+        "name": "Orb",
+        "properties": [
             {
                 "name": "JumpAmmount",
                 "type": "int",
@@ -632,23 +341,12 @@
                 "type": "bool",
                 "value": false
             }
-        ],
-        "name": "Orb",
-        "type": "class",
-        "useAs": [
-            "property",
-            "layer",
-            "object",
-            "tile",
-            "tileset",
-            "project"
         ]
     },
     {
         "color": "#ffe01b24",
-        "drawFill": true,
-        "id": 1,
-        "members": [
+        "name": "PlayerSpawner",
+        "properties": [
             {
                 "name": "isPlayable",
                 "type": "bool",
@@ -659,20 +357,12 @@
                 "type": "bool",
                 "value": false
             }
-        ],
-        "name": "PlayerSpawner",
-        "type": "class",
-        "useAs": [
-            "property",
-            "object",
-            "project"
         ]
     },
     {
         "color": "#ffa0a0a4",
-        "drawFill": true,
-        "id": 24,
-        "members": [
+        "name": "Portal",
+        "properties": [
             {
                 "name": "canTeleport",
                 "type": "bool",
@@ -684,80 +374,38 @@
                 "value": 0
             },
             {
-                "name": "portalAttached",
+                "name": "portalLink",
                 "type": "object",
                 "value": 0
             }
-        ],
-        "name": "Portal",
-        "type": "class",
-        "useAs": [
-            "property",
-            "map",
-            "layer",
-            "object",
-            "tile",
-            "tileset",
-            "wangcolor",
-            "wangset",
-            "project"
         ]
     },
     {
         "color": "#ffa0a0a4",
-        "drawFill": true,
-        "id": 8,
-        "members": [
+        "name": "SlowDownBlock",
+        "properties": [
             {
                 "name": "slowAmount",
                 "type": "int",
                 "value": 5
             }
-        ],
-        "name": "SlowDownBlock",
-        "type": "class",
-        "useAs": [
-            "property",
-            "map",
-            "layer",
-            "object",
-            "tile",
-            "tileset",
-            "wangcolor",
-            "wangset",
-            "project"
         ]
     },
     {
         "color": "#ffa0a0a4",
-        "drawFill": true,
-        "id": 6,
-        "members": [
+        "name": "SpeedUpBlock",
+        "properties": [
             {
                 "name": "speedAmount",
                 "type": "int",
                 "value": 5
             }
-        ],
-        "name": "SpeedUpBlock",
-        "type": "class",
-        "useAs": [
-            "property",
-            "map",
-            "layer",
-            "object",
-            "tile",
-            "tileset",
-            "wangcolor",
-            "wangset",
-            "project"
         ]
     },
     {
         "color": "#ffa0a0a4",
-        "drawFill": true,
-        "id": 9,
-        "members": [
+        "name": "VerticalBoostBlock",
+        "properties": [
             {
                 "name": "Ammount",
                 "type": "int",
@@ -773,44 +421,17 @@
                 "type": "bool",
                 "value": true
             }
-        ],
-        "name": "VerticalBoostBlock",
-        "type": "class",
-        "useAs": [
-            "property",
-            "map",
-            "layer",
-            "object",
-            "tile",
-            "tileset",
-            "wangcolor",
-            "wangset",
-            "project"
         ]
     },
     {
         "color": "#ffa0a0a4",
-        "drawFill": true,
-        "id": 25,
-        "members": [
+        "name": "WaterBlock",
+        "properties": [
             {
                 "name": "canLoadComponent",
                 "type": "bool",
                 "value": true
             }
-        ],
-        "name": "WaterBlock",
-        "type": "class",
-        "useAs": [
-            "property",
-            "map",
-            "layer",
-            "object",
-            "tile",
-            "tileset",
-            "wangcolor",
-            "wangset",
-            "project"
         ]
     }
 ]

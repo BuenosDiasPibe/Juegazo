@@ -36,10 +36,12 @@ namespace Juegazo.Map
         public string MapFilePath { get; }
         public string TiledProjectDirectory { get; }
         public string MapFileDirectory => Path.Combine(TiledProjectDirectory, Path.GetDirectoryName(MapFilePath));
-        public uint Width => Map.Width;
-        public uint Height => Map.Height;
+        public uint MapWidth => Map.Width;
+        public uint MapHeight => Map.Height;
         public uint TileHeight => Map.TileHeight;
         public uint TileWidth => Map.TileWidth;
+        public float Width => Map.Width * TILESIZE;
+        public float Height => Map.Height * TILESIZE;
         public int TILESIZE { get; }
 
         public Dictionary<string, Vector2> EntityPositionerByName { get; } = new();
@@ -53,12 +55,11 @@ namespace Juegazo.Map
                 .Select(t => (Block)Activator.CreateInstance(t))
                 .ToDictionary(inst => inst.GetType().Name, inst => inst);
         public Dictionary<string, BaseLayer> AllLayersByName { get; } = new();
-        public Dictionary<TileObject, Block> dynamicBlocks = new();
         public Dictionary<Vector2, Block> collisionLayer { get; } = new(); //maybe Vector2 should be changed to Point
+        public Dictionary<uint, Block> IDNeedsBlock { get; } = new();
         public List<Entity> entities { get; set; } = new();
         public readonly List<ICustomTypeDefinition> CustomTypeDefinitions = new();
         public Dictionary<TileObject, Tile> MapTileObjectToTile = new();
-
         public Dictionary<uint, Tileset> TilesetsByGID { get; } = new();
         public Dictionary<Tile, Texture2D> TileCollectionTextures { get; } = new();
         public Dictionary<uint, Tile> TilesByGID { get; } = new();
@@ -85,7 +86,7 @@ namespace Juegazo.Map
             }
         }
 
-        public float cameraZoom = 1f;
+        public float cameraZoom = 0;
         public bool levelBoundries = true;
         public TiledMap(GraphicsDevice graphicsDevice, string projectDirectory, string mapFilePath, int TILESIZE, List<ICustomTypeDefinition> typeDefinitions, GumService gum)
         {
@@ -212,7 +213,6 @@ namespace Juegazo.Map
         }
         private void InitCollisionObjectLayer(ObjectLayer layer)
         {
-            var objectLayerClass = layer.MapPropertiesTo<CollisionBlockObjectLayer>();
             foreach (var tileObject in layer.Objects.OfType<TileObject>())
             {
                 if (!MapObjectToType.TryGetValue(tileObject, out var tiledType)) continue;
@@ -225,19 +225,45 @@ namespace Juegazo.Map
                     Console.WriteLine("not block created");
                     continue;
                 }
-                block.Start();
+                switch(block)
+                {
+                    case Blocks.DoorBlock dBlock:
+                        IDNeedsBlock[dBlock.ID] = dBlock;
+                        break;
+                    case Blocks.Portal portal:
+                        IDNeedsBlock[portal.portalID] = portal;
+                        break;
+                    default:
+                        block.Start();
+                        break;
+                }
                 Vector2 position = new((int)(tileObject.X / TileWidth), (int)(tileObject.Y / TileHeight) - (int)(tileObject.Height / TileHeight));
 
-                if (objectLayerClass.canOverrideCollisionLayer)
+                collisionLayer[position] = block;
+            }
+            SearchingNeededBlocks();
+        }
+
+        private void SearchingNeededBlocks()
+        {
+            foreach (var b in collisionLayer.Values)
+            {
+                if (b is Blocks.Key keyBlock && IDNeedsBlock.TryGetValue(keyBlock.DoorID, out Block doorBlock) && doorBlock is Blocks.DoorBlock db)
                 {
-                    collisionLayer[position] = block;
+                    db.keys.Add(keyBlock);
                 }
-                else
+                else if (b is Blocks.Portal portal && IDNeedsBlock.TryGetValue(portal.portalNeeded, out Block pBlock) && pBlock is Blocks.Portal p)
                 {
-                    dynamicBlocks[tileObject] = block;
+                    p.portalLink = portal;
+                    portal.portalLink = p;
                 }
             }
+            foreach (var val in IDNeedsBlock.Values)
+            {
+                val.Start();
+            }
         }
+
         /// <summary>
         /// Checks if any tile.Type is a block, entity or is null, change the switch statement to make this work for you, im sorry
         /// </summary>
@@ -793,7 +819,11 @@ namespace Juegazo.Map
             Texture2D texture = ImageLayerTexture[imageLayer];
             bool repeatX = imageLayer.RepeatX;
             bool repeatY = imageLayer.RepeatY;
-            Vector2 offset = new(imageLayer.OffsetX, imageLayer.OffsetY);
+            int x =(int)(imageLayer.X/TileWidth * TILESIZE);
+            int y = (int)(imageLayer.Y.Value / TileHeight * TILESIZE);
+            int width = (int)(texture.Width/TileWidth * TILESIZE);
+            int height = (int)(texture.Height/TileHeight * TILESIZE);
+            Point offset = new((int)(imageLayer.OffsetX/TileWidth*TILESIZE), (int)(imageLayer.OffsetY/TileWidth*TILESIZE));
             Rectangle srcRect;
             Rectangle destRect;
             Rectangle viewport_bounds = camera.ViewPortRectangle;
@@ -803,7 +833,7 @@ namespace Juegazo.Map
                 case (false, false):
                     {
                         srcRect = texture.Bounds;
-                        destRect = new Rectangle((int)(imageLayer.X + imageLayer.ParallaxX * camera.ViewPortRectangle.X), (int)(imageLayer.Y.Value + imageLayer.ParallaxY * camera.ViewPortRectangle.Y), texture.Width, texture.Height);
+                        destRect = new Rectangle((int)(x + offset.X + imageLayer.ParallaxX), (int)(y + offset.Y + imageLayer.ParallaxY), width, height);
                         break;
                     }
                 case (true, true):
@@ -814,14 +844,14 @@ namespace Juegazo.Map
                     }
                 case (true, false):
                     {
-                        destRect = new Rectangle(viewport_bounds.X, (int)imageLayer.OffsetY, viewport_bounds.Width, texture.Height);
-                        srcRect = new Rectangle(destRect.X, 0, destRect.Width, texture.Height);
+                        destRect = new Rectangle(viewport_bounds.X, y + offset.Y, viewport_bounds.Width, height);
+                        srcRect = new Rectangle(destRect.X, 0, (int)(destRect.Width/(TILESIZE/TileWidth)), texture.Height); //idfk how this works but fuck it we ball
                         break;
                     }
                 case (false, true):
                     {
-                        destRect = new Rectangle((int)offset.X, viewport_bounds.Y, texture.Width, viewport_bounds.Height);
-                        srcRect = new Rectangle(0, destRect.Y, texture.Width, destRect.Height);
+                        destRect = new Rectangle(x+offset.X, viewport_bounds.Y, width, viewport_bounds.Height);
+                        srcRect = new Rectangle(0, destRect.Y, texture.Width, (int)(destRect.Height/(TILESIZE/TileHeight)));
                         break;
                     }
             }
@@ -882,12 +912,6 @@ namespace Juegazo.Map
                         TilemapTextures[tileset] : TileCollectionTextures[tile];
             var sourceRectangle = tileset.Image.HasValue ?
                         GetSourceRect(tileObject.GID - tileset.FirstGID, tileset) : TileSourceBounds(tile);
-
-            if (dynamicBlocks.TryGetValue(tileObject, out var dyn))
-            {
-                dyn.Draw(gameTime, spriteBatch, texture, sourceRectangle);
-                return; 
-            }
 
             var tileCoordinate = new Vector2((int)(tileObject.X / TileWidth), (int)(tileObject.Y / TileHeight) - (int)(tileObject.Height / TileHeight));
             if (collisionLayer.TryGetValue(tileCoordinate, out var col))

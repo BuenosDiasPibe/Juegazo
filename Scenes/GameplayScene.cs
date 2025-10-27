@@ -69,10 +69,9 @@ namespace Juegazo
 
             List<ICustomTypeDefinition> typeDefinitions = new();
             tilemap = new(graphicsDevice, projectDirectory, levelPath, TILESIZE, typeDefinitions, gum);
-            // get all playable entities from the tilemap
             var playableEntities = tilemap.entities
                 .Where(e => e.isPlayable);
-            if(entities.Count == 0)
+            if (entities.Count == 0)
             {
                 foreach (var t in playableEntities)
                 {
@@ -99,7 +98,14 @@ namespace Juegazo
 
             font = contentManager.Load<SpriteFont>("sheesh");
             camera.Origin = new Vector2(camera.Viewport.Width / 2, camera.Viewport.Height / 2);
-            camera.Zoom = tilemap.cameraZoom;
+            if (tilemap.cameraZoom != 0)
+            {
+                camera.Zoom = tilemap.cameraZoom;
+            }
+            else
+            {
+                camera.Zoom = camera.Viewport.Height / tilemap.Height; //put the camera with height of levelHeight
+            }
             cameraBoundries = tilemap.levelBoundries;
         }
 
@@ -131,7 +137,7 @@ namespace Juegazo
                 enableDebugger = !enableDebugger;
             }
             // updating blocks
-            var updatableBlocks = tilemap.dynamicBlocks.Values
+            var updatableBlocks = tilemap.collisionLayer.Values
                 .Concat(tilemap.collisionLayer.Values)
                 .Where(b => b != null && b.EnableUpdate);
             foreach (var block in updatableBlocks)
@@ -139,7 +145,6 @@ namespace Juegazo
                 block.Update(gameTime);
             }
             var collisionBlocks = tilemap.collisionLayer.Values.Where(b => b.EnableCollisions);
-            var dynamicBlocks = tilemap.dynamicBlocks.Values.Where(b => b.EnableCollisions);
 
             foreach (var entity in entities.ToList())
             {
@@ -171,13 +176,6 @@ namespace Juegazo
                         block.horizontalActions(entity, block.collider);
                     nextScene = changeSScne(nextScene, block);
                 }
-                foreach (Block block in dynamicBlocks)
-                {
-                    if (block.collider.Intersects(entity.Destinationrectangle))
-                        block.horizontalActions(entity, block.collider);
-                    
-                    nextScene = changeSScne(nextScene, block);
-                }
 
                 int vertDelta = 0;
                 if (entityDirection == FACES.BOTTOM)
@@ -198,12 +196,6 @@ namespace Juegazo
                     nextScene = changeSScne(nextScene, block);
                 }
 
-                foreach (Block block in dynamicBlocks)
-                {
-                    if (block.collider.Intersects(entity.Destinationrectangle))
-                        block.verticalActions(entity, block.collider);
-                    nextScene = changeSScne(nextScene, block);
-                }
                 entity.UpdateColliderFromDest();
             }
 
@@ -230,7 +222,7 @@ namespace Juegazo
             //killing entity if out of boundries
             foreach (var entity in entities)
             {
-                if (entity.Destinationrectangle.X > tilemap.Width * TILESIZE || entity.Destinationrectangle.X < 0 || entity.Destinationrectangle.Y > tilemap.Height * TILESIZE || entity.Destinationrectangle.Y < 0)
+                if (entity.Destinationrectangle.X > tilemap.MapWidth * TILESIZE || entity.Destinationrectangle.X < 0 || entity.Destinationrectangle.Y > tilemap.MapHeight * TILESIZE || entity.Destinationrectangle.Y < 0)
                 {
                     entity.health = 0;
                 }
@@ -241,10 +233,10 @@ namespace Juegazo
             {
                 camera.X = MathHelper.Clamp(camera.X, 
                     camera.ViewPortRectangle.Width / 2, 
-                    tilemap.Width * TILESIZE - camera.ViewPortRectangle.Width / 2);
+                    tilemap.MapWidth * TILESIZE - camera.ViewPortRectangle.Width / 2);
                 camera.Y = MathHelper.Clamp(camera.Y,
                     camera.ViewPortRectangle.Height / 2,
-                    tilemap.Height * TILESIZE - camera.ViewPortRectangle.Height / 2);
+                    tilemap.MapHeight * TILESIZE - camera.ViewPortRectangle.Height / 2);
             }
 
             pastKey = Keyboard.GetState();
@@ -281,12 +273,6 @@ namespace Juegazo
             {
                 if (t.EnableCollisions) debugger.DrawRectHollow(spriteBatch, t.collider, 2, Color.Green);
                 else debugger.DrawRectHollow(spriteBatch, t.collider, 2, new Color(25, 25, 25, 100));
-            }
-            foreach (var p in tilemap.dynamicBlocks.Values)
-            {
-
-                if (p.EnableCollisions) debugger.DrawRectHollow(spriteBatch, p.collider, 4, Color.Brown);
-                else debugger.DrawRectHollow(spriteBatch, p.collider, 2, new Color(50, 50, 50, 100));
             }
             debugger.DrawRectHollow(spriteBatch, camera.ViewPortRectangle, 2, Color.White);
         }

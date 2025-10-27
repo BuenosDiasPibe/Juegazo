@@ -161,19 +161,9 @@
             "id": 16,
             "members": [
                 {
-                    "name": "color",
-                    "type": "color",
-                    "value": ""
-                },
-                {
                     "name": "isOpen",
                     "type": "bool",
                     "value": false
-                },
-                {
-                    "name": "key",
-                    "type": "object",
-                    "value": 0
                 }
             ],
             "name": "DoorBlock",
@@ -409,9 +399,9 @@
             "id": 18,
             "members": [
                 {
-                    "name": "color",
-                    "type": "color",
-                    "value": ""
+                    "name": "Door",
+                    "type": "object",
+                    "value": 0
                 },
                 {
                     "name": "isColected",
@@ -476,7 +466,7 @@
                 {
                     "name": "zoom",
                     "type": "float",
-                    "value": 1
+                    "value": 0
                 }
             ],
             "name": "LevelPropieties",
@@ -695,7 +685,7 @@
                     "value": 0
                 },
                 {
-                    "name": "portalAttached",
+                    "name": "portalLink",
                     "type": "object",
                     "value": 0
                 }

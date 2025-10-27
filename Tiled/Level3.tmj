@@ -139,8 +139,8 @@
                  "type":"MovementBlock",
                  "visible":true,
                  "width":32,
-                 "x":144,
-                 "y":64
+                 "x":48,
+                 "y":40
                 }, 
                 {
                  "height":8,
@@ -150,8 +150,8 @@
                  "type":"",
                  "visible":true,
                  "width":8,
-                 "x":96,
-                 "y":48
+                 "x":16,
+                 "y":32
                 }, 
                 {
                  "height":8,
@@ -161,8 +161,8 @@
                  "type":"",
                  "visible":true,
                  "width":8,
-                 "x":208,
-                 "y":56
+                 "x":104,
+                 "y":24
                 }, 
                 {
                  "gid":16,
@@ -205,12 +205,6 @@
                  "height":16,
                  "id":8,
                  "name":"",
-                 "properties":[
-                        {
-                         "name":"key",
-                         "type":"object",
-                         "value":9
-                        }],
                  "rotation":0,
                  "type":"DoorBlock",
                  "visible":true,
@@ -223,12 +217,59 @@
                  "height":8,
                  "id":9,
                  "name":"",
+                 "properties":[
+                        {
+                         "name":"Door",
+                         "type":"object",
+                         "value":8
+                        }, 
+                        {
+                         "name":"isColected",
+                         "type":"bool",
+                         "value":false
+                        }],
                  "rotation":0,
                  "type":"Key",
                  "visible":true,
                  "width":8,
                  "x":232,
                  "y":56
+                }, 
+                {
+                 "gid":29,
+                 "height":8,
+                 "id":18,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"Door",
+                         "type":"object",
+                         "value":8
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":8,
+                 "x":16,
+                 "y":80
+                }, 
+                {
+                 "gid":29,
+                 "height":8,
+                 "id":19,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"Door",
+                         "type":"object",
+                         "value":8
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":8,
+                 "x":96,
+                 "y":64
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -237,7 +278,7 @@
          "y":0
         }],
  "nextlayerid":6,
- "nextobjectid":18,
+ "nextobjectid":20,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.2",

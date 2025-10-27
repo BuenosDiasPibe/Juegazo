@@ -7,6 +7,7 @@ using Juegazo.Map;
 using Juegazo.Map.Components;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Color = Microsoft.Xna.Framework.Color;
 
 namespace Juegazo
 {
@@ -18,6 +19,7 @@ namespace Juegazo
         public Rectangle collider = new();
         public Rectangle DestinationRectangle = new();
         public Tile tile;
+        public Color colorBlock = Color.White;
         public List<BlockComponent> components = new();
         protected Block() { }
         protected Block(Rectangle collider)
@@ -59,7 +61,7 @@ namespace Juegazo
             }
             if (!chuco)
             {
-                spriteBatch.Draw(texture, collider, sourceRectangle, Microsoft.Xna.Framework.Color.White);
+                spriteBatch.Draw(texture, collider, sourceRectangle, colorBlock);
             }
         }
         public BlockComponent AddComponent(BlockComponent component)

@@ -228,9 +228,6 @@
   </properties>
  </tile>
  <tile id="50" type="Portal">
-  <properties>
-   <property name="portalAttached" type="object" value="0"/>
-  </properties>
   <animation>
    <frame tileid="50" duration="150"/>
    <frame tileid="51" duration="150"/>

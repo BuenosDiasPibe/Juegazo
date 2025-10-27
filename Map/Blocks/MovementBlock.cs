@@ -72,9 +72,5 @@ namespace Juegazo.Map.Blocks
             new CollisionBlock().verticalActions(entity, collision);
             entity.baseVelocity = velocityToEntity;
         }
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch, Texture2D texture, Rectangle sourceRectangle)
-        {
-            base.Draw(gameTime, spriteBatch, texture, sourceRectangle);
-        }
     }
 }

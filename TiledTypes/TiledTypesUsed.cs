@@ -16,7 +16,7 @@ namespace Juegazo.CustomTiledTypes
     public class LevelPropieties
     {
         public bool ClampCameraToBoundries { get; set; } = true;
-        public float zoom { get; set; } = 1f;
+        public float zoom { get; set; } = 0f;
     }
     public class NPC
     {
@@ -69,14 +69,12 @@ namespace Juegazo.CustomTiledTypes
     }
     public class Key
     {
-        public DotTiled.Color color { get; set; }
-        public bool isColected { get; set; } = true;
+        public uint Door { get; set; } = 0;
+        public bool isColected { get; set; } = false;
     }
     public class DoorBlock
     {
-        public DotTiled.Color color { get; set; }
         public bool isOpen { get; set; } = false;
-        public uint key { get; set; } = 0;
 
     }
     public class DoubleJump
@@ -123,6 +121,12 @@ namespace Juegazo.CustomTiledTypes
     public class GravityChangerPadBlock
     {
         public FACES snapTo { get; set; } = FACES.TOP;
+    }
+    public class Portal
+    {
+        public uint portalLink { get; set; } = 0;
+        public float delayTimeSeconds { get; set; } = 0f;
+        public bool canTeleport { get; set; } = false;
     }
 }
 namespace Juegazo.CustomTiledTypesImplementation
@@ -348,23 +352,22 @@ namespace Juegazo.CustomTiledTypesImplementation
     {
         public Key() { }
         public bool isCollected { get; } = true;
+        public uint DoorID { get; } = 0;
 
         public Key(CustomTiledTypes.Key key)
         {
             isCollected = key.isColected;
+            DoorID = key.Door;
         }
 
         public override void getNeededObjectPropeties(DotTiled.Object obj, int TILESIZE, DotTiled.Map map)
-        {
-            // No additional properties needed from objects
-        }
+        { }
 
         public override Block createBlock(int TILESIZE, DotTiled.Map map, TileObject obj = null)
         {
-            var rect = GetRect(TILESIZE, map, obj);
-            if(obj is TileObject i)
+            if(obj is TileObject)
             {
-                return new Map.Blocks.Key(i.ID, rect);
+                return new Map.Blocks.Key(DoorID, GetRect(TILESIZE, map, obj), isCollected);
             }
             throw new Exception("you cant create keys in non-ObjectTiles");
         }
@@ -376,24 +379,24 @@ namespace Juegazo.CustomTiledTypesImplementation
         }
 
         public override string ToString()
-        { return $"Key: IsCollected: {isCollected}"; }
+        { return $"Key: DoorID: {DoorID} IsCollected: {isCollected}"; }
     }
     public class DoorBlock : TiledTypesUsed
     {
         public DoorBlock() { }
         public bool isOpen = false;
-        public uint key = 0;
         public DoorBlock(CustomTiledTypes.DoorBlock block)
         {
             isOpen = block.isOpen;
-            key = block.key;
         }
         public override Block createBlock(int TILESIZE, DotTiled.Map map, TileObject obj = null)
         {
+            if (obj == null) throw new Exception("DoorBlock created in non-ObjectLayer, move it to an ObjectLayer");
             return new Map.Blocks.DoorBlock(
                 GetRect(TILESIZE, map, obj),
-                key,
-                isOpen);
+                isOpen,
+                obj.ID
+                );
         }
 
         public override void getNeededObjectPropeties(DotTiled.Object obj, int TILESIZE, DotTiled.Map map)
@@ -611,7 +614,7 @@ namespace Juegazo.CustomTiledTypesImplementation
             faces = c.snapTo switch
             {
                 CustomTiledTypes.FACES.TOP => FACES.TOP,
-                CustomTiledTypes.FACES.BOTTOM =>FACES.BOTTOM,
+                CustomTiledTypes.FACES.BOTTOM => FACES.BOTTOM,
                 CustomTiledTypes.FACES.LEFT => FACES.LEFT,
                 CustomTiledTypes.FACES.RIGHT => FACES.RIGHT,
                 _ => throw new NotImplementedException(),
@@ -625,6 +628,34 @@ namespace Juegazo.CustomTiledTypesImplementation
         public override void getNeededObjectPropeties(DotTiled.Object obj, int TILESIZE, DotTiled.Map map)
         {
         }
+
+        public override List<uint> neededObjects()
+        {
+            return new();
+        }
+    }
+    public class Portal : TiledTypesUsed
+    {
+        CustomTiledTypes.Portal portal = new();
+        public Portal() { }
+        public Portal(CustomTiledTypes.Portal portal)
+        {
+            this.portal = portal;
+        }
+        public override Block createBlock(int TILESIZE, DotTiled.Map map, TileObject obj = null)
+        {
+            if (obj == null) throw new Exception("Cant create Portal Block, add it to a ObjectLayer");
+            return new Map.Blocks.Portal(
+                GetRect(TILESIZE, map, obj),
+                portal.portalLink,
+                obj.ID,
+                portal.delayTimeSeconds,
+                portal.canTeleport
+            );
+        }
+
+        public override void getNeededObjectPropeties(DotTiled.Object obj, int TILESIZE, DotTiled.Map map)
+        { }
 
         public override List<uint> neededObjects()
         {

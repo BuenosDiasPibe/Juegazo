@@ -10,34 +10,21 @@ namespace Juegazo.Map.Blocks
 {
     public class Key : Block //yeah, it doesnt make sense, but wathever
     {
-        public uint KeyID { get; set; }
-        public Rectangle keyCollider { get; set; }
+        public uint DoorID;
+        public bool isCollected = false;
         public Key()
+        { }
+        public Key(uint DoorID, Rectangle keyCollider, bool isCollected) : base(keyCollider)
         {
-            KeyID = 0;
-            keyCollider = new();
-        }
-        public Key(uint gotKey, Rectangle keyCollider) : base(keyCollider)
-        {
-            this.KeyID = gotKey;
-            this.keyCollider = keyCollider;
+            this.isCollected = isCollected;
+            this.DoorID = DoorID;
         }
         public Key(Rectangle keyCollider) : base(keyCollider)
-        {
-            this.keyCollider = keyCollider;
-        }
-
+        { }
         public override void horizontalActions(Entity entity, Rectangle collision)
         {
-            KeysIDHolderComponent entityComponent = new();
-            if (!entity.hasComponent(typeof(KeysIDHolderComponent)))
-            {
-                entity.AddComponent(entityComponent.GetType(), entityComponent);
-                Console.WriteLine($"added new key {this.KeyID} to entity");
-            }
-            entityComponent = (KeysIDHolderComponent)entity.GetComponent(entityComponent.GetType());
-            entityComponent.keyHolder.Add(this.KeyID);
             entity.entityState = EntityState.GOT_KEY;
+            isCollected = true;
 
             this.EnableCollisions = false;
             this.enableDraw = false;

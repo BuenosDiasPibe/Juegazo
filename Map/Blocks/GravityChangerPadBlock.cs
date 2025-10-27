@@ -12,12 +12,11 @@ namespace Juegazo.Map.Blocks
     {
         //idk if it should change to how pads work in gd... maybe
         public FACES whichDirection;
-        public Color color = Color.White;
         public GravityChangerPadBlock() { }
         public GravityChangerPadBlock(Rectangle collider, FACES whichDirection) : base(collider)
         {
             this.whichDirection = whichDirection;
-            color = whichDirection switch
+            this.colorBlock = whichDirection switch
             {
                 FACES.TOP => new Color(243, 166, 247),
                 FACES.BOTTOM => new Color(137, 180, 250),
@@ -37,10 +36,6 @@ namespace Juegazo.Map.Blocks
         {
             if (entity.direction != whichDirection)
                 entity.direction = whichDirection;
-        }
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch, Texture2D texture, Rectangle sourceRectangle)
-        {
-            spriteBatch.Draw(texture, collider, sourceRectangle, color);
         }
     }
 }

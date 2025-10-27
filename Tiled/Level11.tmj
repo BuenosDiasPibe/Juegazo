@@ -1,4 +1,5 @@
-{ "compressionlevel":-1,
+{ "class":"LevelPropieties",
+ "compressionlevel":-1,
  "height":400,
  "infinite":false,
  "layers":[
@@ -92,34 +93,6 @@
          "name":"testing",
          "objects":[
                 {
-                 "gid":51,
-                 "height":16,
-                 "id":2,
-                 "name":"",
-                 "properties":[
-                        {
-                         "name":"canTeleport",
-                         "type":"bool",
-                         "value":true
-                        }, 
-                        {
-                         "name":"delayTimeSeconds",
-                         "type":"float",
-                         "value":5
-                        }, 
-                        {
-                         "name":"portalAttached",
-                         "type":"object",
-                         "value":4
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":4768,
-                 "y":3056
-                }, 
-                {
                  "gid":57,
                  "height":16,
                  "id":4,
@@ -136,16 +109,44 @@
                          "value":5
                         }, 
                         {
-                         "name":"portalAttached",
+                         "name":"portalLink",
                          "type":"object",
-                         "value":2
+                         "value":23
                         }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":16,
                  "x":4896,
-                 "y":3056
+                 "y":3072
+                }, 
+                {
+                 "gid":52,
+                 "height":16,
+                 "id":23,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"canTeleport",
+                         "type":"bool",
+                         "value":true
+                        }, 
+                        {
+                         "name":"delayTimeSeconds",
+                         "type":"float",
+                         "value":5
+                        }, 
+                        {
+                         "name":"portalLink",
+                         "type":"object",
+                         "value":4
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":4768,
+                 "y":3072
                 }],
          "opacity":1,
          "properties":[
@@ -572,8 +573,14 @@
          "y":0
         }],
  "nextlayerid":5,
- "nextobjectid":23,
+ "nextobjectid":24,
  "orientation":"orthogonal",
+ "properties":[
+        {
+         "name":"zoom",
+         "type":"float",
+         "value":1.2
+        }],
  "renderorder":"right-down",
  "tiledversion":"1.11.2",
  "tileheight":16,

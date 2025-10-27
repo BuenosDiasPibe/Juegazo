@@ -11,7 +11,6 @@ namespace Juegazo.Components
     public class MoveVerticalComponent : Component
     {
         public bool JumpPressed = false;
-        private bool fastFall = false;
         private bool jumpCheat = false;
         public MoveVerticalComponent()
         {
@@ -34,15 +33,12 @@ namespace Juegazo.Components
             if(Owner.TryGetComponent(out KeyboardInputComponent c))
             {
                 JumpPressed = c.btnUp;
-                //jumpCheat = c.btnpSpecial1;
-                // fastFall = c.btnSpecial2;
             }
             if (jumpCheat) Owner.velocity.Y = -20;
             if(Owner.velocity.Y < 0)
             {
                 Owner.entityState = EntityState.JUMPING;
             }
-            // if (fastFall) Owner.velocity.Y += 2;
             JumpingVertical(10);
         }
     }

@@ -32,7 +32,7 @@ public class Game1 : Game
     protected override void Initialize()
     {
         // TODO: add new resolution
-        _graphics.IsFullScreen = false;
+        _graphics.IsFullScreen = true;
         if (GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width >= 1920 &&
             GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height >= 1080)
         {

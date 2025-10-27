@@ -10,6 +10,7 @@ using MonoGameGum.Forms.Controls;
 using MonoGameGum;
 using MonoGameGum.GueDeriving;
 using FlatRedBall.Glue.StateInterpolation;
+using Juegazo.CustomTiledTypes;
 
 namespace Juegazo.Components
 {
@@ -40,7 +41,7 @@ namespace Juegazo.Components
                     Owner.collider.Width * 3, Owner.collider.Height * 3);
 
             GumService.Default.Root.Children.Clear();
-            background = CreateDialogBox(new(0,0,500,600));
+            background = CreateDialogBox(new(0,0,(int)gum.CanvasWidth, (int)gum.CanvasHeight));
             background.AddToRoot();
         }
         private ColoredRectangleRuntime CreateDialogBox(Rectangle rec)
@@ -92,6 +93,7 @@ namespace Juegazo.Components
             else
             {
                 displayBox = false;
+                entity.entityState = EntityState.ON_GROUND;
             }
         }
     }
