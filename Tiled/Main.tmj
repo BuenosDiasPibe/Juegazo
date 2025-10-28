@@ -475,6 +475,24 @@
                  "width":8,
                  "x":272,
                  "y":40
+                }, 
+                {
+                 "gid":16,
+                 "height":8,
+                 "id":26,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"nextLevel",
+                         "type":"int",
+                         "value":16
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":8,
+                 "x":208,
+                 "y":24
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -542,7 +560,7 @@
          "y":0
         }],
  "nextlayerid":6,
- "nextobjectid":26,
+ "nextobjectid":27,
  "orientation":"orthogonal",
  "properties":[
         {

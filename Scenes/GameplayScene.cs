@@ -87,7 +87,7 @@ namespace Juegazo
                     t.AddComponent(typeof(CanDieComponent), new CanDieComponent(new(t.Destinationrectangle.X, t.Destinationrectangle.Y)));
                     if (t.isPlayer)
                     {
-                        t.AddComponent(typeof(CameraToEntitySimpleComponent), new CameraToEntitySimpleComponent(camera));
+                        t.AddComponent(typeof(CameraToEntityComponent), new CameraToEntityComponent(camera));
                         camera.Position = new(t.collider.X, t.collider.Y);
                         t.texture = playerTexture;
                         t.AddComponent(typeof(AnimationComponent), new AnimationComponent());
@@ -131,7 +131,6 @@ namespace Juegazo
                 UnloadContent();
                 sceneManager.RemoveScene();
             }
-            //TODO: why am i doing this? :skull:
             if (Keyboard.GetState().IsKeyDown(Keys.F3) && pastKey.IsKeyUp(Keys.F3))
             {
                 enableDebugger = !enableDebugger;

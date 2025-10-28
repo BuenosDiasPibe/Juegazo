@@ -31,18 +31,26 @@ public class Game1 : Game
 
     protected override void Initialize()
     {
-        // TODO: add new resolution
-        _graphics.IsFullScreen = true;
         if (GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width >= 1920 &&
             GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height >= 1080)
         {
             _graphics.PreferredBackBufferWidth = 1920;
             _graphics.PreferredBackBufferHeight = 1080;
+            _graphics.IsFullScreen = true;
+        }
+        else if(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width >= 1365)
+        {
+            _graphics.PreferredBackBufferWidth = 1366;
+            _graphics.PreferredBackBufferHeight = 768;
+
+            _graphics.IsFullScreen = true;
         }
         else
         {
             _graphics.PreferredBackBufferWidth = 1280;
             _graphics.PreferredBackBufferHeight = 720;
+
+            _graphics.IsFullScreen = true;
         }
         _graphics.ApplyChanges();
         gum.Initialize(this);

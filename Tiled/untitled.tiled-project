@@ -564,6 +564,56 @@
         {
             "color": "#ffa0a0a4",
             "drawFill": true,
+            "id": 32,
+            "members": [
+                {
+                    "name": "canDamage",
+                    "type": "bool",
+                    "value": false
+                },
+                {
+                    "name": "canMove",
+                    "type": "bool",
+                    "value": false
+                },
+                {
+                    "name": "damageAmmount",
+                    "type": "int",
+                    "value": 0
+                },
+                {
+                    "name": "endBlockPosition",
+                    "type": "object",
+                    "value": 0
+                },
+                {
+                    "name": "initialBlockPosition",
+                    "type": "object",
+                    "value": 0
+                },
+                {
+                    "name": "velocity",
+                    "type": "float",
+                    "value": 0
+                }
+            ],
+            "name": "MovingDamageBlock",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset",
+                "project"
+            ]
+        },
+        {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
             "id": 19,
             "members": [
                 {

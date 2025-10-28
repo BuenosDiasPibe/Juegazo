@@ -228,6 +228,9 @@
   </properties>
  </tile>
  <tile id="50" type="Portal">
+  <properties>
+   <property name="delayTimeSeconds" type="float" value="3"/>
+  </properties>
   <animation>
    <frame tileid="50" duration="150"/>
    <frame tileid="51" duration="150"/>
@@ -238,6 +241,9 @@
   </animation>
  </tile>
  <tile id="51" type="Portal">
+  <properties>
+   <property name="delayTimeSeconds" type="float" value="3"/>
+  </properties>
   <animation>
    <frame tileid="50" duration="150"/>
    <frame tileid="51" duration="150"/>
@@ -248,6 +254,9 @@
   </animation>
  </tile>
  <tile id="52" type="Portal">
+  <properties>
+   <property name="delayTimeSeconds" type="float" value="3"/>
+  </properties>
   <animation>
    <frame tileid="50" duration="150"/>
    <frame tileid="51" duration="150"/>
@@ -258,6 +267,9 @@
   </animation>
  </tile>
  <tile id="53" type="Portal">
+  <properties>
+   <property name="delayTimeSeconds" type="float" value="3"/>
+  </properties>
   <animation>
    <frame tileid="50" duration="150"/>
    <frame tileid="51" duration="150"/>
@@ -268,6 +280,9 @@
   </animation>
  </tile>
  <tile id="54" type="Portal">
+  <properties>
+   <property name="delayTimeSeconds" type="float" value="3"/>
+  </properties>
   <animation>
    <frame tileid="50" duration="150"/>
    <frame tileid="51" duration="150"/>
@@ -278,6 +293,9 @@
   </animation>
  </tile>
  <tile id="55" type="Portal">
+  <properties>
+   <property name="delayTimeSeconds" type="float" value="3"/>
+  </properties>
   <animation>
    <frame tileid="50" duration="150"/>
    <frame tileid="51" duration="150"/>
@@ -288,6 +306,9 @@
   </animation>
  </tile>
  <tile id="56" type="Portal">
+  <properties>
+   <property name="delayTimeSeconds" type="float" value="3"/>
+  </properties>
   <animation>
    <frame tileid="58" duration="150"/>
    <frame tileid="56" duration="150"/>
@@ -298,6 +319,9 @@
   </animation>
  </tile>
  <tile id="57" type="Portal">
+  <properties>
+   <property name="delayTimeSeconds" type="float" value="3"/>
+  </properties>
   <animation>
    <frame tileid="58" duration="150"/>
    <frame tileid="56" duration="150"/>
@@ -308,6 +332,9 @@
   </animation>
  </tile>
  <tile id="58" type="Portal">
+  <properties>
+   <property name="delayTimeSeconds" type="float" value="3"/>
+  </properties>
   <animation>
    <frame tileid="56" duration="150"/>
    <frame tileid="57" duration="150"/>
@@ -318,6 +345,9 @@
   </animation>
  </tile>
  <tile id="59" type="Portal">
+  <properties>
+   <property name="delayTimeSeconds" type="float" value="3"/>
+  </properties>
   <animation>
    <frame tileid="56" duration="150"/>
    <frame tileid="57" duration="150"/>
@@ -328,6 +358,9 @@
   </animation>
  </tile>
  <tile id="60" type="Portal">
+  <properties>
+   <property name="delayTimeSeconds" type="float" value="3"/>
+  </properties>
   <animation>
    <frame tileid="56" duration="150"/>
    <frame tileid="57" duration="150"/>
@@ -337,7 +370,11 @@
    <frame tileid="61" duration="150"/>
   </animation>
  </tile>
- <tile id="61" type="Portal"/>
+ <tile id="61" type="Portal">
+  <properties>
+   <property name="delayTimeSeconds" type="float" value="3"/>
+  </properties>
+ </tile>
  <tile id="64" type="WaterBlock">
   <animation>
    <frame tileid="66" duration="150"/>
@@ -359,13 +396,36 @@
    <frame tileid="66" duration="150"/>
   </animation>
  </tile>
- <tile id="67" type="Laser"/>
- <tile id="68" type="Laser"/>
- <tile id="69" type="Laser"/>
- <tile id="75" type="Laser"/>
- <tile id="76" type="Laser"/>
- <tile id="77" type="Laser"/>
- <tile id="83" type="Laser"/>
- <tile id="84" type="Laser"/>
- <tile id="85" type="Laser"/>
+ <tile id="72" type="MovingDamageBlock">
+  <animation>
+   <frame tileid="72" duration="250"/>
+   <frame tileid="73" duration="250"/>
+   <frame tileid="74" duration="250"/>
+   <frame tileid="75" duration="250"/>
+  </animation>
+ </tile>
+ <tile id="73" type="MovingDamageBlock">
+  <animation>
+   <frame tileid="72" duration="250"/>
+   <frame tileid="73" duration="250"/>
+   <frame tileid="74" duration="250"/>
+   <frame tileid="75" duration="250"/>
+  </animation>
+ </tile>
+ <tile id="74" type="MovingDamageBlock">
+  <animation>
+   <frame tileid="72" duration="250"/>
+   <frame tileid="73" duration="250"/>
+   <frame tileid="74" duration="250"/>
+   <frame tileid="75" duration="250"/>
+  </animation>
+ </tile>
+ <tile id="75" type="MovingDamageBlock">
+  <animation>
+   <frame tileid="72" duration="200"/>
+   <frame tileid="73" duration="200"/>
+   <frame tileid="74" duration="200"/>
+   <frame tileid="75" duration="200"/>
+  </animation>
+ </tile>
 </tileset>

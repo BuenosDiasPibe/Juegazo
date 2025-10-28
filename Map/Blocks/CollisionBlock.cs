@@ -23,15 +23,27 @@ namespace Juegazo.Map.Blocks
             if (entityRight >= blockLeft && entityLeft < blockLeft)
             {
                 entity.Destinationrectangle.X = blockLeft - entity.Destinationrectangle.Width;
+                if (entity.direction == FACES.RIGHT)
+                {
+                    entity.onGround = true;
+                    entity.velocity.Y = 0;
+                }
+                else if (entity.direction == FACES.LEFT)
+                {
+                    entity.velocity.Y = 0;
+                } 
             }
             else if (entityLeft <= blockRight && entityRight > blockRight)
             {
                 entity.Destinationrectangle.X = blockRight;
-            }
-            if (entity.direction == FACES.LEFT || entity.direction == FACES.RIGHT)
-            {
-                entity.onGround = true;
-                entity.velocity.Y = 0;
+                if(entity.direction == FACES.LEFT)
+                {
+                    entity.onGround = true;
+                    entity.velocity.Y = 0;
+                }else if(entity.direction == FACES.RIGHT)
+                {
+                    entity.velocity.Y = 0;
+                }
             }
         }
 
@@ -46,15 +58,26 @@ namespace Juegazo.Map.Blocks
             if (entityBottom >= blockTop && entityTop < blockTop)
             {
                 entity.Destinationrectangle.Y = blockTop - entity.Destinationrectangle.Height;
+                if(entity.direction == FACES.BOTTOM)
+                {
+                    entity.onGround = true;
+                    entity.velocity.Y = 0;
+                }else if (entity.direction == FACES.TOP)
+                {
+                    entity.velocity.Y = 0;
+                } 
             }
             else if(entityTop <= blockBottom && entityBottom > blockTop)
             {
                 entity.Destinationrectangle.Y = blockBottom;
-            }
-            if (entity.direction == FACES.TOP || entity.direction == FACES.BOTTOM)
-            {
-                entity.onGround = true;
-                entity.velocity.Y = 0;
+                if(entity.direction == FACES.TOP)
+                {
+                    entity.onGround = true;
+                    entity.velocity.Y = 0;
+                }else if (entity.direction == FACES.BOTTOM)
+                {
+                    entity.velocity.Y = 0;
+                } 
             }
         }
     }

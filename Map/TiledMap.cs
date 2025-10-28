@@ -903,7 +903,6 @@ namespace Juegazo.Map
         private void DrawTileObject(GameTime gameTime, SpriteBatch spriteBatch, TileObject tileObject, ObjectLayer objectLayer, Camera camera)
         {
             var destRect = GetObjectDestinationRectangle(tileObject);
-            if (!IsVisible(destRect, camera)) return;
 
             var tileset = TilesetsByGID[tileObject.GID];
             var tile = TilesByGID[tileObject.GID];
@@ -916,9 +915,13 @@ namespace Juegazo.Map
             var tileCoordinate = new Vector2((int)(tileObject.X / TileWidth), (int)(tileObject.Y / TileHeight) - (int)(tileObject.Height / TileHeight));
             if (collisionLayer.TryGetValue(tileCoordinate, out var col))
             {
-                col.Draw(gameTime, spriteBatch, texture, sourceRectangle);
+                if(IsVisible(col.collider, camera))
+                {
+                    col.Draw(gameTime, spriteBatch, texture, sourceRectangle);
+                }
                 return;
             }
+            if (!IsVisible(destRect, camera)) return;
             spriteBatch.Draw(texture, destRect, sourceRectangle, Color.White); //draws the object but without animation or interactivity.
         }
         private bool IsVisible(Rectangle destRect, Camera camera)

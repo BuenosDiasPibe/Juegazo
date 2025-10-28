@@ -128,6 +128,15 @@ namespace Juegazo.CustomTiledTypes
         public float delayTimeSeconds { get; set; } = 0f;
         public bool canTeleport { get; set; } = false;
     }
+    public class MovingDamageBlock //ERROR: cant use MovementBlock or DamageBlock instances here, throws error saying "Object of type 'System.Int32' cannot be converted to type 'System.UInt32'", probably not recognizing type or something 
+    {
+        public bool canDamage {get; set; } = false;
+        public bool canMove { get; set; } = false;
+        public int damageAmmount { get; set; } = 0;
+        public uint endBlockPosition {get; set;} = 0;
+        public uint initialBlockPosition {get; set;} = 0;
+        public float velocity { get; set; } = 0;
+    }
 }
 namespace Juegazo.CustomTiledTypesImplementation
 {
@@ -661,5 +670,43 @@ namespace Juegazo.CustomTiledTypesImplementation
         {
             return new();
         }
+    }
+    public class MovingDamageBlock : TiledTypesUsed
+    {
+        public CustomTiledTypes.MovingDamageBlock data = new();
+        public Rectangle InitialBlockPosition = new();
+        public Rectangle endBlockPosition = new();
+        public MovingDamageBlock() { }
+        public MovingDamageBlock(CustomTiledTypes.MovingDamageBlock data)
+        {
+            this.data = data;
+        }
+        public override Block createBlock(int TILESIZE, DotTiled.Map map, TileObject obj = null)
+        {
+            if (obj == null) throw new Exception("MovingDamageBlock created in non-ObjectLayer, delete it");
+            return new Map.Blocks.MovingDamageBlock(GetRect(TILESIZE, map, obj), this);
+        }
+
+        public override void getNeededObjectPropeties(DotTiled.Object obj, int TILESIZE, DotTiled.Map map)
+        {
+            if (obj.ID == data.initialBlockPosition)
+            {
+                obj.Y += obj.Height;
+                InitialBlockPosition = GetRect(TILESIZE, map, obj);
+            }
+            if (obj.ID == data.endBlockPosition)
+            {
+                obj.Y += obj.Height;
+                endBlockPosition = GetRect(TILESIZE, map, obj);
+            }
+        }
+
+        public override List<uint> neededObjects()
+        {
+            return new([data.initialBlockPosition,
+                        data.endBlockPosition]);
+        }
+
+
     }
 }
