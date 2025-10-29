@@ -113,6 +113,7 @@ namespace Juegazo.Map
             sw.Start();
             InitTilesets(Map.Tilesets, TiledProjectDirectory);
             InitLayerGroup(Map.Layers);
+            collisionLayer.TrimExcess();
             sw.Stop();
             Console.WriteLine($"{sw.ElapsedMilliseconds}ms to render all the level.");
         }
@@ -141,6 +142,7 @@ namespace Juegazo.Map
                     case "Collision Tile Layer":
                         if (layer is not TileLayer tLayer)
                             throw new Exception($"layer \"{layer.Name}\" is using a TileLayer class when its a \"{layer.GetType()}\"");
+                        collisionLayer.EnsureCapacity(tLayer.Data.Value.GlobalTileIDs.Value.Count());
                         sw.Start();
                         CreateCollisionLayer(tLayer);
                         sw.Stop();
@@ -560,15 +562,23 @@ namespace Juegazo.Map
             {
                 case "DoubleJump":
                     var jumpData = (source is DotTiled.Object objSource) ?
-                        objSource.MapPropertiesTo<DoubleJump>() ?? new DoubleJump() :
-                        tileData.MapPropertiesTo<DoubleJump>();
+                                    objSource.MapPropertiesTo<DoubleJump>() ??
+                                        new DoubleJump() : tileData.MapPropertiesTo<DoubleJump>();
                     c.componentGived = new DoubleJumpComponent(jumpData);
+                    break;
+                case "GravityChangerMode":
+                        Console.WriteLine("will be implemented");
+                    break;
+                case "BouncerMode":
+                    Console.WriteLine("i swear to god"); 
+                    break;
+                case "MisilMode":
+                    Console.WriteLine("it'll be soon^tm");
                     break;
                 default:
                     Console.WriteLine($"PowerUp type not implemented: {tileData.Type}");
                     return false;
             }
-
             if (c.componentGived == null)
                 return false;
 

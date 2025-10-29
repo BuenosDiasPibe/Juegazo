@@ -108,7 +108,7 @@ namespace Juegazo.CustomTiledTypes
     {
         public bool canLoadComponent { get; set; } = true;
     }
-    public class Orb
+    public class JumpingOrb
     {
         public int JumpAmmount { get; set; } = 0;
         public bool isUsable { get; set; } = false;
@@ -176,13 +176,29 @@ namespace Juegazo.CustomTiledTypesImplementation
         {
             if (obj.ID == mblock.initialBlockPosition)
             {
-                obj.Y += obj.Height;
-                InitialBlockPosition = GetRect(TILESIZE, map, obj);
+                var newObj = new RectangleObject
+                {
+                    ID = obj.ID,
+                    X = obj.X,
+                    Y = obj.Y,
+                    Width = obj.Width,
+                    Height = obj.Height
+                };
+                newObj.Y += obj.Height;
+                InitialBlockPosition = GetRect(TILESIZE, map, newObj);
             }
             if (obj.ID == mblock.EndBlockPosition)
             {
-                obj.Y += obj.Height;
-                endBlockPosition = GetRect(TILESIZE, map, obj);
+                var newObj = new RectangleObject
+                {
+                    ID = obj.ID,
+                    X = obj.X,
+                    Y = obj.Y,
+                    Width = obj.Width,
+                    Height = obj.Height
+                };
+                newObj.Y += obj.Height;
+                endBlockPosition = GetRect(TILESIZE, map, newObj);
             }
         }
         public override Block createBlock(int TILESIZE, DotTiled.Map map, TileObject obj = null)
@@ -474,13 +490,29 @@ namespace Juegazo.CustomTiledTypesImplementation
             {
                 if (obj.ID == mblock.initialPosition)
                 {
-                    obj.Y += obj.Height;
-                    initialPos = GetRect(TILESIZE, map, obj);
+                    var newObj = new RectangleObject
+                    {
+                        ID = obj.ID,
+                        X = obj.X,
+                        Y = obj.Y,
+                        Width = obj.Width,
+                        Height = obj.Height
+                    };
+                    newObj.Y += obj.Height;
+                    initialPos = GetRect(TILESIZE, map, newObj);
                 }
                 if (obj.ID == mblock.lastPosition)
                 {
-                    obj.Y += obj.Height;
-                    endPos = GetRect(TILESIZE, map, obj);
+                    var newObj = new RectangleObject
+                    {
+                        ID = obj.ID,
+                        X = obj.X,
+                        Y = obj.Y,
+                        Width = obj.Width,
+                        Height = obj.Height
+                    };
+                    newObj.Y += obj.Height;
+                    endPos = GetRect(TILESIZE, map, newObj);
                 }
             }
         }
@@ -565,20 +597,20 @@ namespace Juegazo.CustomTiledTypesImplementation
             return new();
         }
     }
-    public class Orb : TiledTypesUsed
+    public class JumpingOrb : TiledTypesUsed
     {
         public int jumpAmmount = 0;
-        public CustomTiledTypes.Orb orb = new();
+        public CustomTiledTypes.JumpingOrb orb = new();
 
-        public Orb() { }
-        public Orb(CustomTiledTypes.Orb orb)
+        public JumpingOrb() { }
+        public JumpingOrb(CustomTiledTypes.JumpingOrb orb)
         {
             this.orb = orb;
             this.jumpAmmount = orb.JumpAmmount;
         }
         public override Block createBlock(int TILESIZE, DotTiled.Map map, TileObject obj = null)
         {
-            return new Map.Blocks.Orb(GetRect(TILESIZE, map, obj), this);
+            return new Map.Blocks.JumpingOrb(GetRect(TILESIZE, map, obj), this);
         }
 
         public override void getNeededObjectPropeties(DotTiled.Object obj, int TILESIZE, DotTiled.Map map)
@@ -691,13 +723,29 @@ namespace Juegazo.CustomTiledTypesImplementation
         {
             if (obj.ID == data.initialBlockPosition)
             {
-                obj.Y += obj.Height;
-                InitialBlockPosition = GetRect(TILESIZE, map, obj);
+                var newObj = new RectangleObject
+                {
+                    ID = obj.ID,
+                    X = obj.X,
+                    Y = obj.Y,
+                    Width = obj.Width,
+                    Height = obj.Height
+                };
+                newObj.Y += newObj.Height;
+                InitialBlockPosition = GetRect(TILESIZE, map, newObj);
             }
             if (obj.ID == data.endBlockPosition)
             {
-                obj.Y += obj.Height;
-                endBlockPosition = GetRect(TILESIZE, map, obj);
+                var newObj = new RectangleObject
+                {
+                    ID = obj.ID,
+                    X = obj.X,
+                    Y = obj.Y,
+                    Width = obj.Width,
+                    Height = obj.Height
+                };
+                newObj.Y += newObj.Height;
+                endBlockPosition = GetRect(TILESIZE, map, newObj);
             }
         }
 

@@ -230,17 +230,25 @@
             ]
         },
         {
+            "id": 5,
+            "name": "FACES",
+            "storageType": "int",
+            "type": "enum",
+            "values": [
+                "TOP",
+                "BOTTOM",
+                "LEFT",
+                "RIGHT"
+            ],
+            "valuesAsFlags": false
+        },
+        {
             "color": "#ffa0a0a4",
             "drawFill": true,
-            "id": 28,
+            "id": 34,
             "members": [
-                {
-                    "name": "idk",
-                    "type": "int",
-                    "value": 0
-                }
             ],
-            "name": "EntityChanger",
+            "name": "FlyingMode",
             "type": "class",
             "useAs": [
                 "property",
@@ -255,17 +263,34 @@
             ]
         },
         {
-            "id": 5,
-            "name": "FACES",
-            "storageType": "int",
-            "type": "enum",
-            "values": [
-                "TOP",
-                "BOTTOM",
-                "LEFT",
-                "RIGHT"
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 36,
+            "members": [
+                {
+                    "name": "changeHorizontal",
+                    "type": "bool",
+                    "value": false
+                },
+                {
+                    "name": "changeVertical",
+                    "type": "bool",
+                    "value": false
+                }
             ],
-            "valuesAsFlags": false
+            "name": "GravityChangerMode",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset",
+                "project"
+            ]
         },
         {
             "color": "#ffa0a0a4",
@@ -359,6 +384,33 @@
             ]
         },
         {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 29,
+            "members": [
+                {
+                    "name": "JumpAmmount",
+                    "type": "int",
+                    "value": 0
+                },
+                {
+                    "name": "isUsable",
+                    "type": "bool",
+                    "value": false
+                }
+            ],
+            "name": "JumpingOrb",
+            "type": "class",
+            "useAs": [
+                "property",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "project"
+            ]
+        },
+        {
             "color": "#fff8e45c",
             "drawFill": true,
             "id": 13,
@@ -426,20 +478,20 @@
         {
             "color": "#ffa0a0a4",
             "drawFill": true,
-            "id": 26,
+            "id": 27,
             "members": [
                 {
-                    "name": "TimeShownSeconds",
-                    "type": "float",
-                    "value": 5
+                    "name": "ClampCameraToBoundries",
+                    "type": "bool",
+                    "value": true
                 },
                 {
-                    "name": "damage",
-                    "type": "int",
-                    "value": 1
+                    "name": "zoom",
+                    "type": "float",
+                    "value": 0
                 }
             ],
-            "name": "Laser",
+            "name": "LevelPropieties",
             "type": "class",
             "useAs": [
                 "property",
@@ -456,20 +508,10 @@
         {
             "color": "#ffa0a0a4",
             "drawFill": true,
-            "id": 27,
+            "id": 35,
             "members": [
-                {
-                    "name": "ClampCameraToBoundries",
-                    "type": "bool",
-                    "value": true
-                },
-                {
-                    "name": "zoom",
-                    "type": "float",
-                    "value": 0
-                }
             ],
-            "name": "LevelPropieties",
+            "name": "MisilMode",
             "type": "class",
             "useAs": [
                 "property",
@@ -513,13 +555,9 @@
             "type": "class",
             "useAs": [
                 "property",
-                "map",
-                "layer",
                 "object",
                 "tile",
                 "tileset",
-                "wangcolor",
-                "wangset",
                 "project"
             ]
         },
@@ -665,33 +703,6 @@
                 "tileset",
                 "wangcolor",
                 "wangset",
-                "project"
-            ]
-        },
-        {
-            "color": "#ffa0a0a4",
-            "drawFill": true,
-            "id": 29,
-            "members": [
-                {
-                    "name": "JumpAmmount",
-                    "type": "int",
-                    "value": 0
-                },
-                {
-                    "name": "isUsable",
-                    "type": "bool",
-                    "value": false
-                }
-            ],
-            "name": "Orb",
-            "type": "class",
-            "useAs": [
-                "property",
-                "layer",
-                "object",
-                "tile",
-                "tileset",
                 "project"
             ]
         },
@@ -851,6 +862,26 @@
                 }
             ],
             "name": "WaterBlock",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset",
+                "project"
+            ]
+        },
+        {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 38,
+            "members": [
+            ],
+            "name": "BouncerMode",
             "type": "class",
             "useAs": [
                 "property",

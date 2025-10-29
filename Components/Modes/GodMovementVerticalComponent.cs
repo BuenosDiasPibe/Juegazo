@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Juegazo.Components
 {
-    public class GodMovementVerticalComponent : Component
+    public class GodMovementVerticalModeComponent : Component
     {
         private readonly float VERTICALMOVEMENT = 5f;
         public override void Destroy()

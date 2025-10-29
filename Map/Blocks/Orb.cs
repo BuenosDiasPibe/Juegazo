@@ -7,11 +7,11 @@ using Microsoft.Xna.Framework;
 
 namespace Juegazo.Map.Blocks
 {
-    public class Orb : Block
+    public class JumpingOrb : Block
     {
         public int jumpAmmount = 0;
-        public Orb() { }
-        public Orb(Rectangle c, CustomTiledTypesImplementation.Orb orb) : base(c)
+        public JumpingOrb() { }
+        public JumpingOrb(Rectangle c, CustomTiledTypesImplementation.JumpingOrb orb) : base(c)
         {
             this.jumpAmmount = orb.jumpAmmount;
         }

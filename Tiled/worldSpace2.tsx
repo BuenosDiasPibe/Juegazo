@@ -28,6 +28,7 @@
  <tile id="11" type="CollisionBlock"/>
  <tile id="12" type="OneWayBlock"/>
  <tile id="13" type="DoubleJump"/>
+ <tile id="14" type="BouncerMode"/>
  <tile id="15" type="CompleteLevelBlock"/>
  <tile id="16" type="MovementBlock">
   <animation>
@@ -99,7 +100,7 @@
  </tile>
  <tile id="27" type="DoorBlock"/>
  <tile id="28" type="Key"/>
- <tile id="29" type="Orb">
+ <tile id="29" type="JumpingOrb">
   <properties>
    <property name="JumpAmmount" type="int" value="10"/>
    <property name="isUsable" type="bool" value="true"/>
@@ -427,5 +428,34 @@
    <frame tileid="74" duration="200"/>
    <frame tileid="75" duration="200"/>
   </animation>
+ </tile>
+ <tile id="80" type="JumpingOrb">
+  <properties>
+   <property name="JumpAmmount" type="int" value="20"/>
+   <property name="isUsable" type="bool" value="true"/>
+  </properties>
+ </tile>
+ <tile id="81" type="JumpingOrb">
+  <properties>
+   <property name="JumpAmmount" type="int" value="5"/>
+   <property name="isUsable" type="bool" value="true"/>
+  </properties>
+ </tile>
+ <tile id="88" type="GravityChangerMode">
+  <properties>
+   <property name="changeVertical" type="bool" value="true"/>
+  </properties>
+ </tile>
+ <tile id="89" type="GravityChangerMode">
+  <properties>
+   <property name="changeHorizontal" type="bool" value="true"/>
+   <property name="changeVertical" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="90" type="GravityChangerMode">
+  <properties>
+   <property name="changeHorizontal" type="bool" value="true"/>
+   <property name="changeVertical" type="bool" value="true"/>
+  </properties>
  </tile>
 </tileset>

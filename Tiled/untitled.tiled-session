@@ -82,14 +82,14 @@
         },
         "Level11.tmj": {
             "expandedObjectLayers": [
-                3,
-                2
+                2,
+                3
             ],
             "scale": 4,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 4675.375,
-                "y": 3050.875
+                "x": 4800.125,
+                "y": 3200.125
             }
         },
         "Level12.tmj": {
@@ -122,20 +122,20 @@
             "scale": 2,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 79.25,
-                "y": 13.75
+                "x": 320.25,
+                "y": 331.25
             }
         },
         "Level15.tmj": {
             "expandedObjectLayers": [
-                3,
-                2
+                2,
+                3
             ],
             "scale": 0.33,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 834.8484848484849,
-                "y": 316.66666666666663
+                "x": 801.5151515151515,
+                "y": 198.4848484848485
             }
         },
         "Level16.tmj": {
@@ -181,8 +181,8 @@
             "scale": 3,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 36.16666666666666,
-                "y": 92.83333333333333
+                "x": 160.16666666666666,
+                "y": 96.16666666666666
             }
         },
         "Level3.tmx": {
@@ -245,14 +245,14 @@
         },
         "Level7.tmj": {
             "expandedObjectLayers": [
-                3,
-                2
+                2,
+                3
             ],
             "scale": 1.5,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 152.99999999999997,
-                "y": 111.66666666666666
+                "x": 148.99999999999997,
+                "y": 211
             }
         },
         "Level7.tmx": {
@@ -434,16 +434,16 @@
         "Level7.tmj"
     ],
     "project": "untitled.tiled-project",
-    "property.type": "object",
+    "property.type": "bool",
     "recentFiles": [
         "worldSpace2.tsx",
+        "Level14.tmj",
         "Level2.tmj",
         "worldTexture.tsx",
         "Level15.tmj",
         "Level3.tmj",
         "Level11.tmj",
         "Level7.tmj",
-        "Level14.tmj",
         "OtherEntities.tsx",
         "Level9.tmj",
         "Main.tmj",
