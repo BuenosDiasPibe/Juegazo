@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "8dLL9E3IBK4=",
+  "dgSpecHash": "DtiqTG7kOW4=",
   "success": true,
-  "projectFilePath": "/home/clumpl/Documentos/Programacion/Juegazo/MarinMol.csproj",
+  "projectFilePath": "/home/clumpl/Documentos/Juegazo/MarinMol.csproj",
   "expectedPackageFiles": [
     "/home/clumpl/.nuget/packages/dottiled/0.3.0/dottiled.0.3.0.nupkg.sha512",
     "/home/clumpl/.nuget/packages/flatredball.gumcommon/2025.5.1.1/flatredball.gumcommon.2025.5.1.1.nupkg.sha512",
@@ -15,15 +15,15 @@
     "/home/clumpl/.nuget/packages/monogame.content.builder.task/3.8.2.1105/monogame.content.builder.task.3.8.2.1105.nupkg.sha512",
     "/home/clumpl/.nuget/packages/monogame.framework.desktopgl/3.8.2.1105/monogame.framework.desktopgl.3.8.2.1105.nupkg.sha512",
     "/home/clumpl/.nuget/packages/monogame.library.sdl/2.26.5.5/monogame.library.sdl.2.26.5.5.nupkg.sha512",
-    "/home/clumpl/.nuget/packages/nvorbis/0.10.4/nvorbis.0.10.4.nupkg.sha512",
+    "/home/clumpl/.nuget/packages/nvorbis/0.10.5/nvorbis.0.10.5.nupkg.sha512",
     "/home/clumpl/.nuget/packages/system.data.datasetextensions/4.5.0/system.data.datasetextensions.4.5.0.nupkg.sha512",
     "/home/clumpl/.nuget/packages/system.memory/4.5.3/system.memory.4.5.3.nupkg.sha512",
     "/home/clumpl/.nuget/packages/system.numerics.vectors/4.5.0/system.numerics.vectors.4.5.0.nupkg.sha512",
     "/home/clumpl/.nuget/packages/system.valuetuple/4.5.0/system.valuetuple.4.5.0.nupkg.sha512",
     "/home/clumpl/.nuget/packages/textcopy/6.2.1/textcopy.6.2.1.nupkg.sha512",
-    "/home/clumpl/.nuget/packages/microsoft.netcore.app.ref/8.0.20/microsoft.netcore.app.ref.8.0.20.nupkg.sha512",
     "/home/clumpl/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.20/microsoft.aspnetcore.app.ref.8.0.20.nupkg.sha512",
-    "/home/clumpl/.nuget/packages/microsoft.netcore.app.host.linux-x64/8.0.20/microsoft.netcore.app.host.linux-x64.8.0.20.nupkg.sha512"
+    "/home/clumpl/.nuget/packages/microsoft.netcore.app.host.linux-x64/8.0.20/microsoft.netcore.app.host.linux-x64.8.0.20.nupkg.sha512",
+    "/home/clumpl/.nuget/packages/microsoft.netcore.app.ref/8.0.20/microsoft.netcore.app.ref.8.0.20.nupkg.sha512"
   ],
   "logs": []
 }

@@ -4,6 +4,7 @@
     he's really cool and awesome!
 
     TODO: REWRITE LOTS OF STUFF THERE'S A LOT OF REPETITION WHAT ARE YOU DOING?????
+    TODO: put lots of things on separate singleton utilities and classes, all of this could be different things why the fuck is it still like this?
 */
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ using System.Reflection.Emit;
 using System.Threading.Tasks;
 using DotTiled;
 using DotTiled.Serialization;
-using Juegazo.Components;
+using Juegazo.EntityComponents;
 using Juegazo.CustomTiledTypes;
 using Juegazo.CustomTiledTypesImplementation;
 using Juegazo.Map.Blocks;
@@ -561,19 +562,27 @@ namespace Juegazo.Map
             switch (tileData.Type)
             {
                 case "DoubleJump":
-                    var jumpData = (source is DotTiled.Object objSource) ?
-                                    objSource.MapPropertiesTo<DoubleJump>() ??
-                                        new DoubleJump() : tileData.MapPropertiesTo<DoubleJump>();
-                    c.componentGived = new DoubleJumpComponent(jumpData);
+                    {
+                        var jumpData = (source is DotTiled.Object objSource) ?
+                                        objSource.MapPropertiesTo<DoubleJump>() ??
+                                            new DoubleJump() : tileData.MapPropertiesTo<DoubleJump>();
+                        c.componentGived = new DoubleJumpComponent(jumpData);
+                    }
                     break;
                 case "GravityChangerMode":
-                        Console.WriteLine("will be implemented");
+                    {
+                        var datta = (source is DotTiled.Object objSource) ?
+                            objSource.MapPropertiesTo<GravityChangerMode>() ??
+                                new GravityChangerMode() : tileData.MapPropertiesTo<GravityChangerMode>();
+                        c.componentGived = new EntityComponents.Modes.GravityChangerMode(datta);
+                    }
+                    Console.WriteLine("GravityChangerMode, will be implemented");
                     break;
                 case "BouncerMode":
-                    Console.WriteLine("i swear to god"); 
+                    Console.WriteLine("BouncerMode, i swear to god"); 
                     break;
                 case "MisilMode":
-                    Console.WriteLine("it'll be soon^tm");
+                    Console.WriteLine("MisilMode, it'll be soon^tm");
                     break;
                 default:
                     Console.WriteLine($"PowerUp type not implemented: {tileData.Type}");

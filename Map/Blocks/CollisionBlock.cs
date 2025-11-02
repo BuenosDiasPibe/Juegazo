@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
-using Juegazo.Components;
 
 namespace Juegazo.Map.Blocks
 {

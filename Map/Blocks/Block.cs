@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DotTiled;
-using Juegazo.Map;
 using Juegazo.Map.Components;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Color = Microsoft.Xna.Framework.Color;
 
-namespace Juegazo
+namespace Juegazo.Map
 {
     public abstract class Block
     {
@@ -21,6 +21,7 @@ namespace Juegazo
         public Tile tile;
         public Color colorBlock = Color.White;
         public List<BlockComponent> components = new();
+        public Dictionary<string, SoundEffect> soundEffectsByName = new();
         protected Block() { }
         protected Block(Rectangle collider)
         {

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using DotTiled;
 using Juegazo.CustomTiledTypes;
-using Juegazo.Map.Blocks;
+using Juegazo.Map;
 using Microsoft.Xna.Framework;
 
 namespace Juegazo.CustomTiledTypes
@@ -130,12 +130,17 @@ namespace Juegazo.CustomTiledTypes
     }
     public class MovingDamageBlock //ERROR: cant use MovementBlock or DamageBlock instances here, throws error saying "Object of type 'System.Int32' cannot be converted to type 'System.UInt32'", probably not recognizing type or something 
     {
-        public bool canDamage {get; set; } = false;
+        public bool canDamage { get; set; } = false;
         public bool canMove { get; set; } = false;
         public int damageAmmount { get; set; } = 0;
-        public uint endBlockPosition {get; set;} = 0;
-        public uint initialBlockPosition {get; set;} = 0;
+        public uint endBlockPosition { get; set; } = 0;
+        public uint initialBlockPosition { get; set; } = 0;
         public float velocity { get; set; } = 0;
+    }
+    public class GravityChangerMode
+    {
+        public bool changeHorizontal { get; set; } = false;
+        public bool changeVertical { get; set; } = false;
     }
 }
 namespace Juegazo.CustomTiledTypesImplementation

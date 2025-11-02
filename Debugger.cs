@@ -23,33 +23,6 @@ namespace Juegazo
             rectangleTexture = new Texture2D(graphicsDevice, 1, 1);
             rectangleTexture.SetData(new Color[] { color });
         }
-        public void drawhitboxEntities(SpriteBatch _spriteBatch, List<Entity> entities, HitboxTilemaps collisionMap, int TILESIZE)
-        {
-            foreach (var entity in entities)
-            {
-                foreach (var hitbox in collisionMap.getIntersectingTilesHorizontal(entity.Destinationrectangle))
-                {
-                    new Debugger(graphicsDevice).DrawRectHollow(_spriteBatch,
-                        new Rectangle(
-                        hitbox.X * TILESIZE,
-                        hitbox.Y * TILESIZE,
-                        TILESIZE,
-                        TILESIZE
-                    ), 4, Color.White);
-                }
-                foreach (var hitbox in collisionMap.getIntersectingTilesVertical(entity.Destinationrectangle))
-                {
-                    new Debugger(graphicsDevice).DrawRectHollow(
-                        _spriteBatch,
-                        new Rectangle(
-                            hitbox.X * TILESIZE,
-                            hitbox.Y * TILESIZE,
-                            TILESIZE,
-                            TILESIZE),
-                        4, Color.White);
-                }
-            }
-        }
         public void DrawRectHollow(SpriteBatch spriteBatch, Rectangle rect, int thickness, Color color)
         { //shows hitbox
             spriteBatch.Draw(

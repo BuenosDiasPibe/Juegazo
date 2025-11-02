@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Juegazo.Components;
 using Juegazo.CustomTiledTypes;
+using Juegazo.EntityComponents;
 using Juegazo.Map.Components;
 using Microsoft.Xna.Framework;
 

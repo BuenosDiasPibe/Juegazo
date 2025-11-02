@@ -195,7 +195,7 @@
           }
         }
       },
-      "NVorbis/0.10.4": {
+      "NVorbis/0.10.5": {
         "type": "package",
         "dependencies": {
           "System.Memory": "4.5.3",
@@ -498,10 +498,10 @@
         "runtimes/win-x64/native/SDL2.dll"
       ]
     },
-    "NVorbis/0.10.4": {
-      "sha512": "WYnil3DhQHzjCY0dM9I2B3r1vWip90AOuQd25KE4NrjPQBg0tBJFluRLm5YPnO5ZLDmwrfosY8jCQGQRmWI/Pg==",
+    "NVorbis/0.10.5": {
+      "sha512": "o+IptCG4Avze39HrGeztC+xIp6fOOwGVAwkoa1J++4Ji1WmZ+KIKlFl5wsgxsXqBkmdpfs/vFSUproiLKYa2bw==",
       "type": "package",
-      "path": "nvorbis/0.10.4",
+      "path": "nvorbis/0.10.5",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -510,7 +510,7 @@
         "lib/net45/NVorbis.xml",
         "lib/netstandard2.0/NVorbis.dll",
         "lib/netstandard2.0/NVorbis.xml",
-        "nvorbis.0.10.4.nupkg.sha512",
+        "nvorbis.0.10.5.nupkg.sha512",
         "nvorbis.nuspec"
       ]
     },
@@ -675,7 +675,8 @@
       "DotTiled >= 0.3.0",
       "Gum.MonoGame >= 2025.5.1.1",
       "MonoGame.Content.Builder.Task >= 3.8.2.1105",
-      "MonoGame.Framework.DesktopGL >= 3.8.2.1105"
+      "MonoGame.Framework.DesktopGL >= 3.8.2.1105",
+      "NVorbis >= 0.10.5"
     ]
   },
   "packageFolders": {
@@ -684,11 +685,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/clumpl/Documentos/Programacion/Juegazo/MarinMol.csproj",
+      "projectUniqueName": "/home/clumpl/Documentos/Juegazo/MarinMol.csproj",
       "projectName": "MarinMol",
-      "projectPath": "/home/clumpl/Documentos/Programacion/Juegazo/MarinMol.csproj",
+      "projectPath": "/home/clumpl/Documentos/Juegazo/MarinMol.csproj",
       "packagesPath": "/home/clumpl/.nuget/packages/",
-      "outputPath": "/home/clumpl/Documentos/Programacion/Juegazo/obj/",
+      "outputPath": "/home/clumpl/Documentos/Juegazo/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/clumpl/.nuget/NuGet/NuGet.Config"
@@ -736,6 +737,10 @@
           "MonoGame.Framework.DesktopGL": {
             "target": "Package",
             "version": "[3.8.2.1105, )"
+          },
+          "NVorbis": {
+            "target": "Package",
+            "version": "[0.10.5, )"
           }
         },
         "imports": [

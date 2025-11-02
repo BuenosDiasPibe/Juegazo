@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using DotTiled;
 using Gum.Wireframe;
-using Juegazo.Components;
+using Juegazo.EntityComponents;
 using Juegazo.Map;
 using Juegazo.Map.Blocks;
 using Microsoft.Xna.Framework;
@@ -31,16 +31,23 @@ namespace Juegazo
         Camera camera;
         Texture2D playerTexture;
         private TiledMap tilemap;
-        private string projectDirectory = GetExecutingDir("../../../Tiled");
+        private string projectDirectory = GetExecutingDir("Tiled");
         private string levelPath;
         private KeyboardState pastKey;
         private Debugger debugger;
         private bool enableDebugger;
         private bool changeScene = false;
         public bool cameraBoundries = true;
-        private static string GetExecutingDir(string v)
+        public AudioImoporter a;
+        private static string GetExecutingDir(string v) // TODO: create a Utilities singleton
         {
             string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            var dirInfo = new DirectoryInfo(baseDirectory);
+            for (int i = 0; i < 3 && dirInfo.Parent != null; i++)
+            {
+                dirInfo = dirInfo.Parent;
+            }
+            baseDirectory = dirInfo.FullName;
             return Path.Combine(baseDirectory, v);
         }
 
@@ -59,6 +66,7 @@ namespace Juegazo
 
         public void LoadContent()
         {
+            a = new("Content/Sounds/Sfx");
             changeScene = false;
             debugger = new(graphicsDevice);
             playerTexture = contentManager.Load<Texture2D>("second_player_sprite");
@@ -69,6 +77,7 @@ namespace Juegazo
 
             List<ICustomTypeDefinition> typeDefinitions = new();
             tilemap = new(graphicsDevice, projectDirectory, levelPath, TILESIZE, typeDefinitions, gum);
+            a.allSFXToBlocks(tilemap.collisionLayer.Values.ToList());
             var playableEntities = tilemap.entities
                 .Where(e => e.isPlayable);
             if (entities.Count == 0)
