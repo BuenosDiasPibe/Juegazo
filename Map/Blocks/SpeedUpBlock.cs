@@ -25,12 +25,15 @@ namespace Juegazo.Map.Blocks
             if (entity.velocity.X != 0)
             {
                 entity.velocity.X += entity.directionLeft ? -velocitySpeed : velocitySpeed;
-                // randomly play a sound effect from the global SoundManager dictionary
-                var rnd = new Random();
-                int index = rnd.Next(soundEffectsByName.Values.Count);
-                Console.WriteLine($"playing {index} from {soundEffectsByName.Values.Count}");
-                var sfx = soundEffectsByName.ElementAt(index).Value;
-                sfx?.Play();
+                if(loadedAudio)
+                {
+                    // randomly play a sound effect from the global SoundManager dictionary
+                    var rnd = new Random();
+                    int index = rnd.Next(soundEffectsByName.Values.Count);
+                    Console.WriteLine($"playing {index} from {soundEffectsByName.Values.Count}");
+                    var sfx = soundEffectsByName.ElementAt(index).Value;
+                    sfx?.Play();
+                }
             }
         }
 

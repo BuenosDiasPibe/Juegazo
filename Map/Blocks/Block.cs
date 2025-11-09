@@ -21,7 +21,8 @@ namespace Juegazo.Map
         public Tile tile;
         public Color colorBlock = Color.White;
         public List<BlockComponent> components = new();
-        public Dictionary<string, SoundEffect> soundEffectsByName = new();
+        public Dictionary<string, SoundEffectInstance> soundEffectsByName = new();
+        public bool loadedAudio = false;
         protected Block() { }
         protected Block(Rectangle collider)
         {

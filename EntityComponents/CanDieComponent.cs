@@ -12,7 +12,7 @@ namespace Juegazo.EntityComponents
     {
         public Vector2 initialPosition;
         private float deathTimerSeconds = 0;
-        private bool isDying = false;
+        public bool isDying { get; private set; } = false;
         private Color originalColor;
         // private SoundEffect thingie; //testing audio stuff
 
@@ -34,7 +34,6 @@ namespace Juegazo.EntityComponents
             if (Owner.health <= 0 && !isDying)
             {
                 StartDeathSequence();
-                // thingie.Play();
             }
             if (isDying)
             {

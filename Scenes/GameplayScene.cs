@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -39,6 +40,7 @@ namespace Juegazo
         private bool changeScene = false;
         public bool cameraBoundries = true;
         public AudioImoporter a;
+        public double fps;
         private static string GetExecutingDir(string v) // TODO: create a Utilities singleton
         {
             string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
@@ -66,7 +68,6 @@ namespace Juegazo
 
         public void LoadContent()
         {
-            a = new("Content/Sounds/Sfx");
             changeScene = false;
             debugger = new(graphicsDevice);
             playerTexture = contentManager.Load<Texture2D>("second_player_sprite");
@@ -77,7 +78,13 @@ namespace Juegazo
 
             List<ICustomTypeDefinition> typeDefinitions = new();
             tilemap = new(graphicsDevice, projectDirectory, levelPath, TILESIZE, typeDefinitions, gum);
-            a.allSFXToBlocks(tilemap.collisionLayer.Values.ToList());
+            if(tilemap.loadAudio)
+            {
+                var sw = new Stopwatch();
+                sw.Start(); a = new("Content/Sounds/Sfx"); sw.Stop();
+                Console.WriteLine($"soundsLoad: {sw.ElapsedMilliseconds}ms");
+                a.allSFXToBlocks(tilemap.collisionLayer.Values.ToList());
+            }
             var playableEntities = tilemap.entities
                 .Where(e => e.isPlayable);
             if (entities.Count == 0)
@@ -152,6 +159,7 @@ namespace Juegazo
             {
                 block.Update(gameTime);
             }
+
             var collisionBlocks = tilemap.collisionLayer.Values.Where(b => b.EnableCollisions);
 
             foreach (var entity in entities.ToList())
@@ -248,6 +256,7 @@ namespace Juegazo
             }
 
             pastKey = Keyboard.GetState();
+            fps = Math.Round(1 / gameTime.ElapsedGameTime.TotalSeconds);
         }
 
         private int changeSScne(int nextScene, Block block)
@@ -298,7 +307,7 @@ namespace Juegazo
                 }
                 if(entity.isPlayer)
                     spriteBatch.DrawString(font,
-                        $"Level: {Path.GetFileNameWithoutExtension(levelPath)}\nFPS: {Math.Round(1 / gameTime.ElapsedGameTime.TotalSeconds)}\nposition: (X:{entity.Destinationrectangle.X} Y:{entity.Destinationrectangle.Y})\nvelocity: {entity.velocity}\nbaseVelocity: {entity.baseVelocity}\nhealth: {entity.health}\nstate: {entity.entityState}\ngravity: {entity.direction}",
+                        $"Level: {Path.GetFileNameWithoutExtension(levelPath)}\nFPS: {fps}\nposition: (X:{entity.Destinationrectangle.X} Y:{entity.Destinationrectangle.Y})\nvelocity: {entity.velocity}\nbaseVelocity: {entity.baseVelocity}\nhealth: {entity.health}\nstate: {entity.entityState}\ngravity: {entity.direction}",
                         new Vector2(camera.Left, camera.Top),
                             Color.White);
             }

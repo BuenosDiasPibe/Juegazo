@@ -2,6 +2,26 @@
     {
         "color": "#ffa0a0a4",
         "drawFill": true,
+        "id": 38,
+        "members": [
+        ],
+        "name": "BouncerMode",
+        "type": "class",
+        "useAs": [
+            "property",
+            "map",
+            "layer",
+            "object",
+            "tile",
+            "tileset",
+            "wangcolor",
+            "wangset",
+            "project"
+        ]
+    },
+    {
+        "color": "#ffa0a0a4",
+        "drawFill": true,
         "id": 3,
         "members": [
             {
@@ -473,6 +493,11 @@
                 "name": "ClampCameraToBoundries",
                 "type": "bool",
                 "value": true
+            },
+            {
+                "name": "loadAudio",
+                "type": "bool",
+                "value": false
             },
             {
                 "name": "zoom",

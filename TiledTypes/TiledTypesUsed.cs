@@ -17,6 +17,8 @@ namespace Juegazo.CustomTiledTypes
     {
         public bool ClampCameraToBoundries { get; set; } = true;
         public float zoom { get; set; } = 0f;
+        public bool loadAudio { get; set; } = false;
+
     }
     public class NPC
     {

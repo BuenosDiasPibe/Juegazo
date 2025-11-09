@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Juegazo.EntityComponents;
 using Juegazo.Map.Components;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 
 namespace Juegazo.Map.Blocks
 {
@@ -40,15 +42,30 @@ namespace Juegazo.Map.Blocks
             if(realCollision.Intersects(entity.collider))
             {
                 entity.health -= damageAmmount;
+                if(entity.TryGetComponent(out CanDieComponent canDie))
+                {
+                    if(loadedAudio && !canDie.isDying)
+                    {
+                        if (soundEffectsByName.TryGetValue("IceSlip", out var sfx))
+                        {
+                            sfx.Pitch = (float)new Random().NextDouble();
+                            sfx.Play();
+                        }
+                        else
+                        {
+                            var rnd = new Random();
+                            int index = rnd.Next(soundEffectsByName.Values.Count);
+                            var ssfx = soundEffectsByName.ElementAt(index);
+                            ssfx.Value?.Play();
+                        }
+                    }
+                }
             }
         }
 
         public override void verticalActions(Entity entity, Rectangle collision)
         {
-            if(realCollision.Intersects(entity.collider))
-            {
-                entity.health -= damageAmmount;
-            }
+            //horizontalActions(entity, collision);
         }
     }
 }

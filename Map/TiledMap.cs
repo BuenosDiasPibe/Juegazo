@@ -89,6 +89,7 @@ namespace Juegazo.Map
 
         public float cameraZoom = 0;
         public bool levelBoundries = true;
+        public bool loadAudio = false;
         public TiledMap(GraphicsDevice graphicsDevice, string projectDirectory, string mapFilePath, int TILESIZE, List<ICustomTypeDefinition> typeDefinitions, GumService gum)
         {
             this.graphicsDevice = graphicsDevice;
@@ -108,6 +109,7 @@ namespace Juegazo.Map
                 var c = Map.MapPropertiesTo<LevelPropieties>();
                 cameraZoom = c.zoom;
                 levelBoundries = c.ClampCameraToBoundries;
+                loadAudio = c.loadAudio;
             }
             this.TILESIZE = TILESIZE;
             var sw = new Stopwatch();
@@ -116,7 +118,7 @@ namespace Juegazo.Map
             InitLayerGroup(Map.Layers);
             collisionLayer.TrimExcess();
             sw.Stop();
-            Console.WriteLine($"{sw.ElapsedMilliseconds}ms to render all the level.");
+            Console.WriteLine($"{sw.ElapsedMilliseconds}ms to render the data of the level.");
         }
 
         public void InitLayerGroup(List<BaseLayer> layers)

@@ -37,6 +37,15 @@ namespace Juegazo.Map.Blocks
             {
                 entity.baseVelocity = new();
                 entity.health-=damageAmmount;
+                if(loadedAudio)
+                {
+                    // randomly play a sound effect from the global SoundManager dictionary
+                    var rnd = new Random();
+                    int index = rnd.Next(soundEffectsByName.Values.Count);
+                    Console.WriteLine($"playing {index} from {soundEffectsByName.Values.Count}");
+                    var sfx = soundEffectsByName.ElementAt(index).Value;
+                    sfx?.Play();
+                }
             }
         }
 
@@ -47,11 +56,7 @@ namespace Juegazo.Map.Blocks
 
         public override void verticalActions(Entity entity, Rectangle collision)
         {
-            if(collision.Intersects(entity.collider))
-            {
-                entity.baseVelocity = new();
-                entity.health-=damageAmmount;
-            }
+            horizontalActions(entity, collision);
         }
     }
 }
