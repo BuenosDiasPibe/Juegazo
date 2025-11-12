@@ -25,6 +25,7 @@ using Microsoft.Xna.Framework.Graphics;
 using MonoGameGum;
 using ToolsUtilities;
 using Color = Microsoft.Xna.Framework.Color;
+using System.Net.Http.Headers;
 
 namespace Juegazo.Map
 {
@@ -145,7 +146,6 @@ namespace Juegazo.Map
                     case "Collision Tile Layer":
                         if (layer is not TileLayer tLayer)
                             throw new Exception($"layer \"{layer.Name}\" is using a TileLayer class when its a \"{layer.GetType()}\"");
-                        collisionLayer.EnsureCapacity(tLayer.Data.Value.GlobalTileIDs.Value.Count());
                         sw.Start();
                         CreateCollisionLayer(tLayer);
                         sw.Stop();
@@ -188,23 +188,19 @@ namespace Juegazo.Map
                     Console.WriteLine($"Not possible to create an object. Tile.ID = {TileID}");
                     continue;
                 }
+                var tileset = TilesetsByGID[TileID];
                 int x = (int)(i % tileLayer.Width);
                 int y = (int)(i / tileLayer.Width);
                 Vector2 position = new(x, y);
-                var tileset = TilesetsByGID[TileID];
                 bool blockPlaced = false;
                 if(blocks.TryGetValue(tile.Type, out var block))
                 {
                     var propieties = MapObjectToPropieties(tile);
                     var type = block.GetType();
-                    Block blockk;
+                    Block blockk = (Block)Activator.CreateInstance(type);
                     if (propieties != null)
                     {
                         blockk = propieties.createBlock(TILESIZE, Map);
-                    }
-                    else
-                    {
-                        blockk = (Block)Activator.CreateInstance(type);
                     }
                     blockk.collider = getDestinationRectangle(position, tileset); //TODO: on TiledTypesUsed, add collider and/or position too.
                     blockk.tile = tile;
@@ -649,12 +645,14 @@ namespace Juegazo.Map
                         Texture2D atlasImage = TileCollectionTextures[tileData];
                         entity = new Entity(atlasImage, TileSourceBounds(tileData), GetObjectDestinationRectangle(tile), 1, Color.White);
                     }
+                    List<Component> componenList = new();
 
-                    entity.AddComponents(new List<Component>
-                    {
-                        new NPCAnimationComponent(tileData),
-                        new NPCComponent(papu.name, papu.dialogStart, papu.dialogEnd, gum)
-                    });
+                    componenList.Add(new NPCComponent(papu.name, papu.dialogStart, papu.dialogEnd, gum));
+                    if (tileData.Animation.Count > 0) {
+                        componenList.Add(new NPCAnimationComponent(tileData));
+                    }
+                    entity.AddComponents(componenList);
+
                     entities.Add(entity);
                     Console.WriteLine($"added entiity {papu.name} with tileset {tileset.Name} in position {entity.Destinationrectangle}");
                 }
@@ -690,9 +688,9 @@ namespace Juegazo.Map
 
         private void DrawCollectionTile(GameTime gameTime, SpriteBatch spriteBatch, uint value, Vector2 position, Camera camera)
         {
-            var desRectangle = getDestinationRectangle(position, TilesetsByGID[value]);
-            if (!IsVisible(desRectangle, camera)) return;
             Tile tile = TilesByGID[value];
+            var desRectangle = GetCollectionTileDestinationRectangle(position, tile);
+            if (!IsVisible(desRectangle, camera)) return;
             Texture2D text = TileCollectionTextures[tile];
             Rectangle src = TileSourceBounds(tile);
             spriteBatch.Draw(text, desRectangle, src, Color.White);
@@ -711,8 +709,8 @@ namespace Juegazo.Map
         {
             return new((int)position.X * TILESIZE,
                         (int)((position.Y - (tileset.TileHeight / TileHeight)+1) * TILESIZE), //adding one because 8/8 = 1, 16/8=2, i just need that 2 because its the difference between a tileset with the same height and a tileset with another height 
-                        (int)((tileset.TileWidth / TileWidth) * TILESIZE),
-                        (int)((tileset.TileHeight / TileHeight) * TILESIZE));
+                        (int)(tileset.TileWidth / TileWidth * TILESIZE),
+                        (int)(tileset.TileHeight / TileHeight * TILESIZE));
         }
 
         public static Rectangle GetSourceRect(uint id, Tileset tileset)
@@ -746,7 +744,6 @@ namespace Juegazo.Map
                     }
                 }
             }
-
             for (uint gid = 1; gid < GID_Count_Last; gid++) 
             {
                 var (tileset, tile) = GetTilesetFromGID(gid);
@@ -950,6 +947,14 @@ namespace Juegazo.Map
             return camera.IsRectangleVisible(destRect);
         }
 
+        private Rectangle GetCollectionTileDestinationRectangle(Vector2 position, Tile tile)
+        {
+            return new Rectangle(
+                            (int)(position.X * TILESIZE),
+                            (int)((position.Y - ((tile.Height/TileHeight)-1))* TILESIZE), //objects anchor are in the bottom left corner
+                            (int)(tile.Width / TileWidth * TILESIZE),
+                            (int)(tile.Height / TileHeight * TILESIZE));
+        }
         private Rectangle GetObjectDestinationRectangle(DotTiled.Object obj)
         {
             return new Rectangle(

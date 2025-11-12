@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.10" tiledversion="1.11.2" name="OtherEntities" tilewidth="1920" tileheight="1080" tilecount="6" columns="0">
+<tileset version="1.10" tiledversion="1.11.2" name="OtherEntities" tilewidth="1920" tileheight="1080" tilecount="7" columns="0">
  <grid orientation="orthogonal" width="1" height="1"/>
  <tile id="3" type="NPC">
   <properties>
@@ -9,9 +9,6 @@
   <animation>
    <frame tileid="3" duration="150"/>
   </animation>
- </tile>
- <tile id="5">
-  <image source="testingBackground.png" width="1920" height="1080"/>
  </tile>
  <tile id="6" type="NPC">
   <properties>
@@ -36,5 +33,11 @@
  </tile>
  <tile id="9">
   <image source="gumbva.png" width="4" height="4"/>
+ </tile>
+ <tile id="10">
+  <image source="im so sorry.png" width="128" height="128"/>
+ </tile>
+ <tile id="5">
+  <image source="testingBackground.png" width="1920" height="1080"/>
  </tile>
 </tileset>

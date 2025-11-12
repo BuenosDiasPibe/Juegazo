@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "Level7.tmj",
+    "activeFile": "Main.tmj",
     "expandedProjectPaths": [
         "."
     ],
@@ -41,7 +41,7 @@
             "scale": 3,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 442.16666666666663,
+                "x": 257.8333333333333,
                 "y": 39.166666666666664
             }
         },
@@ -146,7 +146,7 @@
             "scale": 1.5,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 536.3333333333333,
+                "x": 655.6666666666666,
                 "y": 309.66666666666663
             }
         },
@@ -248,11 +248,11 @@
                 3,
                 2
             ],
-            "scale": 1.5,
-            "selectedLayer": 1,
+            "scale": 3,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": 136.33333333333331,
-                "y": 147
+                "x": 128.16666666666666,
+                "y": 139.5
             }
         },
         "Level7.tmx": {
@@ -310,10 +310,10 @@
                 4
             ],
             "scale": 3,
-            "selectedLayer": 2,
+            "selectedLayer": 0,
             "viewCenter": {
-                "x": 186.83333333333331,
-                "y": 62.166666666666664
+                "x": 108.83333333333334,
+                "y": 168.16666666666669
             }
         },
         "Main.tmx": {
@@ -330,7 +330,7 @@
         "OtherEntities.tsx": {
             "dynamicWrapping": true,
             "scaleInDock": 0.03125,
-            "scaleInEditor": 45
+            "scaleInEditor": 0.0625
         },
         "betterTest.tmx": {
             "expandedObjectLayers": [
@@ -424,30 +424,25 @@
     "map.tileWidth": 16,
     "map.width": 60,
     "openFiles": [
-        "Level14.tmj",
-        "worldSpace2.tsx",
-        "Level2.tmj",
-        "worldTexture.tsx",
-        "Level15.tmj",
-        "Level3.tmj",
-        "Level11.tmj",
-        "Level7.tmj"
+        "OtherEntities.tsx",
+        "Level7.tmj",
+        "Main.tmj"
     ],
     "project": "untitled.tiled-project",
     "property.type": "bool",
     "recentFiles": [
+        "OtherEntities.tsx",
         "Level7.tmj",
-        "worldSpace2.tsx",
+        "Main.tmj",
         "Level14.tmj",
+        "worldSpace2.tsx",
         "Level2.tmj",
         "worldTexture.tsx",
         "Level15.tmj",
         "Level3.tmj",
         "Level11.tmj",
-        "OtherEntities.tsx",
-        "Level9.tmj",
-        "Main.tmj",
-        "Level8.tmj"
+        "Level10.tmj",
+        "Level1.tmj"
     ],
     "tileset.lastUsedFilter": "Archivos de conjuntos de patrones Tiled (*.tsx *.xml)",
     "tileset.lastUsedFormat": "tsx",
