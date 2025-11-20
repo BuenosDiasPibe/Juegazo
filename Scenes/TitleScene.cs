@@ -36,31 +36,28 @@ namespace Juegazo
 
             StackPanel panel = new()
             {
-                Spacing = 3,
+              Spacing = 3,
             };
             panel.Anchor(Anchor.Center);
-            //panel.AddToRoot();
             TextRuntime name = new()
             {
               Text = "Marin Mol",
-              FontScale = 2,
-              Red = 243,
-              Green = 139,
-              Blue = 168,
+              FontSize = 90,
+              FontScale = 4,
+              IsBold = true,
+              UseFontSmoothing = true,
             };
+            name.Color = new(Colorazos.GruvPurple);
             TextRuntime description = new()
             {
               Text = "we count the pixels",
+              UseFontSmoothing = true
             };
             Button playButton = new()
-            {
-                Text = "Play"
-            };
+            { Text = "Play" };
             playButton.Click += StartGame();
             Button ExitButton = new()
-            {
-                Text = "Exit"
-            };
+            { Text = "Exit" };
             ExitButton.Click += Exiting();
 
             panel.AddChild(name);
@@ -72,9 +69,9 @@ namespace Juegazo
 
         private EventHandler StartGame()
         {
-          return (sender, e) => {
+          return (_, _) => {
             GameplayScene gs = new GameplayScene(cmanager, graphicsDevice, gum, manager);
-            gs.levelStart = "";
+            gs.levelPath = "";
             manager.AddScene(gs);
             };
         }

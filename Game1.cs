@@ -73,12 +73,13 @@ public class Game1 : Game
 
     protected override void Draw(GameTime gameTime)
     {
-        GraphicsDevice.Clear(new Color(30,30,46));
-        _spriteBatch.Begin(transformMatrix: Camera.Instance.Matrix,samplerState: SamplerState.PointWrap); // pointWrap is more useful than pointClamp
-        sceneManager.GetScene().Draw(gameTime, _spriteBatch);
-        sceneManager.GetScene().DrawUI(gameTime, _spriteBatch);
-        Gum.Draw();
-        _spriteBatch.End();
-        base.Draw(gameTime);
+      Color selected = new Color(Colorazos.GruvBg);
+      GraphicsDevice.Clear(selected);
+      _spriteBatch.Begin(transformMatrix: Camera.Instance.Matrix,samplerState: SamplerState.PointWrap); // pointWrap is more useful than pointClamp
+      sceneManager.GetScene().Draw(gameTime, _spriteBatch);
+      sceneManager.GetScene().DrawUI(gameTime, _spriteBatch);
+      Gum.Draw();
+      _spriteBatch.End();
+      base.Draw(gameTime);
     }
 }

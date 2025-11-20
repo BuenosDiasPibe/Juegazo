@@ -1,9 +1,17 @@
 ﻿using System;
 namespace Juegazo 
 {
-	using System;
-	namespace Juegazo 
+	public class Colorazos 
 	{
+		public const uint GruvBg = 4280821800u;
+		public const uint GruvRed = 4291568669u;   // 0xFFCC241D
+		public const uint GruvGreen = 4288190234u; // 0xFF98971A
+		public const uint GruvYellow = 4292319521u;// 0xFFD79921
+		public const uint GruvBlue = 4282746248u; // 0xFF458588
+		public const uint GruvPurple = 4289815174u;// 0xFFB16286
+		public const uint Gruvaqua = 4285046122u;  // 0xFF689D6A
+		public const uint GruvGay = 4289239428u;   // 0xFFA89984
+	}
 		public static class ColorConstants {
 			public const UInt32 Transparent = 0u;
 			public const UInt32 AliceBlue = 4294965488u;
@@ -148,8 +156,7 @@ namespace Juegazo
 			public const UInt32 Yellow = 4278255615u;
 			public const UInt32 YellowGreen = 4281519514u;
 		}
-		
-		
+
 		public class ColorProvider {
 			private readonly UInt32[] colors = new UInt32[] {
 				// Mapping: 1 -> AliceBlue, 2 -> AntiqueWhite, 3 -> Aqua, etc.
@@ -303,5 +310,4 @@ namespace Juegazo
 				return colors[number - 1];
 			}
 		}
-	}
 }

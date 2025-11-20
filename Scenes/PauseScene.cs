@@ -6,6 +6,7 @@ using MonoGameGum.Forms.Controls;
 using System;
 using Gum.Wireframe;
 using Microsoft.Xna.Framework.Input;
+using MonoGameGum.GueDeriving;
 
 namespace MarinMol.Scenes
 {
@@ -14,11 +15,12 @@ namespace MarinMol.Scenes
     GumService gum;
     SceneManager sceneManager;
     private event Action exitGame;
-    public PauseScene(GumService gum, SceneManager sceneManager)
+    public GameplayScene reference;
+    public PauseScene(GumService gum, SceneManager sceneManager, IScene scene)
     {
       this.gum = gum;
       this.sceneManager = sceneManager;
-      exitGame = sceneManager.ActionByName["Exit"];
+      reference = (GameplayScene)scene;
     }
 
     public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -36,24 +38,46 @@ namespace MarinMol.Scenes
       GumService.Default.Root.Children.Clear();
       StackPanel panel = new() {Spacing = 10};
       panel.Anchor(Anchor.Center);
+
+      TextRuntime text = new()
+      {
+        Text = "Pause Menu",
+        FontScale = 2
+      };
+      panel.AddChild(text);
+
       Button but = new()
       { Text = "resume" };
       but.Click += ResumeGame();
+      panel.AddChild(but);
+
+      if(reference != null && !reference.levelPath.Equals("Main.tmj"))
+      {
+        Button backToMain = new()
+        {
+          Text = "Back to Main World"
+        };
+        backToMain.Click += BackToMain();
+        panel.AddChild(backToMain);
+      }
       Button exit = new()
       { Text = "ExitGame" };
       exit.Click += Exiting();
 
-      panel.AddChild(but);
       panel.AddChild(exit);
       gum.Root.AddChild(panel);
     }
-    public EventHandler ResumeGame()
+    private EventHandler ResumeGame()
     {
       return (sender, e) => {sceneManager.RemoveScene();};
     }
-    public EventHandler Exiting()
+    private EventHandler Exiting()
     {
       return (sender, e) => {exitGame();};
+    }
+    public EventHandler BackToMain()
+    {
+      return (sender, e) => { backToMainAction(); };
     }
     public void UnloadContent()
     {
@@ -68,10 +92,22 @@ namespace MarinMol.Scenes
         isReleased = false;
         sceneManager.RemoveScene();
       }
+      if(isReleased && Keyboard.GetState().IsKeyDown(Keys.M))
+      {
+        isReleased = false;
+        backToMainAction();
+        Console.WriteLine("fuck");
+      }
+
       // check if key was pressed before this scene was initialized, if so,
       // dont let it change the scene so quickly
-      if(Keyboard.GetState().IsKeyUp(Keys.P)){isReleased = true;}
-
+      if(Keyboard.GetState().GetPressedKeyCount() == 0){isReleased = true;}
+    }
+    private void backToMainAction()
+    {
+      reference.levelPath = "Main.tmj";
+      reference.UnloadContent();
+      sceneManager.RemoveAndLoadLastScene();
     }
   }
 }

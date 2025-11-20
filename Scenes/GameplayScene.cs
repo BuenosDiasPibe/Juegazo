@@ -31,7 +31,6 @@ namespace Juegazo
         Texture2D playerTexture;
         private TiledMap tilemap;
         private string projectDirectory = GetExecutingDir("Tiled");
-        private string levelPath;
         private KeyboardState pastKey;
         private bool enableDebugger;
         private bool changeScene = false;
@@ -39,7 +38,9 @@ namespace Juegazo
         public AudioImoporter a;
         public double fps;
         private Camera camera;
+
         public string levelStart;
+        public string levelPath;
         private PauseScene pause;
         private static string GetExecutingDir(string v) // TODO: create a Utilities singleton
         {
@@ -68,14 +69,13 @@ namespace Juegazo
         public void LoadContent()
         {
             GumService.Default.Root.Children.Clear();
-            pause = new(gum, sceneManager);
+            pause = new(gum, sceneManager, this);
             changeScene = false;
             playerTexture = contentManager.Load<Texture2D>("second_player_sprite");
             if (levelPath == null)
             {
               levelPath = "Main.tmj";
             }
-
             List<ICustomTypeDefinition> typeDefinitions = new();
             tilemap = new(graphicsDevice, projectDirectory, levelPath, TILESIZE, typeDefinitions, gum);
             if(tilemap.loadAudio)
@@ -87,30 +87,27 @@ namespace Juegazo
             }
             var playableEntities = tilemap.entities
                 .Where(e => e.isPlayable);
-            if (entities.Count == 0)
+            foreach (var t in playableEntities)
             {
-                foreach (var t in playableEntities)
+                var componentsOnEntity = new List<Component> {
+                    new KeyboardInputComponent(),
+                    new MoveVerticalComponent(),
+                    new MoveHorizontalComponent(),
+                    new ComplexGravityComponent(),
+                    new EntitiesInteractionsComponent(entities),
+                    new StateManagerComponent()
+                };
+                t.AddComponents(componentsOnEntity);
+                t.AddComponent(typeof(CanDieComponent), new CanDieComponent(new(t.Destinationrectangle.X, t.Destinationrectangle.Y)));
+                if (t.isPlayer)
                 {
-                    var componentsOnEntity = new List<Component> {
-                        new KeyboardInputComponent(),
-                        new MoveVerticalComponent(),
-                        new MoveHorizontalComponent(),
-                        new ComplexGravityComponent(),
-                        new EntitiesInteractionsComponent(entities),
-                        new StateManagerComponent()
-                    };
-                    t.AddComponents(componentsOnEntity);
-                    t.AddComponent(typeof(CanDieComponent), new CanDieComponent(new(t.Destinationrectangle.X, t.Destinationrectangle.Y)));
-                    if (t.isPlayer)
-                    {
-                        t.AddComponent(typeof(CameraToEntityComponent), new CameraToEntityComponent());
-                        camera.Position = new(t.collider.X, t.collider.Y);
-                        t.texture = playerTexture;
-                        t.AddComponent(typeof(AnimationComponent), new AnimationComponent());
-                    }
+                    t.AddComponent(typeof(CameraToEntityComponent), new CameraToEntityComponent());
+                    camera.Position = new(t.collider.X, t.collider.Y);
+                    t.texture = playerTexture;
+                    t.AddComponent(typeof(AnimationComponent), new AnimationComponent());
                 }
-                entities.AddRange(tilemap.entities);
             }
+            entities.AddRange(tilemap.entities);
 
             font = contentManager.Load<SpriteFont>("sheesh");
             camera.Origin = new Vector2(camera.Viewport.Width / 2, camera.Viewport.Height / 2);
@@ -154,7 +151,7 @@ namespace Juegazo
             if (Keyboard.GetState().IsKeyDown(Keys.M) && pastKey.IsKeyDown(Keys.M))
             {
                 UnloadContent();
-                sceneManager.RemoveScene();
+                sceneManager.RemoveAndLoadLastScene();
             }
             if (Keyboard.GetState().IsKeyDown(Keys.F3) && pastKey.IsKeyUp(Keys.F3))
             {
@@ -315,10 +312,14 @@ namespace Juegazo
                     continue;
                 }
                 if(entity.isPlayer)
-                    spriteBatch.DrawString(font,
-                        $"Level: {Path.GetFileNameWithoutExtension(levelPath)}\nFPS: {fps}\nposition: (X:{entity.Destinationrectangle.X} Y:{entity.Destinationrectangle.Y})\nvelocity: {entity.velocity}\nbaseVelocity: {entity.baseVelocity}\nhealth: {entity.health}\nstate: {entity.entityState}\ngravity: {entity.direction}",
-                        new Vector2(camera.Left, camera.Top),
-                            Color.White);
+                {
+                  string showCamera = $"Level: {Path.GetFileNameWithoutExtension(levelPath)}\nFPS: {fps}\nposition: (X:{entity.Destinationrectangle.X} Y:{entity.Destinationrectangle.Y})\nvelocity: {entity.velocity}\nbaseVelocity: {entity.baseVelocity}\nhealth: {entity.health}\nstate: {entity.entityState}\ngravity: {entity.direction}";
+                  Vector2 a = font.MeasureString(showCamera);
+                  spriteBatch.DrawString(font,
+                      showCamera,
+                      new Vector2(camera.Left-a.X, camera.Top),
+                          Color.White);
+                }
             }
             spriteBatch.DrawString(font, camera.ToString(), new(camera.Left, camera.Top + 300), Color.White, 0f, Vector2.Zero, 0.7f, SpriteEffects.None, 0f);
         }
