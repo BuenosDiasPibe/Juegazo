@@ -5,23 +5,38 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Juegazo
+namespace MarinMol
 {
     public class Debugger
     {
-        private Texture2D rectangleTexture;
-        private GraphicsDevice graphicsDevice;
-        public Debugger(GraphicsDevice graphicsDevice)
-        {
-            this.graphicsDevice = graphicsDevice;
-            rectangleTexture = new Texture2D(graphicsDevice, 1, 1);
-            rectangleTexture.SetData(new Color[] { new(255, 255, 255, 255) });
+      //singleton ---
+        private static Debugger instance;
+        public static Debugger Instance {
+          get {
+            if(instance == null)
+              throw new InvalidOperationException("Debugger was not initialized");
+            return instance;
+          }
         }
-        public Debugger(GraphicsDevice graphicsDevice, Color color)
+        private static readonly object sync = new();
+        public static void Initialize(GraphicsDevice graphicsDevice, Color color)
+        {
+          if(instance != null) return;
+          lock(sync)
+          {
+            if (instance == null)
+              instance = new Debugger(graphicsDevice, color);
+          }
+        }
+        // ---
+        private readonly Texture2D rectangleTexture;
+        private readonly GraphicsDevice graphicsDevice;
+
+        private Debugger(GraphicsDevice graphicsDevice, Color color)
         {
             this.graphicsDevice = graphicsDevice;
             rectangleTexture = new Texture2D(graphicsDevice, 1, 1);
-            rectangleTexture.SetData(new Color[] { color });
+            rectangleTexture.SetData([color]);
         }
         public void DrawRectHollow(SpriteBatch spriteBatch, Rectangle rect, int thickness, Color color)
         { //shows hitbox
@@ -56,8 +71,8 @@ namespace Juegazo
                 color
             );
             spriteBatch.Draw(
-                    rectangleTexture,
-                    new Rectangle(
+                rectangleTexture,
+                new Rectangle(
                     rect.Right - thickness,
                     rect.Y,
                     thickness,

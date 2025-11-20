@@ -1,24 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
 using Juegazo;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGameGum;
-using MonoGameGum.Forms.Controls;
 
 namespace MarinMol;
 
 public class Game1 : Game
 {
-    private GraphicsDeviceManager _graphics;
+    private readonly GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
     private SceneManager sceneManager;
-    GumService gum => GumService.Default;
-    private Camera principalCamera;
+    private static GumService Gum => GumService.Default;
     Viewport viewport;
 
     public Game1()
@@ -26,7 +20,6 @@ public class Game1 : Game
         _graphics = new GraphicsDeviceManager(this);
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
-        sceneManager = new();
     }
 
     protected override void Initialize()
@@ -36,36 +29,36 @@ public class Game1 : Game
         {
             _graphics.PreferredBackBufferWidth = 1920;
             _graphics.PreferredBackBufferHeight = 1080;
-            _graphics.IsFullScreen = true;
         }
         else if(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width >= 1365)
         {
             _graphics.PreferredBackBufferWidth = 1366;
             _graphics.PreferredBackBufferHeight = 768;
 
-            _graphics.IsFullScreen = true;
         }
         else
         {
             _graphics.PreferredBackBufferWidth = 1280;
             _graphics.PreferredBackBufferHeight = 720;
 
-            _graphics.IsFullScreen = true;
         }
+        _graphics.IsFullScreen = true;
         _graphics.ApplyChanges();
-        gum.Initialize(this);
-
         viewport = GraphicsDevice.Viewport;
-        principalCamera = new(viewport.Width, viewport.Height);        
 
-        sceneManager.AddScene(new TitleScene(sceneManager, Content, GraphicsDevice, gum, principalCamera));
-        // sceneManager.GetScene().Initialize(this); // only used on TitleScene, its not very useful
+        Gum.Initialize(this);
+        Camera.Initialize(viewport.Width, viewport.Height);
+        Debugger.Initialize(_graphics.GraphicsDevice, Color.White);
+        sceneManager = new(Content, Gum);
         base.Initialize();
     }
 
     protected override void LoadContent()
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
+        sceneManager.ActionByName["Exit"] = Exit;
+
+        sceneManager.AddScene(new TitleScene(sceneManager, Content, GraphicsDevice, Gum));
         sceneManager.GetScene().LoadContent();
         Console.WriteLine(sceneManager.GetScene()); 
     }
@@ -74,16 +67,17 @@ public class Game1 : Game
     {
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape)) Exit();
         sceneManager.GetScene().Update(gameTime);
-
         base.Update(gameTime);
+        Gum.Update(gameTime);
     }
 
     protected override void Draw(GameTime gameTime)
     {
         GraphicsDevice.Clear(new Color(30,30,46));
-        _spriteBatch.Begin(transformMatrix: principalCamera.Matrix,samplerState: SamplerState.PointWrap); // pointWrap is more useful than pointClamp
+        _spriteBatch.Begin(transformMatrix: Camera.Instance.Matrix,samplerState: SamplerState.PointWrap); // pointWrap is more useful than pointClamp
         sceneManager.GetScene().Draw(gameTime, _spriteBatch);
         sceneManager.GetScene().DrawUI(gameTime, _spriteBatch);
+        Gum.Draw();
         _spriteBatch.End();
         base.Draw(gameTime);
     }

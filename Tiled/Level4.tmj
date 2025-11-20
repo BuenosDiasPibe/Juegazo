@@ -39,25 +39,7 @@
          "draworder":"topdown",
          "id":4,
          "name":"Capa de Objetos 1",
-         "objects":[
-                {
-                 "gid":6,
-                 "height":8,
-                 "id":1,
-                 "name":"",
-                 "properties":[
-                        {
-                         "name":"SpeedAmmount",
-                         "type":"int",
-                         "value":30
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":8,
-                 "x":80,
-                 "y":72
-                }],
+         "objects":[],
          "opacity":1,
          "type":"objectgroup",
          "visible":true,

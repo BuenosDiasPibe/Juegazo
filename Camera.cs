@@ -5,10 +5,29 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Juegazo
+namespace MarinMol
 {
     public class Camera
     {
+        private static Camera instance;
+        public static Camera Instance
+        {
+            get
+            {
+                if (instance == null) throw new InvalidOperationException("camera has not been initialized");
+                return instance;
+            }
+        }
+        private static readonly object sync = new();
+        public static void Initialize(int width, int height)
+        {
+            if (instance != null) return;
+            lock(sync)
+            {
+                if (instance == null)
+                    instance = new Camera(width, height);
+            }
+        }
         public bool IsRectangleVisible(Rectangle rect)
         {
             return ViewPortRectangle.Intersects(rect);

@@ -145,6 +145,18 @@
                  "width":0,
                  "x":613,
                  "y":759
+                }, 
+                {
+                 "gid":35,
+                 "height":16,
+                 "id":30,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":640,
+                 "y":736
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -254,18 +266,18 @@
          "y":0
         }],
  "nextlayerid":5,
- "nextobjectid":30,
+ "nextobjectid":32,
  "orientation":"orthogonal",
  "properties":[
         {
          "name":"ClampCameraToBoundries",
          "type":"bool",
-         "value":true
+         "value":false
         }, 
         {
          "name":"zoom",
          "type":"float",
-         "value":0
+         "value":1
         }],
  "renderorder":"right-down",
  "tiledversion":"1.11.2",

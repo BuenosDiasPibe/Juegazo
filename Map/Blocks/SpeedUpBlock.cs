@@ -17,7 +17,7 @@ namespace Juegazo.Map.Blocks
         public SpeedUpBlock() { }
         public SpeedUpBlock(Rectangle collider,CustomTiledTypes.SpeedUpBlock sppeedUp) : base(collider)
         {
-            this.velocitySpeed = sppeedUp.SpeedAmmount;
+            this.velocitySpeed = sppeedUp.speedAmount;
         }
         public override void horizontalActions(Entity entity, Rectangle collision)
         {

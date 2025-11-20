@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MarinMol;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
@@ -82,7 +83,7 @@ namespace Juegazo.EntityComponents
                 var pa = new Vector2(initialPosition.X + c.lookAhead, initialPosition.Y);
                 c.cameraHorizontal = (int)pa.X;
                 c.cameraVertical = (int)pa.Y;
-                c.Camera.Position = pa;
+                Camera.Instance.Position = pa;
             }
         }
 

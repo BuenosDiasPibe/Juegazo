@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SourceFileCollection xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Profile>Reach</Profile>
+  <Platform>DesktopGL</Platform>
+  <Config />
+  <SourceFiles>
+    <File>/home/clumpl/Documentos/Programacion/Juegazo/Content/diosMio.jpg</File>
+    <File>/home/clumpl/Documentos/Programacion/Juegazo/Content/jugador.png</File>
+    <File>/home/clumpl/Documentos/Programacion/Juegazo/Content/player_body.png</File>
+    <File>/home/clumpl/Documentos/Programacion/Juegazo/Content/player.png</File>
+    <File>/home/clumpl/Documentos/Programacion/Juegazo/Content/playerr.png</File>
+    <File>/home/clumpl/Documentos/Programacion/Juegazo/Content/playerSprite.png</File>
+    <File>/home/clumpl/Documentos/Programacion/Juegazo/Content/second_player_sprite.png</File>
+    <File>/home/clumpl/Documentos/Programacion/Juegazo/Content/sheesh.spritefont</File>
+    <File>/home/clumpl/Documentos/Programacion/Juegazo/Content/worldTexture.png</File>
+  </SourceFiles>
+  <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+  </DestFiles>
+</SourceFileCollection>

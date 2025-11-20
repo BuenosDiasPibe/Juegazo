@@ -85,7 +85,7 @@ namespace Juegazo.CustomTiledTypes
     }
     public class SpeedUpBlock
     {
-        public int SpeedAmmount { get; set; } = 5;
+        public int speedAmount { get; set; } = 5;
     }
     public class MoveOneDirection
     {
@@ -98,7 +98,7 @@ namespace Juegazo.CustomTiledTypes
     {
         public FACES face { get; set; } = FACES.TOP;
     }
-    public enum FACES
+    public enum FACES //uhhhh i... cant explain it
     {
         TOP, BOTTOM, LEFT, RIGHT
     }
@@ -156,10 +156,10 @@ namespace Juegazo.CustomTiledTypesImplementation
         protected Rectangle GetRect(int TILESIZE, DotTiled.Map map, DotTiled.Object obj = null)
         {
             if (obj == null) return new();
-            int what = -(int)(obj.Height / map.TileHeight);
+            int tileOffset = -(int)(obj.Height / map.TileHeight); //Tiled draws objects from bottom to top
             return new Rectangle(
                             (int)(obj.X / map.TileWidth * TILESIZE),
-                            (int)(((obj.Y / map.TileHeight) + what) * TILESIZE),
+                            (int)(((obj.Y / map.TileHeight) + tileOffset) * TILESIZE),
                             (int)(obj.Width / map.TileWidth * TILESIZE),
                             (int)(obj.Height / map.TileHeight * TILESIZE)
                         );

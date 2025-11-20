@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Gum.Wireframe;
+using MarinMol.Scenes;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -12,14 +13,12 @@ using MonoGameGum.GueDeriving;
 
 namespace Juegazo
 {
-    public class EndScene(SceneManager manager, ContentManager contentManager, GraphicsDevice graphicsDevice, GumService gum, Camera camera) : IScene
+    public class EndScene(SceneManager manager, ContentManager contentManager, GraphicsDevice graphicsDevice, GumService gum) : IScene
     {
         GumService gum = gum;
         ContentManager Content = contentManager;
         GraphicsDevice graphicsDevice = graphicsDevice;
         SceneManager sceneManager = manager;
-        Camera principalCamera = camera;
-
         public void donmt()
         {
             GumService.Default.Root.Children.Clear();
@@ -53,7 +52,7 @@ namespace Juegazo
             return (sender, e) => sceneManager.RemoveScene(); 
         }
         private EventHandler MenuMain()
-        { return (sender, e) => { sceneManager.AddScene(new TitleScene(sceneManager, Content, graphicsDevice, gum, principalCamera)); }; }
+        { return (sender, e) => { sceneManager.AddScene(new TitleScene(sceneManager, Content, graphicsDevice, gum)); }; }
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         { }
 

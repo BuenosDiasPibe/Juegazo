@@ -3,20 +3,19 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using DotTiled;
-using Gum.Wireframe;
 using Juegazo.EntityComponents;
 using Juegazo.Map;
 using Juegazo.Map.Blocks;
+using MarinMol;
+using MarinMol.Scenes;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGameGum;
-using MonoGameGum.Forms.Controls;
-using RenderingLibrary.Graphics;
 using Color = Microsoft.Xna.Framework.Color;
+using Debugger = MarinMol.Debugger;
 
 namespace Juegazo
 {
@@ -29,18 +28,19 @@ namespace Juegazo
         private List<Entity> entities = new();
         GumService gum;
         private SpriteFont font;
-        Camera camera;
         Texture2D playerTexture;
         private TiledMap tilemap;
         private string projectDirectory = GetExecutingDir("Tiled");
         private string levelPath;
         private KeyboardState pastKey;
-        private Debugger debugger;
         private bool enableDebugger;
         private bool changeScene = false;
         public bool cameraBoundries = true;
         public AudioImoporter a;
         public double fps;
+        private Camera camera;
+        public string levelStart;
+        private PauseScene pause;
         private static string GetExecutingDir(string v) // TODO: create a Utilities singleton
         {
             string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
@@ -56,24 +56,24 @@ namespace Juegazo
         public GameplayScene(ContentManager contentManager,
         GraphicsDevice graphicsDevice,
         GumService gum,
-        SceneManager sceneManager,
-        Camera camera)
+        SceneManager sceneManager)
         {
             this.contentManager = contentManager ?? throw new ArgumentNullException(nameof(contentManager));
             this.graphicsDevice = graphicsDevice ?? throw new ArgumentNullException(nameof(graphicsDevice));
             this.sceneManager = sceneManager ?? throw new ArgumentNullException(nameof(sceneManager));
             this.gum = gum;
-            this.camera = camera;
+            this.camera = Camera.Instance;
         }
 
         public void LoadContent()
         {
+            GumService.Default.Root.Children.Clear();
+            pause = new(gum, sceneManager);
             changeScene = false;
-            debugger = new(graphicsDevice);
             playerTexture = contentManager.Load<Texture2D>("second_player_sprite");
             if (levelPath == null)
             {
-                levelPath = "Main.tmj";
+              levelPath = "Main.tmj";
             }
 
             List<ICustomTypeDefinition> typeDefinitions = new();
@@ -103,7 +103,7 @@ namespace Juegazo
                     t.AddComponent(typeof(CanDieComponent), new CanDieComponent(new(t.Destinationrectangle.X, t.Destinationrectangle.Y)));
                     if (t.isPlayer)
                     {
-                        t.AddComponent(typeof(CameraToEntityComponent), new CameraToEntityComponent(camera));
+                        t.AddComponent(typeof(CameraToEntityComponent), new CameraToEntityComponent());
                         camera.Position = new(t.collider.X, t.collider.Y);
                         t.texture = playerTexture;
                         t.AddComponent(typeof(AnimationComponent), new AnimationComponent());
@@ -127,12 +127,21 @@ namespace Juegazo
 
         public void UnloadContent()
         {
-            font = null;
-            entities = new();
+          font = null;
+          entities = new();
         }
+        bool wasPressed = true;
 
         public void Update(GameTime gameTime)
         {
+          if(!wasPressed && Keyboard.GetState().IsKeyDown(Keys.P))
+          {
+            wasPressed = true;
+            sceneManager.AddScene(pause);
+            return;
+          }
+          if(Keyboard.GetState().IsKeyUp(Keys.P)){wasPressed = false;}
+
             int nextScene = 0;
 
             if (Keyboard.GetState().IsKeyDown(Keys.R) && pastKey.IsKeyDown(Keys.R))
@@ -271,33 +280,33 @@ namespace Juegazo
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            tilemap.Draw(gameTime, spriteBatch, camera, entities);
+            tilemap.Draw(gameTime, spriteBatch, entities);
             foreach (var entity in entities)
             {
-                // if there's no Entity Spawner in the level, show the entities anyway
                 if (tilemap.EntityPositionerByName.Count == 0)
                     entity.Draw(gameTime, spriteBatch);
 
                 if (enableDebugger)
                 {
-                    debugger.DrawRectHollow(spriteBatch, entity.collider, 2, Color.Red);
-                    debugger.DrawRectHollow(spriteBatch, entity.Destinationrectangle, 2, Color.Blue);
+                    Debugger.Instance.DrawRectHollow(spriteBatch, entity.collider, 2, Color.Red);
+                    Debugger.Instance.DrawRectHollow(spriteBatch, entity.Destinationrectangle, 2, Color.Blue);
                 }
             }
 
             if (!enableDebugger) return;
             foreach (var t in tilemap.collisionLayer.Values)
             {
-                if (t.EnableCollisions) debugger.DrawRectHollow(spriteBatch, t.collider, 2, Color.Green);
-                else debugger.DrawRectHollow(spriteBatch, t.collider, 2, new Color(25, 25, 25, 100));
+                if (t.EnableCollisions) Debugger.Instance.DrawRectHollow(spriteBatch, t.collider, 2, Color.Green);
+                else Debugger.Instance.DrawRectHollow(spriteBatch, t.collider, 2, new Color(25, 25, 25, 100));
             }
-            debugger.DrawRectHollow(spriteBatch, camera.ViewPortRectangle, 2, Color.White);
+            Debugger.Instance.DrawRectHollow(spriteBatch, Camera.Instance.ViewPortRectangle, 2, Color.White);
         }
 
         public void Initialize(Game game)
         { }
         public void DrawUI(GameTime gameTime, SpriteBatch spriteBatch)
         {
+          if(!enableDebugger) return;
             foreach (var entity in entities)
             {
                 if (entity.hasComponent(typeof(NPCComponent)) && entity.GetComponent(typeof(NPCComponent)) is NPCComponent comp)

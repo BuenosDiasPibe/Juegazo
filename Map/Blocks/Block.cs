@@ -55,13 +55,13 @@ namespace Juegazo.Map
         public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch, Texture2D texture, Rectangle sourceRectangle)
         {
             if (!enableDraw) return;
-            bool chuco = false;
+            bool drawn = false;
             foreach (var component in components.Where(component => component.EnableDraw))
             {
                 component.Draw(gameTime, spriteBatch, texture, sourceRectangle);
-                chuco = true;
+                drawn = true;
             }
-            if (!chuco)
+            if (!drawn) //if no block component draws to screen
             {
                 spriteBatch.Draw(texture, collider, sourceRectangle, colorBlock);
             }

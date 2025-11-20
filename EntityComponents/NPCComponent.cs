@@ -39,10 +39,6 @@ namespace Juegazo.EntityComponents
                     Owner.collider.X - Owner.collider.Width,
                     Owner.collider.Y - Owner.collider.Height,
                     Owner.collider.Width * 3, Owner.collider.Height * 3);
-
-            GumService.Default.Root.Children.Clear();
-            background = CreateDialogBox(new(0,0,(int)gum.CanvasWidth, (int)gum.CanvasHeight));
-            background.AddToRoot();
         }
         private ColoredRectangleRuntime CreateDialogBox(Rectangle rec)
         {

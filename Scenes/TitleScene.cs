@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Gum.Wireframe;
+using MarinMol.Scenes;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -15,19 +16,19 @@ namespace Juegazo
 {
     public class TitleScene : IScene
     {
-        public TitleScene(SceneManager manager, ContentManager contentManafger, GraphicsDevice gdevice, GumService gum, Camera camera)
-        {
-            this.manager = manager;
-            this.gum = gum;
-            this.camera = camera;
-            cmanager = contentManafger;
-            graphicsDevice = gdevice;
-        }
         GumService gum;
         ContentManager cmanager;
         GraphicsDevice graphicsDevice;
         SceneManager manager;
-        Camera camera;
+        private event Action Exit;
+        public TitleScene(SceneManager manager, ContentManager contentManafger, GraphicsDevice gdevice, GumService gum)
+        {
+            this.manager = manager;
+            this.gum = gum;
+            cmanager = contentManafger;
+            graphicsDevice = gdevice;
+            Exit = manager.ActionByName["Exit"];
+        }
 
         public void CreateShit()
         {
@@ -35,34 +36,51 @@ namespace Juegazo
 
             StackPanel panel = new()
             {
-                Spacing = 3
+                Spacing = 3,
             };
             panel.Anchor(Anchor.Center);
-            panel.AddToRoot();
-            TextRuntime name = new();
-            name.Text = "Marin Mol";
-            name.FontScale = 2;
-            name.Red = 243;
-            name.Green = 139;
-            name.Blue = 168;
-            name.Anchor(Anchor.Top);
-            TextRuntime description = new();
-            description.Text = "we count the pixels";
-            description.Height = 20;
+            //panel.AddToRoot();
+            TextRuntime name = new()
+            {
+              Text = "Marin Mol",
+              FontScale = 2,
+              Red = 243,
+              Green = 139,
+              Blue = 168,
+            };
+            TextRuntime description = new()
+            {
+              Text = "we count the pixels",
+            };
             Button playButton = new()
             {
                 Text = "Play"
             };
             playButton.Click += StartGame();
-            playButton.Anchor(Anchor.Center);
+            Button ExitButton = new()
+            {
+                Text = "Exit"
+            };
+            ExitButton.Click += Exiting();
+
             panel.AddChild(name);
             panel.AddChild(description);
             panel.AddChild(playButton);
+            panel.AddChild(ExitButton);
+            gum.Root.AddChild(panel);
         }
 
         private EventHandler StartGame()
         {
-            return (sender, e) => manager.AddScene(new GameplayScene(cmanager, graphicsDevice, gum, manager, camera));
+          return (sender, e) => {
+            GameplayScene gs = new GameplayScene(cmanager, graphicsDevice, gum, manager);
+            gs.levelStart = "";
+            manager.AddScene(gs);
+            };
+        }
+        private EventHandler Exiting()
+        {
+          return (sender, e) => {Exit();};
         }
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         { }
@@ -83,9 +101,9 @@ namespace Juegazo
         {
             gum.Update(gameTime);
             if (Keyboard.GetState().IsKeyDown(Keys.Enter))
-                manager.AddScene(new GameplayScene(cmanager, graphicsDevice, gum, manager, camera));
+                manager.AddScene(new GameplayScene(cmanager, graphicsDevice, gum, manager));
         }
         public void DrawUI(GameTime gameTime, SpriteBatch spriteBatch)
-        { gum.Draw(); }
+        { }
     }
 }

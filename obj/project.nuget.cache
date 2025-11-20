@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "Q5HMMTBXPak=",
+  "dgSpecHash": "MAhIF5shbp0=",
   "success": true,
   "projectFilePath": "/home/clumpl/Documentos/Programacion/Juegazo/MarinMol.csproj",
   "expectedPackageFiles": [
@@ -21,9 +21,7 @@
     "/home/clumpl/.nuget/packages/system.numerics.vectors/4.5.0/system.numerics.vectors.4.5.0.nupkg.sha512",
     "/home/clumpl/.nuget/packages/system.valuetuple/4.5.0/system.valuetuple.4.5.0.nupkg.sha512",
     "/home/clumpl/.nuget/packages/textcopy/6.2.1/textcopy.6.2.1.nupkg.sha512",
-    "/home/clumpl/.nuget/packages/microsoft.netcore.app.ref/8.0.20/microsoft.netcore.app.ref.8.0.20.nupkg.sha512",
-    "/home/clumpl/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.20/microsoft.aspnetcore.app.ref.8.0.20.nupkg.sha512",
-    "/home/clumpl/.nuget/packages/microsoft.netcore.app.host.linux-x64/8.0.20/microsoft.netcore.app.host.linux-x64.8.0.20.nupkg.sha512"
+    "/home/clumpl/.nuget/packages/microsoft.aspnetcore.app.ref/9.0.9/microsoft.aspnetcore.app.ref.9.0.9.nupkg.sha512"
   ],
   "logs": []
 }
