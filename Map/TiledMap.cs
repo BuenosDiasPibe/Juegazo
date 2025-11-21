@@ -11,21 +11,16 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Reflection.Emit;
-using System.Threading.Tasks;
 using DotTiled;
 using DotTiled.Serialization;
 using Juegazo.EntityComponents;
 using Juegazo.CustomTiledTypes;
 using Juegazo.CustomTiledTypesImplementation;
-using Juegazo.Map.Blocks;
 using Juegazo.Map.Components;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameGum;
-using ToolsUtilities;
 using Color = Microsoft.Xna.Framework.Color;
-using System.Net.Http.Headers;
 using MarinMol;
 
 namespace Juegazo.Map
@@ -34,7 +29,7 @@ namespace Juegazo.Map
     public class TiledMap
     {
         GraphicsDevice graphicsDevice;
-        GumService gum;
+        //GumService gum;
         public DotTiled.Map Map { get; }
         public string MapFilePath { get; }
         public string TiledProjectDirectory { get; }
@@ -100,7 +95,7 @@ namespace Juegazo.Map
                 CustomTypeDefinitions.Add(t);
             }
             this.graphicsDevice = graphicsDevice;
-            this.gum = gum;
+            //this.gum = gum;
             TiledProjectDirectory = projectDirectory;
             MapFilePath = mapFilePath;
 
@@ -648,7 +643,7 @@ namespace Juegazo.Map
                     }
                     List<Component> componenList = new();
 
-                    componenList.Add(new NPCComponent(papu.name, papu.dialogStart, papu.dialogEnd, gum));
+                    componenList.Add(new NPCComponent(papu.name, papu.dialogStart, papu.dialogEnd));
                     if (tileData.Animation.Count > 0) {
                         componenList.Add(new NPCAnimationComponent(tileData));
                     }
@@ -906,7 +901,7 @@ namespace Juegazo.Map
                         DrawTileObject(gameTime, spriteBatch, tileObject, objectLayer);
                         break;
                     default:
-                        // Console.WriteLine("My fault gang"); //TODO: create object Draw for debugging
+                        MarinMol.Debugger.Instance.DrawRectHollow(spriteBatch, GetObjectDestinationRectangle(obj), 4, Color.Blue);
                         break;
                 }
             }
@@ -951,6 +946,14 @@ namespace Juegazo.Map
         }
         private Rectangle GetObjectDestinationRectangle(DotTiled.Object obj)
         {
+          if(obj is RectangleObject o)
+          {
+            return new Rectangle(
+                            (int)(obj.X / TileWidth * TILESIZE),
+                            (int)(((obj.Y / TileHeight) - (obj.Height / TileHeight)+1) * TILESIZE),
+                            (int)(obj.Width / TileWidth * TILESIZE),
+                            (int)(obj.Height / TileHeight * TILESIZE));
+          }
             return new Rectangle(
                             (int)(obj.X / TileWidth * TILESIZE),
                             (int)(((obj.Y / TileHeight) - (obj.Height / TileHeight)) * TILESIZE), //objects anchor are in the bottom left corner

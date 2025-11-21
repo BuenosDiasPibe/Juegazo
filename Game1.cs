@@ -24,39 +24,24 @@ public class Game1 : Game
 
     protected override void Initialize()
     {
-        if (GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width >= 1920 &&
-            GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height >= 1080)
-        {
-            _graphics.PreferredBackBufferWidth = 1920;
-            _graphics.PreferredBackBufferHeight = 1080;
-        }
-        else if(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width >= 1365)
-        {
-            _graphics.PreferredBackBufferWidth = 1366;
-            _graphics.PreferredBackBufferHeight = 768;
+      _graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+      _graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
 
-        }
-        else
-        {
-            _graphics.PreferredBackBufferWidth = 1280;
-            _graphics.PreferredBackBufferHeight = 720;
+      _graphics.IsFullScreen = true;
+      _graphics.ApplyChanges();
+      viewport = GraphicsDevice.Viewport;
 
-        }
-        _graphics.IsFullScreen = true;
-        _graphics.ApplyChanges();
-        viewport = GraphicsDevice.Viewport;
-
-        Gum.Initialize(this);
-        Camera.Initialize(viewport.Width, viewport.Height);
-        Debugger.Initialize(_graphics.GraphicsDevice, Color.White);
-        sceneManager = new(Content, Gum);
-        base.Initialize();
+      Gum.Initialize(this);
+      Camera.Initialize(viewport.Width, viewport.Height);
+      Debugger.Initialize(_graphics.GraphicsDevice, Color.White);
+      sceneManager = new(Content, _graphics, Gum);
+      base.Initialize();
     }
 
     protected override void LoadContent()
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
-        sceneManager.ActionByName["Exit"] = Exit;
+        sceneManager.ActionByName["Exit"] = Exitiiiing;
 
         sceneManager.AddScene(new TitleScene(sceneManager, Content, GraphicsDevice, Gum));
         sceneManager.GetScene().LoadContent();
@@ -65,7 +50,10 @@ public class Game1 : Game
 
     protected override void Update(GameTime gameTime)
     {
-        if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape)) Exit();
+        if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.P))
+        {
+          Exitiiiing();
+        }
         sceneManager.GetScene().Update(gameTime);
         base.Update(gameTime);
         Gum.Update(gameTime);
@@ -77,9 +65,15 @@ public class Game1 : Game
       GraphicsDevice.Clear(selected);
       _spriteBatch.Begin(transformMatrix: Camera.Instance.Matrix,samplerState: SamplerState.PointWrap); // pointWrap is more useful than pointClamp
       sceneManager.GetScene().Draw(gameTime, _spriteBatch);
-      sceneManager.GetScene().DrawUI(gameTime, _spriteBatch);
-      Gum.Draw();
+      sceneManager.GetScene().DrawUI(gameTime, _spriteBatch); // probably useless
       _spriteBatch.End();
+      Gum.Draw();
       base.Draw(gameTime);
+    }
+
+    private void Exitiiiing()
+    {
+      Console.WriteLine("exiting...");
+      Exit();
     }
 }

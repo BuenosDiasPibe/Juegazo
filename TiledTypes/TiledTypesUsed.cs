@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using DotTiled;
-using Juegazo.CustomTiledTypes;
 using Juegazo.Map;
 using Microsoft.Xna.Framework;
 
@@ -18,7 +17,6 @@ namespace Juegazo.CustomTiledTypes
         public bool ClampCameraToBoundries { get; set; } = true;
         public float zoom { get; set; } = 0f;
         public bool loadAudio { get; set; } = false;
-
     }
     public class NPC
     {
@@ -147,7 +145,6 @@ namespace Juegazo.CustomTiledTypes
 }
 namespace Juegazo.CustomTiledTypesImplementation
 {
-
     public abstract class TiledTypesUsed
     {
         public abstract Block createBlock(int TILESIZE, DotTiled.Map map, TileObject obj = null);
@@ -162,7 +159,7 @@ namespace Juegazo.CustomTiledTypesImplementation
                             (int)(((obj.Y / map.TileHeight) + tileOffset) * TILESIZE),
                             (int)(obj.Width / map.TileWidth * TILESIZE),
                             (int)(obj.Height / map.TileHeight * TILESIZE)
-                        );
+            );
         }
     }
     public class MovementBlock : TiledTypesUsed
@@ -761,7 +758,5 @@ namespace Juegazo.CustomTiledTypesImplementation
             return new([data.initialBlockPosition,
                         data.endBlockPosition]);
         }
-
-
     }
 }

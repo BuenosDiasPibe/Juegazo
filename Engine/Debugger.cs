@@ -31,6 +31,7 @@ namespace MarinMol
         // ---
         private readonly Texture2D rectangleTexture;
         private readonly GraphicsDevice graphicsDevice;
+        public bool drawDebug = false;
 
         private Debugger(GraphicsDevice graphicsDevice, Color color)
         {
@@ -40,6 +41,8 @@ namespace MarinMol
         }
         public void DrawRectHollow(SpriteBatch spriteBatch, Rectangle rect, int thickness, Color color)
         { //shows hitbox
+          if(!drawDebug) return;
+
             spriteBatch.Draw(
                 rectangleTexture,
                 new Rectangle(

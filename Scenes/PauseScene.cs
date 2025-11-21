@@ -16,15 +16,26 @@ namespace MarinMol.Scenes
     SceneManager sceneManager;
     private event Action exitGame;
     public GameplayScene reference;
+    private bool addNextButton = false;
+
+    private Texture2D background;
     public PauseScene(GumService gum, SceneManager sceneManager, IScene scene)
     {
       this.gum = gum;
       this.sceneManager = sceneManager;
+      this.exitGame = sceneManager.ActionByName["Exit"];
       reference = (GameplayScene)scene;
+
+      background = new Texture2D(sceneManager.graphics.GraphicsDevice, 1, 1);
+      background.SetData([Color.Black]);
     }
 
     public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
-    { }
+    {
+      reference.Draw(new(), spriteBatch);
+      reference.DrawUI(gameTime, spriteBatch);
+      spriteBatch.Draw(background, Camera.Instance.ViewPortRectangle, new Color(new Vector4(255,255,255,0.5f)));
+    }
 
     public void DrawUI(GameTime gameTime, SpriteBatch spriteBatch)
     {
@@ -50,13 +61,12 @@ namespace MarinMol.Scenes
       { Text = "resume" };
       but.Click += ResumeGame();
       panel.AddChild(but);
+      addNextButton = reference != null && !reference.levelPath.Equals("Main.tmj");
 
-      if(reference != null && !reference.levelPath.Equals("Main.tmj"))
+      if(addNextButton)
       {
         Button backToMain = new()
-        {
-          Text = "Back to Main World"
-        };
+        { Text = "Back to Main World" };
         backToMain.Click += BackToMain();
         panel.AddChild(backToMain);
       }
@@ -73,7 +83,7 @@ namespace MarinMol.Scenes
     }
     private EventHandler Exiting()
     {
-      return (sender, e) => {exitGame();};
+      return (sender, e) => {exitGame?.Invoke();};
     }
     public EventHandler BackToMain()
     {
@@ -87,12 +97,12 @@ namespace MarinMol.Scenes
 
     public void Update(GameTime gameTime)
     {
-      if(isReleased && Keyboard.GetState().IsKeyDown(Keys.P))
+      if(isReleased && Keyboard.GetState().IsKeyDown(Keys.Escape))
       {
         isReleased = false;
         sceneManager.RemoveScene();
       }
-      if(isReleased && Keyboard.GetState().IsKeyDown(Keys.M))
+      if(addNextButton && isReleased && Keyboard.GetState().IsKeyDown(Keys.M))
       {
         isReleased = false;
         backToMainAction();
@@ -101,7 +111,9 @@ namespace MarinMol.Scenes
 
       // check if key was pressed before this scene was initialized, if so,
       // dont let it change the scene so quickly
-      if(Keyboard.GetState().GetPressedKeyCount() == 0){isReleased = true;}
+      if(Keyboard.GetState().GetPressedKeyCount() == 0){
+        isReleased = true;
+      }
     }
     private void backToMainAction()
     {

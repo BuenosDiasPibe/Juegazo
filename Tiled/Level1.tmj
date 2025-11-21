@@ -562,7 +562,7 @@
                         {
                          "name":"canMove",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }, 
                         {
                          "name":"initialBlockPosition",

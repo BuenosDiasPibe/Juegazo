@@ -42,6 +42,7 @@ namespace Juegazo
         public string levelStart;
         public string levelPath;
         private PauseScene pause;
+        public RenderTarget2D lastScreen;
         private static string GetExecutingDir(string v) // TODO: create a Utilities singleton
         {
             string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
@@ -71,6 +72,7 @@ namespace Juegazo
             GumService.Default.Root.Children.Clear();
             pause = new(gum, sceneManager, this);
             changeScene = false;
+            lastScreen = new(graphicsDevice, sceneManager.viewport.Width, sceneManager.viewport.Height);
             playerTexture = contentManager.Load<Texture2D>("second_player_sprite");
             if (levelPath == null)
             {
@@ -131,138 +133,136 @@ namespace Juegazo
 
         public void Update(GameTime gameTime)
         {
-          if(!wasPressed && Keyboard.GetState().IsKeyDown(Keys.P))
+          if(!wasPressed && Keyboard.GetState().IsKeyDown(Keys.Escape))
           {
             wasPressed = true;
             sceneManager.AddScene(pause);
             return;
           }
-          if(Keyboard.GetState().IsKeyUp(Keys.P)){wasPressed = false;}
+          if(Keyboard.GetState().IsKeyUp(Keys.Escape)){wasPressed = false;}
 
-            int nextScene = 0;
+          int nextScene = 0;
 
-            if (Keyboard.GetState().IsKeyDown(Keys.R) && pastKey.IsKeyDown(Keys.R))
-            {
-                Console.WriteLine("-- reloading --");
-                tilemap = null;
-                UnloadContent();
-                LoadContent();
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.M) && pastKey.IsKeyDown(Keys.M))
-            {
-                UnloadContent();
-                sceneManager.RemoveAndLoadLastScene();
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.F3) && pastKey.IsKeyUp(Keys.F3))
-            {
-                enableDebugger = !enableDebugger;
-            }
-            // updating blocks
-            var updatableBlocks = tilemap.collisionLayer.Values
-                .Concat(tilemap.collisionLayer.Values)
-                .Where(b => b != null && b.EnableUpdate);
-            foreach (var block in updatableBlocks)
-            {
-                block.Update(gameTime);
-            }
+          if (Keyboard.GetState().IsKeyDown(Keys.R) && pastKey.IsKeyDown(Keys.R))
+          {
+              Console.WriteLine("-- reloading --");
+              UnloadContent();
+              LoadContent();
+          }
+          if (Keyboard.GetState().IsKeyDown(Keys.M) && pastKey.IsKeyDown(Keys.M))
+          {
+              UnloadContent();
+              sceneManager.RemoveAndLoadLastScene();
+          }
+          if (Keyboard.GetState().IsKeyDown(Keys.F3) && pastKey.IsKeyUp(Keys.F3))
+          {
+            Debugger.Instance.drawDebug = !Debugger.Instance.drawDebug;
+          }
+          // updating blocks
+          var updatableBlocks = tilemap.collisionLayer.Values
+              .Concat(tilemap.collisionLayer.Values)
+              .Where(b => b != null && b.EnableUpdate);
+          foreach (var block in updatableBlocks)
+          {
+              block.Update(gameTime);
+          }
 
-            var collisionBlocks = tilemap.collisionLayer.Values.Where(b => b.EnableCollisions);
+          var collisionBlocks = tilemap.collisionLayer.Values.Where(b => b.EnableCollisions);
 
-            foreach (var entity in entities.ToList())
-            {
-                entity.Update(gameTime);
-                entity.touchingWaterBlock = false;
-                FACES entityDirection = entity.direction;
-                if (entity.componentList.Count == 0)
-                {
-                    entities.Remove(entity);
-                    Console.WriteLine("deleted entity");
-                }
+          foreach (var entity in entities.ToList())
+          {
+              entity.Update(gameTime);
+              entity.touchingWaterBlock = false;
+              FACES entityDirection = entity.direction;
+              if (entity.componentList.Count == 0)
+              {
+                  entities.Remove(entity);
+                  Console.WriteLine("deleted entity");
+              }
 
-                int horizDelta = 0;
-                if (entityDirection == FACES.LEFT)
-                    horizDelta -= (int)entity.velocity.Y + (int)entity.baseVelocity.Y;
-                else if (entityDirection == FACES.RIGHT)
-                    horizDelta += (int)entity.velocity.Y + (int)entity.baseVelocity.Y;
-                else 
-                    horizDelta += (int)entity.velocity.X + (int)entity.baseVelocity.X;
+              int horizDelta = 0;
+              if (entityDirection == FACES.LEFT)
+                  horizDelta -= (int)entity.velocity.Y + (int)entity.baseVelocity.Y;
+              else if (entityDirection == FACES.RIGHT)
+                  horizDelta += (int)entity.velocity.Y + (int)entity.baseVelocity.Y;
+              else 
+                  horizDelta += (int)entity.velocity.X + (int)entity.baseVelocity.X;
 
-                if(entityDirection == FACES.TOP)
-                    entity.Destinationrectangle.X -= horizDelta;
-                else
-                    entity.Destinationrectangle.X += horizDelta;
+              if(entityDirection == FACES.TOP)
+                  entity.Destinationrectangle.X += horizDelta;
+              else
+                  entity.Destinationrectangle.X += horizDelta;
 
-                foreach (Block block in collisionBlocks)
-                {
-                    if (block.collider.Intersects(entity.Destinationrectangle))
-                        block.horizontalActions(entity, block.collider);
-                    nextScene = changeSScne(nextScene, block);
-                }
+              foreach (Block block in collisionBlocks)
+              {
+                  if (block.collider.Intersects(entity.Destinationrectangle))
+                      block.horizontalActions(entity, block.collider);
+                  nextScene = changeSScne(nextScene, block);
+              }
 
-                int vertDelta = 0;
-                if (entityDirection == FACES.BOTTOM)
-                    vertDelta += (int)entity.velocity.Y + (int)entity.baseVelocity.Y;
-                else if (entityDirection == FACES.TOP)
-                    vertDelta -= (int)entity.velocity.Y + (int)entity.baseVelocity.Y;
-                else
-                    vertDelta += (int)entity.velocity.X + (int)entity.baseVelocity.X;
-                if(entityDirection == FACES.RIGHT)
-                    entity.Destinationrectangle.Y -= vertDelta;
-                else
-                    entity.Destinationrectangle.Y += vertDelta;
+              int vertDelta = 0;
+              if (entityDirection == FACES.BOTTOM)
+                  vertDelta += (int)entity.velocity.Y + (int)entity.baseVelocity.Y;
+              else if (entityDirection == FACES.TOP)
+                  vertDelta -= (int)entity.velocity.Y + (int)entity.baseVelocity.Y;
+              else
+                  vertDelta += (int)entity.velocity.X + (int)entity.baseVelocity.X;
+              if(entityDirection == FACES.RIGHT)
+                  entity.Destinationrectangle.Y -= vertDelta;
+              else
+                  entity.Destinationrectangle.Y += vertDelta;
 
-                foreach (Block block in collisionBlocks)
-                {
-                    if (block.collider.Intersects(entity.Destinationrectangle))
-                        block.verticalActions(entity, block.collider);
-                    nextScene = changeSScne(nextScene, block);
-                }
+              foreach (Block block in collisionBlocks)
+              {
+                  if (block.collider.Intersects(entity.Destinationrectangle))
+                      block.verticalActions(entity, block.collider);
+                  nextScene = changeSScne(nextScene, block);
+              }
+              entity.UpdateColliderFromDest();
+          }
 
-                entity.UpdateColliderFromDest();
-            }
+          if (changeScene)
+          {
+              string testPath = Path.Combine(projectDirectory, "Level" + nextScene + ".tmj");
+              if (!File.Exists(testPath))
+              {
+                  Console.WriteLine("----- Level does not exist, changing to Main.tmj -----");
+                  nextScene = 0;
+              }
+              UnloadContent();
+              if (nextScene == 0)
+              {
+                  levelPath = "Main.tmj";
+                  LoadContent();
+                  return;
+              }
+              levelPath = "Level" + nextScene + ".tmj";
+              Console.WriteLine($"------------ Changing To {levelPath} ------------");
+              LoadContent();
+          }
 
-            if (changeScene)
-            {
-                string testPath = Path.Combine(projectDirectory, "Level" + nextScene + ".tmj");
-                if (!File.Exists(testPath))
-                {
-                    Console.WriteLine("----- Level does not exist, changing to Main.tmj -----");
-                    nextScene = 0;
-                }
-                UnloadContent();
-                if (nextScene == 0)
-                {
-                    levelPath = "Main.tmj";
-                    LoadContent();
-                    return;
-                }
-                levelPath = "Level" + nextScene + ".tmj";
-                Console.WriteLine($"------------ Changing To {levelPath} ------------");
-                LoadContent();
-            }
+          //killing entity if out of boundries
+          foreach (var entity in entities)
+          {
+              if (entity.Destinationrectangle.X > tilemap.MapWidth * TILESIZE || entity.Destinationrectangle.X < 0 || entity.Destinationrectangle.Y > tilemap.MapHeight * TILESIZE || entity.Destinationrectangle.Y < 0)
+              {
+                  entity.health = 0;
+              }
+          }
+          // Clamp camera position within map bounds, copilot made this 
+          // i dont know how math works im really sorry :(
+          if (cameraBoundries)
+          {
+              camera.X = MathHelper.Clamp(camera.X, 
+                  camera.ViewPortRectangle.Width / 2, 
+                  tilemap.MapWidth * TILESIZE - camera.ViewPortRectangle.Width / 2);
+              camera.Y = MathHelper.Clamp(camera.Y,
+                  camera.ViewPortRectangle.Height / 2,
+                  tilemap.MapHeight * TILESIZE - camera.ViewPortRectangle.Height / 2);
+          }
 
-            //killing entity if out of boundries
-            foreach (var entity in entities)
-            {
-                if (entity.Destinationrectangle.X > tilemap.MapWidth * TILESIZE || entity.Destinationrectangle.X < 0 || entity.Destinationrectangle.Y > tilemap.MapHeight * TILESIZE || entity.Destinationrectangle.Y < 0)
-                {
-                    entity.health = 0;
-                }
-            }
-            // Clamp camera position within map bounds, copilot made this 
-            // i dont know how math works im really sorry :(
-            if (cameraBoundries)
-            {
-                camera.X = MathHelper.Clamp(camera.X, 
-                    camera.ViewPortRectangle.Width / 2, 
-                    tilemap.MapWidth * TILESIZE - camera.ViewPortRectangle.Width / 2);
-                camera.Y = MathHelper.Clamp(camera.Y,
-                    camera.ViewPortRectangle.Height / 2,
-                    tilemap.MapHeight * TILESIZE - camera.ViewPortRectangle.Height / 2);
-            }
-
-            pastKey = Keyboard.GetState();
-            fps = Math.Round(1 / gameTime.ElapsedGameTime.TotalSeconds);
+          pastKey = Keyboard.GetState();
+          fps = Math.Round(1 / gameTime.ElapsedGameTime.TotalSeconds);
         }
 
         private int changeSScne(int nextScene, Block block)
@@ -283,14 +283,10 @@ namespace Juegazo
                 if (tilemap.EntityPositionerByName.Count == 0)
                     entity.Draw(gameTime, spriteBatch);
 
-                if (enableDebugger)
-                {
-                    Debugger.Instance.DrawRectHollow(spriteBatch, entity.collider, 2, Color.Red);
-                    Debugger.Instance.DrawRectHollow(spriteBatch, entity.Destinationrectangle, 2, Color.Blue);
-                }
+                Debugger.Instance.DrawRectHollow(spriteBatch, entity.collider, 2, Color.Red);
+                Debugger.Instance.DrawRectHollow(spriteBatch, entity.Destinationrectangle, 2, Color.Blue);
             }
-
-            if (!enableDebugger) return;
+            //TODO: this can be sent to a list of actions to do when called Debugger
             foreach (var t in tilemap.collisionLayer.Values)
             {
                 if (t.EnableCollisions) Debugger.Instance.DrawRectHollow(spriteBatch, t.collider, 2, Color.Green);
@@ -303,25 +299,25 @@ namespace Juegazo
         { }
         public void DrawUI(GameTime gameTime, SpriteBatch spriteBatch)
         {
-          if(!enableDebugger) return;
-            foreach (var entity in entities)
-            {
-                if (entity.hasComponent(typeof(NPCComponent)) && entity.GetComponent(typeof(NPCComponent)) is NPCComponent comp)
-                {
-                    comp.DrawUI(gameTime, spriteBatch);
-                    continue;
-                }
-                if(entity.isPlayer)
-                {
-                  string showCamera = $"Level: {Path.GetFileNameWithoutExtension(levelPath)}\nFPS: {fps}\nposition: (X:{entity.Destinationrectangle.X} Y:{entity.Destinationrectangle.Y})\nvelocity: {entity.velocity}\nbaseVelocity: {entity.baseVelocity}\nhealth: {entity.health}\nstate: {entity.entityState}\ngravity: {entity.direction}";
-                  Vector2 a = font.MeasureString(showCamera);
-                  spriteBatch.DrawString(font,
-                      showCamera,
-                      new Vector2(camera.Left-a.X, camera.Top),
-                          Color.White);
-                }
-            }
-            spriteBatch.DrawString(font, camera.ToString(), new(camera.Left, camera.Top + 300), Color.White, 0f, Vector2.Zero, 0.7f, SpriteEffects.None, 0f);
+          foreach (var entity in entities)
+          {
+              if (entity.hasComponent(typeof(NPCComponent)) && entity.GetComponent(typeof(NPCComponent)) is NPCComponent comp)
+              {
+                  comp.DrawUI(gameTime, spriteBatch);
+                  continue;
+              }
+              if(entity.isPlayer)
+              {
+                string level = $"Level: {Path.GetFileNameWithoutExtension(levelPath)}\nFPS: {fps}\nposition: (X:{entity.Destinationrectangle.X} Y:{entity.Destinationrectangle.Y})\nvelocity: {entity.velocity}\nbaseVelocity: {entity.baseVelocity}\nhealth: {entity.health}\nstate: {entity.entityState}\ngravity: {entity.direction}";
+                spriteBatch.DrawString(font,
+                    level,
+                    new Vector2(camera.Left, camera.Top),
+                        Color.White);
+              }
+          }
+          string showCamera = camera.ToString();
+          var b = font.MeasureString(showCamera);
+          spriteBatch.DrawString(font, showCamera, new(camera.Right-b.X*0.7f, camera.Top), Color.White, 0f, Vector2.Zero, 0.7f, SpriteEffects.None, 0f);
         }
     }
 }

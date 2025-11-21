@@ -35,14 +35,14 @@
         },
         "Level1.tmj": {
             "expandedObjectLayers": [
-                10,
-                4
+                4,
+                10
             ],
-            "scale": 3,
-            "selectedLayer": 1,
+            "scale": 5.5,
+            "selectedLayer": 5,
             "viewCenter": {
-                "x": 2796.1666666666665,
-                "y": 79.83333333333333
+                "x": 371.6363636363636,
+                "y": 44
             }
         },
         "Level1.tmx": {
@@ -65,7 +65,7 @@
             "selectedLayer": 0,
             "viewCenter": {
                 "x": 320.5,
-                "y": 191.5
+                "y": 192
             }
         },
         "Level10.tmx": {
@@ -89,7 +89,7 @@
             "selectedLayer": 1,
             "viewCenter": {
                 "x": 4800.333333333333,
-                "y": 3200.333333333333
+                "y": 3200
             }
         },
         "Level12.tmj": {
@@ -100,8 +100,8 @@
             "scale": 1.5,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 935.6666666666666,
-                "y": 741.6666666666666
+                "x": 875.3333333333333,
+                "y": 742
             }
         },
         "Level13.tmj": {
@@ -251,8 +251,8 @@
             "scale": 3,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 160.16666666666666,
-                "y": 128.16666666666669
+                "x": 171.16666666666666,
+                "y": 120
             }
         },
         "Level7.tmx": {
@@ -271,7 +271,7 @@
             "selectedLayer": 2,
             "viewCenter": {
                 "x": 720.6666666666666,
-                "y": 400.66666666666663
+                "y": 400
             }
         },
         "Level8.tmx": {
@@ -313,7 +313,7 @@
             "selectedLayer": 0,
             "viewCenter": {
                 "x": 320.16666666666663,
-                "y": 192.16666666666669
+                "y": 192
             }
         },
         "Main.tmx": {
