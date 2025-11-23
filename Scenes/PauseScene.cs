@@ -12,18 +12,18 @@ namespace MarinMol.Scenes
 {
   public class PauseScene : IScene
   {
-    GumService gum;
-    SceneManager sceneManager;
-    private event Action exitGame;
+    readonly GumService gum;
+    readonly SceneManager sceneManager;
+    private event Action ExitGame;
     public GameplayScene reference;
     private bool addNextButton = false;
 
-    private Texture2D background;
-    public PauseScene(GumService gum, SceneManager sceneManager, IScene scene)
+    private readonly Texture2D background;
+    public PauseScene(SceneManager sceneManager, IScene scene)
     {
-      this.gum = gum;
+      this.gum = GumService.Default;
       this.sceneManager = sceneManager;
-      this.exitGame = sceneManager.ActionByName["Exit"];
+      this.ExitGame = sceneManager.ActionByName["Exit"];
       reference = (GameplayScene)scene;
 
       background = new Texture2D(sceneManager.graphics.GraphicsDevice, 1, 1);
@@ -83,7 +83,7 @@ namespace MarinMol.Scenes
     }
     private EventHandler Exiting()
     {
-      return (sender, e) => {exitGame?.Invoke();};
+      return (sender, e) => {ExitGame?.Invoke();};
     }
     public EventHandler BackToMain()
     {

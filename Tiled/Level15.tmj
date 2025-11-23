@@ -498,7 +498,7 @@
                         {
                          "name":"Ammount",
                          "type":"int",
-                         "value":100
+                         "value":10
                         }, 
                         {
                          "name":"isCompleteBlock",

@@ -87,7 +87,11 @@ namespace Juegazo.Map
         public float cameraZoom = 0;
         public bool levelBoundries = true;
         public bool loadAudio = false;
-        public TiledMap(GraphicsDevice graphicsDevice, string projectDirectory, string mapFilePath, int TILESIZE, List<ICustomTypeDefinition> typeDefinitions, GumService gum)
+        public TiledMap(GraphicsDevice graphicsDevice,
+                        string projectDirectory,
+                        string mapFilePath,
+                        int TILESIZE,
+                        List<ICustomTypeDefinition> typeDefinitions)
         {
             this.graphicsDevice = graphicsDevice;
             foreach (var t in typeDefinitions)

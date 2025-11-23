@@ -58,15 +58,15 @@
                 }, 
                 {
                  "gid":135,
-                 "height":288,
+                 "height":16,
                  "id":21,
                  "name":"",
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":64,
-                 "x":5072,
-                 "y":3088
+                 "width":976,
+                 "x":4576,
+                 "y":3136
                 }, 
                 {
                  "gid":136,
@@ -760,7 +760,7 @@
         {
          "name":"zoom",
          "type":"float",
-         "value":1
+         "value":2
         }],
  "renderorder":"right-down",
  "tiledversion":"1.11.2",

@@ -21,10 +21,10 @@ namespace Juegazo
         GraphicsDevice graphicsDevice;
         SceneManager manager;
         private event Action Exit;
-        public TitleScene(SceneManager manager, ContentManager contentManafger, GraphicsDevice gdevice, GumService gum)
+        public TitleScene(SceneManager manager, ContentManager contentManafger, GraphicsDevice gdevice)
         {
             this.manager = manager;
-            this.gum = gum;
+            this.gum = GumService.Default;
             cmanager = contentManafger;
             graphicsDevice = gdevice;
             Exit = manager.ActionByName["Exit"];
@@ -70,7 +70,7 @@ namespace Juegazo
         private EventHandler StartGame()
         {
           return (_, _) => {
-            GameplayScene gs = new GameplayScene(cmanager, graphicsDevice, gum, manager);
+            GameplayScene gs = new GameplayScene(cmanager, graphicsDevice, manager);
             gs.levelPath = "";
             manager.AddScene(gs);
             };
@@ -98,7 +98,7 @@ namespace Juegazo
         {
             gum.Update(gameTime);
             if (Keyboard.GetState().IsKeyDown(Keys.Enter))
-                manager.AddScene(new GameplayScene(cmanager, graphicsDevice, gum, manager));
+                manager.AddScene(new GameplayScene(cmanager, graphicsDevice,  manager));
         }
         public void DrawUI(GameTime gameTime, SpriteBatch spriteBatch)
         { }

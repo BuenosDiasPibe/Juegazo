@@ -19,28 +19,28 @@ using Debugger = MarinMol.Debugger;
 
 namespace Juegazo
 {
-    public class GameplayScene : IScene
+    public class GameplayScene(ContentManager contentManager,
+    GraphicsDevice graphicsDevice,
+    SceneManager sceneManager) : IScene
     {
-        private readonly ContentManager contentManager;
-        private readonly GraphicsDevice graphicsDevice;
-        private SceneManager sceneManager;
+        private readonly ContentManager contentManager = contentManager ?? throw new ArgumentNullException(nameof(contentManager));
+        private readonly GraphicsDevice graphicsDevice = graphicsDevice ?? throw new ArgumentNullException(nameof(graphicsDevice));
+        private readonly SceneManager sceneManager = sceneManager ?? throw new ArgumentNullException(nameof(sceneManager));
         private const int TILESIZE = 32;
-        private List<Entity> entities = new();
-        GumService gum;
+        private List<Entity> entities = [];
         private SpriteFont font;
         Texture2D playerTexture;
         private TiledMap tilemap;
-        private string projectDirectory = GetExecutingDir("Tiled");
+        private readonly string projectDirectory = GetExecutingDir("Tiled");
         private KeyboardState pastKey;
-        private bool enableDebugger;
         private bool changeScene = false;
         public bool cameraBoundries = true;
         public AudioImoporter a;
         public double fps;
-        private Camera camera;
+        private readonly Camera camera = Camera.Instance;
 
-        public string levelStart;
-        public string levelPath;
+        public string levelStart = "";
+        public string levelPath = "";
         private PauseScene pause;
         public RenderTarget2D lastScreen;
         private static string GetExecutingDir(string v) // TODO: create a Utilities singleton
@@ -55,37 +55,26 @@ namespace Juegazo
             return Path.Combine(baseDirectory, v);
         }
 
-        public GameplayScene(ContentManager contentManager,
-        GraphicsDevice graphicsDevice,
-        GumService gum,
-        SceneManager sceneManager)
-        {
-            this.contentManager = contentManager ?? throw new ArgumentNullException(nameof(contentManager));
-            this.graphicsDevice = graphicsDevice ?? throw new ArgumentNullException(nameof(graphicsDevice));
-            this.sceneManager = sceneManager ?? throw new ArgumentNullException(nameof(sceneManager));
-            this.gum = gum;
-            this.camera = Camera.Instance;
-        }
-
         public void LoadContent()
         {
             GumService.Default.Root.Children.Clear();
-            pause = new(gum, sceneManager, this);
+            pause = new(sceneManager, this);
             changeScene = false;
             lastScreen = new(graphicsDevice, sceneManager.viewport.Width, sceneManager.viewport.Height);
             playerTexture = contentManager.Load<Texture2D>("second_player_sprite");
-            if (levelPath == null)
+            if(levelPath.Equals(""))
             {
               levelPath = "Main.tmj";
             }
-            List<ICustomTypeDefinition> typeDefinitions = new();
-            tilemap = new(graphicsDevice, projectDirectory, levelPath, TILESIZE, typeDefinitions, gum);
+
+            List<ICustomTypeDefinition> typeDefinitions = [];
+            tilemap = new(graphicsDevice, projectDirectory, levelPath, TILESIZE, typeDefinitions);
             if(tilemap.loadAudio)
             {
                 var sw = new Stopwatch();
                 sw.Start(); a = new("Content/Sounds/Sfx"); sw.Stop();
                 Console.WriteLine($"soundsLoad: {sw.ElapsedMilliseconds}ms");
-                a.allSFXToBlocks(tilemap.collisionLayer.Values.ToList());
+                a.allSFXToBlocks([.. tilemap.collisionLayer.Values]);
             }
             var playableEntities = tilemap.entities
                 .Where(e => e.isPlayable);
@@ -127,7 +116,7 @@ namespace Juegazo
         public void UnloadContent()
         {
           font = null;
-          entities = new();
+          entities = [];
         }
         bool wasPressed = true;
 
@@ -197,7 +186,7 @@ namespace Juegazo
               {
                   if (block.collider.Intersects(entity.Destinationrectangle))
                       block.horizontalActions(entity, block.collider);
-                  nextScene = changeSScne(nextScene, block);
+                  nextScene = ChangeSScne(nextScene, block);
               }
 
               int vertDelta = 0;
@@ -216,7 +205,7 @@ namespace Juegazo
               {
                   if (block.collider.Intersects(entity.Destinationrectangle))
                       block.verticalActions(entity, block.collider);
-                  nextScene = changeSScne(nextScene, block);
+                  nextScene = ChangeSScne(nextScene, block);
               }
               entity.UpdateColliderFromDest();
           }
@@ -265,7 +254,7 @@ namespace Juegazo
           fps = Math.Round(1 / gameTime.ElapsedGameTime.TotalSeconds);
         }
 
-        private int changeSScne(int nextScene, Block block)
+        private int ChangeSScne(int nextScene, Block block)
         {
             if (block is CompleteLevelBlock papu && papu.changeScene && !changeScene)
             {
@@ -295,13 +284,11 @@ namespace Juegazo
             Debugger.Instance.DrawRectHollow(spriteBatch, Camera.Instance.ViewPortRectangle, 2, Color.White);
         }
 
-        public void Initialize(Game game)
-        { }
         public void DrawUI(GameTime gameTime, SpriteBatch spriteBatch)
         {
           foreach (var entity in entities)
           {
-              if (entity.hasComponent(typeof(NPCComponent)) && entity.GetComponent(typeof(NPCComponent)) is NPCComponent comp)
+              if (entity.hasComponent<NPCComponent>() && entity.GetComponent<NPCComponent>() is NPCComponent comp)
               {
                   comp.DrawUI(gameTime, spriteBatch);
                   continue;

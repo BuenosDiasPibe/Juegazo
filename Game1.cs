@@ -43,7 +43,7 @@ public class Game1 : Game
         _spriteBatch = new SpriteBatch(GraphicsDevice);
         sceneManager.ActionByName["Exit"] = Exitiiiing;
 
-        sceneManager.AddScene(new TitleScene(sceneManager, Content, GraphicsDevice, Gum));
+        sceneManager.AddScene(new TitleScene(sceneManager, Content, GraphicsDevice));
         sceneManager.GetScene().LoadContent();
         Console.WriteLine(sceneManager.GetScene()); 
     }
